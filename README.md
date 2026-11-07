@@ -8,7 +8,7 @@
 [English README](README.en.md) · [贡献指南](CONTRIBUTING.md) · [安全策略](SECURITY.md) · [行为准则](CODE_OF_CONDUCT.md) · [更新日志](CHANGELOG.md)
 
 Spring Boot 4.1.2 + JDK 25 + GraalVM 25 实现的大模型 API 网关。
-核心特色：**同一套治理层，两套可切换的数据面（WebFlux / 虚拟线程），配可复现的对照压测**。
+核心特色：**同一套治理层，两套可切换的数据面（WebFlux / 虚拟线程），五种协议透传对等（chat / responses / messages / images / videos），配可复现的对照压测**。
 Java 包名 `io.github.leohou0430.llmgw`，采用 [Apache-2.0](LICENSE) 许可，
 仓库地址 `https://github.com/leohou0430/llmgw4j`。
 命名取 `llmgw`（LLM Gateway）+ `4j`（for Java，沿用 log4j / dom4j 的命名习惯）。
@@ -21,11 +21,11 @@ Java 包名 `io.github.leohou0430.llmgw`，采用 [Apache-2.0](LICENSE) 许可�
 
 ```
                     ┌──────────────────────────────────────────────┐
-  POST /v1/chat/    │  llmgw-app                                  │
-  completions  ───► │  ┌────────────┐  或  ┌────────────────────┐  │
-                    │  │ WebFlux    │      │ Servlet + 虚拟线程 │  │
-                    │  │ Netty      │      │ Tomcat 11          │  │
-                    │  └─────┬──────┘      └─────────┬──────────┘  │
+  POST /v1/{chat/   │  llmgw-app                                  │
+  completions,      │  ┌────────────┐  或  ┌────────────────────┐  │
+  responses,        │  │ WebFlux    │      │ Servlet + 虚拟线程 │  │
+  messages,         │  │ Netty      │      │ Tomcat 11          │  │
+  images, videos} ─►│  └─────┬──────┘      └─────────┬──────────┘  │
                     │        └──────────┬────────────┘              │
                     │                   ▼                           │
                     │  ┌────────────────────────────────────────┐  │
@@ -135,14 +135,14 @@ public class RedisTokenLimiter implements TokenLimiter {
 ## 二、关键设计判断（面试可讲）
 
 1. **为什么同时要 WebFlux 和虚拟线程**：不是叠加，是做单变量对照实验。两个引擎共用同一治理层和同一个上游客户端，唯一变量就是并发模型。v2 起两条数据面都是各自并发模型的「正统实现」：WebFlux 流式 + 非流式全走 `sendAsync`，请求路径没有任何阻塞 offload；VT 两条路径都直接阻塞自己的虚拟线程。v1 曾把非流式 `send` 塞给 `boundedElastic`，那是个隐藏变量，其数据保留为对照基线（5.1 vs 5.2）。
-2. **为什么热点链路不让 SDK 碰**：SDK 会反序列化再序列化，厂商扩展字段（`reasoning_content` 等）会丢。网关的价值是协议保真，所以只解析 `model`/`messages`/`stream` 三个字段用于路由和计量，原始 chunk 原样透传。
+2. **为什么热点链路不让 SDK 碰**：SDK 会反序列化再序列化，厂商扩展字段（`reasoning_content` 等）会丢。网关的价值是协议保真，所以 v12 起按协议各解析少量字段（model / stream / prompt 类文本）用于路由和计量，原始 chunk 与响应体原样透传，网关不做任何协议翻译。
 3. **为什么治理分热路径/旁路**：鉴权、配额、限流是纯内存原子操作，留在热路径；SSE 计量、账单、审计、快照交给公共 `VirtualThreadPerTaskExecutor`，避免阻塞事件循环，也让两个引擎的对照公平。
 4. **为什么不用 Spring AI / LangChain4j**：它们是应用框架（`ChatModel` / `AiServices`），目标是帮应用「调模型」；网关要的是「原样转发字节流」。选官方 `openai-java` 只做校验与连通性验证，是折中且克制的选择。
 5. **为什么全内存**：零外部依赖、native 编译最干净。持久化通过 `SnapshotStore` SPI + JSON 快照导出，README 明说这是单机演示。
 6. **实测印证了「瓶颈不在网关」**：50 VU 下 SSE 场景 p50 的 8 组变异系数只有 2.3%，而 mock 上游固定占 100ms。当上游是秒级推理时，选 WebFlux 还是虚拟线程、JVM 还是 Native，对端到端延迟几乎无影响；真正值得花钱优化的是 Native 的冷启动（10.5×）与尾延迟（见 5.1 / 风险清单）。这个结论比「哪个框架 RPS 更高」更能指导选型。
 7. **流式失败要按「首字节是否已出」分层处理**：HTTP 状态在第一个字节写出后才不可逆。网关在首 chunk 前保持响应未提交（VT 不再提前 `flushBuffer()`），上游失败就返回真正的 **502 + JSON**；一旦已发 chunk，只能带内报错 `event: error` 再补 `[DONE]`。**fallback 只允许在首 chunk 前发生**，否则两个上游的 chunk 会拼成一段语义错乱的回答。`bin/smoke-stream-errors.sh` 用 mock 的 `mock-fail-after-N` / `mock-eof-after-N` 标记覆盖这些边界，v5 扩充为 JVM 双引擎 55 项、单个 native 28 项断言。
 8. **请求体只解析一次**：`GatewayPipeline.enter` 解析出的 `ParsedRequest` 挂在 `GatewayDecision` 上，两个 controller 直接复用，不再各 parse 一遍同一个 JSON。准入与转发共用一次反序列化结果，是网关热路径最基本的节约。
-9. **传输层 EOF ≠ 协议层完成**：上游干净关闭连接时 HTTP 客户端不会抛异常，代理若把「没报错」当成功、甚至替上游补一帧 `[DONE]`，就会把被截断的回答伪装成完整回答——客户端不报错、账单不记失败、上游故障被静默吞掉。本项目把「上游是否显式发出 `data: [DONE]`」作为唯一完成判据，两个引擎共用 `ProtocolCodec.TRUNCATED_MESSAGE`；网关**永远不伪造终止帧**，只在已提交响应后补一个带内错误帧。这是透明代理与「自作主张的中间件」的分界线。
+9. **传输层 EOF ≠ 协议层完成**：上游干净关闭连接时 HTTP 客户端不会抛异常，代理若把「没报错」当成功、甚至替上游补一帧终止帧，就会把被截断的回答伪装成完整回答——客户端不报错、账单不记失败、上游故障被静默吞掉。本项目把「上游是否显式发出**该协议自己的终止帧**」作为唯一完成判据（chat=`data: [DONE]`、Responses=`response.completed`、Messages=`message_stop`；images / videos 无流式），两个引擎共用 `ProtocolCodec.truncatedMessage(kind)`；网关**永远不伪造终止帧**——v12 起带内错误后的 `[DONE]` 只对 CHAT 追加，responses / messages 的错误事件之后直接干净断流，绝不替上游补另一种协议的终止帧。这是透明代理与「自作主张的中间件」的分界线。
 
 10. **透明代理要同时守住三条资源契约**（v5）：① 上游状态必须在 `BodyHandler.apply(ResponseInfo)` 阶段判定，晚于 body 订阅的 `whenComplete` 检查会被已发出的 `onComplete` 吞掉，4xx/5xx 的 JSON 错误体会被当成 `data:` 行发给客户端；② 下游 demand 要桥接到 JDK `Flow.Subscription`，`request(Long.MAX_VALUE)` + 无界 `Flux.create` 缓冲会让慢客户端把堆吃光；③ 只有**下游取消**才应该取消 `sendAsync` future 和 body 订阅。这里有个实测过的反例：把取消钩子同时挂到 `onDispose` 上，Reactor 在**正常完成**时也会触发它，HTTP/1.1 keep-alive 连接被提前拆掉，同连接上其他在途请求全部报 `Request cancelled`，50 VU 下 SSE 失败率 **16%**；改成只挂 `onCancel` 后归零。取消本身也不是 Reactor 的 terminal 信号，只挂 `doOnComplete`/`doOnError` 会**永久漏掉账单并泄漏配额预留** —— 两个引擎统一改 `doFinally`。回归里专门加了「40 路并发 SSE 零 502」断言，因为串行 curl 永远暴露不了连接复用竞态。
 11. **计量以 usage 为准，准入以原子预留为准**（v5）：SSE 的 `usage.completion_tokens` 是权威值，必须**覆盖**而非叠加逐 delta 估算（否则 8 个 chunk 记成 16）；非流式要从 `usage` 取真实值，不能拿整个 JSON 信封（id/时间戳/object）估算。配额检查 `used()+estimate>quota` 是读-改-写竞态，并发下会把额度超卖 N 倍，改成含在途请求的 CAS 预留、`finish` 时释放；令牌桶按实际用量结算，失败 / 取消 / 缓存命中退还预扣；refill 的时间戳只在真的铸出整数 token 时推进，否则高频调用会把不足 1 token 的时间片永久丢掉。
@@ -179,6 +179,29 @@ curl -sS -X POST http://127.0.0.1:8080/v1/chat/completions \
 curl -N -X POST http://127.0.0.1:8080/v1/chat/completions \
   -H 'Content-Type: application/json' -H 'Authorization: Bearer sk-demo' \
   -d '{"model":"qwen-plus","messages":[{"role":"user","content":"hi"}],"stream":true}'
+
+# v12 多协议：每个端点只路由到说同一种协议的上游，网关不做协议翻译
+# OpenAI Responses（流式终止帧是 response.completed，没有 [DONE]）
+curl -N -X POST http://127.0.0.1:8080/v1/responses \
+  -H 'Content-Type: application/json' -H 'Authorization: Bearer sk-demo' \
+  -d '{"model":"qwen-plus","input":"hi","stream":true}'
+
+# Anthropic Messages（流式终止帧是 message_stop）
+curl -N -X POST http://127.0.0.1:8080/v1/messages \
+  -H 'Content-Type: application/json' -H 'Authorization: Bearer sk-demo' \
+  -d '{"model":"qwen-plus","max_tokens":32,"messages":[{"role":"user","content":"hi"}],"stream":true}'
+
+# 图片生成（n 个请求单元计量；大 base64 响应永不进缓存）
+curl -sS -X POST http://127.0.0.1:8080/v1/images/generations \
+  -H 'Content-Type: application/json' -H 'Authorization: Bearer sk-demo' \
+  -d '{"model":"wan","prompt":"a cat","n":2}'
+
+# 视频生成是异步任务：create → poll → content（OpenAI Sora 风格）
+VID=$(curl -sS -X POST http://127.0.0.1:8080/v1/videos \
+  -H 'Content-Type: application/json' -H 'Authorization: Bearer sk-demo' \
+  -d '{"model":"sora","prompt":"a cat runs"}' | jq -r .id)
+curl -sS -H 'Authorization: Bearer sk-demo' http://127.0.0.1:8080/v1/videos/$VID   # queued → in_progress → completed
+curl -sS -H 'Authorization: Bearer sk-demo' http://127.0.0.1:8080/v1/videos/$VID/content -o out.mp4
 
 # 管理接口（默认本地演示、无鉴权；共享环境务必设置 LLMGW_ADMIN_TOKEN）
 curl -sS http://127.0.0.1:8080/admin/snapshot
@@ -251,6 +274,9 @@ curl -sS http://127.0.0.1:8080/admin/verify   # SDK 连通性验证
 BINARY="$PWD/bin/native/llmgw-webflux" ./bin/smoke-stream-errors.sh webflux  # native 产物
 BINARY="$PWD/bin/native/llmgw-vt"      ./bin/smoke-stream-errors.sh vt
 
+# v12 多协议回归（responses / messages / images / videos × 双引擎，不改动上面 67/34 的断言数）
+./bin/smoke-multi-protocol.sh                # 28 项 × 双引擎：协议路由 / 计量 / 各协议终止帧契约 / sticky 视频
+
 # v10 三个独立回归（不改动上面 67/34 的断言数）
 ./bin/smoke-observability.sh                 # 26 项：TTFT / 上游 / 开销头 + 指标 + 审计
 ./bin/smoke-hot-reload.sh webflux           # 10 项：40 路在途 SSE 零中断 + 权重即时生效
@@ -258,15 +284,15 @@ BINARY="$PWD/bin/native/llmgw-vt"      ./bin/smoke-stream-errors.sh vt
 ./bin/smoke-redis-cluster.sh                # 7 项：双实例共享配额（需 -Predis 产物 + 本地 Redis）
 ```
 
-mock 上游支持两类受控故障注入（对全部压测 payload 均不生效，压测口径不受影响）：
+mock 上游支持受控故障注入（v12 起对**全部流式协议**生效，images / videos 用 `mock-status-N`；对全部压测 payload 均不生效，压测口径不受影响）：
 
 | 标记 | 上游行为 | 覆盖的边界 |
 |---|---|---|
 | `mock-fail-after-N` | 发 N 个 chunk 后抛 `IOException`，连接异常中断 | 抛异常的错误传播、首 chunk 后带内报错、禁止 fallback 拼接 |
 | `mock-eof-after-0` | 一帧不发就干净关闭 | 空流截断，首 chunk 前必须 502 |
-| `mock-eof-after-N` | 发 N 个 chunk 后干净关闭，不抛异常、不发 `[DONE]` | **静默截断**：EOF 不能被当成成功 |
+| `mock-eof-after-N` | 发 N 个 chunk 后干净关闭，不抛异常、不发终止帧 | **静默截断**：EOF 不能被当成成功 |
 | `mock-status-N` | 上游返回状态 N + JSON 错误体（流式/非流式均可） | 非 2xx 不能变成 SSE `data:` 行，必须网关 502 |
-| `mock-done-then-fail` | 发完 `[DONE]` 后再抛 `IOException` 断连 | 协议已完成就不能补 `event: error`、不能记失败 |
+| `mock-done-then-fail` | 发完协议终止帧后再抛 `IOException` 断连 | 协议已完成就不能补 `event: error`、不能记失败 |
 | `mock-echo-hash` | 非流式回答回显完整请求体的哈希前缀 | 缓存键若只看 prompt，同文本不同采样参数会互串答案 |
 
 ## 四、Native 编译
@@ -852,6 +878,42 @@ native 二进制数据面未变，无需重编。
 （幅度 7–48% 不稳），方向性指向 B 的 SSE 可能存在小幅真实开销——与 v10 在
 SSE 每帧新增计时 CAS 的设计一致——需专用空闲宿主复测后才能定论。
 产物 `v11-final-default.jar` 与全部 CSV / 负载日志（`v11-load-*.log`）留档。
+
+### 5.13 v12 多协议透传对等（chat / responses / messages / images / videos）
+
+**设计前提：透传对等（pass-through parity）**——每个端点只路由到说**同一种协议**的上游
+（路由表新增 `protocol` 字段，缺省 `*` 兼容旧配置），网关不做任何协议翻译、不重序列化
+payload；请求体只解析路由与计量所需的最少字段（model / stream / prompt 类文本 / n）。
+
+| 能力 | chat | responses | messages | images | videos |
+|---|---|---|---|---|---|
+| 上游路径 | `/chat/completions` | `/responses` | `/messages` | `/images/generations` | `/videos`（+GET poll/content） |
+| 流式 | SSE，终止帧 `data: [DONE]` | SSE，`response.completed` | SSE，`message_stop` | 无 | 无（异步任务） |
+| completion 计量 | `usage.completion_tokens` | `usage.output_tokens`（响应体 / `response.completed`） | `usage.output_tokens`（响应体 / `message_delta`） | 恒 0 | 恒 0 |
+| 请求单元 units | 1 | 1 | 1 | n（1..10） | create=1 |
+| 语义缓存 | SHA-256 全body指纹 | 同左（output 非空才入缓） | 同左（content+stop_reason 齐全才入缓） | **永不缓存**（b64 大对象） | **永不缓存** |
+| fallback / 熔断 | 有 | 有 | 有 | 有 | **仅 create**；poll/content 钉死创建路由，零熔断零 fallback |
+
+- **协议路由三级优先**：精确 protocol+model > 通配 protocol+精确 model（兼容旧表）> 通配 model。
+  `llmgw.requests` 指标新增 `protocol` 标签，审计事件带 `protocol` + `units`（账本聚合键仍只是
+  keyId，配额数学不受影响）。
+- **videos = OpenAI Sora 风格异步任务**：`POST /v1/videos` 创建任务，`GET /v1/videos/{id}` 轮询，
+  `GET /v1/videos/{id}/content` 下载 mp4。任务 id → 路由 id 的粘性映射（`StickyTaskRoutes`，
+  TTL + 容量上限，默认 24h / 10000 条）保证「任务只存在于创建它的那个上游」；网关重启后粘性
+  丢失退化为通配路由，mock 对未知任务返回 404 → 网关 502，语义正确。
+- **终止帧契约按协议收紧**：静默截断的 502 原因词带各自终止帧名（`without response.completed` /
+  `without message_stop`）；带内 `event: error` 之后的 `[DONE]` **只对 CHAT 追加**——网关绝不
+  替上游伪造另一种协议的终止帧，responses / messages 的错误事件之后直接干净断流。
+- **双引擎对等**：5 个 POST + 2 个 GET 在两个数据面共用同一套 `handleKind(kind, ...)` 参数化
+  实现，每协议只有解析、终止帧与计量/缓存语义不同（全部挂在 `ParsedRequest.kind()` 上）。
+- mock 上游同步说全部 5 种协议（各发各的 delta/终止帧），异步视频任务用 elapsed 状态机
+  （queued → in_progress → completed，内容完成后以 `video/mp4` 提供下载）。
+
+验证：新增 `bin/smoke-multi-protocol.sh`，**双引擎各 28/28**（协议路由五路分发、
+`1+8+1+8+0=18` 精确计量、每协议的截断/断连/状态注入契约、images 不入缓存、
+视频 create→poll→content、跨实例粘性钉死）；原 `smoke-stream-errors.sh` 67/67 不变，
+`check-module-layout.sh` 27/27 不变。API 契约见 `docs/openapi.yaml`（OpenAPI 3.1，
+可在 Apifox「项目设置 → 导入数据 → OpenAPI/Swagger」一键导入）。
 
 ## 六、诚实的风险清单
 

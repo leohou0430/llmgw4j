@@ -40,6 +40,22 @@ public interface UpstreamProvider {
                 .subscribeOn(Schedulers.boundedElastic());
     }
 
+    /**
+     * Blocking GET (video task polling / content download). Returns raw bytes
+     * so binary content forwards byte-for-byte; poll bodies are JSON and are
+     * stringified by the caller. No fallback is attempted by callers: a task
+     * exists only on the upstream that created it.
+     */
+    default byte[] fetchRaw(UpstreamRequest request) {
+        throw new UnsupportedOperationException("provider does not support GET fetches");
+    }
+
+    /** Lazy async GET for reactive data planes; same bytes contract. */
+    default Mono<byte[]> fetchRawAsync(UpstreamRequest request) {
+        return Mono.fromCallable(() -> fetchRaw(request))
+                .subscribeOn(Schedulers.boundedElastic());
+    }
+
     default void verify() {
         // Optional connectivity check (e.g. via the official SDK).
     }

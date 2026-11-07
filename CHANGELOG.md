@@ -107,6 +107,58 @@
   复测。详见 `bench/README.md` v10 段与 `paired-ab-20261108-*.csv` /
   `v11-load-*.log`。
 
+## [v12] - 2026-11-08
+
+多协议透传对等：同一套治理层与双数据面，覆盖 OpenAI Chat Completions / OpenAI Responses /
+Anthropic Messages / Images / Videos 五种协议。网关不做协议翻译、不重序列化 payload，
+每个端点只路由到说同一种协议的上游。
+
+### Added
+
+- **5 个新端点**（双引擎对等，`WebfluxGatewayController` 与
+  `VirtualThreadGatewayController` 共用按 `ProtocolKind` 参数化的同一套处理逻辑）：
+  `POST /v1/responses`、`POST /v1/messages`、`POST /v1/images/generations`、
+  `POST /v1/videos`（create）、`GET /v1/videos/{id}`（poll）、
+  `GET /v1/videos/{id}/content`（mp4 下载）。
+- **协议抽象**（`llmgw-core/protocol`）：`ProtocolKind`（路径 / wire 名 / 是否流式 /
+  终止帧）、按协议的请求解析器（`ResponsesProtocol` / `MessagesProtocol` /
+  `ImagesProtocol` / `VideosProtocol`）、按协议的 SSE chunk 解析（`ChunkParser`）与
+  完整性判据（`ProtocolCodec.truncatedMessage(kind)`）。
+- **协议感知计量与缓存**：completion tokens 按协议从各自 usage 位置取权威值；
+  images 按 n 计请求单元、tokens 恒 0 且永不入缓存；videos create 计 1 单元、永不缓存；
+  `llmgw.requests` 指标与审计事件新增 `protocol` / `units` 维度（账本聚合键不变，
+  配额数学不受影响）。
+- **协议路由**：`Route` 新增 `protocol` 字段（缺省 `*` 兼容旧配置），三级优先
+  （精确 protocol+model > 通配 protocol+精确 model > 通配 model）。
+- **视频异步任务粘性路由**：`StickyTaskRoutes` 把任务 id 钉到创建它的路由
+  （TTL 24h、容量 10000，可配 `gateway.videos.*`）；poll / content 零 fallback、
+  零熔断——任务只存在于创建它的上游。
+- **mock 上游说全部 5 种协议**：各发各的 delta / usage / 终止帧；异步视频任务
+  elapsed 状态机（queued → in_progress → completed）+ mp4 内容下载；故障注入标记
+  对全部流式协议生效。
+- **`bin/smoke-multi-protocol.sh`**：双引擎各 28 项断言（协议路由五路分发、
+  跨协议精确计量、每协议截断 / 断连 / 状态注入契约、images/videos 不入缓存、
+  视频 create→poll→content、跨实例粘性钉死）。
+- **API 契约文档** `docs/openapi.yaml`（5 端点 + 视频轮询/下载 + 错误模型）；
+  Apifox MCP 写回接口本次不可用（createEndpoint 被参数校验拦截、importData
+  静默零导入），采用预案手动导入：Apifox「项目设置 → 导入数据 →
+  OpenAPI/Swagger」选择该文件即可。
+
+### Changed
+
+- 终止帧契约按协议收紧：完成判据 = 各协议自己的终止帧（chat `[DONE]` /
+  responses `response.completed` / messages `message_stop`）；截断 502 原因词带
+  各自终止帧名；带内错误后的 `[DONE]` 只对 CHAT 追加，网关绝不伪造其他协议的终止帧。
+- `ParsedRequest` / `GatewayContext` / `UpstreamRequest` / `Route` 增加 kind /
+  units / protocol / path 维度，旧构造器保留兼容委托；bench 微基准同步迁移。
+
+### 验证状态
+
+- `./bin/smoke-multi-protocol.sh`：webflux **28/28**、vt **28/28**
+- `./bin/smoke-stream-errors.sh`（chat 全量契约回归）：**67/67** 不变
+- `./bin/check-module-layout.sh`：**27/27** 不变
+- `mvn -B -DskipTests clean package`：BUILD SUCCESS
+
 ## [0.1.0] - 2026-11-07
 
 首个可发布快照。核心能力与设计取舍详见 `README.md` 5.1–5.11 节。

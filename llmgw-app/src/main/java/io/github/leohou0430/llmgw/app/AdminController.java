@@ -4,6 +4,7 @@ import io.github.leohou0430.llmgw.core.config.GatewayProperties;
 import io.github.leohou0430.llmgw.core.governance.ApiKeyRegistry;
 import io.github.leohou0430.llmgw.core.governance.GovernanceChain;
 import io.github.leohou0430.llmgw.core.governance.SnapshotStore;
+import io.github.leohou0430.llmgw.core.protocol.ProtocolKind;
 import io.github.leohou0430.llmgw.core.routing.Route;
 import io.github.leohou0430.llmgw.core.routing.RouteConfigSource;
 import io.github.leohou0430.llmgw.core.routing.RouteTable;
@@ -78,10 +79,12 @@ public class AdminController {
 
     /**
      * Write shape for POST /admin/routes/reload. apiKey is optional and is
-     * NEVER echoed back (it can be the upstream provider's secret).
+     * NEVER echoed back (it can be the upstream provider's secret). protocol
+     * pins the route to one endpoint protocol; ""/"*" match every protocol.
      */
-    public record RouteSpec(String id, String model, String targetModel, String targetUrl,
-                            String apiKey, Integer weight, List<String> fallbacks) {
+    public record RouteSpec(String id, String protocol, String model, String targetModel,
+                            String targetUrl, String apiKey, Integer weight,
+                            List<String> fallbacks) {
     }
 
     @GetMapping("/snapshot")
@@ -157,6 +160,11 @@ public class AdminController {
                         "duplicate route id: " + spec.id());
             }
             String model = spec.model() == null || spec.model().isBlank() ? "*" : spec.model();
+            String protocol = spec.protocol() == null ? "" : spec.protocol().trim();
+            if (!ProtocolKind.isConfigValue(protocol)) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                        "protocol must be chat|responses|messages|images|videos|*: " + spec.id());
+            }
             String url = spec.targetUrl() == null || spec.targetUrl().isBlank()
                     ? defaultUrl : spec.targetUrl();
             if (!url.startsWith("http://") && !url.startsWith("https://")) {
@@ -168,7 +176,8 @@ public class AdminController {
             int weight = spec.weight() == null ? 1 : Math.max(1, spec.weight());
             List<String> fallbacks = spec.fallbacks() == null
                     ? List.of() : List.copyOf(spec.fallbacks());
-            routes.add(new Route(spec.id(), model,
+            routes.add(new Route(spec.id(),
+                    protocol.isBlank() ? "*" : protocol, model,
                     spec.targetModel() == null ? "" : spec.targetModel(),
                     url, key, weight, fallbacks));
         }
@@ -198,6 +207,7 @@ public class AdminController {
         for (Route route : routes) {
             Map<String, Object> item = new LinkedHashMap<>();
             item.put("id", route.id());
+            item.put("protocol", route.protocol());
             item.put("model", route.model());
             item.put("targetModel", route.targetModel());
             item.put("targetUrl", route.targetUrl());

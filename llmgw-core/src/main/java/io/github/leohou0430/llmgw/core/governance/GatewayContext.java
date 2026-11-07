@@ -1,6 +1,7 @@
 package io.github.leohou0430.llmgw.core.governance;
 
 import io.github.leohou0430.llmgw.core.protocol.ProtocolCodec;
+import io.github.leohou0430.llmgw.core.protocol.ProtocolKind;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -19,12 +20,14 @@ import java.util.concurrent.atomic.AtomicLong;
 public final class GatewayContext {
 
     private final String keyId;
+    private final ProtocolKind kind;
     private final String model;
     private final String routeId;
     private final boolean stream;
     private final String requestId;
     private final long startNanos;
     private final int promptTokens;
+    private final int units;
     private final AtomicInteger estimatedCompletion = new AtomicInteger();
     /** -1 = the upstream never reported usage; otherwise the authoritative value. */
     private final AtomicInteger reportedCompletion = new AtomicInteger(-1);
@@ -38,23 +41,33 @@ public final class GatewayContext {
     private final AtomicLong upstreamEndNanos = new AtomicLong();
 
     public GatewayContext(String keyId, String model, String routeId, boolean stream, int promptTokens) {
-        this(keyId, model, routeId, stream, promptTokens, "", System.nanoTime());
+        this(keyId, ProtocolKind.CHAT, model, routeId, stream, promptTokens, 1, "", System.nanoTime());
     }
 
     public GatewayContext(String keyId, String model, String routeId, boolean stream,
                           int promptTokens, String requestId) {
-        this(keyId, model, routeId, stream, promptTokens, requestId, System.nanoTime());
+        this(keyId, ProtocolKind.CHAT, model, routeId, stream, promptTokens, 1,
+                requestId, System.nanoTime());
     }
 
     /** Start the clock at request arrival, not after admission (v10). */
     public GatewayContext(String keyId, String model, String routeId, boolean stream,
                           int promptTokens, String requestId, long arrivedNanos) {
+        this(keyId, ProtocolKind.CHAT, model, routeId, stream, promptTokens, 1,
+                requestId, arrivedNanos);
+    }
+
+    public GatewayContext(String keyId, ProtocolKind kind, String model, String routeId,
+                          boolean stream, int promptTokens, int units,
+                          String requestId, long arrivedNanos) {
         this.keyId = keyId;
+        this.kind = kind;
         this.model = model;
         this.routeId = routeId;
         this.stream = stream;
         this.requestId = requestId == null ? "" : requestId;
         this.promptTokens = promptTokens;
+        this.units = Math.max(1, units);
         this.startNanos = arrivedNanos;
     }
 
@@ -139,9 +152,12 @@ public final class GatewayContext {
     public void markCached() { this.cached = true; }
 
     public String keyId() { return keyId; }
+    public ProtocolKind kind() { return kind; }
     public String model() { return model; }
     public String routeId() { return routeId; }
     public boolean stream() { return stream; }
+    /** Request units (images: n; video create: 1 task; text protocols: 1). */
+    public int units() { return units; }
     /** Correlation id echoed to the client and written into audit events. */
     public String requestId() { return requestId; }
     public int promptTokens() { return promptTokens; }

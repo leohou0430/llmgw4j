@@ -7,21 +7,27 @@ import io.github.leohou0430.llmgw.core.governance.GatewayPipeline;
 import io.github.leohou0430.llmgw.core.governance.GovernanceChain;
 import io.github.leohou0430.llmgw.core.protocol.ParsedRequest;
 import io.github.leohou0430.llmgw.core.protocol.ProtocolCodec;
+import io.github.leohou0430.llmgw.core.protocol.ProtocolKind;
+import io.github.leohou0430.llmgw.core.protocol.VideosProtocol;
 import io.github.leohou0430.llmgw.core.routing.Route;
 import io.github.leohou0430.llmgw.core.routing.Router;
+import io.github.leohou0430.llmgw.core.routing.StickyTaskRoutes;
 import io.github.leohou0430.llmgw.core.upstream.ChunkSink;
 import io.github.leohou0430.llmgw.core.upstream.CircuitBreaker;
 import io.github.leohou0430.llmgw.core.upstream.CircuitOpenException;
 import io.github.leohou0430.llmgw.core.upstream.UpstreamProvider;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import io.github.leohou0430.llmgw.core.upstream.UpstreamRequest;
 import io.github.leohou0430.llmgw.engine.EngineHeaders;
 import io.github.leohou0430.llmgw.engine.EngineProfiles;
 import io.github.leohou0430.llmgw.engine.EngineReasons;
 import io.github.leohou0430.llmgw.engine.EngineRoutes;
 import io.github.leohou0430.llmgw.engine.EngineTimings;
 import io.github.leohou0430.llmgw.engine.SseChunkAccounting;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Profile;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -38,14 +44,25 @@ import java.util.Optional;
  * Deliberately uses the same upstream client as the WebFlux engine so the benchmark
  * has exactly ONE variable: the concurrency model.
  *
+ * <p>v12 multi-protocol: every POST endpoint (chat / responses / messages /
+ * images / video-create) shares one handler parameterized by {@link ProtocolKind};
+ * the kinds differ only in request parsing, SSE terminator and response-side
+ * token/cache semantics, all of which hang off ParsedRequest.kind().
+ *
  * <p>Streaming error contract: a stream counts as successful ONLY when the
- * upstream actually emitted {@code data: [DONE]}. A clean EOF without that
- * terminator is a silent truncation, not a success. Before the first chunk the
- * response is still uncommitted, so any failure yields a real HTTP 502; after
- * the first chunk the status is on the wire, so the failure is reported
- * in-band as an SSE {@code event: error} followed by {@code [DONE]}.
- * Fallback is only ever attempted before the first chunk. Once [DONE] is out,
- * a late upstream disconnect does not invalidate the completed answer.
+ * upstream actually emitted its protocol terminator ([DONE] / response.completed
+ * / message_stop). A clean EOF without that terminator is a silent truncation,
+ * not a success. Before the first chunk the response is still uncommitted, so
+ * any failure yields a real HTTP 502; after the first chunk the status is on
+ * the wire, so the failure is reported in-band as an SSE {@code event: error}
+ * followed by {@code [DONE]}. Fallback is only ever attempted before the first
+ * chunk. Once the terminator is out, a late upstream disconnect does not
+ * invalidate the completed answer.
+ *
+ * <p>Video tasks are asynchronous upstream jobs: create responses bind the task
+ * id to the winning route ({@link StickyTaskRoutes}), and poll/content GETs are
+ * pinned to that route with NO fallback and NO circuit breaking — a task exists
+ * only on the upstream that created it.
  */
 @RestController
 @Profile(EngineProfiles.VT)
@@ -56,6 +73,7 @@ public class VirtualThreadGatewayController {
     private final UpstreamProvider provider;
     private final CircuitBreaker breaker;
     private final GatewayProperties properties;
+    private final StickyTaskRoutes videoTasks;
 
     public VirtualThreadGatewayController(GovernanceChain chain, Router router,
                                           UpstreamProvider provider, CircuitBreaker breaker,
@@ -65,10 +83,50 @@ public class VirtualThreadGatewayController {
         this.provider = provider;
         this.breaker = breaker;
         this.properties = properties;
+        this.videoTasks = new StickyTaskRoutes(
+                properties.getVideos().getStickyMaxEntries(),
+                properties.getVideos().getStickyTtlSeconds());
     }
 
     @PostMapping("/v1/chat/completions")
-    public void handle(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void handleChat(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        handleKind(ProtocolKind.CHAT, request, response);
+    }
+
+    @PostMapping("/v1/responses")
+    public void handleResponses(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        handleKind(ProtocolKind.RESPONSES, request, response);
+    }
+
+    @PostMapping("/v1/messages")
+    public void handleMessages(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        handleKind(ProtocolKind.MESSAGES, request, response);
+    }
+
+    @PostMapping("/v1/images/generations")
+    public void handleImages(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        handleKind(ProtocolKind.IMAGES, request, response);
+    }
+
+    @PostMapping("/v1/videos")
+    public void handleVideoCreate(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        handleKind(ProtocolKind.VIDEOS, request, response);
+    }
+
+    @GetMapping("/v1/videos/{id}")
+    public void handleVideoPoll(@PathVariable("id") String id,
+                                HttpServletRequest request, HttpServletResponse response) throws IOException {
+        handleVideoFetch(id, "/videos/" + id, EngineHeaders.APPLICATION_JSON, request, response);
+    }
+
+    @GetMapping("/v1/videos/{id}/content")
+    public void handleVideoContent(@PathVariable("id") String id,
+                                   HttpServletRequest request, HttpServletResponse response) throws IOException {
+        handleVideoFetch(id, "/videos/" + id + "/content", "video/mp4", request, response);
+    }
+
+    private void handleKind(ProtocolKind kind, HttpServletRequest request,
+                            HttpServletResponse response) throws IOException {
         long arrived = System.nanoTime();
         long max = Math.max(1, properties.getMaxRequestBytes());
         int cap = (int) Math.min(max, Integer.MAX_VALUE - 1) + 1;
@@ -83,7 +141,7 @@ public class VirtualThreadGatewayController {
         }
         String requestId = GatewayPipeline.requestId(request.getHeader(EngineHeaders.REQUEST_ID));
         response.setHeader(EngineHeaders.REQUEST_ID, requestId);
-        GatewayDecision decision = GatewayPipeline.enter(chain, router,
+        GatewayDecision decision = GatewayPipeline.enter(chain, router, kind,
                 request.getHeader("Authorization"), rawJson);
         if (!decision.allowed()) {
             writeError(response, decision);
@@ -96,24 +154,33 @@ public class VirtualThreadGatewayController {
         boolean success = false;
         try {
             if (parsed.stream()) {
-                success = handleStream(response, rawJson, parsed, route, timeout, context);
+                success = handleStream(kind, response, rawJson, parsed, route, timeout, context);
             } else {
                 Optional<String> cached = chain.lookupCache(decision.keyId(), parsed);
                 String body;
+                Route winning = route;
                 if (cached.isPresent()) {
                     context.markCached();
                     body = cached.get();
                 } else {
-                    body = completeWithFallback(rawJson, parsed, route, timeout, context);
+                    Completed completed = completeWithFallback(rawJson, parsed, route, timeout, context);
+                    body = completed.body();
+                    winning = completed.route();
                     context.markUpstreamEnd();
                 }
                 // Single parse: token count AND cacheability come from the
                 // same tree (the body previously went through readTree twice).
                 JsonNode root = ProtocolCodec.tryParse(body);
-                context.setCompletionTokensIfAbsent(ProtocolCodec.completionTokensFromResponse(root));
+                context.setCompletionTokensIfAbsent(
+                        ProtocolCodec.completionTokensFromResponse(kind, root));
                 if (cached.isEmpty()) {
                     chain.cache(decision.keyId(), parsed, body,
-                            ProtocolCodec.isCacheableResponse(root));
+                            ProtocolCodec.isCacheableResponse(kind, root));
+                }
+                // A video job lives on the upstream that created it: pin the
+                // task id to the route that actually served the create call.
+                if (kind == ProtocolKind.VIDEOS && cached.isEmpty()) {
+                    videoTasks.bind(VideosProtocol.taskId(root), winning.id());
                 }
                 String upstream = EngineTimings.upstreamOrNull(context);
                 if (upstream != null) {
@@ -137,11 +204,56 @@ public class VirtualThreadGatewayController {
     }
 
     /**
+     * Video poll / content GET: governance + sticky routing, then a raw
+     * byte-for-byte pass-through. No cache, no token accounting, no fallback,
+     * no circuit breaker — the task is pinned to one upstream or it does not
+     * exist; a create-route circuit must never strand a live job's polling.
+     */
+    private void handleVideoFetch(String taskId, String upstreamPath, String contentType,
+                                  HttpServletRequest request, HttpServletResponse response) throws IOException {
+        long arrived = System.nanoTime();
+        String requestId = GatewayPipeline.requestId(request.getHeader(EngineHeaders.REQUEST_ID));
+        response.setHeader(EngineHeaders.REQUEST_ID, requestId);
+        ParsedRequest parsed = ParsedRequest.bodyless(ProtocolKind.VIDEOS);
+        Route pinned = router.byId(videoTasks.resolve(taskId));
+        Route route = pinned != null ? pinned : router.resolve(ProtocolKind.VIDEOS, "*");
+        GatewayDecision decision = chain.enter(request.getHeader("Authorization"), parsed, route);
+        if (!decision.allowed()) {
+            writeError(response, decision);
+            return;
+        }
+        GatewayContext context = GatewayPipeline.context(decision, requestId, arrived);
+        boolean success = false;
+        try {
+            context.markUpstreamStart();
+            byte[] body = provider.fetchRaw(EngineRoutes.fetch(route, upstreamPath,
+                    properties.getUpstream().getTimeoutMs()));
+            context.markUpstreamEnd();
+            String upstream = EngineTimings.upstreamOrNull(context);
+            if (upstream != null) {
+                response.setHeader(EngineHeaders.UPSTREAM_MS, upstream);
+            }
+            response.setHeader(EngineHeaders.OVERHEAD_MS, EngineTimings.total(context));
+            response.setStatus(200);
+            response.setContentType(contentType);
+            response.getOutputStream().write(body);
+            response.flushBuffer();
+            success = true;
+        } catch (Exception e) {
+            if (!response.isCommitted()) {
+                writeError(response, GatewayDecision.deny(502, EngineReasons.upstream(e)));
+            }
+        } finally {
+            GatewayPipeline.finish(chain, context, success);
+        }
+    }
+
+    /**
      * Do NOT call flushBuffer() before the first chunk: that commits the
      * response and turns a failed upstream into a misleading "200 OK, empty
      * body". Headers alone keep the response mutable until the first byte.
      */
-    private boolean handleStream(HttpServletResponse response, String rawJson,
+    private boolean handleStream(ProtocolKind kind, HttpServletResponse response, String rawJson,
                                  ParsedRequest parsed, Route route, int timeout,
                                  GatewayContext context) {
         response.setStatus(200);
@@ -156,11 +268,11 @@ public class VirtualThreadGatewayController {
 
         StreamSink sink = new StreamSink(response, context);
         try {
-            streamWithFallback(rawJson, parsed, route, timeout, sink, context);
+            streamWithFallback(kind, rawJson, parsed, route, timeout, sink, context);
             // A clean EOF is NOT proof of completion. Only an explicit upstream
-            // [DONE] frame is. Do not fabricate one here.
+            // terminator frame is. Do not fabricate one here.
             if (!sink.isComplete()) {
-                return handleTruncated(response, sink);
+                return handleFailure(response, sink, EngineReasons.truncated(kind));
             }
             return true;
         } catch (Exception e) {
@@ -191,12 +303,9 @@ public class VirtualThreadGatewayController {
         return false;
     }
 
-    private boolean handleTruncated(HttpServletResponse response, StreamSink sink) {
-        return handleFailure(response, sink, EngineReasons.truncated());
-    }
-
-    private void streamWithFallback(String rawJson, ParsedRequest parsed, Route primary,
-                                    int timeout, StreamSink sink, GatewayContext context) {
+    private void streamWithFallback(ProtocolKind kind, String rawJson, ParsedRequest parsed,
+                                    Route primary, int timeout, StreamSink sink,
+                                    GatewayContext context) {
         List<Route> candidates = EngineRoutes.candidates(router, primary);
         RuntimeException last = null;
         for (Route candidate : candidates) {
@@ -225,9 +334,12 @@ public class VirtualThreadGatewayController {
         throw last == null ? new IllegalStateException(EngineReasons.NO_UPSTREAM_ROUTE) : last;
     }
 
-    private String completeWithFallback(String rawJson, ParsedRequest parsed,
-                                        Route primary, int timeout,
-                                        GatewayContext context) {
+    private record Completed(String body, Route route) {
+    }
+
+    private Completed completeWithFallback(String rawJson, ParsedRequest parsed,
+                                           Route primary, int timeout,
+                                           GatewayContext context) {
         List<Route> candidates = EngineRoutes.candidates(router, primary);
         RuntimeException last = null;
         for (Route route : candidates) {
@@ -239,7 +351,7 @@ public class VirtualThreadGatewayController {
                 context.markUpstreamStart();
                 String body = provider.completeRaw(EngineRoutes.request(rawJson, parsed, route, timeout));
                 breaker.recordSuccess(route);
-                return body;
+                return new Completed(body, route);
             } catch (RuntimeException e) {
                 last = e;
                 breaker.recordFailure(route);
@@ -273,7 +385,7 @@ public class VirtualThreadGatewayController {
 
         @Override
         public void onChunk(String rawSseLine) {
-            boolean done = SseChunkAccounting.apply(rawSseLine, context);
+            boolean done = SseChunkAccounting.apply(context.kind(), rawSseLine, context);
             if (!rawSseLine.isBlank() && !chunkSent) {
                 context.markFirstChunk();
             }
@@ -289,8 +401,8 @@ public class VirtualThreadGatewayController {
         @Override
         public void onDone() {
             // Upstream reached a clean EOF. Intentionally do NOT synthesize a
-            // [DONE] frame: that would disguise a truncated stream as a success.
-            // handleStream() inspects isComplete() and reports the truncation.
+            // terminator frame: that would disguise a truncated stream as a
+            // success. handleStream() inspects isComplete() and reports it.
         }
 
         /** True only when the upstream itself emitted the protocol terminator. */
@@ -310,7 +422,10 @@ public class VirtualThreadGatewayController {
             errorWritten = true;
             try {
                 write(ProtocolCodec.errorEvent(reason));
-                if (!doneWritten) {
+                // [DONE] is the CHAT terminator; the gateway never fabricates
+                // another protocol's terminator, so for responses/messages the
+                // in-band error is followed by a plain stream close.
+                if (context.kind() == ProtocolKind.CHAT && !doneWritten) {
                     write(ProtocolCodec.doneLine());
                     doneWritten = true;
                 }

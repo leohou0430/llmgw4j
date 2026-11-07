@@ -2,6 +2,7 @@ package io.github.leohou0430.llmgw.core.governance;
 
 import io.github.leohou0430.llmgw.core.protocol.ParsedRequest;
 import io.github.leohou0430.llmgw.core.protocol.ProtocolCodec;
+import io.github.leohou0430.llmgw.core.protocol.ProtocolKind;
 import io.github.leohou0430.llmgw.core.routing.Router;
 
 /** Engine-neutral request pipeline: both data planes call exactly these three methods. */
@@ -12,29 +13,36 @@ public final class GatewayPipeline {
 
     public static GatewayDecision enter(GovernanceChain chain, Router router,
                                         String authorizationHeader, String rawJson) {
+        return enter(chain, router, ProtocolKind.CHAT, authorizationHeader, rawJson);
+    }
+
+    public static GatewayDecision enter(GovernanceChain chain, Router router, ProtocolKind kind,
+                                        String authorizationHeader, String rawJson) {
         ParsedRequest request;
         try {
-            request = ProtocolCodec.parse(rawJson);
+            request = ProtocolCodec.parse(kind, rawJson);
         } catch (RuntimeException e) {
             return GatewayDecision.deny(400, "invalid json: " + e.getMessage());
         }
-        return chain.enter(authorizationHeader, request, router.resolve(request.model()));
+        return chain.enter(authorizationHeader, request, router.resolve(kind, request.model()));
     }
 
     /** Reuses the request parsed during enter(); no second JSON traversal. */
     public static GatewayContext context(GatewayDecision decision) {
         ParsedRequest request = decision.parsed();
-        return new GatewayContext(decision.keyId(), request.model(),
+        return new GatewayContext(decision.keyId(), request.kind(), request.model(),
                 decision.route() == null ? "" : decision.route().id(),
-                request.stream(), request.estimatedTokens());
+                request.stream(), request.estimatedTokens(), request.units(),
+                "", System.nanoTime());
     }
 
     /** Same as {@link #context(GatewayDecision)} plus the correlation id. */
     public static GatewayContext context(GatewayDecision decision, String requestId) {
         ParsedRequest request = decision.parsed();
-        return new GatewayContext(decision.keyId(), request.model(),
+        return new GatewayContext(decision.keyId(), request.kind(), request.model(),
                 decision.route() == null ? "" : decision.route().id(),
-                request.stream(), request.estimatedTokens(), requestId);
+                request.stream(), request.estimatedTokens(), request.units(),
+                requestId, System.nanoTime());
     }
 
     /**
@@ -44,9 +52,10 @@ public final class GatewayPipeline {
     public static GatewayContext context(GatewayDecision decision, String requestId,
                                          long arrivedNanos) {
         ParsedRequest request = decision.parsed();
-        return new GatewayContext(decision.keyId(), request.model(),
+        return new GatewayContext(decision.keyId(), request.kind(), request.model(),
                 decision.route() == null ? "" : decision.route().id(),
-                request.stream(), request.estimatedTokens(), requestId, arrivedNanos);
+                request.stream(), request.estimatedTokens(), request.units(),
+                requestId, arrivedNanos);
     }
 
     /**

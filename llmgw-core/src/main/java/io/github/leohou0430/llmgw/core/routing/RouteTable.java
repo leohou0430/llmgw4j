@@ -1,5 +1,7 @@
 package io.github.leohou0430.llmgw.core.routing;
 
+import io.github.leohou0430.llmgw.core.protocol.ProtocolKind;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -35,13 +37,25 @@ public final class RouteTable {
         }
         List<Route> parsed = new ArrayList<>(source.size());
         Map<String, Route> byId = new HashMap<>();
-        for (Route route : source) {
-            if (route == null || route.id() == null || route.id().isBlank()) {
+        for (Route candidate : source) {
+            if (candidate == null || candidate.id() == null || candidate.id().isBlank()) {
                 throw new IllegalArgumentException("route id must not be blank");
             }
-            if (route.model() == null || route.model().isBlank()) {
-                throw new IllegalArgumentException("route model must not be blank: " + route.id());
+            if (candidate.model() == null || candidate.model().isBlank()) {
+                throw new IllegalArgumentException("route model must not be blank: " + candidate.id());
             }
+            String protocol = candidate.protocol() == null ? "*" : candidate.protocol().trim();
+            if (!ProtocolKind.isConfigValue(protocol)) {
+                throw new IllegalArgumentException(
+                        "unknown protocol '" + protocol + "' on route " + candidate.id()
+                                + " (chat|responses|messages|images|videos|*)");
+            }
+            // Normalize BEFORE the byId insert so map and list hold the same object.
+            Route route = candidate.protocol() != null && protocol.equals(candidate.protocol())
+                    ? candidate
+                    : new Route(candidate.id(), protocol.isBlank() ? "*" : protocol,
+                            candidate.model(), candidate.targetModel(), candidate.targetUrl(),
+                            candidate.apiKey(), candidate.weight(), candidate.fallbackIds());
             if (byId.putIfAbsent(route.id(), route) != null) {
                 throw new IllegalArgumentException("duplicate route id: " + route.id());
             }
@@ -58,25 +72,62 @@ public final class RouteTable {
 
     /** Exact model matches always beat the "*" wildcard; same class competes by weight. */
     public Route resolve(String model) {
-        List<Route> exact = null;
-        for (Route route : routes) {
-            if (!"*".equals(route.model()) && route.model().equals(model)) {
-                if (exact == null) {
-                    exact = new ArrayList<>(2);
-                }
-                exact.add(route);
-            }
-        }
-        if (exact != null && !exact.isEmpty()) {
+        return resolve(ProtocolKind.CHAT, model);
+    }
+
+    /**
+     * Protocol-aware resolution: a route matches when its protocol is "*" or
+     * the requested kind, and its model is exact or "*". Specificity classes,
+     * in order: exact protocol+model, exact protocol+wildcard model, then
+     * protocol-agnostic routes (kept for pre-v12 single-route configs);
+     * weight only orders within the same class.
+     */
+    public Route resolve(ProtocolKind kind, String model) {
+        List<Route> exact = candidates(kind, model, false, false);
+        if (!exact.isEmpty()) {
             return weightedPick(exact);
         }
-        List<Route> wildcards = new ArrayList<>();
+        List<Route> protocolWildcard = candidates(kind, model, true, false);
+        if (!protocolWildcard.isEmpty()) {
+            return weightedPick(protocolWildcard);
+        }
+        List<Route> legacy = candidates(kind, model, true, true);
+        return legacy.isEmpty() ? fallback : weightedPick(legacy);
+    }
+
+    /**
+     * @param wildcardProtocol include routes whose protocol is "*" (skipped when
+     *                         an exact-protocol route already matched)
+     * @param wildcardModel    also include "*" model routes
+     */
+    private List<Route> candidates(ProtocolKind kind, String model,
+                                   boolean wildcardProtocol, boolean wildcardModel) {
+        List<Route> found = null;
+        String wire = kind.wireName();
         for (Route route : routes) {
-            if ("*".equals(route.model())) {
-                wildcards.add(route);
+            boolean protocolMatch = route.matches(wire)
+                    && (wildcardProtocol || !isWildcardProtocol(route));
+            boolean modelMatch = wildcardModel
+                    ? "*".equals(route.model()) || route.model().equals(model)
+                    : route.model().equals(model);
+            if (protocolMatch && modelMatch) {
+                if (found == null) {
+                    found = new ArrayList<>(2);
+                }
+                found.add(route);
             }
         }
-        return wildcards.isEmpty() ? fallback : weightedPick(wildcards);
+        return found == null ? List.of() : found;
+    }
+
+    private static boolean isWildcardProtocol(Route route) {
+        String protocol = route.protocol();
+        return protocol == null || protocol.isBlank() || "*".equals(protocol);
+    }
+
+    /** Route lookup by id (video sticky routing); null when absent. */
+    public Route byId(String id) {
+        return id == null ? null : byId.get(id);
     }
 
     private static Route weightedPick(List<Route> candidates) {

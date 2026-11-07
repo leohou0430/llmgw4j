@@ -1,0 +1,366 @@
+openapi: 3.1.0
+info:
+  title: llmgw4j API
+  version: v12
+  description: |
+    Java LLM API gateway (llmgw4j). v12 speaks five protocols with pass-through
+    parity: each endpoint only routes to upstreams speaking the SAME protocol
+    (routes carry a `protocol` field, default `*` for backwards compatibility);
+    the gateway never translates between protocols and never re-serializes
+    payloads.
+
+    Streaming completion contract: a stream is successful ONLY when the upstream
+    emitted its own protocol terminator — chat `data: [DONE]`,
+    Responses `response.completed`, Messages `message_stop`. A clean EOF without
+    the terminator is reported as a failure (502 before the first chunk, in-band
+    `event: error` after it). The gateway never fabricates a terminator.
+  license:
+    name: Apache-2.0
+servers:
+  - url: http://127.0.0.1:8080
+security:
+  - bearerAuth: []
+paths:
+  /v1/chat/completions:
+    post:
+      operationId: createChatCompletion
+      summary: OpenAI Chat Completions (passthrough)
+      tags: [chat]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [model, messages]
+              properties:
+                model:
+                  type: string
+                  examples: [qwen-plus]
+                messages:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      role:
+                        type: string
+                      content:
+                        type: string
+                stream:
+                  type: boolean
+                  default: false
+            examples:
+              nonStream:
+                value:
+                  model: qwen-plus
+                  messages:
+                    - role: user
+                      content: hi
+                  stream: false
+              stream:
+                value:
+                  model: qwen-plus
+                  messages:
+                    - role: user
+                      content: hi
+                  stream: true
+      responses:
+        '200':
+          description: |
+            Upstream answer passed through byte-for-byte. When `stream: true`,
+            the body is `text/event-stream` whose terminator is `data: [DONE]`.
+          content:
+            application/json:
+              schema:
+                type: object
+            text/event-stream: {}
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '413': { $ref: '#/components/responses/TooLarge' }
+        '502': { $ref: '#/components/responses/UpstreamError' }
+  /v1/responses:
+    post:
+      operationId: createResponse
+      summary: OpenAI Responses (passthrough)
+      tags: [responses]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [model]
+              properties:
+                model:
+                  type: string
+                input:
+                  description: String or structured input array (parsed for metering only, forwarded verbatim).
+                stream:
+                  type: boolean
+                  default: false
+            examples:
+              nonStream:
+                value:
+                  model: qwen-plus
+                  input: hi
+                  stream: false
+              stream:
+                value:
+                  model: qwen-plus
+                  input: hi
+                  stream: true
+      responses:
+        '200':
+          description: |
+            Upstream answer passed through byte-for-byte. When `stream: true`,
+            delta frames are `response.output_text.delta` and the terminator is
+            `response.completed` (usage inside `response.usage.output_tokens`).
+            There is NO `[DONE]` line.
+          content:
+            application/json:
+              schema:
+                type: object
+            text/event-stream: {}
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '502': { $ref: '#/components/responses/UpstreamError' }
+  /v1/messages:
+    post:
+      operationId: createMessage
+      summary: Anthropic Messages (passthrough)
+      tags: [messages]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [model, messages, max_tokens]
+              properties:
+                model:
+                  type: string
+                max_tokens:
+                  type: integer
+                messages:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      role:
+                        type: string
+                      content: {}
+                system:
+                  description: Parsed for token metering only, forwarded verbatim.
+                stream:
+                  type: boolean
+                  default: false
+            examples:
+              nonStream:
+                value:
+                  model: qwen-plus
+                  max_tokens: 32
+                  messages:
+                    - role: user
+                      content: hi
+              stream:
+                value:
+                  model: qwen-plus
+                  max_tokens: 32
+                  messages:
+                    - role: user
+                      content: hi
+                  stream: true
+      responses:
+        '200':
+          description: |
+            Upstream answer passed through byte-for-byte. When `stream: true`,
+            delta frames are `content_block_delta`, usage arrives in
+            `message_delta`, and the terminator is `message_stop`.
+            There is NO `[DONE]` line.
+          content:
+            application/json:
+              schema:
+                type: object
+            text/event-stream: {}
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '502': { $ref: '#/components/responses/UpstreamError' }
+  /v1/images/generations:
+    post:
+      operationId: createImages
+      summary: Image generations (passthrough; never cached)
+      tags: [images]
+      description: |
+        Metering: tokens are always 0; each request counts as `n` request units
+        (n clamped to 1..10). Responses contain large base64 payloads and are
+        never written to the semantic cache.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [model, prompt]
+              properties:
+                model:
+                  type: string
+                prompt:
+                  type: string
+                n:
+                  type: integer
+                  minimum: 1
+                  maximum: 10
+                  default: 1
+            example:
+              model: wan
+              prompt: a cat
+              n: 2
+      responses:
+        '200':
+          description: Upstream answer passed through byte-for-byte (typically `data[].b64_json` entries).
+          content:
+            application/json:
+              schema:
+                type: object
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '502': { $ref: '#/components/responses/UpstreamError' }
+  /v1/videos:
+    post:
+      operationId: createVideo
+      summary: Video generation — create async task (OpenAI Sora style)
+      tags: [videos]
+      description: |
+        Starts an async upstream job. The gateway pins the returned task id to
+        the route that served the create call (sticky, TTL 24h); poll and
+        content requests are routed to that same upstream with no fallback and
+        no circuit breaking. Metering: 1 request unit per create, tokens 0.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [model, prompt]
+              properties:
+                model:
+                  type: string
+                prompt:
+                  type: string
+            example:
+              model: sora
+              prompt: a cat runs
+      responses:
+        '200':
+          description: Task accepted. Poll `GET /v1/videos/{id}` until `status: completed`.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VideoTask'
+              example:
+                id: video-1
+                status: queued
+                model: sora
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '502': { $ref: '#/components/responses/UpstreamError' }
+  /v1/videos/{id}:
+    get:
+      operationId: getVideo
+      summary: Video task poll
+      tags: [videos]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Current task state.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VideoTask'
+        '502': { $ref: '#/components/responses/UpstreamError' }
+  /v1/videos/{id}/content:
+    get:
+      operationId: getVideoContent
+      summary: Video content download (mp4)
+      tags: [videos]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Raw video bytes, forwarded byte-for-byte.
+          content:
+            video/mp4:
+              schema:
+                type: string
+                format: binary
+        '502': { $ref: '#/components/responses/UpstreamError' }
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: One of the gateway API keys (default demo key `sk-demo`).
+  schemas:
+    VideoTask:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+          enum: [queued, in_progress, completed, failed]
+        model:
+          type: string
+    GatewayError:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+            type:
+              type: string
+              examples: [gateway_error]
+  responses:
+    BadRequest:
+      description: Invalid JSON body (or unknown protocol config value).
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GatewayError'
+    Unauthorized:
+      description: Missing or unknown API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GatewayError'
+    TooLarge:
+      description: Request body exceeds `gateway.max-request-bytes` (default 4MB).
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GatewayError'
+    UpstreamError:
+      description: |
+        Upstream failed before any content was committed: HTTP 502 with a JSON
+        error body. After the first streamed chunk the failure is reported
+        in-band as `event: error` followed by `[DONE]` (chat only — the
+        gateway never fabricates other protocols' terminators).
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GatewayError'
+tags:
+  - name: chat
+  - name: responses
+  - name: messages
+  - name: images
+  - name: videos

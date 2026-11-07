@@ -133,12 +133,13 @@ routes:
 | 字段 | 类型 | 代码默认 | 说明与约束 |
 | --- | --- | --- | --- |
 | `id` | String | `default` | 路由唯一 id；热替换时必填、不可重复 |
+| `protocol` | String | `*` | **v12**：该路由只接哪种协议（`chat` / `responses` / `messages` / `images` / `videos` / `*`）；解析按 `ProtocolKind.isConfigValue` 校验，未知值启动失败。协议路由三级优先：精确 protocol+model > 通配 protocol+精确 model > 通配 model |
 | `model` | String | `*` | 匹配模型；**精确 model 优先于 `*` 通配** |
 | `target-model` | String | `""` | 非空时用 `ProtocolCodec.withModel()` 改写顶层 `model` 字段（会重新序列化 JSON，字节不再逐字保真） |
 | `target-url` | String | `""` | 空则回退 `gateway.upstream.base-url`；热替换校验必须以 `http://` 或 `https://` 开头 |
 | `api-key` | String | `""` | 空则回退 `gateway.upstream.api-key`；**管理接口永不回显，只回 `apiKeyConfigured` 布尔值** |
 | `weight` | int | `1` | 同 model 多路由**加权随机**分流，是负载比例不只是优先级；下限 1 |
-| `fallbacks` | List\<String\> | `[]` | fallback 路由 id 列表，按声明顺序；**只在首 chunk 前允许切换**；引用 id 必须存在 |
+| `fallbacks` | List\<String\> | `[]` | fallback 路由 id 列表，按声明顺序；**只在首 chunk 前允许切换**；引用 id 必须存在。videos 的 poll/content 请求不走 fallback（任务钉死在创建它的上游） |
 
 > 注意 `real` profile 里有一整条 `routes` 配置（id=`dashscope`，`target-model: qwen-plus`），会**整表覆盖**主配置的 `routes`，不是追加。
 
@@ -163,7 +164,14 @@ api-keys:
 | `quota-tokens` | long | `1_000_000` | 该 key 的配额；准入按估算 token 原子预留、结算按实际 `usage`，并发下可能略超，非硬上限 |
 | `allowed-models` | List\<String\> | `[]` | 空 = 不限制；非空且不含请求 model 时返回 403 |
 
-### 3.7 Redis 分布式状态（可选，仅 `-Predis` 产物）
+### 3.7 `gateway.videos`（v12 视频任务粘性路由）
+
+| 配置项 | 类型 | 代码默认 | 说明与约束 |
+| --- | --- | --- | --- |
+| `gateway.videos.sticky-max-entries` | int | `10_000` | 任务 id → 路由 id 粘性映射的容量上限；达到上限先逐出过期项、再逐出最旧插入项 |
+| `gateway.videos.sticky-ttl-seconds` | long | `86_400` | 粘性绑定存活时间；过期或网关重启后，poll/content 退化为 videos 协议的通配路由（任务在上游仍可能存在，但不再保证路由正确） |
+
+### 3.8 Redis 分布式状态（可选，仅 `-Predis` 产物）
 
 | 配置项 | 类型 | 默认 | 说明与约束 |
 | --- | --- | --- | --- |

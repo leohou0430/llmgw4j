@@ -7,8 +7,11 @@ import io.github.leohou0430.llmgw.core.governance.GatewayPipeline;
 import io.github.leohou0430.llmgw.core.governance.GovernanceChain;
 import io.github.leohou0430.llmgw.core.protocol.ParsedRequest;
 import io.github.leohou0430.llmgw.core.protocol.ProtocolCodec;
+import io.github.leohou0430.llmgw.core.protocol.ProtocolKind;
+import io.github.leohou0430.llmgw.core.protocol.VideosProtocol;
 import io.github.leohou0430.llmgw.core.routing.Route;
 import io.github.leohou0430.llmgw.core.routing.Router;
+import io.github.leohou0430.llmgw.core.routing.StickyTaskRoutes;
 import io.github.leohou0430.llmgw.core.upstream.CircuitBreaker;
 import io.github.leohou0430.llmgw.core.upstream.CircuitOpenException;
 import io.github.leohou0430.llmgw.core.upstream.UpstreamProvider;
@@ -26,6 +29,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
@@ -35,7 +40,9 @@ import tools.jackson.databind.JsonNode;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Reactive data plane. Writes raw SSE lines straight through, no re-encoding.
@@ -44,13 +51,26 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * what makes the comparison against virtual threads a fair concurrency-model
  * experiment rather than a comparison against a handicapped reactive engine.
  *
+ * <p>v12 multi-protocol: every POST endpoint (chat / responses / messages /
+ * images / video-create) shares one handler parameterized by {@link ProtocolKind};
+ * the kinds differ only in request parsing, SSE terminator and response-side
+ * token/cache semantics, all of which hang off ParsedRequest.kind().
+ *
  * <p>Streaming error contract (mirrors the servlet engine): a stream is
- * successful ONLY when the upstream emitted {@code data: [DONE]}. A clean EOF
- * without it is a silent truncation. Any failure before the first chunk becomes
- * HTTP 502 + JSON; after the first chunk it becomes an in-band
- * {@code event: error} plus {@code [DONE]}. Fallback routes are only tried
- * before any chunk has been emitted. Once [DONE] has been seen, a late error is
- * NOT a failure -- the protocol exchange is already complete.
+ * successful ONLY when the upstream emitted its protocol terminator
+ * ({@code [DONE]} / {@code response.completed} / {@code message_stop}). A clean
+ * EOF without it is a silent truncation. Any failure before the first chunk
+ * becomes HTTP 502 + JSON; after the first chunk it becomes an in-band
+ * {@code event: error}. The trailing {@code [DONE]} after an in-band error is
+ * CHAT-only: the gateway never fabricates another protocol's terminator, so
+ * responses/messages streams simply close. Fallback routes are only tried
+ * before any chunk has been emitted. Once the terminator has been seen, a late
+ * error is NOT a failure -- the protocol exchange is already complete.
+ *
+ * <p>Video tasks are asynchronous upstream jobs: create responses bind the task
+ * id to the winning route ({@link StickyTaskRoutes}), and poll/content GETs are
+ * pinned to that route with NO fallback and NO circuit breaking -- a task exists
+ * only on the upstream that created it.
  */
 @RestController
 @Profile(EngineProfiles.WEBFLUX)
@@ -61,6 +81,7 @@ public class WebfluxGatewayController {
     private final UpstreamProvider provider;
     private final CircuitBreaker breaker;
     private final GatewayProperties properties;
+    private final StickyTaskRoutes videoTasks;
 
     public WebfluxGatewayController(GovernanceChain chain, Router router,
                                     UpstreamProvider provider, CircuitBreaker breaker,
@@ -70,10 +91,50 @@ public class WebfluxGatewayController {
         this.provider = provider;
         this.breaker = breaker;
         this.properties = properties;
+        this.videoTasks = new StickyTaskRoutes(
+                properties.getVideos().getStickyMaxEntries(),
+                properties.getVideos().getStickyTtlSeconds());
     }
 
     @PostMapping("/v1/chat/completions")
-    public Mono<Void> handle(ServerHttpRequest request, ServerHttpResponse response) {
+    public Mono<Void> handleChat(ServerHttpRequest request, ServerHttpResponse response) {
+        return handleKind(ProtocolKind.CHAT, request, response);
+    }
+
+    @PostMapping("/v1/responses")
+    public Mono<Void> handleResponses(ServerHttpRequest request, ServerHttpResponse response) {
+        return handleKind(ProtocolKind.RESPONSES, request, response);
+    }
+
+    @PostMapping("/v1/messages")
+    public Mono<Void> handleMessages(ServerHttpRequest request, ServerHttpResponse response) {
+        return handleKind(ProtocolKind.MESSAGES, request, response);
+    }
+
+    @PostMapping("/v1/images/generations")
+    public Mono<Void> handleImages(ServerHttpRequest request, ServerHttpResponse response) {
+        return handleKind(ProtocolKind.IMAGES, request, response);
+    }
+
+    @PostMapping("/v1/videos")
+    public Mono<Void> handleVideoCreate(ServerHttpRequest request, ServerHttpResponse response) {
+        return handleKind(ProtocolKind.VIDEOS, request, response);
+    }
+
+    @GetMapping("/v1/videos/{id}")
+    public Mono<Void> handleVideoPoll(@PathVariable("id") String id,
+                                      ServerHttpRequest request, ServerHttpResponse response) {
+        return handleVideoFetch(id, "/videos/" + id, EngineHeaders.APPLICATION_JSON, request, response);
+    }
+
+    @GetMapping("/v1/videos/{id}/content")
+    public Mono<Void> handleVideoContent(@PathVariable("id") String id,
+                                         ServerHttpRequest request, ServerHttpResponse response) {
+        return handleVideoFetch(id, "/videos/" + id + "/content", "video/mp4", request, response);
+    }
+
+    private Mono<Void> handleKind(ProtocolKind kind, ServerHttpRequest request,
+                                  ServerHttpResponse response) {
         long arrived = System.nanoTime();
         long max = Math.max(1, properties.getMaxRequestBytes());
         return DataBufferUtils.join(request.getBody(), (int) Math.min(max, Integer.MAX_VALUE))
@@ -83,17 +144,19 @@ public class WebfluxGatewayController {
                     return raw;
                 })
                 .defaultIfEmpty("{}")
-                .flatMap(raw -> dispatch(raw, request.getHeaders().getFirst("Authorization"), response,
+                .flatMap(raw -> dispatch(kind, raw,
+                        request.getHeaders().getFirst("Authorization"), response,
                         request.getHeaders().getFirst(EngineHeaders.REQUEST_ID), arrived))
                 .onErrorResume(DataBufferLimitException.class,
                         e -> writeError(response, GatewayDecision.deny(413, EngineReasons.REQUEST_TOO_LARGE)));
     }
 
-    private Mono<Void> dispatch(String rawJson, String auth, ServerHttpResponse response,
-                                String incomingRequestId, long arrivedNanos) {
+    private Mono<Void> dispatch(ProtocolKind kind, String rawJson, String auth,
+                                ServerHttpResponse response, String incomingRequestId,
+                                long arrivedNanos) {
         String requestId = GatewayPipeline.requestId(incomingRequestId);
         response.getHeaders().set(EngineHeaders.REQUEST_ID, requestId);
-        GatewayDecision decision = GatewayPipeline.enter(chain, router, auth, rawJson);
+        GatewayDecision decision = GatewayPipeline.enter(chain, router, kind, auth, rawJson);
         if (!decision.allowed()) {
             return writeError(response, decision);
         }
@@ -104,14 +167,19 @@ public class WebfluxGatewayController {
         AtomicBoolean settled = new AtomicBoolean(false);
 
         if (!parsed.stream()) {
-            return chain.lookupCache(decision.keyId(), parsed)
-                    .map(cached -> {
-                        // Tokens are accounted once, in the shared flatMap below.
-                        // Adding them here as well double-billed cache hits.
-                        context.markCached();
-                        return Mono.just(cached);
-                    })
-                    .orElseGet(() -> completeAsyncWithFallback(rawJson, parsed, route, timeout, context))
+            Optional<String> cached = chain.lookupCache(decision.keyId(), parsed);
+            Mono<String> bodyMono;
+            AtomicReference<Route> winner = new AtomicReference<>(route);
+            if (cached.isPresent()) {
+                // Tokens are accounted once, in the shared flatMap below.
+                // Adding them here as well double-billed cache hits.
+                context.markCached();
+                bodyMono = Mono.just(cached.get());
+            } else {
+                bodyMono = completeAsyncWithFallback(rawJson, parsed, route, timeout, context, winner)
+                        .map(Completed::body);
+            }
+            return bodyMono
                     .flatMap(body -> {
                         context.markUpstreamEnd();
                         // Single parse: token count AND cacheability come from
@@ -119,9 +187,16 @@ public class WebfluxGatewayController {
                         // readTree twice more (tokens + cache check).
                         JsonNode root = ProtocolCodec.tryParse(body);
                         context.setCompletionTokensIfAbsent(
-                                ProtocolCodec.completionTokensFromResponse(root));
-                        chain.cache(decision.keyId(), parsed, body,
-                                ProtocolCodec.isCacheableResponse(root));
+                                ProtocolCodec.completionTokensFromResponse(kind, root));
+                        if (cached.isEmpty()) {
+                            chain.cache(decision.keyId(), parsed, body,
+                                    ProtocolCodec.isCacheableResponse(kind, root));
+                            // A video job lives on the upstream that created it:
+                            // pin the task id to the route that served the create.
+                            if (kind == ProtocolKind.VIDEOS) {
+                                videoTasks.bind(VideosProtocol.taskId(root), winner.get().id());
+                            }
+                        }
                         return writeJson(response, body, context);
                     })
                     .onErrorResume(e -> {
@@ -148,7 +223,7 @@ public class WebfluxGatewayController {
         AtomicBoolean doneSeen = new AtomicBoolean(false);
         Flux<String> chunks = streamWithFallback(rawJson, parsed, route, timeout, started, context)
                 .doOnNext(line -> {
-                    if (SseChunkAccounting.apply(line, context)) {
+                    if (SseChunkAccounting.apply(kind, line, context)) {
                         doneSeen.set(true);
                     }
                 })
@@ -156,13 +231,13 @@ public class WebfluxGatewayController {
                     if (signal.hasError()) {
                         // No chunk was ever emitted: the status can still change.
                         finishOnce(context, settled, false);
-                        return firstChunkError(response, signal.getThrowable());
+                        return firstChunkError(response, signal.getThrowable(), kind);
                     }
                     if (signal.isOnComplete()) {
                         // Not even one chunk: an empty stream is a truncation,
                         // never a success with a fabricated terminator.
                         finishOnce(context, settled, false);
-                        return firstChunkError(response, truncated());
+                        return firstChunkError(response, truncated(kind), kind);
                     }
                     // Append the completion check AFTER the upstream completes
                     // normally. concatWith(Flux.defer) reads doneSeen at that
@@ -173,10 +248,9 @@ public class WebfluxGatewayController {
                         }
                         finishOnce(context, settled, false);
                         if (!started.get() && !response.isCommitted()) {
-                            return firstChunkError(response, truncated());
+                            return firstChunkError(response, truncated(kind), kind);
                         }
-                        return Flux.just(ProtocolCodec.errorEvent(EngineReasons.truncated()),
-                                ProtocolCodec.doneLine());
+                        return terminalError(EngineReasons.truncated(kind), kind);
                     }));
                 })
                 .onErrorResume(e -> {
@@ -189,11 +263,9 @@ public class WebfluxGatewayController {
                     }
                     finishOnce(context, settled, false);
                     if (started.get()) {
-                        return Flux.just(
-                                ProtocolCodec.errorEvent(EngineReasons.upstream(e)),
-                                ProtocolCodec.doneLine());
+                        return terminalError(EngineReasons.upstream(e), kind);
                     }
-                    return firstChunkError(response, e);
+                    return firstChunkError(response, e, kind);
                 })
                 .doFinally(signal -> finishOnce(context, settled, signal == SignalType.ON_COMPLETE));
 
@@ -202,15 +274,27 @@ public class WebfluxGatewayController {
         return response.writeWith(body);
     }
 
-    private static IllegalStateException truncated() {
-        return new IllegalStateException(ProtocolCodec.TRUNCATED_MESSAGE);
+    private static IllegalStateException truncated(ProtocolKind kind) {
+        return new IllegalStateException(ProtocolCodec.truncatedMessage(kind));
     }
 
-    private Flux<String> firstChunkError(ServerHttpResponse response, Throwable error) {
+    /**
+     * In-band error after the first chunk. {@code [DONE]} follows for CHAT only:
+     * it is chat's own terminator, and fabricating response.completed or
+     * message_stop would corrupt the client's protocol view of the stream.
+     */
+    private static Flux<String> terminalError(String reason, ProtocolKind kind) {
+        return kind == ProtocolKind.CHAT
+                ? Flux.just(ProtocolCodec.errorEvent(reason), ProtocolCodec.doneLine())
+                : Flux.just(ProtocolCodec.errorEvent(reason));
+    }
+
+    private Flux<String> firstChunkError(ServerHttpResponse response, Throwable error,
+                                         ProtocolKind kind) {
         String reason = EngineReasons.upstream(error);
         if (response.isCommitted()) {
             // Defensive: headers already escaped, so fail in band instead.
-            return Flux.just(ProtocolCodec.errorEvent(reason), ProtocolCodec.doneLine());
+            return terminalError(reason, kind);
         }
         response.setStatusCode(HttpStatus.BAD_GATEWAY);
         response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
@@ -264,24 +348,33 @@ public class WebfluxGatewayController {
         });
     }
 
+    private record Completed(String body, Route route) {
+    }
+
     /**
      * Async equivalent of the servlet engine's blocking fallback loop. Every
      * attempt stays lazy, so a cache hit or a cancelled subscription never
      * issues an upstream request, and Netty's event loop is never blocked.
+     * The winning route is captured for video-task stickiness.
      */
-    private Mono<String> completeAsyncWithFallback(String rawJson, ParsedRequest parsed,
-                                                   Route primary, int timeout,
-                                                   GatewayContext context) {
+    private Mono<Completed> completeAsyncWithFallback(String rawJson, ParsedRequest parsed,
+                                                      Route primary, int timeout,
+                                                      GatewayContext context,
+                                                      AtomicReference<Route> winner) {
         List<Route> candidates = EngineRoutes.candidates(router, primary);
-        Mono<String> result = null;
+        Mono<Completed> result = null;
         for (Route route : candidates) {
-            Mono<String> attempt = Mono.defer(() -> {
+            Mono<Completed> attempt = Mono.defer(() -> {
                 if (!breaker.allow(route)) {
-                    return Mono.<String>error(new CircuitOpenException(route.id()));
+                    return Mono.<Completed>error(new CircuitOpenException(route.id()));
                 }
                 context.markUpstreamStart();
                 return provider.completeRawAsync(EngineRoutes.request(rawJson, parsed, route, timeout))
-                        .doOnSuccess(body -> breaker.recordSuccess(route))
+                        .map(body -> {
+                            winner.set(route);
+                            return new Completed(body, route);
+                        })
+                        .doOnSuccess(c -> breaker.recordSuccess(route))
                         .doOnError(e -> breaker.recordFailure(route));
             });
             result = result == null ? attempt : result.onErrorResume(e -> attempt);
@@ -289,6 +382,52 @@ public class WebfluxGatewayController {
         return result == null
                 ? Mono.error(new IllegalStateException(EngineReasons.NO_UPSTREAM_ROUTE))
                 : result;
+    }
+
+    /**
+     * Video poll / content GET: governance + sticky routing, then a raw
+     * byte-for-byte pass-through. No cache, no token accounting, no fallback,
+     * no circuit breaker — the task is pinned to one upstream or it does not
+     * exist; a create-route circuit must never strand a live job's polling.
+     */
+    private Mono<Void> handleVideoFetch(String taskId, String upstreamPath, String contentType,
+                                        ServerHttpRequest request, ServerHttpResponse response) {
+        long arrived = System.nanoTime();
+        String requestId = GatewayPipeline.requestId(
+                request.getHeaders().getFirst(EngineHeaders.REQUEST_ID));
+        response.getHeaders().set(EngineHeaders.REQUEST_ID, requestId);
+        ParsedRequest parsed = ParsedRequest.bodyless(ProtocolKind.VIDEOS);
+        Route pinned = router.byId(videoTasks.resolve(taskId));
+        Route route = pinned != null ? pinned : router.resolve(ProtocolKind.VIDEOS, "*");
+        GatewayDecision decision = chain.enter(
+                request.getHeaders().getFirst("Authorization"), parsed, route);
+        if (!decision.allowed()) {
+            return writeError(response, decision);
+        }
+        GatewayContext context = GatewayPipeline.context(decision, requestId, arrived);
+        AtomicBoolean settled = new AtomicBoolean(false);
+        return Mono.defer(() -> {
+                    context.markUpstreamStart();
+                    return provider.fetchRawAsync(EngineRoutes.fetch(route, upstreamPath,
+                            properties.getUpstream().getTimeoutMs()));
+                })
+                .flatMap(body -> {
+                    context.markUpstreamEnd();
+                    String upstream = EngineTimings.upstreamOrNull(context);
+                    if (upstream != null) {
+                        response.getHeaders().set(EngineHeaders.UPSTREAM_MS, upstream);
+                    }
+                    response.getHeaders().set(EngineHeaders.OVERHEAD_MS, EngineTimings.total(context));
+                    response.setStatusCode(HttpStatus.OK);
+                    response.getHeaders().setContentType(MediaType.parseMediaType(contentType));
+                    DataBuffer buffer = response.bufferFactory().wrap(body);
+                    return response.writeWith(Mono.just(buffer));
+                })
+                .onErrorResume(e -> {
+                    finishOnce(context, settled, false);
+                    return writeError(response, GatewayDecision.deny(502, EngineReasons.upstream(e)));
+                })
+                .doFinally(signal -> finishOnce(context, settled, signal == SignalType.ON_COMPLETE));
     }
 
     private Mono<Void> writeJson(ServerHttpResponse response, String body,

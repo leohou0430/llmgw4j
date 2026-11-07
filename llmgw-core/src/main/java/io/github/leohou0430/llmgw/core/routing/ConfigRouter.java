@@ -36,6 +36,16 @@ public class ConfigRouter implements Router {
     }
 
     @Override
+    public Route resolve(io.github.leohou0430.llmgw.core.protocol.ProtocolKind kind, String model) {
+        return source.current().resolve(kind, model);
+    }
+
+    @Override
+    public Route byId(String id) {
+        return source.current().byId(id);
+    }
+
+    @Override
     public List<Route> fallbacks(Route primary) {
         return source.current().fallbacks(primary);
     }

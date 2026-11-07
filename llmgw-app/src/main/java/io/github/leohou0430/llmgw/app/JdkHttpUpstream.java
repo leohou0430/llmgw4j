@@ -2,6 +2,7 @@ package io.github.leohou0430.llmgw.app;
 
 import io.github.leohou0430.llmgw.core.config.GatewayProperties;
 import io.github.leohou0430.llmgw.core.upstream.ChunkSink;
+import io.github.leohou0430.llmgw.core.upstream.UpstreamMethod;
 import io.github.leohou0430.llmgw.core.upstream.UpstreamProvider;
 import io.github.leohou0430.llmgw.core.upstream.UpstreamRequest;
 import org.slf4j.Logger;
@@ -207,6 +208,21 @@ public class JdkHttpUpstream implements UpstreamProvider {
         }
     }
 
+    /** Blocking GET (video poll/content). Raw bytes so binaries pass through. */
+    @Override
+    public byte[] fetchRaw(UpstreamRequest request) {
+        HttpRequest http = build(request, false);
+        try {
+            HttpResponse<byte[]> response = client.send(http, HttpResponse.BodyHandlers.ofByteArray());
+            return bytesOrThrow(response);
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new IllegalStateException(e);
+        }
+    }
+
     /**
      * Non-blocking completion for the reactive data plane.
      * <p>Mono.defer keeps sendAsync LAZY: a cache hit or a cancelled downstream
@@ -223,6 +239,22 @@ public class JdkHttpUpstream implements UpstreamProvider {
             CompletableFuture<String> future = client
                     .sendAsync(http, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8))
                     .thenApply(JdkHttpUpstream::bodyOrThrow);
+            return Mono.fromFuture(future, false)
+                    .onErrorMap(JdkHttpUpstream::asRuntimeException);
+        });
+    }
+
+    /**
+     * Async GET for the reactive data plane, mirroring completeRawAsync's
+     * laziness contract: no I/O before subscription.
+     */
+    @Override
+    public Mono<byte[]> fetchRawAsync(UpstreamRequest request) {
+        return Mono.defer(() -> {
+            HttpRequest http = build(request, false);
+            CompletableFuture<byte[]> future = client
+                    .sendAsync(http, HttpResponse.BodyHandlers.ofByteArray())
+                    .thenApply(JdkHttpUpstream::bytesOrThrow);
             return Mono.fromFuture(future, false)
                     .onErrorMap(JdkHttpUpstream::asRuntimeException);
         });
@@ -248,6 +280,14 @@ public class JdkHttpUpstream implements UpstreamProvider {
         return response.body();
     }
 
+    private static byte[] bytesOrThrow(HttpResponse<byte[]> response) {
+        if (response.statusCode() >= 300) {
+            throw new IllegalStateException(statusMessage(response.statusCode(),
+                    new String(response.body(), StandardCharsets.UTF_8)));
+        }
+        return response.body();
+    }
+
     /** 3xx is an error too: this client never follows redirects. */
     private static String statusMessage(int status, String body) {
         String detail = body == null ? "" : body.strip();
@@ -257,16 +297,25 @@ public class JdkHttpUpstream implements UpstreamProvider {
         return "upstream status " + status + (detail.isEmpty() ? "" : ": " + detail);
     }
 
-    private URI targetUri(String base) {
-        URI cached = targetUris.get(base);
+    /**
+     * Resolves the upstream URL for a route base + protocol path. A base that
+     * already ends with the path is used as-is (pre-v12 configs pointed
+     * targetUrl at the full endpoint); otherwise the protocol suffix
+     * (/chat/completions, /responses, /messages, /images/generations,
+     * /videos/{id}...) is appended.
+     */
+    private URI targetUri(String base, String path) {
+        String key = base + "#" + path;
+        URI cached = targetUris.get(key);
         if (cached != null) {
             return cached;
         }
-        String url = base.endsWith("/chat/completions")
+        String suffix = path == null ? "" : path;
+        String url = base.endsWith(suffix)
                 ? base
-                : stripTrailingSlashes(base) + "/chat/completions";
+                : stripTrailingSlashes(base) + suffix;
         URI uri = URI.create(url);
-        targetUris.putIfAbsent(base, uri);
+        targetUris.putIfAbsent(key, uri);
         return uri;
     }
 
@@ -279,11 +328,15 @@ public class JdkHttpUpstream implements UpstreamProvider {
     }
 
     private HttpRequest build(UpstreamRequest request, boolean stream) {
-        HttpRequest.Builder builder = HttpRequest.newBuilder(targetUri(request.targetUrl()))
+        HttpRequest.Builder builder = HttpRequest.newBuilder(targetUri(request.targetUrl(), request.path()))
                 .timeout(Duration.ofMillis(request.timeoutMs()))
-                .header("Content-Type", "application/json")
-                .header("Accept", stream ? "text/event-stream" : "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(request.rawJson(), StandardCharsets.UTF_8));
+                .header("Accept", stream ? "text/event-stream" : "application/json");
+        if (request.method() == UpstreamMethod.GET) {
+            builder.GET();
+        } else {
+            builder.header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(request.rawJson(), StandardCharsets.UTF_8));
+        }
         String apiKey = request.apiKey();
         if (apiKey != null && !apiKey.isBlank() && !apiKey.startsWith("${")) {
             builder.header("Authorization", "Bearer " + apiKey);

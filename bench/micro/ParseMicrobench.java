@@ -36,8 +36,9 @@ public final class ParseMicrobench {
             }
         }
         String text = prompt.toString();
-        return new ParsedRequest(rawJson, model, stream, text,
-                ProtocolCodec.estimateTokens(text), oldFingerprint(rawJson));
+        return new ParsedRequest(rawJson, io.github.leohou0430.llmgw.core.protocol.ProtocolKind.CHAT,
+                model, stream, text,
+                ProtocolCodec.estimateTokens(text), 1, oldFingerprint(rawJson));
     }
 
     /** Exact v7.2 fingerprint: fresh JCA provider lookup on every request. */

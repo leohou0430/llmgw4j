@@ -23,6 +23,13 @@ public final class ProtocolCodec {
     public static final String TRUNCATED_MESSAGE =
             "upstream closed SSE stream without [DONE]";
 
+    /** Protocol-aware truncation wording; identical across both data planes. */
+    public static String truncatedMessage(ProtocolKind kind) {
+        return kind == ProtocolKind.CHAT
+                ? TRUNCATED_MESSAGE
+                : "upstream closed SSE stream without " + kind.terminator();
+    }
+
     private static final JsonMapper MAPPER = JsonMapper.builder().build();
     /** Shared, thread-safe; streaming parsers are cheap per-request objects. */
     private static final JsonFactory JSON_FACTORY = MAPPER.tokenStreamFactory();
@@ -39,18 +46,26 @@ public final class ProtocolCodec {
     }
 
     /**
-     * One streaming pass over the request body. The old implementation built a
-     * full {@code JsonNode} tree for the WHOLE payload (every message, tool
-     * definition and vendor field), then walked it again to concatenate the
-     * prompt. Real chat payloads are 1-50KB and this ran on every request at
-     * ~10k RPS. A {@link JsonParser} extracts exactly the three fields the
-     * gateway needs and skips the rest without materialising a single node.
-     *
-     * <p>Unknown fields, non-textual (multimodal) content and nested objects
-     * are skipped with {@code skipChildren()}, preserving the tree version's
-     * contract: only textual {@code messages[].content} feeds the token
-     * estimate. Malformed JSON still throws, so {@code GatewayPipeline.enter}
-     * answers 400 exactly as before.
+     * Protocol dispatch. Each kind parses only the fields its governance needs
+     * (model / stream / prompt text / units) and skips the rest without
+     * materialising a tree; malformed JSON still throws so
+     * {@code GatewayPipeline.enter} answers 400 exactly as before.
+     */
+    public static ParsedRequest parse(ProtocolKind kind, String rawJson) {
+        return switch (kind) {
+            case CHAT -> parse(rawJson);
+            case RESPONSES -> ResponsesProtocol.parse(rawJson);
+            case MESSAGES -> MessagesProtocol.parse(rawJson);
+            case IMAGES -> ImagesProtocol.parse(rawJson);
+            case VIDEOS -> VideosProtocol.parse(rawJson);
+        };
+    }
+
+    /**
+     * One streaming pass over the chat request body: a {@link JsonParser}
+     * extracts exactly the fields the gateway needs and skips the rest without
+     * materialising a single node. Unknown fields, non-textual (multimodal)
+     * content and nested objects are skipped with {@code skipChildren()}.
      */
     public static ParsedRequest parse(String rawJson) {
         String model = "default";
@@ -98,8 +113,37 @@ public final class ProtocolCodec {
         // 49us of 70us (70%). Defer it: cacheKey() computes the same full-body
         // fingerprint on demand if a cache lookup ever actually needs one.
         String fingerprint = stream ? null : fingerprint(rawJson);
-        return new ParsedRequest(rawJson, model, stream, text,
-                estimateTokens(text), fingerprint);
+        return new ParsedRequest(rawJson, ProtocolKind.CHAT, model, stream, text,
+                estimateTokens(text), 1, fingerprint);
+    }
+
+    /** Shared per-request parser; streaming parsers are cheap objects. */
+    static JsonParser parser(String rawJson) {
+        return JSON_FACTORY.createParser(rawJson == null ? "" : rawJson);
+    }
+
+    /** String field read that tolerates containers by skipping them. */
+    static String scalarOrSkip(JsonParser p, JsonToken value, String fallback) {
+        if (value == JsonToken.VALUE_STRING) {
+            return p.getText();
+        }
+        if (value == JsonToken.START_OBJECT || value == JsonToken.START_ARRAY) {
+            p.skipChildren();
+        } else if (value != null) {
+            String text = p.getValueAsString("");
+            return text.isBlank() ? fallback : text;
+        }
+        return fallback;
+    }
+
+    /** Boolean field read that tolerates containers by skipping them. */
+    static boolean boolOrSkip(JsonParser p, JsonToken value, boolean fallback) {
+        if (value == JsonToken.START_OBJECT || value == JsonToken.START_ARRAY) {
+            p.skipChildren();
+        } else if (value != null) {
+            return p.getValueAsBoolean();
+        }
+        return fallback;
     }
 
     /** Parser is positioned on START_ARRAY of {@code messages}. */
@@ -217,6 +261,38 @@ public final class ProtocolCodec {
 
     public static int completionTokensFromResponse(String body) {
         return completionTokensFromResponse(tryParse(body));
+    }
+
+    /**
+     * Kind-aware completion tokens. Text protocols read their authoritative
+     * usage field (chat: {@code usage.completion_tokens}; responses/messages:
+     * {@code usage.output_tokens}); media kinds never generate tokens.
+     */
+    public static int completionTokensFromResponse(ProtocolKind kind, JsonNode root) {
+        return switch (kind) {
+            case CHAT -> completionTokensFromResponse(root);
+            case RESPONSES -> ResponsesProtocol.completionTokens(root);
+            case MESSAGES -> MessagesProtocol.completionTokens(root);
+            case IMAGES, VIDEOS -> 0;
+        };
+    }
+
+    public static int completionTokensFromResponse(ProtocolKind kind, String body) {
+        return completionTokensFromResponse(kind, tryParse(body));
+    }
+
+    /** Kind-aware cacheability; media responses are never cached. */
+    public static boolean isCacheableResponse(ProtocolKind kind, JsonNode root) {
+        return switch (kind) {
+            case CHAT -> isCacheableResponse(root);
+            case RESPONSES -> ResponsesProtocol.cacheable(root);
+            case MESSAGES -> MessagesProtocol.cacheable(root);
+            case IMAGES, VIDEOS -> false;
+        };
+    }
+
+    public static boolean isCacheableResponse(ProtocolKind kind, String body) {
+        return isCacheableResponse(kind, tryParse(body));
     }
 
     /** Only a well-formed completion response may enter the semantic cache. */

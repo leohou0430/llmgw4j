@@ -22,8 +22,12 @@ public final class EngineReasons {
         return UPSTREAM_PREFIX + GatewayPipeline.errorMessage(error);
     }
 
-    /** Clean EOF without {@code data: [DONE]} is a truncation, never a success. */
+    /** Clean EOF without the protocol terminator is a truncation, never a success. */
     public static String truncated() {
-        return UPSTREAM_PREFIX + ProtocolCodec.TRUNCATED_MESSAGE;
+        return truncated(io.github.leohou0430.llmgw.core.protocol.ProtocolKind.CHAT);
+    }
+
+    public static String truncated(io.github.leohou0430.llmgw.core.protocol.ProtocolKind kind) {
+        return UPSTREAM_PREFIX + ProtocolCodec.truncatedMessage(kind);
     }
 }

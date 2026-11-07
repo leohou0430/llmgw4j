@@ -11,6 +11,7 @@ public class GatewayProperties {
     private final Upstream upstream = new Upstream();
     private final Governance governance = new Governance();
     private final Mock mock = new Mock();
+    private final Videos videos = new Videos();
     private List<RouteDef> routes = new ArrayList<>();
     private List<ApiKeyDef> apiKeys = new ArrayList<>();
     private boolean governanceEnabled = true;
@@ -22,6 +23,7 @@ public class GatewayProperties {
     public Upstream getUpstream() { return upstream; }
     public Governance getGovernance() { return governance; }
     public Mock getMock() { return mock; }
+    public Videos getVideos() { return videos; }
     public List<RouteDef> getRoutes() { return routes; }
     public void setRoutes(List<RouteDef> routes) { this.routes = routes; }
     public List<ApiKeyDef> getApiKeys() { return apiKeys; }
@@ -114,8 +116,24 @@ public class GatewayProperties {
         public void setChunkIntervalMs(int v) { this.chunkIntervalMs = v; }
     }
 
+    /**
+     * Video task stickiness: a task lives on the upstream that created it, so
+     * polling/content requests are pinned to the create route. The map is
+     * bounded (max-entries + TTL) because tasks are finite-lived upstream jobs.
+     */
+    public static class Videos {
+        private int stickyMaxEntries = 10_000;
+        private int stickyTtlSeconds = 86_400;
+
+        public int getStickyMaxEntries() { return stickyMaxEntries; }
+        public void setStickyMaxEntries(int v) { this.stickyMaxEntries = v; }
+        public int getStickyTtlSeconds() { return stickyTtlSeconds; }
+        public void setStickyTtlSeconds(int v) { this.stickyTtlSeconds = v; }
+    }
+
     public static class RouteDef {
         private String id = "default";
+        private String protocol = "";
         private String model = "*";
         private String targetModel = "";
         private String targetUrl = "";
@@ -125,6 +143,9 @@ public class GatewayProperties {
 
         public String getId() { return id; }
         public void setId(String v) { this.id = v; }
+        /** "" or "*" = any protocol; else chat|responses|messages|images|videos. */
+        public String getProtocol() { return protocol; }
+        public void setProtocol(String v) { this.protocol = v; }
         public String getModel() { return model; }
         public void setModel(String v) { this.model = v; }
         public String getTargetModel() { return targetModel; }

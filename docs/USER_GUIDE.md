@@ -174,6 +174,27 @@ java -jar llmgw-app/target/llmgw-app-0.1.0-SNAPSHOT.jar --spring.profiles.active
 | 上游静默截断（干净 EOF 无 `[DONE]`） | 判定 `TRUNCATED_MESSAGE`，算失败；传输层 EOF ≠ 协议层完成 |
 | 下游客户端取消 | 只挂 `onCancel`（不是 `onDispose`，后者正常完成也触发），账单/审计走 `doFinally` 结算并退还配额预留 |
 
+### 4.5 其余协议端点（v12：responses / messages / images / videos）
+
+v12 起网关透传对等地支持五种协议：每个端点**只路由到说同一种协议的上游**（路由表
+`gateway.routes[].protocol` 字段），网关不做协议翻译、不重序列化 payload。
+
+| 端点 | 协议 | 流式终止帧 | completion 计量 | 缓存 |
+| --- | --- | --- | --- | --- |
+| `POST /v1/chat/completions` | OpenAI Chat | `data: [DONE]` | `usage.completion_tokens` | 全 body 指纹 |
+| `POST /v1/responses` | OpenAI Responses | `response.completed` | `usage.output_tokens` | output 非空才入缓 |
+| `POST /v1/messages` | Anthropic Messages | `message_stop` | `usage.output_tokens` | content+stop_reason 齐全才入缓 |
+| `POST /v1/images/generations` | Images | 无流式 | 恒 0（按 n 计请求单元，1..10） | **永不**（b64 大对象） |
+| `POST /v1/videos` + `GET /v1/videos/{id}` + `GET /v1/videos/{id}/content` | Videos（Sora 风格异步任务） | 无流式 | 恒 0（create 计 1 单元） | **永不** |
+
+对 4.4 契约的协议化修正：**带内 `event: error` 之后的 `[DONE]` 只对 chat 追加**；
+responses / messages 的错误事件之后直接干净断流——网关绝不替上游伪造另一种协议的
+终止帧。静默截断的 502 原因词会带各自终止帧名（如 `without response.completed`）。
+
+videos 是异步任务：create 返回 `{id, status:"queued"}` → poll 直到 `completed` →
+`/content` 下载 mp4。任务 id 被钉在创建它的路由上（粘性 TTL 24h），poll/content
+不走 fallback、不走熔断；别的上游实例对未知任务返回 404 → 网关 502。
+
 ---
 
 ## 5. 管理接口 `/admin/*`

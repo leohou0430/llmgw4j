@@ -88,7 +88,10 @@ public class DefaultGovernanceChain implements GovernanceChain {
             metrics.count("llmgw.denied", "reason", "invalid_key");
             return GatewayDecision.deny(401, "invalid api key");
         }
-        if (!key.allowedModels().isEmpty() && !key.allowedModels().contains(request.model())) {
+        // Task polling and content downloads carry no model selection; the
+        // allow-list applies to what the caller asked the model to do.
+        if (!key.allowedModels().isEmpty() && !request.model().isBlank()
+                && !key.allowedModels().contains(request.model())) {
             metrics.count("llmgw.denied", "reason", "model_not_allowed");
             return GatewayDecision.deny(403, "model not allowed for this key");
         }
@@ -105,7 +108,8 @@ public class DefaultGovernanceChain implements GovernanceChain {
             return GatewayDecision.deny(429, "token quota exceeded");
         }
         metrics.count("llmgw.requests", "engine", engineLabel(),
-                "route", route == null ? "none" : route.id());
+                "route", route == null ? "none" : route.id(),
+                "protocol", request.kind().wireName());
         return GatewayDecision.allow(key.id(), request, route);
     }
 
@@ -173,7 +177,9 @@ public class DefaultGovernanceChain implements GovernanceChain {
             Map<String, Object> details = new LinkedHashMap<>();
             details.put("model", context.model());
             details.put("route", context.routeId());
+            details.put("protocol", context.kind().wireName());
             details.put("stream", context.stream());
+            details.put("units", context.units());
             details.put("cached", context.cached());
             details.put("promptTokens", prompt);
             details.put("completionTokens", completion);

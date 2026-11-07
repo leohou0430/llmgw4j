@@ -48,11 +48,11 @@ public final class InMemoryRouteConfigSource implements RouteConfigSource {
         for (GatewayProperties.RouteDef def : properties.getRoutes()) {
             String url = def.getTargetUrl().isBlank() ? defaultUrl : def.getTargetUrl();
             String key = def.getApiKey().isBlank() ? defaultKey : def.getApiKey();
-            parsed.add(new Route(def.getId(), def.getModel(), def.getTargetModel(),
+            parsed.add(new Route(def.getId(), def.getProtocol(), def.getModel(), def.getTargetModel(),
                     url, key, Math.max(1, def.getWeight()), List.copyOf(def.getFallbacks())));
         }
         if (parsed.isEmpty()) {
-            parsed.add(new Route("default", "*", "", defaultUrl, defaultKey, 1, List.of()));
+            parsed.add(new Route("default", "*", "*", "", defaultUrl, defaultKey, 1, List.of()));
         }
         return parsed;
     }
