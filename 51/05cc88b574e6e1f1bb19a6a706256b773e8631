@@ -1,0 +1,33 @@
+bin/bench-gc-matrix.sh
+  s_fa6a273f1ee0a6::t_f03a775119f640 1-81
+bin/bench-matrix.sh
+  s_fa6a273f1ee0a6::t_b40cd9d12084f7 1-303
+bin/bench-paired-ab.sh
+  s_fa6a273f1ee0a6::t_88e6744e17bcd3 1-83
+bin/build-native.sh
+  s_fa6a273f1ee0a6::t_1e7f899c3f8676 1-46
+bin/run-vt.sh
+  s_fa6a273f1ee0a6::t_013a475bec3942 1-11
+bin/run-webflux.sh
+  s_fa6a273f1ee0a6::t_de5311aedb92c3 1-11
+llmgw-app/src/main/resources/application-real.yml
+  s_fa6a273f1ee0a6::t_121254a336641c 1-16
+llmgw-app/src/main/resources/application.yml
+  s_fa6a273f1ee0a6::t_8eeae178e696b5 1-59
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "5105cc88b574e6e1f1bb19a6a706256b773e8631",
+  "prompts": {},
+  "sessions": {
+    "s_fa6a273f1ee0a6": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1ae46-14a1-7182-982d-ad43c4e7a481",
+        "model": "gpt-6.1-sol"
+      },
+      "human_author": "houbaosheng <houbaosheng@inke.cn>"
+    }
+  }
+}
