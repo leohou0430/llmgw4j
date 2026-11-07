@@ -1,0 +1,14 @@
+.github/workflows/ci.yml
+  h_1c4b92584cf711 22,25
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "3edd63d81da4da787f470a9799517e2021864b83",
+  "prompts": {},
+  "humans": {
+    "h_1c4b92584cf711": {
+      "author": "houbaosheng <houbaosheng@inke.cn>"
+    }
+  }
+}
