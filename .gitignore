@@ -1,0 +1,52 @@
+# ---- Build outputs ----
+target/
+*.class
+*.jar
+*.jar.original
+!.mvn/wrapper/maven-wrapper.jar
+llmgw-app/target/native/
+bin/native/
+
+# ---- Local JDK / GraalVM toolchains (NOT redistributable, hundreds of MB) ----
+tools/
+*.tar.gz
+*.tgz
+*.zip
+*.dmg
+
+# ---- Local runtime data & secrets ----
+data/
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.jks
+application-local.yml
+application-local.yaml
+llmgw-snapshot.json
+
+# ---- Benchmark artifacts (raw CSV, jars, logs, manifests, local classpaths) ----
+bench/results/
+bench/micro/.classpath*
+bench/micro/.classes/
+bench/micro/.lib/
+*.log
+*.rss
+
+# ---- IDE / OS ----
+.idea/
+*.iml
+.vscode/
+.settings/
+.classpath
+.project
+.DS_Store
+Thumbs.db
+
+# ---- Python helpers ----
+__pycache__/
+*.pyc
+.venv/
+venv/

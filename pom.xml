@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>4.1.2</version>
+    <relativePath/>
+  </parent>
+
+  <groupId>io.github.leohou0430</groupId>
+  <artifactId>llmgw-parent</artifactId>
+  <version>0.1.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <name>llmgw4j</name>
+  <description>A Java LLM API gateway with two switchable data planes (WebFlux and virtual threads) behind one SPI-based governance layer, plus reproducible paired A/B benchmarks.</description>
+  <url>https://github.com/leohou0430/llmgw4j</url>
+  <inceptionYear>2026</inceptionYear>
+
+  <licenses>
+    <license>
+      <name>Apache License, Version 2.0</name>
+      <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <id>leohou0430</id>
+      <name>leohou0430</name>
+      <url>https://github.com/leohou0430</url>
+    </developer>
+  </developers>
+
+  <scm>
+    <connection>scm:git:https://github.com/leohou0430/llmgw4j.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com/leohou0430/llmgw4j.git</developerConnection>
+    <url>https://github.com/leohou0430/llmgw4j</url>
+    <tag>HEAD</tag>
+  </scm>
+
+  <issueManagement>
+    <system>GitHub Issues</system>
+    <url>https://github.com/leohou0430/llmgw4j/issues</url>
+  </issueManagement>
+
+  <modules>
+    <module>llmgw-core</module>
+    <!-- Governance subsystem: llmgw-governance-api + one module per
+         implementation pack (in-memory default, optional Redis).
+         llmgw-governance is both the aggregator and the parent POM of its
+         children; the Redis pack is compiled here but linked into the app
+         only with -Predis, so the default fat jar stays all in-memory. -->
+    <module>llmgw-governance</module>
+    <!-- Data plane subsystem: llmgw-engine-api + one module per implementation.
+         llmgw-engine is both the aggregator and the parent POM of its children. -->
+    <module>llmgw-engine</module>
+    <module>llmgw-provider-openai</module>
+    <module>llmgw-app</module>
+  </modules>
+
+  <properties>
+    <java.version>25</java.version>
+    <maven.compiler.release>25</maven.compiler.release>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <caffeine.version>3.3.1</caffeine.version>
+    <openai-java.version>4.100.0</openai-java.version>
+    <native-buildtools.version>1.1.18</native-buildtools.version>
+    <llmgw.native.profile>webflux</llmgw.native.profile>
+    <llmgw.native.image>llmgw</llmgw.native.image>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>com.github.ben-manes.caffeine</groupId>
+        <artifactId>caffeine</artifactId>
+        <version>${caffeine.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.openai</groupId>
+        <artifactId>openai-java</artifactId>
+        <version>${openai-java.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.leohou0430</groupId><artifactId>llmgw-core</artifactId><version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.leohou0430</groupId><artifactId>llmgw-governance-api</artifactId><version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.leohou0430</groupId><artifactId>llmgw-governance-default</artifactId><version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.leohou0430</groupId><artifactId>llmgw-engine-api</artifactId><version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.leohou0430</groupId><artifactId>llmgw-engine-webflux</artifactId><version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.leohou0430</groupId><artifactId>llmgw-engine-vt</artifactId><version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.leohou0430</groupId><artifactId>llmgw-provider-openai</artifactId><version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.leohou0430</groupId><artifactId>llmgw-governance-redis</artifactId><version>${project.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.graalvm.buildtools</groupId>
+          <artifactId>native-maven-plugin</artifactId>
+          <version>${native-buildtools.version}</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+</project>

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>io.github.leohou0430</groupId>
+    <artifactId>llmgw-parent</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+  </parent>
+  <artifactId>llmgw-app</artifactId>
+  <name>llmgw-app</name>
+  <description>Runnable gateway application, mock upstream, admin API and native hints</description>
+
+  <dependencies>
+    <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-core</artifactId></dependency>
+    <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-governance-default</artifactId></dependency>
+    <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-engine-webflux</artifactId></dependency>
+    <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-engine-vt</artifactId></dependency>
+    <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-provider-openai</artifactId></dependency>
+    <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-webflux</artifactId></dependency>
+    <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-web</artifactId></dependency>
+    <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-actuator</artifactId></dependency>
+    <dependency><groupId>io.micrometer</groupId><artifactId>micrometer-registry-prometheus</artifactId></dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <configuration>
+          <mainClass>io.github.leohou0430.llmgw.app.LlmGatewayApplication</mainClass>
+          <profiles>${llmgw.native.profile}</profiles>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+    <!-- Opt-in distributed governance. -Predis links the Redis SPI pack and
+         the Redis starter; activate by setting gateway.redis.enabled=true and a
+         spring.data.redis.* endpoint. Without this profile the gateway keeps
+         the all-in-memory defaults and no Redis classes reach the fat jar. -->
+    <profile>
+      <id>redis</id>
+      <dependencies>
+        <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-governance-redis</artifactId></dependency>
+        <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-data-redis</artifactId></dependency>
+      </dependencies>
+    </profile>
+    <!-- macOS native I/O transport experiment. Reactor Netty auto-detects
+         KQueue when BOTH jars are on the classpath; without them the gateway
+         silently falls back to the NIO selector. Opt-in (-Pkqueue) so a
+         benchmark can keep a byte-identical control arm. Linux already ships
+         epoll via the Boot BOM; on Linux this profile is harmless because
+         KQueue.isAvailable() is false and Reactor Netty keeps using epoll.
+         Apple silicon: -Dllmgw.kqueue.classifier=osx-aarch_64 -->
+    <profile>
+      <id>kqueue</id>
+      <properties>
+        <llmgw.kqueue.classifier>osx-x86_64</llmgw.kqueue.classifier>
+      </properties>
+      <dependencies>
+        <dependency>
+          <groupId>io.netty</groupId>
+          <artifactId>netty-transport-classes-kqueue</artifactId>
+          <version>${netty.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>io.netty</groupId>
+          <artifactId>netty-transport-native-kqueue</artifactId>
+          <version>${netty.version}</version>
+          <classifier>${llmgw.kqueue.classifier}</classifier>
+        </dependency>
+      </dependencies>
+    </profile>
+    <profile>
+      <id>native</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.graalvm.buildtools</groupId>
+            <artifactId>native-maven-plugin</artifactId>
+            <configuration>
+              <imageName>${llmgw.native.image}</imageName>
+              <mainClass>io.github.leohou0430.llmgw.app.LlmGatewayApplication</mainClass>
+              <buildArgs>
+                <buildArg>--enable-url-protocols=http,https</buildArg>
+                <buildArg>-H:+ReportExceptionStackTraces</buildArg>
+              </buildArgs>
+            </configuration>
+            <executions>
+              <execution>
+                <id>build-native</id>
+                <phase>package</phase>
+                <goals><goal>compile-no-fork</goal></goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <!-- Experimental: same as `native` but with the G1 collector. Oracle
+         GraalVM only (Community Edition ships Serial GC). Compare p99 of the
+         wire profile before making this the default: more GC threads trade
+         throughput/footprint for tail latency.
+         NOTE: spring-boot-maven-plugin auto-wires process-aot ONLY for a
+         profile literally named `native`; any other profile id must declare
+         process-aot + add-reachability-metadata explicitly (below), or the
+         native-image run compiles WITHOUT AOT and fails on the fat jar. -->
+    <profile>
+      <id>native-g1</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>process-aot</id>
+                <goals><goal>process-aot</goal></goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.graalvm.buildtools</groupId>
+            <artifactId>native-maven-plugin</artifactId>
+            <configuration>
+              <imageName>${llmgw.native.image}</imageName>
+              <mainClass>io.github.leohou0430.llmgw.app.LlmGatewayApplication</mainClass>
+              <!-- Auto-set only for a profile literally named `native`; without
+                   it the classpath resolves to the repackaged fat jar and
+                   native-image cannot see the main class or AOT classes. -->
+              <classesDirectory>${project.build.outputDirectory}</classesDirectory>
+              <buildArgs>
+                <buildArg>--enable-url-protocols=http,https</buildArg>
+                <buildArg>-H:+ReportExceptionStackTraces</buildArg>
+                <buildArg>--gc=G1</buildArg>
+              </buildArgs>
+            </configuration>
+            <executions>
+              <execution>
+                <id>add-reachability-metadata</id>
+                <goals><goal>add-reachability-metadata</goal></goals>
+              </execution>
+              <execution>
+                <id>build-native</id>
+                <phase>package</phase>
+                <goals><goal>compile-no-fork</goal></goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+</project>

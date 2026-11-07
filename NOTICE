@@ -1,0 +1,9 @@
+llmgw4j
+Copyright 2026 leohou0430
+
+This product is licensed under the Apache License, Version 2.0.
+See the LICENSE file for the full license text.
+
+Third-party dependencies (Spring Boot, Caffeine, openai-java, Lettuce,
+Netty and others) remain under their respective license terms; consult
+each artifact's own metadata for details.

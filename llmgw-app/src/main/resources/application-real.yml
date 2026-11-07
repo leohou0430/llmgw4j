@@ -1,0 +1,16 @@
+gateway:
+  # Without this, the real-provider profile still starts MockUpstreamServer on
+  # 9090 and fails to boot when that port is already taken.
+  mock:
+    enabled: false
+  upstream:
+    type: openai-compatible
+    base-url: https://dashscope.aliyuncs.com/compatible-mode/v1
+    api-key: ${DASHSCOPE_API_KEY:}
+  routes:
+    - id: dashscope
+      model: "*"
+      target-model: qwen-plus
+      target-url: https://dashscope.aliyuncs.com/compatible-mode/v1
+      weight: 1
+      fallbacks: []

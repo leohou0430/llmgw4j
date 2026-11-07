@@ -1,0 +1,102 @@
+name: 缺陷报告
+description: 功能不正确、流式协议违约、启动/构建/回归失败
+title: "[Bug] "
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        提 issue 前请先确认：
+        1. 已按 `README.md` 用 **mock 上游** 复现（默认 `9090` 端口，无需真实厂商密钥）；
+        2. 贴出的日志、请求体、响应头已**脱敏**（API key / token / 内网地址）；
+        3. 若涉及性能数字，请改用「性能 / 压测数据」模板，那个模板有独立的证据要求。
+
+  - type: input
+    id: version
+    attributes:
+      label: 版本或提交
+      description: release tag，或 `git rev-parse --short HEAD` 的结果
+      placeholder: "v0.1.0 / a1b2c3d"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: engine
+    attributes:
+      label: 受影响的数据面
+      description: 本项目同一治理层有两套数据面，请分别验证；两者表现不同本身就是重要线索
+      multiple: true
+      options:
+        - webflux (JVM)
+        - vt (JVM)
+        - native / webflux
+        - native / vt
+        - 全部 / 不确定
+    validations:
+      required: true
+
+  - type: input
+    id: env
+    attributes:
+      label: 运行环境
+      placeholder: "macOS 15 / JDK 25.0.5 / Spring Boot 4.1.2 / Maven 3.9"
+    validations:
+      required: true
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: 最小复现步骤
+      description: 启动命令 + curl 请求 + 配置文件片段；请删掉密钥
+      placeholder: |
+        ./bin/build.sh
+        java -jar llmgw-app/target/llmgw-app-0.1.0-SNAPSHOT.jar --spring.profiles.active=webflux
+        curl -N -X POST http://127.0.0.1:8080/v1/chat/completions ...
+      render: shell
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: 期望行为
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: 实际行为
+    validations:
+      required: true
+
+  - type: textarea
+    id: sse
+    attributes:
+      label: 流式相关（仅 SSE 需要）
+      description: |
+        本项目的完成判据是**上游显式的 `data: [DONE]`**，网关不伪造终止帧。
+        请说明：失败发生在首 chunk 之前还是之后？响应是 `502 + JSON` 还是 `event: error` + `[DONE]`？
+        贴出原始 SSE 帧（保留 `data:` / `event:` 前缀）。
+      render: text
+
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: 日志与响应头
+      description: 贴 `X-Request-Id`、`X-LLMGW-Overhead-Ms`、`X-LLMGW-Upstream-Ms`、`X-LLMGW-Config-Version` 及相关服务日志
+      render: shell
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: 提交前确认
+      options:
+        - label: 已脱敏，不含任何真实密钥或内网地址
+          required: true
+        - label: 已用 mock 上游复现，或明确说明必须依赖真实厂商
+          required: true
+        - label: 已跑 `./bin/smoke-stream-errors.sh` 并在下方附上 PASS/FAIL
+          required: false
+        - label: 两个引擎都验证过，或已注明只验证了哪一个
+          required: false

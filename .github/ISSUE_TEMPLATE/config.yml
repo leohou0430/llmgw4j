@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 先读文档（跑不起来 / 配置问题多数在这里）
+    url: https://github.com/leohou0430/llmgw4j#readme
+    about: README.md 与 bench/README.md 覆盖构建、profile、mock 上游、回归脚本与压测口径
+  - name: 设计与选型讨论
+    url: https://github.com/leohou0430/llmgw4j/discussions
+    about: 架构讨论、SPI 扩展、与 Higress / LiteLLM / Spring Cloud Gateway 等的对比
+  - name: 安全漏洞（不要公开提 issue）
+    url: https://github.com/leohou0430/llmgw4j/security/advisories/new
+    about: 按 SECURITY.md 私下报告；公开 issue 会被关闭并转私信

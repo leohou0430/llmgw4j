@@ -1,0 +1,111 @@
+name: 性能 / 压测数据
+description: 提交或质疑一组性能数字（先看数据质量红线，再谈涨跌）
+title: "[Bench] "
+labels: ["benchmark", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        > **数据质量红线**：本项目历史上多次撞上宿主过载（`vm.loadavg` 80–110），
+        > 端到端数字一度出现 JSON −50%、SSE +4.6× 这类互相矛盾的逐轮结果。
+        > 因此本仓库的规矩是：**先看负载时间线与逐轮一致性，再看中位数**。
+        > 宿主过载期间的所有数字只作方向参考，不得作为结论，也不得写进 README。
+        >
+        > 另：`MOCK_DELAY_MS=0 / MOCK_CHUNK_INTERVAL_MS=0` 的 wire 实验与
+        > `20/10` 主矩阵是**两个独立口径，绝不能逐行相减**。
+        > 详细口径见 `bench/README.md` 与根目录 `README.md` 5.10 节。
+
+  - type: dropdown
+    id: kind
+    attributes:
+      label: 实验类型
+      options:
+        - 配对 A/B（ABBA 交错）
+        - 多组矩阵（bench-matrix.sh）
+        - native vs JVM
+        - GC / 传输 / 缓冲微实验
+        - JMH 微基准（bench/micro）
+        - 质疑已有数字
+    validations:
+      required: true
+
+  - type: input
+    id: arms
+    attributes:
+      label: 对照双方
+      description: jar / 二进制 / commit 的可追溯标识
+      placeholder: "ARM_A=v8.1-final.jar  ARM_B=v10-xxx.jar（附 SHA-256 前 12 位）"
+    validations:
+      required: true
+
+  - type: input
+    id: profile
+    attributes:
+      label: wire 剖面
+      description: 上游延迟、chunk 间隔、payload padding 三者的取值
+      placeholder: "MOCK_DELAY_MS=0 MOCK_CHUNK_INTERVAL_MS=0 PAYLOAD_BYTES=0（或 20/10 主矩阵）"
+    validations:
+      required: true
+
+  - type: input
+    id: knobs
+    attributes:
+      label: 压测参数
+      placeholder: "PAIRS=3 DURATION=15s VUS=50 MODES='json sse'"
+    validations:
+      required: true
+
+  - type: textarea
+    id: load
+    attributes:
+      label: 宿主负载时间线（必填）
+      description: |
+        附 15s 粒度采样（`sysctl -n vm.loadavg`，或 `bench/results/*-load-*.log`）。
+        没有负载时间线的性能数字一律不予采信。
+      placeholder: |
+        18:54:14 { 13.49 50.28 38.62 }
+        18:54:29 { 12.10 48.90 38.10 }
+        ...
+      render: text
+    validations:
+      required: true
+
+  - type: textarea
+    id: rounds
+    attributes:
+      label: 逐轮原始数据（必填，不要只贴中位数）
+      description: 贴 `paired-ab-*.csv` 或 `summary-*.csv` 的逐轮行，含 arm / round / mode / p50 / p99 / rps / error_rate
+      render: csv
+    validations:
+      required: true
+
+  - type: textarea
+    id: consistency
+    attributes:
+      label: 逐轮一致性分析
+      description: 逐轮配对差值的符号是否一致？若方向来回翻转，请直接判定为噪声，不要给结论
+    validations:
+      required: true
+
+  - type: textarea
+    id: conclusion
+    attributes:
+      label: 你的结论（可写「本轮无效，仅存档」）
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: 数据质量确认
+      options:
+        - label: 已附宿主负载时间线，且实验窗口内无异常跳变
+          required: true
+        - label: 已检查逐轮方向一致性，而非只比较中位数
+          required: true
+        - label: 没有把 0/0 wire 实验与 20/10 主矩阵混用或逐点相减
+          required: true
+        - label: 已确认两臂除被测变量外构建一致（jar SHA / profile / 依赖）
+          required: true
+        - label: 已保留 CSV、manifest 与日志可供复现
+          required: true

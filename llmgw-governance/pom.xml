@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>io.github.leohou0430</groupId>
+    <artifactId>llmgw-parent</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <artifactId>llmgw-governance</artifactId>
+  <packaging>pom</packaging>
+  <name>llmgw-governance</name>
+  <description>Governance subsystem: one shared implementation API plus pluggable
+    implementation packs (in-memory default, optional Redis). Implementations
+    depend on the API and on llmgw-core where the domain SPIs live; the API
+    depends only on llmgw-core. No implementation may depend on another
+    implementation, and no implementation is visible to the data planes.</description>
+
+  <modules>
+    <module>llmgw-governance-api</module>
+    <module>llmgw-governance-default</module>
+    <module>llmgw-governance-redis</module>
+  </modules>
+</project>

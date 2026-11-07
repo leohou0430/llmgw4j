@@ -1,0 +1,59 @@
+spring:
+  application:
+    name: llmgw
+  profiles:
+    default: webflux
+  threads:
+    virtual:
+      enabled: true
+
+server:
+  port: 8080
+
+gateway:
+  governance-enabled: true
+  # Empty = /admin open (local demo). Set LLMGW_ADMIN_TOKEN in any shared env.
+  admin-token: ${LLMGW_ADMIN_TOKEN:}
+  max-request-bytes: 4194304
+  upstream:
+    type: mock
+    base-url: http://127.0.0.1:9090/mock/v1
+    api-key: ${DASHSCOPE_API_KEY:}
+    timeout-ms: 60000
+  governance:
+    default-quota-tokens: 1000000
+    rate-limit-tokens-per-second: 100000
+    rate-limit-burst: 200000
+    cache-max-size: 1000
+    cache-ttl-seconds: 300
+    snapshot-path: ./data/llmgw-snapshot.json
+    # Circuit breaker: consecutive no-delivery upstream failures per route
+    # before it opens (skipped without network I/O while fallbacks run);
+    # cooldown-ms is how long it stays open before one half-open probe.
+    # circuit-failure-threshold <= 0 disables breaking.
+    circuit-failure-threshold: 5
+    circuit-cooldown-ms: 30000
+  mock:
+    enabled: true
+    port: 9090
+    delay-ms: 20
+    chunks: 8
+    chunk-interval-ms: 10
+  routes:
+    - id: mock-primary
+      model: "*"
+      target-url: http://127.0.0.1:9090/mock/v1
+      weight: 1
+      fallbacks: []
+  api-keys:
+    - id: demo
+      token: sk-demo
+      name: demo
+      quota-tokens: 1000000
+      allowed-models: []
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
