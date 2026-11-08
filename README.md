@@ -276,6 +276,8 @@ BINARY="$PWD/bin/native/llmgw-vt"      ./bin/smoke-stream-errors.sh vt
 
 # v12 多协议回归（responses / messages / images / videos × 双引擎，不改动上面 67/34 的断言数）
 ./bin/smoke-multi-protocol.sh                # 28 项 × 双引擎：协议路由 / 计量 / 各协议终止帧契约 / sticky 视频
+BINARY="$PWD/bin/native/llmgw-webflux" ./bin/smoke-multi-protocol.sh webflux  # native 产物
+BINARY="$PWD/bin/native/llmgw-vt"      ./bin/smoke-multi-protocol.sh vt
 
 # v10 三个独立回归（不改动上面 67/34 的断言数）
 ./bin/smoke-observability.sh                 # 26 项：TTFT / 上游 / 开销头 + 指标 + 审计
@@ -912,7 +914,9 @@ payload；请求体只解析路由与计量所需的最少字段（model / strea
 验证：新增 `bin/smoke-multi-protocol.sh`，**双引擎各 28/28**（协议路由五路分发、
 `1+8+1+8+0=18` 精确计量、每协议的截断/断连/状态注入契约、images 不入缓存、
 视频 create→poll→content、跨实例粘性钉死）；原 `smoke-stream-errors.sh` 67/67 不变，
-`check-module-layout.sh` 27/27 不变。API 契约见 `docs/openapi.yaml`（OpenAPI 3.1，
+`check-module-layout.sh` 27/27 不变。重编的两个 native 二进制同套件
+（`BINARY=` 支持）各 **28/28 + 34/34 + 15/15** 全绿，5 端点契约在 AOT 镜像同样成立。
+API 契约见 `docs/openapi.yaml`（OpenAPI 3.1，
 可在 Apifox「项目设置 → 导入数据 → OpenAPI/Swagger」一键导入）。
 
 ## 六、诚实的风险清单

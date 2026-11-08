@@ -62,7 +62,15 @@ stop() {
 start() {
   local engine="$1"; shift
   stop
-  java -jar "$JAR" --spring.profiles.active="$engine" \
+  # BINARY=/path/to/native-llmgw-webflux lets the same suite validate the AOT
+  # image; native images are compiled per engine profile.
+  local -a cmd
+  if [[ -n "${BINARY:-}" ]]; then
+    cmd=("$BINARY")
+  else
+    cmd=(java -jar "$JAR")
+  fi
+  "${cmd[@]}" --spring.profiles.active="$engine" \
     --gateway.governance-enabled=true --server.port="$PORT" \
     --gateway.governance.default-quota-tokens=2000000000 \
     --gateway.governance.rate-limit-tokens-per-second=2000000000 \

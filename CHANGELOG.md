@@ -158,6 +158,11 @@ Anthropic Messages / Images / Videos 五种协议。网关不做协议翻译、�
 - `./bin/smoke-stream-errors.sh`（chat 全量契约回归）：**67/67** 不变
 - `./bin/check-module-layout.sh`：**27/27** 不变
 - `mvn -B -DskipTests clean package`：BUILD SUCCESS
+- **native 双二进制重编并全量回归**（Oracle GraalVM 25，`bin/build-native.sh
+  webflux|vt`；`smoke-multi-protocol.sh` 已支持 `BINARY=`）：webflux / vt 各
+  `smoke-stream-errors.sh` **34/34**、`smoke-observability.sh` **15/15**、
+  `smoke-multi-protocol.sh` **28/28**——5 端点协议路由 / 计量 / 截断契约在
+  AOT 镜像同样成立；GitHub Actions CI（run 42441985260）绿。
 
 ## [0.1.0] - 2026-11-07
 
