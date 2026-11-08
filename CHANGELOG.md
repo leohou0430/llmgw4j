@@ -158,6 +158,11 @@ Anthropic Messages / Images / Videos 五种协议。网关不做协议翻译、�
 - `./bin/smoke-stream-errors.sh`（chat 全量契约回归）：**67/67** 不变
 - `./bin/check-module-layout.sh`：**27/27** 不变
 - `mvn -B -DskipTests clean package`：BUILD SUCCESS
+- `./bin/smoke-hot-reload.sh`：webflux **10/10**、vt **10/10**——40 路在途 SSE
+  跨配置热更零中断，v12 三级协议路由未破坏该行为
+- `./bin/smoke-redis-cluster.sh`：**7/7**（`-Predis` 产物重打包含 v12 代码后复跑）——
+  双副本共享 Redis 账本 200=12 / 429=188、账本不双花；跑前默认 fat jar 须重建为
+  无 Redis 类版本，否则 actuator 健康聚合 Redis 指示器、6379 不可达即 DOWN
 - **native 双二进制重编并全量回归**（Oracle GraalVM 25，`bin/build-native.sh
   webflux|vt`；`smoke-multi-protocol.sh` 已支持 `BINARY=`）：webflux / vt 各
   `smoke-stream-errors.sh` **34/34**、`smoke-observability.sh` **15/15**、
