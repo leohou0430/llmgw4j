@@ -1,0 +1,18 @@
+CHANGELOG.md
+  h_f2cf00af6c798e 161-165
+README.md
+  h_f2cf00af6c798e 279-280,917-919
+bin/smoke-multi-protocol.sh
+  h_f2cf00af6c798e 65-73
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "f7e30a7350d88fe3db1fee3a15295bc9d1eceedc",
+  "prompts": {},
+  "humans": {
+    "h_f2cf00af6c798e": {
+      "author": "leohou0430 <leohou0430@users.noreply.github.com>"
+    }
+  }
+}
