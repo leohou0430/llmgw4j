@@ -174,7 +174,7 @@ java -jar llmgw-app/target/llmgw-app-0.1.0-SNAPSHOT.jar --spring.profiles.active
 | 上游静默截断（干净 EOF 无 `[DONE]`） | 判定 `TRUNCATED_MESSAGE`，算失败；传输层 EOF ≠ 协议层完成 |
 | 下游客户端取消 | 只挂 `onCancel`（不是 `onDispose`，后者正常完成也触发），账单/审计走 `doFinally` 结算并退还配额预留 |
 
-### 4.5 其余协议端点（v12：responses / messages / images / videos）
+### 4.5 其余协议端点（responses / messages / images / videos）
 
 v12 起网关透传对等地支持五种协议：每个端点**只路由到说同一种协议的上游**（路由表
 `gateway.routes[].protocol` 字段），网关不做协议翻译、不重序列化 payload。
@@ -196,6 +196,22 @@ videos 是异步任务：create 返回 `{id, status:"queued"}` → poll 直到 `
 不走 fallback、不走熔断；别的上游实例对未知任务返回 404 → 网关 502。
 
 ---
+
+### 4.6 更多协议端点（embeddings / rerank / speech / transcriptions / files / batches）
+
+| 端点 | 协议 | 流式 | completion tokens | 缓存 |
+|---|---|---|---|---|
+| `POST /v1/embeddings` | Embeddings | 无流式 | 恒 0 | **永不** |
+| `POST /v1/rerank` | Rerank | 无流式 | 恒 0 | **永不** |
+| `POST /v1/audio/speech` | Speech | 无流式 | 恒 0 | **永不**（响应为二进制，字节不经 String） |
+| `POST /v1/audio/transcriptions` | Transcriptions（multipart 上传） | 无流式 | 恒 0 | **永不**（multipart 字节逐字透传，含 boundary） |
+| `POST /v1/files` + `GET /v1/files` + `GET|DELETE /v1/files/{id}` | Files | 无流式 | 恒 0 | **永不**；file id 粘性路由 |
+| `POST /v1/batches` + `GET /v1/batches` + `GET /v1/batches/{id}` | Batches（异步任务） | 无流式 | 恒 0 | **永不**；batch id 粘性路由 |
+
+全部 11 个协议共享同一治理链（认证/限流/配额/预算/guardrail）与熔断语义；
+multipart 上传的 Content-Type（含 boundary）原样透传，请求体字节不经
+String 往返。粘性路由的跨副本共享见 `-Predis` 的 `TaskRouteSticky`。
+
 
 ## 5. 管理接口 `/admin/*`
 

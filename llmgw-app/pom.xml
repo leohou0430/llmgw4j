@@ -18,6 +18,7 @@
     <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-engine-webflux</artifactId></dependency>
     <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-engine-vt</artifactId></dependency>
     <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-provider-openai</artifactId></dependency>
+    <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-provider-anthropic</artifactId></dependency>
     <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-webflux</artifactId></dependency>
     <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-web</artifactId></dependency>
     <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-actuator</artifactId></dependency>
@@ -47,6 +48,28 @@
       <dependencies>
         <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-governance-redis</artifactId></dependency>
         <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-data-redis</artifactId></dependency>
+      </dependencies>
+    </profile>
+    <!-- B6 opt-in real tokenizer: jtokkit (tiktoken BPE). Select with
+         gateway.tokenizer=jtokkit; without it the heuristic default applies.
+         JtokkitTokenCounter is component-scanned only when this module is on
+         the classpath. -->
+    <profile>
+      <id>jtokkit</id>
+      <dependencies>
+        <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-tokenizer-jtokkit</artifactId></dependency>
+      </dependencies>
+    </profile>
+    <!-- W3.3 opt-in OpenTelemetry: the Micrometer Tracing bridge auto-instruments
+         both data planes (server spans) and exports via OTLP. Trace CONTEXT
+         propagation works WITHOUT this profile: traceparent/tracestate/baggage
+         ride the header allowlists to the upstream. Activate with
+         -Potel + management.otlp.tracing.endpoint=http://collector:4318/v1/traces. -->
+    <profile>
+      <id>otel</id>
+      <dependencies>
+        <dependency><groupId>io.micrometer</groupId><artifactId>micrometer-tracing-bridge-otel</artifactId></dependency>
+        <dependency><groupId>io.opentelemetry</groupId><artifactId>opentelemetry-exporter-otlp</artifactId></dependency>
       </dependencies>
     </profile>
     <!-- macOS native I/O transport experiment. Reactor Netty auto-detects

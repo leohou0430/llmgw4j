@@ -9,6 +9,125 @@
 > 下方 `[0.1.0]` 历史条目中的模块名按当时结构记录；当前模块结构以
 > `README.md` 的「模块布局规范」与 `CONTRIBUTING.md` 第 2 节为准。
 
+### Added — v13 能力补齐（对照主流网关差距分析，见 `docs/gap-analysis.md`）
+
+按四波次补齐主流 LLM 网关能力公约数；每项默认配置保持 v12 行为与性能基线不变，
+新能力全部可配置开启。功能证据：`docs/verification/`（最终记录 `final-all-green.log`，
+8 个冒烟套件 + 5 个模块单元测试全绿）。
+
+**Wave 1 — P0 快赢**
+
+- 同路由重试 + 指数退避（新 `ForwardingPolicy` 深模块，双数据面尝试循环归一；
+  `gateway.upstream.retry.*`，默认关闭即 v12 语义；5xx/408/429/传输错误可重试）。
+- 三段式超时：connect / 首字节 / 空闲读（`gateway.upstream.*-timeout-ms`，默认 0=关；
+  首字节在 200 提交前失败保住 fallback 窗口；空闲读中止流内静默悬挂）。
+- 双向 header 透传（新 `HeaderPolicy` SPI，双向白名单 + 通配；受保护头永不透传）。
+- SSE 心跳（`gateway.upstream.heartbeat-interval-ms`，默认 0；comment 帧是网关唯一
+  注入字节，计账/TTFT/首块守卫全部豁免）。
+- Dockerfile + docker-compose + 快照启动自动恢复（`snapshot-auto-restore`，默认关）。
+- 视频 GET 未钉住路径补熔断（钉住路径保持「任务只在创建上游」设计并文档化）。
+- JUnit 测试基建（5 个模块；此前全库无 `src/test/`）。
+
+**Wave 2 — 结构性**
+
+- **Protocol SPI**：四处闭式 switch 收编为 `Protocol` 注册表 + 5 个 adapter；
+  Spring bean 可覆盖任意协议行为；新协议 = 枚举项 + 一个实现类。
+- **ModelCatalog SPI**：模型目录（provider / 上下文窗口 / micro-USD 每百万 token
+  价格），`gateway.models[]` 配置驱动，`*` 兜底条目。
+- **API key 运行时管理**：`KeyAdminService`（创建/吊销/TTL 过期）+
+  `POST/DELETE /admin/keys` + JSON key store（0600，重启恢复）。
+- **llmgw-provider-anthropic**：`UpstreamAuthenticator` SPI + `Route.provider`
+  路由维度——第一个真上游 adapter（x-api-key + anthropic-version 方言）；
+  协议仍是路由维度而非转换维度，字节依旧逐字透传。
+
+**Wave 3 — 平台化**
+
+- **$ 硬预算**：`BudgetLedger` SPI（原子 committed+reserved 准入）+
+  `QuotaMath.costMicroUsd`（整数微美元）+ 到额即拒 429；快照按 key 与按组聚合。
+- 身份层级：ApiKey `group` 归属 + 组级 spend 汇总。
+- 请求日志：`RequestLogSink` SPI（含拒绝路径）+ `GET /admin/requests`。
+- **治理参数热更新**：`DynamicGovernanceSettings` CAS 换表驱动限流/缓存/熔断，
+  `POST /admin/governance` 运行时换参免重启。
+- Redis 覆盖补全：跨副本 key 表 + 跨副本响应缓存（`-Predis`）。
+- 最小管理控制台：`GET /admin/console`（单页只读，喂既有 /admin JSON）。
+- OTel：traceparent/tracestate/baggage 默认透传上游；完整 span 导出走 `-Potel`。
+
+**Wave 4 — 生产化/差异化**
+
+- **Guardrail SPI**：本地正则拒答 + 外接审核引擎适配器（fail-open），
+  认证后、计量前拦截，`gateway.guardrails.*`。
+- **语义缓存**：`Embedder` SPI + OpenAI 兼容 /embeddings 适配器 + 分桶向量签名键
+  （相似度阈值 = 分桶粒度；embedder 失败降级精确键）。
+- **协议面扩张（最终 11 协议）**：`/v1/embeddings`、`/v1/rerank`、`/v1/audio/speech`
+  （二进制透传，字节不经 String）、`/v1/audio/transcriptions` 与 `/v1/files`
+  （multipart 字节透传，含 boundary 的 Content-Type 原样转发）、`/v1/batches`
+  （异步任务，粘性路由）——经 Protocol SPI 每协议零核心改动，治理全覆盖。
+  文件上传/批量任务的跨副本轮询由 Redis sticky 支撑。
+- 部署文档：`docs/DEPLOYMENT.md`（TLS 立场 / nginx 前置 / 多副本 Redis / 生产清单）。
+- **发布链路（作品级 #23）**：GitHub Release workflow（tag → fat jar + native 产物），
+  Maven Central 走 `central-publishing-maven-plugin`（secrets 就绪即启用，配置文档化）。
+- **任务粘性 SPI（多副本 #21 收尾）**：`TaskRouteSticky` + InMemory 默认实现 +
+  `RedisTaskRouteSticky`（SETEX/GET 跨副本），视频/批量/文件任务轮询跨副本可达。
+- **性能 A/B 与优化**：v12 基线 worktree 同口径 k6 对比发现 JSON 热路径回归
+  （3734→1937/s），定位并修复（mock 探针 join 门控、HeaderPolicy 预编译匹配、
+  ForwardingPolicy 单路由快路径、RetryConfig 构造期缓存）后复测：**6107/s、
+  p95 13.8ms（基线 3734/s、22.0ms）**，SSE 持平略优（460 vs 457/s），双负载故障率 0%。
+  证据：`docs/verification/perf/k6-ab-v12-vs-v13.txt`。
+
+### Added — 20 项剩余差距处理方向落地
+
+对照 [docs/gap-analysis.md](docs/gap-analysis.md) 第二节（代码事实反向验证产出的 20 项）：
+
+**性能打磨（A，3/3）**
+
+- **A1** 语义缓存 embedder 向量缓存（Caffeine 2000 条，TTL 跟随缓存 TTL）——同 prompt 零重复网络调用。
+- **A2** Guardrail HTTP 引擎决策缓存（60s / 1000 条）——重复与回放流量零网络调用。
+- **A3** 上传体保持 4MB 全量缓冲（流式 multipart 与收益不成比例，P3 排期）。
+- **性能 bug 修复**：语义缓存 `lookupCache` 用签名键、`cache()` 用指纹键，两键不一致导致**语义命中永远 miss**——改为「主键恒为指纹 + 向量库独立相似查找层」，实测同义改写命中 `cacheSize=1`。
+
+**产品功能（B，12/12）**
+
+- **B1 入口认证深度**：`KeyStore` SPI + SHA-256 哈希存储（明文不落盘，默认开启）+ key 轮换
+  （`POST /admin/keys/{id}/rotate` + overlap 窗口，旧 token 窗口内仍可用）+ `TokenValidator`
+  SPI + HS256 `JwtTokenValidator`（签名/exp/nbf/iss 校验，registry miss 回退，7 测试）。
+- **B2 真向量语义缓存**：`InMemoryVectorStore`（线性余弦 + 有界淘汰）+
+  `gateway.cache.semantic-threshold`；分桶键作为 fallback。
+- **B3** 流式响应治理按定位不做（README 写明）。
+- **B4 per-model / per-group 限流与预算**：`gateway.model-limits[]`（exact > prefix > `*`，
+  独立 token 桶）+ `gateway.group-budgets[]`（组级 $ 硬预算），429 原因分别
+  `model rate limit exceeded` / `group spend budget exceeded`；`TokenLimiter` 新增
+  速率感知重载。
+- **B5 管理面**：`GET /admin/audit/export`（全量审计环）+ 只读 admin token
+  （`gateway.admin-read-token` / `LLMGW_ADMIN_READ_TOKEN`，可观测 GET 放行、变更拒绝）。
+- **B6 真 tokenizer**：`TokenCounter` SPI + 可选 **llmgw-tokenizer-jtokkit** 模块
+  （tiktoken cl100k_base，`-Pjtokkit`），4 测试；启发式默认不变。
+- **B7 虚拟 key 元数据**：`metadata` 自由标签贯穿 create / JSON 存储 / Redis / admin 响应。
+- **B8 缓存失效**：`DELETE /admin/cache`（Caffeine + Redis SCAN）+ `X-LLMGW-No-Cache: 1` 旁路。
+- **B9 Retry-After**：上游头解析 → 同路由重试延迟取 `max(backoff, Retry-After)`，
+  四个重试循环全部接入。
+- **B10 context-overflow**：6 种溢出消息识别 → 跳过同路由重试直达 fallback；
+  完整「自动换大窗口模型」P3 排期。
+- **B11 端点补齐**：`GET /v1/models`、`POST /v1/batches/{id}/cancel`、
+  `GET /v1/files/{id}/content`——数据面端点 15 → 18。
+- **B12 SQLite adapter**：`KeyStore` SPI 已就绪（P3 排期）。
+
+**不做清单（C，3/3）**：README 新增「定位与不做清单」——WS/gRPC 入口与 HTTP/2 上游、
+Prompt 管理/SSE 改写、MCP/A2A 与内置 PII 改写，均声明为定位外。
+
+**验证**：10 个 shell 契约套件（378 断言）+ 6 模块 45 个 JUnit 全绿
+（`docs/verification/final-all-green.log`）。
+
+### Changed — v13
+
+- `Route` 新增 `provider` 维度（认证方言，非协议转换）；模型匹配升级为
+  精确 > 前缀（`claude-*`）> 通配三级特异性（canary/模型族分流的地基）。
+- `UpstreamRequest` / `GatewayDecision` / `ApiKey` 记录扩展新字段（均有兼容构造器）。
+- Mock 上游新增故障注入标记：`mock-fail-once-status-N`（重试合约）、
+  `mock-stall-headers-N` / `mock-stall-mid-N`（三段超时）、`mock-chunk-interval-N`
+  （心跳），认证方言/收到 header/语义向量探针端点。
+- 新增冒烟套件：`smoke-v13-hardening.sh`（42）、`smoke-v13-provider.sh`（24）、
+  `smoke-v13-platform.sh`（34）、`smoke-v13-extensions.sh`（36，含 multipart/files/batches 闭环后）。
+
 ### Changed
 
 - Java 包名 `com.leo.llmgw` → **`io.github.leohou0430.llmgw`**，Maven groupId

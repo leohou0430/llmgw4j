@@ -19,7 +19,9 @@ import org.springframework.context.annotation.ComponentScan;
         "io.github.leohou0430.llmgw.app",
         "io.github.leohou0430.llmgw.engine.webflux",
         "io.github.leohou0430.llmgw.engine.vt",
-        "io.github.leohou0430.llmgw.provider.openai"
+        "io.github.leohou0430.llmgw.provider.openai",
+        "io.github.leohou0430.llmgw.provider.anthropic",
+        "io.github.leohou0430.llmgw.tokenizer.jtokkit"
 })
 @EnableConfigurationProperties(GatewayProperties.class)
 public class LlmGatewayApplication {

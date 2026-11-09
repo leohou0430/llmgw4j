@@ -251,7 +251,7 @@ paths:
               prompt: a cat runs
       responses:
         '200':
-          description: Task accepted. Poll `GET /v1/videos/{id}` until `status: completed`.
+          description: "Task accepted. Poll `GET /v1/videos/{id}` until `status: completed`."
           content:
             application/json:
               schema:
@@ -301,6 +301,228 @@ paths:
                 type: string
                 format: binary
         '502': { $ref: '#/components/responses/UpstreamError' }
+  /v1/embeddings:
+    post:
+      summary: "Embeddings (W4.3): byte-faithful pass-through"
+      tags: [data-plane]
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [input]
+              properties:
+                model: { type: string }
+                input: { type: [string, array] }
+      responses:
+        '200':
+          description: "Upstream embedding response, forwarded verbatim"
+          content:
+            application/json:
+              schema: { type: object }
+
+  /v1/rerank:
+    post:
+      summary: "Rerank (W4.3): byte-faithful pass-through"
+      tags: [data-plane]
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                model: { type: string }
+                query: { type: string }
+                documents: { type: array, items: { type: string } }
+      responses:
+        '200':
+          description: "Upstream rerank response, forwarded verbatim"
+          content:
+            application/json:
+              schema: { type: object }
+
+  /v1/audio/speech:
+    post:
+      summary: "Speech synthesis (W4.3): JSON in, binary out"
+      tags: [data-plane]
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                model: { type: string }
+                input: { type: string }
+                voice: { type: string }
+      responses:
+        '200':
+          description: "Audio bytes, forwarded byte-for-byte (never a String)"
+          content:
+            audio/mpeg:
+              schema: { type: string, format: binary }
+
+  /v1/audio/transcriptions:
+    post:
+      summary: "Transcriptions (W4.3): multipart upload, byte-faithful"
+      tags: [data-plane]
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                model: { type: string }
+                prompt: { type: string }
+                file: { type: string, format: binary }
+      responses:
+        '200':
+          description: "Upstream transcription response; the multipart body (including its boundary) is forwarded byte-for-byte"
+          content:
+            application/json:
+              schema: { type: object }
+
+  /v1/files:
+    post:
+      summary: "File upload (W4.3): multipart, sticky-routed by file id"
+      tags: [data-plane]
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                purpose: { type: string }
+                file: { type: string, format: binary }
+      responses:
+        '200':
+          description: "File object with the minted id"
+          content:
+            application/json:
+              schema: { type: object }
+    get:
+      summary: "List files (unpinned; honors the circuit breaker)"
+      tags: [data-plane]
+      security: [{ bearerAuth: [] }]
+      responses:
+        '200':
+          description: "Upstream file list, forwarded verbatim"
+          content:
+            application/json:
+              schema: { type: object }
+
+  /v1/files/{id}:
+    get:
+      summary: "Retrieve a file: sticky-routed to the uploading route"
+      tags: [data-plane]
+      security: [{ bearerAuth: [] }]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses:
+        '200':
+          description: "File object; a sticky miss resolves the wildcard route"
+          content:
+            application/json:
+              schema: { type: object }
+    delete:
+      summary: "Delete a file: sticky-routed"
+      tags: [data-plane]
+      security: [{ bearerAuth: [] }]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses:
+        '200':
+          description: "Deletion acknowledgement"
+          content:
+            application/json:
+              schema: { type: object }
+
+  /v1/batches:
+    post:
+      summary: "Batch create (W4.3): async job, mints a sticky batch id"
+      tags: [data-plane]
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { type: object }
+      responses:
+        '200':
+          description: "Batch object with the minted id"
+          content:
+            application/json:
+              schema: { type: object }
+    get:
+      summary: "List batches (unpinned)"
+      tags: [data-plane]
+      security: [{ bearerAuth: [] }]
+      responses:
+        '200':
+          description: "Upstream batch list"
+          content:
+            application/json:
+              schema: { type: object }
+
+  /v1/batches/{id}:
+
+  /v1/models:
+    get:
+      summary: "List models (B11): catalog pass-through"
+      tags: [data-plane]
+      security: [{ bearerAuth: [] }]
+      responses:
+        '200':
+          description: "Upstream model catalog, forwarded verbatim"
+          content:
+            application/json:
+              schema: { type: object }
+
+  /v1/batches/{id}/cancel:
+    post:
+      summary: "Cancel a batch (B11): sticky-routed to the creating route"
+      tags: [data-plane]
+      security: [{ bearerAuth: [] }]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses:
+        '200':
+          description: "Batch object with status cancelled"
+          content:
+            application/json:
+              schema: { type: object }
+
+  /v1/files/{id}/content:
+    get:
+      summary: "Download file content (B11): sticky-routed, binary pass-through"
+      tags: [data-plane]
+      security: [{ bearerAuth: [] }]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses:
+        '200':
+          description: "File bytes, forwarded byte-for-byte"
+          content:
+            application/octet-stream:
+              schema: { type: string, format: binary }
+
+    get:
+      summary: "Poll a batch: sticky-routed to the creating route"
+      tags: [data-plane]
+      security: [{ bearerAuth: [] }]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses:
+        '200':
+          description: "Batch status object"
+          content:
+            application/json:
+              schema: { type: object }
+
 components:
   securitySchemes:
     bearerAuth:

@@ -8,23 +8,28 @@ import io.github.leohou0430.llmgw.core.governance.GovernanceChain;
 import io.github.leohou0430.llmgw.core.protocol.ParsedRequest;
 import io.github.leohou0430.llmgw.core.protocol.ProtocolCodec;
 import io.github.leohou0430.llmgw.core.protocol.ProtocolKind;
-import io.github.leohou0430.llmgw.core.protocol.VideosProtocol;
+import io.github.leohou0430.llmgw.core.protocol.Protocols;
 import io.github.leohou0430.llmgw.core.routing.Route;
 import io.github.leohou0430.llmgw.core.routing.Router;
-import io.github.leohou0430.llmgw.core.routing.StickyTaskRoutes;
+import io.github.leohou0430.llmgw.core.routing.TaskRouteSticky;
 import io.github.leohou0430.llmgw.core.upstream.CircuitBreaker;
 import io.github.leohou0430.llmgw.core.upstream.CircuitOpenException;
+import io.github.leohou0430.llmgw.core.upstream.HeaderListener;
+import io.github.leohou0430.llmgw.core.upstream.HeaderPolicy;
+import io.github.leohou0430.llmgw.core.upstream.UpstreamMethod;
 import io.github.leohou0430.llmgw.core.upstream.UpstreamProvider;
 import io.github.leohou0430.llmgw.engine.EngineHeaders;
 import io.github.leohou0430.llmgw.engine.EngineProfiles;
 import io.github.leohou0430.llmgw.engine.EngineReasons;
 import io.github.leohou0430.llmgw.engine.EngineRoutes;
 import io.github.leohou0430.llmgw.engine.EngineTimings;
+import io.github.leohou0430.llmgw.engine.ForwardingPolicy;
 import io.github.leohou0430.llmgw.engine.SseChunkAccounting;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DataBufferLimitException;
 import org.springframework.core.io.buffer.DataBufferUtils;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
@@ -39,7 +44,10 @@ import reactor.core.publisher.SignalType;
 import tools.jackson.databind.JsonNode;
 
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
@@ -68,9 +76,17 @@ import java.util.concurrent.atomic.AtomicReference;
  * error is NOT a failure -- the protocol exchange is already complete.
  *
  * <p>Video tasks are asynchronous upstream jobs: create responses bind the task
- * id to the winning route ({@link StickyTaskRoutes}), and poll/content GETs are
+ * id to the winning route ({@link TaskRouteSticky}), and poll/content GETs are
  * pinned to that route with NO fallback and NO circuit breaking -- a task exists
- * only on the upstream that created it.
+ * only on the upstream that created it. A STICKY MISS (unknown task id) resolves
+ * the wildcard route and DOES honor the circuit breaker (v13): it is an
+ * ordinary route call, and hammering a dead wildcard route must trip it.
+ *
+ * <p>v13 forwarding: attempt ordering (same-route retry with backoff, then the
+ * fallback chain) is delegated to {@link ForwardingPolicy}; header pass-through
+ * in both directions is delegated to {@link HeaderPolicy}. Comment lines
+ * (": ...", SSE heartbeat) are transport-level and excluded from accounting,
+ * TTFT and the first-chunk guard.
  */
 @RestController
 @Profile(EngineProfiles.WEBFLUX)
@@ -81,19 +97,25 @@ public class WebfluxGatewayController {
     private final UpstreamProvider provider;
     private final CircuitBreaker breaker;
     private final GatewayProperties properties;
-    private final StickyTaskRoutes videoTasks;
+    /** W3.6: sticky store is an injectable SPI (in-memory default, Redis pack). */
+    private final TaskRouteSticky taskRoutes;
+    private final HeaderPolicy headerPolicy;
+    private final ForwardingPolicy.RetryConfig retryConfig;
 
     public WebfluxGatewayController(GovernanceChain chain, Router router,
                                     UpstreamProvider provider, CircuitBreaker breaker,
-                                    GatewayProperties properties) {
+                                    GatewayProperties properties, HeaderPolicy headerPolicy,
+                                    TaskRouteSticky taskRoutes) {
         this.chain = chain;
         this.router = router;
         this.provider = provider;
         this.breaker = breaker;
         this.properties = properties;
-        this.videoTasks = new StickyTaskRoutes(
-                properties.getVideos().getStickyMaxEntries(),
-                properties.getVideos().getStickyTtlSeconds());
+        this.taskRoutes = taskRoutes;
+        this.headerPolicy = headerPolicy;
+        GatewayProperties.Upstream.Retry retry = properties.getUpstream().getRetry();
+        this.retryConfig = new ForwardingPolicy.RetryConfig(
+                retry.getAttempts(), retry.getBackoffBaseMs(), retry.getBackoffMaxMs());
     }
 
     @PostMapping("/v1/chat/completions")
@@ -121,22 +143,114 @@ public class WebfluxGatewayController {
         return handleKind(ProtocolKind.VIDEOS, request, response);
     }
 
+    // W4.3 protocol-surface expansion: JSON-in/JSON-out pass-through kinds.
+    @PostMapping("/v1/embeddings")
+    public Mono<Void> handleEmbeddings(ServerHttpRequest request, ServerHttpResponse response) {
+        return handleKind(ProtocolKind.EMBEDDINGS, request, response);
+    }
+
+    @PostMapping("/v1/rerank")
+    public Mono<Void> handleRerank(ServerHttpRequest request, ServerHttpResponse response) {
+        return handleKind(ProtocolKind.RERANK, request, response);
+    }
+
+    /** JSON in, BINARY out: same byte-faithful path as video content. */
+    @PostMapping("/v1/audio/speech")
+    public Mono<Void> handleSpeech(ServerHttpRequest request, ServerHttpResponse response) {
+        return handleBinaryKind(ProtocolKind.SPEECH, "audio/mpeg", request, response);
+    }
+
     @GetMapping("/v1/videos/{id}")
     public Mono<Void> handleVideoPoll(@PathVariable("id") String id,
                                       ServerHttpRequest request, ServerHttpResponse response) {
-        return handleVideoFetch(id, "/videos/" + id, EngineHeaders.APPLICATION_JSON, request, response);
+        return handleStickyFetch(ProtocolKind.VIDEOS, "/videos/" + id,
+                EngineHeaders.APPLICATION_JSON, id, UpstreamMethod.GET, request, response);
     }
 
     @GetMapping("/v1/videos/{id}/content")
     public Mono<Void> handleVideoContent(@PathVariable("id") String id,
                                          ServerHttpRequest request, ServerHttpResponse response) {
-        return handleVideoFetch(id, "/videos/" + id + "/content", "video/mp4", request, response);
+        return handleStickyFetch(ProtocolKind.VIDEOS, "/videos/" + id + "/content",
+                "video/mp4", id, UpstreamMethod.GET, request, response);
+    }
+
+    // W4.3 completion of the market parity list: uploads, files, batches.
+    @PostMapping("/v1/audio/transcriptions")
+    public Mono<Void> handleTranscriptions(ServerHttpRequest request, ServerHttpResponse response) {
+        return handleUpload(ProtocolKind.TRANSCRIPTIONS, request, response);
+    }
+
+    @PostMapping("/v1/files")
+    public Mono<Void> handleFileUpload(ServerHttpRequest request, ServerHttpResponse response) {
+        return handleUpload(ProtocolKind.FILES, request, response);
+    }
+
+    @GetMapping("/v1/files")
+    public Mono<Void> handleFileList(ServerHttpRequest request, ServerHttpResponse response) {
+        return handleStickyFetch(ProtocolKind.FILES, "/files", EngineHeaders.APPLICATION_JSON,
+                null, UpstreamMethod.GET, request, response);
+    }
+
+    @GetMapping("/v1/files/{id}")
+    public Mono<Void> handleFileGet(@PathVariable("id") String id,
+                                    ServerHttpRequest request, ServerHttpResponse response) {
+        return handleStickyFetch(ProtocolKind.FILES, "/files/" + id,
+                EngineHeaders.APPLICATION_JSON, id, UpstreamMethod.GET, request, response);
+    }
+
+    @org.springframework.web.bind.annotation.DeleteMapping("/v1/files/{id}")
+    public Mono<Void> handleFileDelete(@PathVariable("id") String id,
+                                       ServerHttpRequest request, ServerHttpResponse response) {
+        return handleStickyFetch(ProtocolKind.FILES, "/files/" + id,
+                EngineHeaders.APPLICATION_JSON, id, UpstreamMethod.DELETE, request, response);
+    }
+
+    @PostMapping("/v1/batches")
+    public Mono<Void> handleBatchCreate(ServerHttpRequest request, ServerHttpResponse response) {
+        return handleKind(ProtocolKind.BATCHES, request, response);
+    }
+
+    @GetMapping("/v1/batches")
+    public Mono<Void> handleBatchList(ServerHttpRequest request, ServerHttpResponse response) {
+        return handleStickyFetch(ProtocolKind.BATCHES, "/batches", EngineHeaders.APPLICATION_JSON,
+                null, UpstreamMethod.GET, request, response);
+    }
+
+    @GetMapping("/v1/batches/{id}")
+    public Mono<Void> handleBatchPoll(@PathVariable("id") String id,
+                                      ServerHttpRequest request, ServerHttpResponse response) {
+        return handleStickyFetch(ProtocolKind.BATCHES, "/batches/" + id,
+                EngineHeaders.APPLICATION_JSON, id, UpstreamMethod.GET, request, response);
+    }
+
+    // B11: market-parity pass-through endpoints (models catalog, batch cancel,
+    // file content download). All honor sticky routing where a resource is
+    // instance-local and the circuit breaker where it is not.
+    @GetMapping("/v1/models")
+    public Mono<Void> handleModels(ServerHttpRequest request, ServerHttpResponse response) {
+        return handleStickyFetch(ProtocolKind.CHAT, "/models",
+                EngineHeaders.APPLICATION_JSON, null, UpstreamMethod.GET, request, response);
+    }
+
+    @PostMapping("/v1/batches/{id}/cancel")
+    public Mono<Void> handleBatchCancel(@PathVariable("id") String id,
+                                        ServerHttpRequest request, ServerHttpResponse response) {
+        return handleStickyFetch(ProtocolKind.BATCHES, "/batches/" + id + "/cancel",
+                EngineHeaders.APPLICATION_JSON, id, UpstreamMethod.POST, request, response);
+    }
+
+    @GetMapping("/v1/files/{id}/content")
+    public Mono<Void> handleFileContent(@PathVariable("id") String id,
+                                        ServerHttpRequest request, ServerHttpResponse response) {
+        return handleStickyFetch(ProtocolKind.FILES, "/files/" + id + "/content",
+                "application/octet-stream", id, UpstreamMethod.GET, request, response);
     }
 
     private Mono<Void> handleKind(ProtocolKind kind, ServerHttpRequest request,
                                   ServerHttpResponse response) {
         long arrived = System.nanoTime();
         long max = Math.max(1, properties.getMaxRequestBytes());
+        Map<String, String> clientHeaders = firstValues(request.getHeaders());
         return DataBufferUtils.join(request.getBody(), (int) Math.min(max, Integer.MAX_VALUE))
                 .map(buffer -> {
                     String raw = buffer.toString(StandardCharsets.UTF_8);
@@ -145,13 +259,80 @@ public class WebfluxGatewayController {
                 })
                 .defaultIfEmpty("{}")
                 .flatMap(raw -> dispatch(kind, raw,
-                        request.getHeaders().getFirst("Authorization"), response,
+                        request.getHeaders().getFirst("Authorization"), clientHeaders, response,
                         request.getHeaders().getFirst(EngineHeaders.REQUEST_ID), arrived))
                 .onErrorResume(DataBufferLimitException.class,
                         e -> writeError(response, GatewayDecision.deny(413, EngineReasons.REQUEST_TOO_LARGE)));
     }
 
+    /**
+     * W4.3 binary-response kind (speech): full governance, then a byte-for-byte
+     * pass-through. The bytes never round-trip a String. JSON errors before the
+     * first byte keep the standard gateway error contract.
+     */
+    private Mono<Void> handleBinaryKind(ProtocolKind kind, String contentType,
+                                        ServerHttpRequest request, ServerHttpResponse response) {
+        long arrived = System.nanoTime();
+        long max = Math.max(1, properties.getMaxRequestBytes());
+        Map<String, String> clientHeaders = firstValues(request.getHeaders());
+        return DataBufferUtils.join(request.getBody(), (int) Math.min(max, Integer.MAX_VALUE))
+                .map(buffer -> {
+                    String raw = buffer.toString(StandardCharsets.UTF_8);
+                    DataBufferUtils.release(buffer);
+                    return raw;
+                })
+                .defaultIfEmpty("{}")
+                .flatMap(rawJson -> {
+                    String requestId = GatewayPipeline.requestId(
+                            request.getHeaders().getFirst(EngineHeaders.REQUEST_ID));
+                    response.getHeaders().set(EngineHeaders.REQUEST_ID, requestId);
+                    GatewayDecision decision = GatewayPipeline.enter(chain, router, kind,
+                            request.getHeaders().getFirst("Authorization"), rawJson);
+                    if (!decision.allowed()) {
+                        return writeError(response, decision);
+                    }
+                    GatewayContext context = GatewayPipeline.context(decision, requestId, arrived);
+                    Route route = decision.route();
+                    Map<String, String> pass = headerPolicy.toUpstream(kind, clientHeaders);
+                    AtomicBoolean settled = new AtomicBoolean(false);
+                    return Mono.defer(() -> {
+                                if (!breaker.allow(route)) {
+                                    return Mono.<byte[]>error(new CircuitOpenException(route.id()));
+                                }
+                                context.markUpstreamStart();
+                                return provider.fetchRawAsync(EngineRoutes.postBytes(
+                                        rawJson, decision.parsed(), route,
+                                        properties.getUpstream().getTimeoutMs(), pass));
+                            })
+                            .doOnSuccess(body -> breaker.recordSuccess(route))
+                            .doOnError(e -> {
+                                if (!(e instanceof CircuitOpenException)) {
+                                    breaker.recordFailure(route);
+                                }
+                            })
+                            .flatMap(body -> {
+                                context.markUpstreamEnd();
+                                response.getHeaders().set(EngineHeaders.OVERHEAD_MS,
+                                        EngineTimings.total(context));
+                                response.setStatusCode(HttpStatus.OK);
+                                response.getHeaders().setContentType(MediaType.parseMediaType(contentType));
+                                return response.writeWith(Mono.just(
+                                        response.bufferFactory().wrap(body)));
+                            })
+                            .onErrorResume(e -> {
+                                finishOnce(context, settled, false);
+                                return writeError(response, GatewayDecision.deny(502,
+                                        EngineReasons.upstream(e)));
+                            })
+                            .doFinally(signal -> finishOnce(context, settled,
+                                    signal == SignalType.ON_COMPLETE));
+                })
+                .onErrorResume(DataBufferLimitException.class,
+                        e -> writeError(response, GatewayDecision.deny(413, EngineReasons.REQUEST_TOO_LARGE)));
+    }
+
     private Mono<Void> dispatch(ProtocolKind kind, String rawJson, String auth,
+                                Map<String, String> clientHeaders,
                                 ServerHttpResponse response, String incomingRequestId,
                                 long arrivedNanos) {
         String requestId = GatewayPipeline.requestId(incomingRequestId);
@@ -164,10 +345,17 @@ public class WebfluxGatewayController {
         GatewayContext context = GatewayPipeline.context(decision, requestId, arrivedNanos);
         Route route = decision.route();
         int timeout = properties.getUpstream().getTimeoutMs();
+        ForwardingPolicy.RetryConfig retry = retryConfig;
+        Map<String, String> pass = headerPolicy.toUpstream(kind, clientHeaders);
+        HeaderListener egress = egressListener(response);
         AtomicBoolean settled = new AtomicBoolean(false);
 
         if (!parsed.stream()) {
-            Optional<String> cached = chain.lookupCache(decision.keyId(), parsed);
+            // B8: explicit per-request cache bypass header (also skips the put).
+            boolean cacheBypass = "1".equals(clientHeaders.get("x-llmgw-no-cache"));
+            Optional<String> cached = cacheBypass
+                    ? Optional.empty()
+                    : chain.lookupCache(decision.keyId(), parsed);
             Mono<String> bodyMono;
             AtomicReference<Route> winner = new AtomicReference<>(route);
             if (cached.isPresent()) {
@@ -176,7 +364,9 @@ public class WebfluxGatewayController {
                 context.markCached();
                 bodyMono = Mono.just(cached.get());
             } else {
-                bodyMono = completeAsyncWithFallback(rawJson, parsed, route, timeout, context, winner)
+                bodyMono = completeAttempts(
+                                ForwardingPolicy.plan(router, route, retry), 0,
+                                rawJson, parsed, timeout, context, winner, pass, egress)
                         .map(Completed::body);
             }
             return bodyMono
@@ -188,13 +378,15 @@ public class WebfluxGatewayController {
                         JsonNode root = ProtocolCodec.tryParse(body);
                         context.setCompletionTokensIfAbsent(
                                 ProtocolCodec.completionTokensFromResponse(kind, root));
-                        if (cached.isEmpty()) {
+                        if (cached.isEmpty() && !cacheBypass) {
                             chain.cache(decision.keyId(), parsed, body,
                                     ProtocolCodec.isCacheableResponse(kind, root));
                             // A video job lives on the upstream that created it:
-                            // pin the task id to the route that served the create.
-                            if (kind == ProtocolKind.VIDEOS) {
-                                videoTasks.bind(VideosProtocol.taskId(root), winner.get().id());
+                            // pin the task id (async-job protocols only) to the
+                            // route that served the create.
+                            String taskId = Protocols.of(kind).taskId(root);
+                            if (!taskId.isEmpty()) {
+                                taskRoutes.bind(taskId, winner.get().id());
                             }
                         }
                         return writeJson(response, body, context);
@@ -221,9 +413,13 @@ public class WebfluxGatewayController {
 
         AtomicBoolean started = new AtomicBoolean(false);
         AtomicBoolean doneSeen = new AtomicBoolean(false);
-        Flux<String> chunks = streamWithFallback(rawJson, parsed, route, timeout, started, context)
+        Flux<String> chunks = streamAttempts(
+                        ForwardingPolicy.plan(router, route, retry), 0,
+                        rawJson, parsed, timeout, started, context, pass, egress)
                 .doOnNext(line -> {
-                    if (SseChunkAccounting.apply(kind, line, context)) {
+                    // Comment frames (": ...") are transport-level and must not
+                    // touch the protocol accounting or the terminator verdict.
+                    if (!line.startsWith(":") && SseChunkAccounting.apply(kind, line, context)) {
                         doneSeen.set(true);
                     }
                 })
@@ -279,12 +475,12 @@ public class WebfluxGatewayController {
     }
 
     /**
-     * In-band error after the first chunk. {@code [DONE]} follows for CHAT only:
-     * it is chat's own terminator, and fabricating response.completed or
-     * message_stop would corrupt the client's protocol view of the stream.
+     * In-band error after the first chunk. {@code [DONE]} follows only for
+     * protocols whose contract says so (chat): fabricating another protocol's
+     * terminator would corrupt the client's protocol view of the stream.
      */
     private static Flux<String> terminalError(String reason, ProtocolKind kind) {
-        return kind == ProtocolKind.CHAT
+        return Protocols.of(kind).appendDoneAfterInBandError()
                 ? Flux.just(ProtocolCodec.errorEvent(reason), ProtocolCodec.doneLine())
                 : Flux.just(ProtocolCodec.errorEvent(reason));
     }
@@ -302,20 +498,40 @@ public class WebfluxGatewayController {
         return Flux.just(ProtocolCodec.errorJson(reason));
     }
 
-    private Flux<String> streamWithFallback(String rawJson, ParsedRequest parsed,
-                                            Route primary, int timeout, AtomicBoolean started,
-                                            GatewayContext context) {
-        Flux<String> flux = attempt(rawJson, parsed, primary, timeout, started, context);
-        for (Route fallback : router.fallbacks(primary)) {
-            flux = flux.onErrorResume(e -> started.get()
-                    ? Flux.<String>error(e)
-                    : attempt(rawJson, parsed, fallback, timeout, started, context));
+    /**
+     * The attempt chain. Errors advance per {@link ForwardingPolicy#nextViable};
+     * once a chunk reached the client ({@code started}), no further attempt is
+     * ever spliced in. Backoff delays for same-route retries are applied lazily
+     * (Mono.delay), so a first-attempt success pays nothing.
+     */
+    private Flux<String> streamAttempts(List<ForwardingPolicy.Attempt> plan, int from,
+                                        String rawJson, ParsedRequest parsed, int timeout,
+                                        AtomicBoolean started, GatewayContext context,
+                                        Map<String, String> pass, HeaderListener egress) {
+        if (from >= plan.size()) {
+            return Flux.error(new IllegalStateException(EngineReasons.NO_UPSTREAM_ROUTE));
         }
-        return flux;
+        ForwardingPolicy.Attempt attempt = plan.get(from);
+        Flux<String> self = streamAttempt(rawJson, parsed, attempt.route(), timeout,
+                started, context, pass, egress);
+        return self.onErrorResume(e -> {
+            if (started.get()) {
+                return Flux.error(e);
+            }
+            int next = ForwardingPolicy.nextViable(plan, from, e);
+            if (next < 0) {
+                return Flux.error(e);
+            }
+            Flux<String> rest = streamAttempts(plan, next, rawJson, parsed, timeout,
+                    started, context, pass, egress);
+            long delay = ForwardingPolicy.effectiveDelayMs(plan, from, next, e);
+            return delay > 0 ? Mono.delay(Duration.ofMillis(delay)).thenMany(rest) : rest;
+        });
     }
 
-    private Flux<String> attempt(String rawJson, ParsedRequest parsed, Route route,
-                                 int timeout, AtomicBoolean started, GatewayContext context) {
+    private Flux<String> streamAttempt(String rawJson, ParsedRequest parsed, Route route,
+                                       int timeout, AtomicBoolean started, GatewayContext context,
+                                       Map<String, String> pass, HeaderListener egress) {
         AtomicBoolean chunked = new AtomicBoolean(false);
         return Flux.defer(() -> {
             if (!breaker.allow(route)) {
@@ -323,9 +539,11 @@ public class WebfluxGatewayController {
                 return Flux.<String>error(new CircuitOpenException(route.id()));
             }
             context.markUpstreamStart();
-            return provider.streamRaw(EngineRoutes.request(rawJson, parsed, route, timeout))
+            return provider.streamRaw(EngineRoutes.request(rawJson, parsed, route, timeout, pass), egress)
                     .doOnNext(line -> {
-                        if (!line.isBlank()) {
+                        // Comment frames are transport-level: never a first chunk,
+                        // never a fallback trigger, invisible to TTFT.
+                        if (!line.isBlank() && !line.startsWith(":")) {
                             if (chunked.compareAndSet(false, true)) {
                                 context.markFirstChunk();
                             }
@@ -357,48 +575,60 @@ public class WebfluxGatewayController {
      * issues an upstream request, and Netty's event loop is never blocked.
      * The winning route is captured for video-task stickiness.
      */
-    private Mono<Completed> completeAsyncWithFallback(String rawJson, ParsedRequest parsed,
-                                                      Route primary, int timeout,
-                                                      GatewayContext context,
-                                                      AtomicReference<Route> winner) {
-        List<Route> candidates = EngineRoutes.candidates(router, primary);
-        Mono<Completed> result = null;
-        for (Route route : candidates) {
-            Mono<Completed> attempt = Mono.defer(() -> {
-                if (!breaker.allow(route)) {
-                    return Mono.<Completed>error(new CircuitOpenException(route.id()));
-                }
-                context.markUpstreamStart();
-                return provider.completeRawAsync(EngineRoutes.request(rawJson, parsed, route, timeout))
-                        .map(body -> {
-                            winner.set(route);
-                            return new Completed(body, route);
-                        })
-                        .doOnSuccess(c -> breaker.recordSuccess(route))
-                        .doOnError(e -> breaker.recordFailure(route));
-            });
-            result = result == null ? attempt : result.onErrorResume(e -> attempt);
+    private Mono<Completed> completeAttempts(List<ForwardingPolicy.Attempt> plan, int from,
+                                             String rawJson, ParsedRequest parsed, int timeout,
+                                             GatewayContext context, AtomicReference<Route> winner,
+                                             Map<String, String> pass, HeaderListener egress) {
+        if (from >= plan.size()) {
+            return Mono.error(new IllegalStateException(EngineReasons.NO_UPSTREAM_ROUTE));
         }
-        return result == null
-                ? Mono.error(new IllegalStateException(EngineReasons.NO_UPSTREAM_ROUTE))
-                : result;
+        ForwardingPolicy.Attempt attempt = plan.get(from);
+        Mono<Completed> self = Mono.defer(() -> {
+            if (!breaker.allow(attempt.route())) {
+                return Mono.<Completed>error(new CircuitOpenException(attempt.route().id()));
+            }
+            context.markUpstreamStart();
+            return provider.completeRawAsync(
+                            EngineRoutes.request(rawJson, parsed, attempt.route(), timeout, pass), egress)
+                    .map(body -> {
+                        winner.set(attempt.route());
+                        return new Completed(body, attempt.route());
+                    })
+                    .doOnSuccess(c -> breaker.recordSuccess(attempt.route()))
+                    .doOnError(e -> breaker.recordFailure(attempt.route()));
+        });
+        return self.onErrorResume(e -> {
+            int next = ForwardingPolicy.nextViable(plan, from, e);
+            if (next < 0) {
+                return Mono.error(e);
+            }
+            Mono<Completed> rest = completeAttempts(plan, next, rawJson, parsed, timeout,
+                    context, winner, pass, egress);
+            long delay = ForwardingPolicy.effectiveDelayMs(plan, from, next, e);
+            return delay > 0 ? Mono.delay(Duration.ofMillis(delay)).then(rest) : rest;
+        });
     }
 
     /**
-     * Video poll / content GET: governance + sticky routing, then a raw
-     * byte-for-byte pass-through. No cache, no token accounting, no fallback,
-     * no circuit breaker — the task is pinned to one upstream or it does not
-     * exist; a create-route circuit must never strand a live job's polling.
+     * Task poll / fetch GET/DELETE (video, batch, files): governance + sticky
+     * routing, then a raw byte-for-byte pass-through. A PINNED task has no
+     * fallback and no circuit breaking -- the task exists only on the upstream
+     * that created it, and a create-route circuit must never strand a live
+     * job's polling. A STICKY MISS resolves the wildcard route, which is an
+     * ordinary route call and DOES honor the circuit breaker (v13). A null
+     * taskId (list endpoints) is always unpinned.
      */
-    private Mono<Void> handleVideoFetch(String taskId, String upstreamPath, String contentType,
-                                        ServerHttpRequest request, ServerHttpResponse response) {
+    private Mono<Void> handleStickyFetch(ProtocolKind kind, String upstreamPath, String contentType,
+                                         String taskId, UpstreamMethod method,
+                                         ServerHttpRequest request, ServerHttpResponse response) {
         long arrived = System.nanoTime();
         String requestId = GatewayPipeline.requestId(
                 request.getHeaders().getFirst(EngineHeaders.REQUEST_ID));
         response.getHeaders().set(EngineHeaders.REQUEST_ID, requestId);
-        ParsedRequest parsed = ParsedRequest.bodyless(ProtocolKind.VIDEOS);
-        Route pinned = router.byId(videoTasks.resolve(taskId));
-        Route route = pinned != null ? pinned : router.resolve(ProtocolKind.VIDEOS, "*");
+        ParsedRequest parsed = ParsedRequest.bodyless(kind);
+        Route pinned = taskId == null ? null : router.byId(taskRoutes.resolve(taskId));
+        boolean isPinned = pinned != null;
+        Route route = isPinned ? pinned : router.resolve(kind, "*");
         GatewayDecision decision = chain.enter(
                 request.getHeaders().getFirst("Authorization"), parsed, route);
         if (!decision.allowed()) {
@@ -407,9 +637,22 @@ public class WebfluxGatewayController {
         GatewayContext context = GatewayPipeline.context(decision, requestId, arrived);
         AtomicBoolean settled = new AtomicBoolean(false);
         return Mono.defer(() -> {
+                    if (!isPinned && !breaker.allow(route)) {
+                        return Mono.<byte[]>error(new CircuitOpenException(route.id()));
+                    }
                     context.markUpstreamStart();
-                    return provider.fetchRawAsync(EngineRoutes.fetch(route, upstreamPath,
-                            properties.getUpstream().getTimeoutMs()));
+                    return provider.fetchRawAsync(EngineRoutes.methodFetch(route, upstreamPath,
+                            method, properties.getUpstream().getTimeoutMs()));
+                })
+                .doOnSuccess(body -> {
+                    if (!isPinned) {
+                        breaker.recordSuccess(route);
+                    }
+                })
+                .doOnError(e -> {
+                    if (!isPinned && !(e instanceof CircuitOpenException)) {
+                        breaker.recordFailure(route);
+                    }
                 })
                 .flatMap(body -> {
                     context.markUpstreamEnd();
@@ -428,6 +671,81 @@ public class WebfluxGatewayController {
                     return writeError(response, GatewayDecision.deny(502, EngineReasons.upstream(e)));
                 })
                 .doFinally(signal -> finishOnce(context, settled, signal == SignalType.ON_COMPLETE));
+    }
+
+    /**
+     * W4.3 byte-body upload kinds (transcriptions, files): full governance via
+     * the byte-probe, then a byte-faithful POST. The multipart Content-Type
+     * (with its boundary) rides the policy pass-through untouched.
+     */
+    private Mono<Void> handleUpload(ProtocolKind kind, ServerHttpRequest request,
+                                    ServerHttpResponse response) {
+        long arrived = System.nanoTime();
+        long max = Math.max(1, properties.getMaxRequestBytes());
+        Map<String, String> clientHeaders = firstValues(request.getHeaders());
+        return DataBufferUtils.join(request.getBody(), (int) Math.min(max, Integer.MAX_VALUE))
+                .map(buffer -> {
+                    byte[] bytes = new byte[buffer.readableByteCount()];
+                    buffer.toByteBuffer().get(bytes);
+                    DataBufferUtils.release(buffer);
+                    return bytes;
+                })
+                .defaultIfEmpty(new byte[0])
+                .flatMap(body -> {
+                    String requestId = GatewayPipeline.requestId(
+                            request.getHeaders().getFirst(EngineHeaders.REQUEST_ID));
+                    response.getHeaders().set(EngineHeaders.REQUEST_ID, requestId);
+                    ParsedRequest parsed;
+                    try {
+                        parsed = Protocols.of(kind).parse(body);
+                    } catch (RuntimeException e) {
+                        return writeError(response, GatewayDecision.deny(400,
+                                "invalid multipart body: " + e.getMessage()));
+                    }
+                    GatewayDecision decision = chain.enter(
+                            request.getHeaders().getFirst("Authorization"), parsed,
+                            router.resolve(kind, parsed.model()));
+                    if (!decision.allowed()) {
+                        return writeError(response, decision);
+                    }
+                    GatewayContext context = GatewayPipeline.context(decision, requestId, arrived);
+                    Map<String, String> pass = headerPolicy.toUpstream(kind, clientHeaders);
+                    AtomicBoolean settled = new AtomicBoolean(false);
+                    return Mono.defer(() -> {
+                                if (!breaker.allow(decision.route())) {
+                                    return Mono.<byte[]>error(
+                                            new CircuitOpenException(decision.route().id()));
+                                }
+                                context.markUpstreamStart();
+                                return provider.fetchRawAsync(EngineRoutes.postRawBytes(body,
+                                        parsed, decision.route(),
+                                        properties.getUpstream().getTimeoutMs(), pass));
+                            })
+                            .doOnSuccess(ignored -> breaker.recordSuccess(decision.route()))
+                            .doOnError(e -> {
+                                if (!(e instanceof CircuitOpenException)) {
+                                    breaker.recordFailure(decision.route());
+                                }
+                            })
+                            .flatMap(bytes -> {
+                                context.markUpstreamEnd();
+                                response.getHeaders().set(EngineHeaders.OVERHEAD_MS,
+                                        EngineTimings.total(context));
+                                response.setStatusCode(HttpStatus.OK);
+                                response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
+                                return response.writeWith(Mono.just(
+                                        response.bufferFactory().wrap(bytes)));
+                            })
+                            .onErrorResume(e -> {
+                                finishOnce(context, settled, false);
+                                return writeError(response, GatewayDecision.deny(502,
+                                        EngineReasons.upstream(e)));
+                            })
+                            .doFinally(signal -> finishOnce(context, settled,
+                                    signal == SignalType.ON_COMPLETE));
+                })
+                .onErrorResume(DataBufferLimitException.class,
+                        e -> writeError(response, GatewayDecision.deny(413, EngineReasons.REQUEST_TOO_LARGE)));
     }
 
     private Mono<Void> writeJson(ServerHttpResponse response, String body,
@@ -455,5 +773,39 @@ public class WebfluxGatewayController {
         if (settled.compareAndSet(false, true)) {
             GatewayPipeline.finish(chain, context, success);
         }
+    }
+
+    /**
+     * Upstream → client header forwarding. The listener fires on the HTTP
+     * client's response thread strictly before any body byte flows; writes
+     * then happen-before the controller's body writes (Reactor queue HB), so
+     * mutating the still-uncommitted headers here is race-free. A cache hit
+     * never fires a listener -- cached responses carry no upstream headers.
+     */
+    private HeaderListener egressListener(ServerHttpResponse response) {
+        return (status, headers) -> {
+            if (response.isCommitted()) {
+                return;
+            }
+            for (String name : headerPolicy.toClient(headers)) {
+                List<String> values = headers.get(name);
+                if (values != null && !values.isEmpty() && values.get(0) != null) {
+                    response.getHeaders().add(name, values.get(0));
+                }
+            }
+        };
+    }
+
+
+    private static Map<String, String> firstValues(HttpHeaders headers) {
+        Map<String, String> out = new LinkedHashMap<>();
+        // Spring Framework 7: HttpHeaders no longer implements Map.
+        for (Map.Entry<String, List<String>> entry : headers.headerSet()) {
+            List<String> values = entry.getValue();
+            if (values != null && !values.isEmpty() && values.get(0) != null) {
+                out.put(entry.getKey(), values.get(0));
+            }
+        }
+        return out;
     }
 }

@@ -69,9 +69,16 @@ engine 的配置类继承 `AbstractEngineConfiguration` 即可自动登记 `Engi
 **新增一个全新能力域**：按上面的目录模板建聚合 + api + 至少两个实现；校验脚本会
 自动发现新域（根目录下一级、且 `packaging=pom` 的 `llmgw-*` 目录），无需改脚本。
 
-`llmgw-provider-openai` 目前只有一个 SDK 连通性验证器，不构成多实现域，暂不设聚合层；
-**一旦出现第二个 provider 实现，必须按同一模板拆成 `llmgw-provider/` +
-`llmgw-provider-api/` + 多个实现模块**。
+`llmgw-provider-openai` 目前只有一个 SDK 连通性验证器，不构成多实现域，暂不设聚合层。
+v13 已有第二个 provider 模块 `llmgw-provider-anthropic`（`UpstreamAuthenticator`
+适配器：x-api-key + anthropic-version 方言）——它仍是独立 jar 模块而非聚合域，
+因为它只实现 core 的一个 SPI；当 provider 适配器多到需要共享工具类时，
+再按「聚合 + provider-api + 多实现」拆分。
+
+新增 provider 适配器的模板：实现 `io.github.leohou0430.llmgw.core.upstream.
+UpstreamAuthenticator`（supports(provider) + authHeaders(apiKey)），声明为
+`@Component`，加入组合根的组件扫描列表；路由用 `provider: <name>` 选择方言。
+协议仍是路由维度而非转换维度——请求字节永远逐字透传。
 
 ## 3. 两个数据面
 

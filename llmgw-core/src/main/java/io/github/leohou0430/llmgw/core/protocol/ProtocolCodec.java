@@ -49,16 +49,11 @@ public final class ProtocolCodec {
      * Protocol dispatch. Each kind parses only the fields its governance needs
      * (model / stream / prompt text / units) and skips the rest without
      * materialising a tree; malformed JSON still throws so
-     * {@code GatewayPipeline.enter} answers 400 exactly as before.
+     * {@code GatewayPipeline.enter} answers 400 exactly as before. The old
+     * closed switch is the {@link Protocol} SPI registry since v13.
      */
     public static ParsedRequest parse(ProtocolKind kind, String rawJson) {
-        return switch (kind) {
-            case CHAT -> parse(rawJson);
-            case RESPONSES -> ResponsesProtocol.parse(rawJson);
-            case MESSAGES -> MessagesProtocol.parse(rawJson);
-            case IMAGES -> ImagesProtocol.parse(rawJson);
-            case VIDEOS -> VideosProtocol.parse(rawJson);
-        };
+        return Protocols.of(kind).parse(rawJson);
     }
 
     /**
@@ -264,31 +259,22 @@ public final class ProtocolCodec {
     }
 
     /**
-     * Kind-aware completion tokens. Text protocols read their authoritative
-     * usage field (chat: {@code usage.completion_tokens}; responses/messages:
+     * Kind-aware completion tokens via the {@link Protocol} SPI. Text
+     * protocols read their authoritative usage field (chat:
+     * {@code usage.completion_tokens}; responses/messages:
      * {@code usage.output_tokens}); media kinds never generate tokens.
      */
     public static int completionTokensFromResponse(ProtocolKind kind, JsonNode root) {
-        return switch (kind) {
-            case CHAT -> completionTokensFromResponse(root);
-            case RESPONSES -> ResponsesProtocol.completionTokens(root);
-            case MESSAGES -> MessagesProtocol.completionTokens(root);
-            case IMAGES, VIDEOS -> 0;
-        };
+        return Protocols.of(kind).completionTokens(root);
     }
 
     public static int completionTokensFromResponse(ProtocolKind kind, String body) {
         return completionTokensFromResponse(kind, tryParse(body));
     }
 
-    /** Kind-aware cacheability; media responses are never cached. */
+    /** Kind-aware cacheability via the {@link Protocol} SPI; media never cached. */
     public static boolean isCacheableResponse(ProtocolKind kind, JsonNode root) {
-        return switch (kind) {
-            case CHAT -> isCacheableResponse(root);
-            case RESPONSES -> ResponsesProtocol.cacheable(root);
-            case MESSAGES -> MessagesProtocol.cacheable(root);
-            case IMAGES, VIDEOS -> false;
-        };
+        return Protocols.of(kind).cacheable(root);
     }
 
     public static boolean isCacheableResponse(ProtocolKind kind, String body) {

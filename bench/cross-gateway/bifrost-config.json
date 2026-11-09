@@ -1,0 +1,16 @@
+{
+  "providers": {
+    "openai": {
+      "base_url": "http://host.docker.internal:9099/v1",
+      "keys": [
+        {
+          "value": "sk-mock",
+          "models": ["*"]
+        }
+      ]
+    }
+  },
+  "gateway": {
+    "port": 9080
+  }
+}

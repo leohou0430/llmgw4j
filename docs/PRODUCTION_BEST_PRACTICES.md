@@ -338,3 +338,19 @@ curl -N -X POST http://127.0.0.1:8080/v1/chat/completions \
 - [ ] Prometheus 已抓 `/actuator/prometheus`，TTFT p99 / 502 率 / 熔断事件有告警
 - [ ] `smoke-stream-errors.sh` 全绿；fallback 演练通过；思考模型流式超时验证通过
 - [ ] 明确知晓并接受：配额是软上限、headers 不透传（`x-ratelimit-*`、`OpenAI-*`）、缓存仅非流式、多实例治理需 Redis
+
+---
+
+## v13 生产化补充（能力补齐后）
+
+- **预算与价目**：为每个 key 配 `budget-micro-usd`，并用 `gateway.models[]`
+  维护价目；未进目录的模型按 $0 记账（不会误伤，也不会拦）。
+- **内容治理**：最低成本方案是 `gateway.guardrails.deny-patterns`；需要语义级
+  审核时接外部引擎（`http-url`），引擎不可达自动 fail-open。
+- **三段超时**：对外生产建议显式开启 `first-byte-timeout-ms`（如 30000）与
+  `idle-read-timeout-ms`（如 120000），避免悬挂上游占满虚拟线程/连接池。
+- **重试**：`retry.attempts=2` + 幂等语义确认后开启；4xx 永不重试。
+- **多副本**：`-Predis` 后 key 表/缓存/sticky 路由/配额/熔断全部跨副本一致；
+  不再需要 nginx hash 粘性。
+- **热更新**：运行时调参走 `POST /admin/governance`，无需滚动重启。
+- **观测**：trace 上下文传播默认生效；全量 span 用 `-Potel` + OTLP collector。

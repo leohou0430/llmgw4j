@@ -59,4 +59,26 @@ public class RedisGovernanceConfiguration {
                                                    GatewayProperties properties) {
         return new RedisCircuitBreaker(redis, scripts, properties);
     }
+
+    @Bean
+    @ConditionalOnMissingBean(io.github.leohou0430.llmgw.core.governance.ApiKeyRegistry.class)
+    public RedisApiKeyRegistry redisApiKeyRegistry(StringRedisTemplate redis,
+                                                   GatewayProperties properties) {
+        return new RedisApiKeyRegistry(redis, properties);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(io.github.leohou0430.llmgw.core.governance.SemanticCache.class)
+    public RedisSemanticCache redisSemanticCache(StringRedisTemplate redis,
+                                                 GatewayProperties properties) {
+        return new RedisSemanticCache(redis,
+                io.github.leohou0430.llmgw.governance.GovernanceLimits.from(properties));
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(io.github.leohou0430.llmgw.core.routing.TaskRouteSticky.class)
+    public RedisTaskRouteSticky redisTaskRouteSticky(StringRedisTemplate redis,
+                                                     GatewayProperties properties) {
+        return new RedisTaskRouteSticky(redis, properties.getVideos().getStickyTtlSeconds());
+    }
 }

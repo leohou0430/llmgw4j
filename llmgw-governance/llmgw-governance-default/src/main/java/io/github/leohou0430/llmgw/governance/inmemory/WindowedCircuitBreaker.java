@@ -35,6 +35,8 @@ public class WindowedCircuitBreaker implements CircuitBreaker {
     private final boolean circuitEnabled;
     private final GovernanceMetrics metrics;
     private final Map<String, State> states = new ConcurrentHashMap<>();
+    /** W3.5: when present, threshold/cooldown are read per call from it. */
+    private final DynamicGovernanceSettings settings;
 
     private static final class State {
         final AtomicInteger failures = new AtomicInteger();
@@ -45,23 +47,44 @@ public class WindowedCircuitBreaker implements CircuitBreaker {
     }
 
     public WindowedCircuitBreaker(GatewayProperties properties, GovernanceMetrics metrics) {
+        this(properties, metrics, null);
+    }
+
+    /** W3.5 dynamic constructor: hot-reloadable threshold/cooldown. */
+    public WindowedCircuitBreaker(GatewayProperties properties, GovernanceMetrics metrics,
+                                  DynamicGovernanceSettings settings) {
         GovernanceLimits limits = GovernanceLimits.from(properties);
         this.threshold = limits.circuitFailureThreshold();
         this.cooldownMs = limits.circuitCooldownMs();
         this.circuitEnabled = limits.circuitEnabled();
         this.metrics = metrics;
+        this.settings = settings;
+    }
+
+    private boolean enabled() {
+        return settings != null
+                ? settings.current().circuitFailureThreshold() > 0
+                : circuitEnabled;
+    }
+
+    private int thresholdNow() {
+        return settings != null ? settings.current().circuitFailureThreshold() : threshold;
+    }
+
+    private long cooldownNow() {
+        return settings != null ? settings.current().circuitCooldownMs() : cooldownMs;
     }
 
     @Override
     public boolean allow(Route route) {
-        if (!circuitEnabled) {
+        if (!enabled()) {
             return true;
         }
         State state = states.get(route.id());
         if (state == null || state.openedAtMs == 0) {
             return true;
         }
-        if (System.currentTimeMillis() - state.openedAtMs >= cooldownMs) {
+        if (System.currentTimeMillis() - state.openedAtMs >= cooldownNow()) {
             // Half-open: admit exactly one probe; everyone else still sees OPEN.
             return state.probing.compareAndSet(false, true);
         }
@@ -84,13 +107,13 @@ public class WindowedCircuitBreaker implements CircuitBreaker {
 
     @Override
     public void recordFailure(Route route) {
-        if (!circuitEnabled) {
+        if (!enabled()) {
             return;
         }
         State state = states.computeIfAbsent(route.id(), k -> new State());
         int failures = state.failures.incrementAndGet();
         boolean halfOpenProbe = state.openedAtMs != 0;
-        if (failures >= threshold || halfOpenProbe) {
+        if (failures >= thresholdNow() || halfOpenProbe) {
             state.openedAtMs = System.currentTimeMillis();
             state.probing.set(false);
             metrics.count("llmgw.circuit", "event", halfOpenProbe ? "reopened" : "open",
@@ -103,7 +126,7 @@ public class WindowedCircuitBreaker implements CircuitBreaker {
         Map<String, Object> out = new ConcurrentHashMap<>();
         states.forEach((id, state) -> {
             boolean open = state.openedAtMs != 0
-                    && System.currentTimeMillis() - state.openedAtMs < cooldownMs;
+                    && System.currentTimeMillis() - state.openedAtMs < cooldownNow();
             out.put(id, Map.of(
                     "open", open,
                     "consecutiveFailures", state.failures.get(),

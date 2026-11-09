@@ -9,21 +9,33 @@ import reactor.core.scheduler.Schedulers;
  * <p>Each provider offers a reactive stream (WebFlux) and a blocking stream
  * (virtual threads). Chunks are raw SSE lines: the gateway never rebuilds them.
  * <p>The non-streaming path is offered in both flavours for the same reason:
- * reactive data planes MUST call {@link #completeRawAsync(UpstreamRequest)} so
- * no blocking I/O is offloaded onto an event loop, while servlet data planes
- * call {@link #completeRaw(UpstreamRequest)} and simply block their own
- * virtual thread. Both engines therefore use the SAME HTTP client, and the
- * benchmark's only remaining variable is the concurrency model itself.
+ * reactive data planes MUST call {@link #completeRawAsync(UpstreamRequest, HeaderListener)}
+ * so no blocking I/O is offloaded onto an event loop, while servlet data planes
+ * call {@link #completeRaw(UpstreamRequest, HeaderListener)} and simply block
+ * their own virtual thread. Both engines therefore use the SAME HTTP client,
+ * and the benchmark's only remaining variable is the concurrency model itself.
+ * <p>v13: every forward carries a {@link HeaderListener} so response headers
+ * (x-ratelimit-*, retry-after, request ids) can be observed and forwarded
+ * under policy. The single-argument overloads are compatibility bridges for
+ * third-party providers that don't care about headers.
  */
 public interface UpstreamProvider {
 
     String id();
 
-    Flux<String> streamRaw(UpstreamRequest request);
+    Flux<String> streamRaw(UpstreamRequest request, HeaderListener listener);
+
+    default Flux<String> streamRaw(UpstreamRequest request) {
+        return streamRaw(request, HeaderListener.none());
+    }
 
     void streamRawBlocking(UpstreamRequest request, ChunkSink sink);
 
-    String completeRaw(UpstreamRequest request);
+    String completeRaw(UpstreamRequest request, HeaderListener listener);
+
+    default String completeRaw(UpstreamRequest request) {
+        return completeRaw(request, HeaderListener.none());
+    }
 
     /**
      * Truly non-blocking, lazy completion for reactive data planes.
@@ -35,9 +47,14 @@ public interface UpstreamProvider {
      * deliberately kept so a blocking implementation can never stall a Netty
      * event loop. JdkHttpUpstream overrides it with a real async path.
      */
-    default Mono<String> completeRawAsync(UpstreamRequest request) {
-        return Mono.fromCallable(() -> completeRaw(request))
+    default Mono<String> completeRawAsync(UpstreamRequest request, HeaderListener listener) {
+        return Mono.fromCallable(() -> completeRaw(request, listener))
                 .subscribeOn(Schedulers.boundedElastic());
+    }
+
+    /** Compatibility bridge for providers that ignore headers. */
+    default Mono<String> completeRawAsync(UpstreamRequest request) {
+        return completeRawAsync(request, HeaderListener.none());
     }
 
     /**

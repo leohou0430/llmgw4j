@@ -19,6 +19,7 @@ import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -51,15 +52,25 @@ public class GovernanceDefaultsConfiguration {
     }
 
     @Bean
+    @ConditionalOnMissingBean(DynamicGovernanceSettings.class)
+    public DynamicGovernanceSettings dynamicGovernanceSettings(GatewayProperties properties) {
+        return new DynamicGovernanceSettings(properties);
+    }
+
+    @Bean
     @ConditionalOnMissingBean(ApiKeyRegistry.class)
-    public InMemoryApiKeyRegistry inMemoryApiKeyRegistry(GatewayProperties properties) {
-        return new InMemoryApiKeyRegistry(properties);
+    public ManagedApiKeyRegistry managedApiKeyRegistry(GatewayProperties properties) {
+        // v13: supersedes the bare in-memory registry -- same read path, plus
+        // KeyAdminService (create/revoke/TTL) backed by a JSON key store.
+        return new ManagedApiKeyRegistry(properties,
+                new JsonKeyStore(properties));
     }
 
     @Bean
     @ConditionalOnMissingBean(TokenLimiter.class)
-    public AtomicTokenLimiter atomicTokenLimiter(GatewayProperties properties) {
-        return new AtomicTokenLimiter(properties);
+    public AtomicTokenLimiter atomicTokenLimiter(GatewayProperties properties,
+                                                 DynamicGovernanceSettings settings) {
+        return new AtomicTokenLimiter(properties, settings);
     }
 
     @Bean
@@ -69,9 +80,56 @@ public class GovernanceDefaultsConfiguration {
     }
 
     @Bean
+    @ConditionalOnMissingBean(io.github.leohou0430.llmgw.core.governance.BudgetLedger.class)
+    public InMemoryBudgetLedger inMemoryBudgetLedger() {
+        return new InMemoryBudgetLedger();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(io.github.leohou0430.llmgw.core.governance.RequestLogSink.class)
+    public InMemoryRequestLog inMemoryRequestLog(GatewayProperties properties) {
+        return new InMemoryRequestLog(properties.getObservability().getRequestLogCapacity());
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(io.github.leohou0430.llmgw.core.governance.Guardrail.class)
+    public GuardrailChain guardrailChain(GatewayProperties properties) {
+        // W4.1: pattern-deny (local, cheap) first, then the external engine.
+        return new GuardrailChain(List.of(
+                new PatternGuardrail(properties),
+                new HttpGuardrail(properties)));
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(io.github.leohou0430.llmgw.core.governance.Embedder.class)
+    public HttpEmbedder httpEmbedder(GatewayProperties properties) {
+        return new HttpEmbedder(properties);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(io.github.leohou0430.llmgw.core.governance.TokenValidator.class)
+    public JwtTokenValidator jwtTokenValidator(GatewayProperties properties) {
+        return new JwtTokenValidator(properties);
+    }
+
+    /**
+     * W3.6/W4.3: task-route stickiness (video/batch/file jobs) as an SPI — the
+     * Redis pack swaps in a cross-replica store; the default stays in-memory.
+     */
+    @Bean
+    @ConditionalOnMissingBean(io.github.leohou0430.llmgw.core.routing.TaskRouteSticky.class)
+    public io.github.leohou0430.llmgw.core.routing.TaskRouteSticky inMemoryTaskRouteSticky(
+            GatewayProperties properties) {
+        return new io.github.leohou0430.llmgw.core.routing.InMemoryTaskRouteSticky(
+                properties.getVideos().getStickyMaxEntries(),
+                properties.getVideos().getStickyTtlSeconds());
+    }
+
+    @Bean
     @ConditionalOnMissingBean(SemanticCache.class)
-    public CaffeineSemanticCache caffeineSemanticCache(GatewayProperties properties) {
-        return new CaffeineSemanticCache(properties);
+    public CaffeineSemanticCache caffeineSemanticCache(GatewayProperties properties,
+                                                       DynamicGovernanceSettings settings) {
+        return new CaffeineSemanticCache(properties, settings);
     }
 
     @Bean
@@ -92,6 +150,18 @@ public class GovernanceDefaultsConfiguration {
         return new JsonSnapshotStore(ledger, properties);
     }
 
+    /**
+     * v13 opt-in startup restore: reload the usage ledger from the snapshot
+     * file written by POST /admin/snapshot/save. Off by default so benchmark
+     * arms always start from a fresh process (see JsonSnapshotStore javadoc).
+     */
+    @org.springframework.context.annotation.Bean
+    @org.springframework.boot.autoconfigure.condition.ConditionalOnProperty(
+            prefix = "gateway.governance", name = "snapshot-auto-restore", havingValue = "true")
+    public org.springframework.boot.ApplicationRunner snapshotAutoRestore(SnapshotStore snapshots) {
+        return args -> snapshots.load();
+    }
+
     @Bean
     @ConditionalOnMissingBean(RouteConfigSource.class)
     public InMemoryRouteConfigSource routeConfigSource(GatewayProperties properties) {
@@ -107,8 +177,31 @@ public class GovernanceDefaultsConfiguration {
     @Bean
     @ConditionalOnMissingBean(CircuitBreaker.class)
     public WindowedCircuitBreaker windowedCircuitBreaker(GatewayProperties properties,
-                                                         GovernanceMetrics metrics) {
-        return new WindowedCircuitBreaker(properties, metrics);
+                                                         GovernanceMetrics metrics,
+                                                         DynamicGovernanceSettings settings) {
+        return new WindowedCircuitBreaker(properties, metrics, settings);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(io.github.leohou0430.llmgw.core.upstream.HeaderPolicy.class)
+    public AllowListHeaderPolicy allowListHeaderPolicy(GatewayProperties properties) {
+        return new AllowListHeaderPolicy(properties);
+    }
+
+    /**
+     * v13 Protocol SPI: user-declared {@link Protocol} beans override the
+     * default behavior for their kind at startup.
+     */
+    @Bean
+    public io.github.leohou0430.llmgw.core.protocol.ProtocolRegistrar protocolRegistrar(
+            org.springframework.beans.factory.ObjectProvider<io.github.leohou0430.llmgw.core.protocol.Protocol> protocols) {
+        return new io.github.leohou0430.llmgw.core.protocol.ProtocolRegistrar(protocols);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(io.github.leohou0430.llmgw.core.model.ModelCatalog.class)
+    public ConfigModelCatalog configModelCatalog(GatewayProperties properties) {
+        return new ConfigModelCatalog(properties);
     }
 
     @Bean
@@ -120,8 +213,15 @@ public class GovernanceDefaultsConfiguration {
                                                          AuditSink audit,
                                                          ExecutorService sideCar,
                                                          GovernanceMetrics metrics,
-                                                         GatewayProperties properties) {
+                                                         GatewayProperties properties,
+                                                         io.github.leohou0430.llmgw.core.governance.BudgetLedger budgets,
+                                                         io.github.leohou0430.llmgw.core.model.ModelCatalog catalog,
+                                                         io.github.leohou0430.llmgw.core.governance.RequestLogSink requestLog,
+                                                         io.github.leohou0430.llmgw.core.governance.Guardrail guardrail,
+                                                         io.github.leohou0430.llmgw.core.governance.Embedder embedder,
+                                                         io.github.leohou0430.llmgw.core.governance.TokenValidator tokenValidator) {
         return new DefaultGovernanceChain(apiKeys, limiter, ledger, cache, audit,
-                sideCar, metrics, properties);
+                sideCar, metrics, properties, budgets, catalog, requestLog, guardrail,
+                embedder, tokenValidator);
     }
 }

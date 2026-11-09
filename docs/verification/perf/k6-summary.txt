@@ -1,0 +1,1 @@
+k6 json: 58159 iters, 1937/s, failure 0.00%; k6 sse: 13190 iters, 438/s, failure 0.00% (50VU, webflux, jvm)

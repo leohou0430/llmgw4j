@@ -27,6 +27,16 @@ public final class GatewayPipeline {
         return chain.enter(authorizationHeader, request, router.resolve(kind, request.model()));
     }
 
+    /**
+     * W4.3: pre-parsed variant for BYTE bodies (multipart uploads). The probe
+     * already ran against the raw bytes — parsing the UTF-8-decoded String
+     * again would be wrong (binary corruption) and wasteful.
+     */
+    public static GatewayDecision enter(GovernanceChain chain, Router router,
+                                        ParsedRequest request, String authorizationHeader) {
+        return chain.enter(authorizationHeader, request, router.resolve(request.kind(), request.model()));
+    }
+
     /** Reuses the request parsed during enter(); no second JSON traversal. */
     public static GatewayContext context(GatewayDecision decision) {
         ParsedRequest request = decision.parsed();
@@ -52,10 +62,14 @@ public final class GatewayPipeline {
     public static GatewayContext context(GatewayDecision decision, String requestId,
                                          long arrivedNanos) {
         ParsedRequest request = decision.parsed();
-        return new GatewayContext(decision.keyId(), request.kind(), request.model(),
+        GatewayContext context = new GatewayContext(decision.keyId(), request.kind(), request.model(),
                 decision.route() == null ? "" : decision.route().id(),
                 request.stream(), request.estimatedTokens(), request.units(),
                 requestId, arrivedNanos);
+        context.setBudgetReservedMicroUsd(decision.budgetReservedMicroUsd());
+        context.setGroup(decision.keyGroup());
+        context.setGroupBudgetReservedMicroUsd(decision.groupBudgetReservedMicroUsd());
+        return context;
     }
 
     /**

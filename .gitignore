@@ -50,3 +50,6 @@ __pycache__/
 *.pyc
 .venv/
 venv/
+
+# ---- Bench helper compile output ----
+bench/mock/*.class

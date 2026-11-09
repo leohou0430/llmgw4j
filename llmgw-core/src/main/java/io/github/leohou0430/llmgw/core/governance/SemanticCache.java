@@ -14,4 +14,11 @@ public interface SemanticCache {
     void put(String key, String value);
 
     int size();
+
+    /**
+     * B8: drop every cached entry (admin cache-invalidation endpoint).
+     * No-op by default for stores that cannot enumerate their keys.
+     */
+    default void invalidateAll() {
+    }
 }

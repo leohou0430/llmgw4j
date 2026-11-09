@@ -1,0 +1,9 @@
+target/
+bin/native/
+data/
+.git/
+.github/
+docs/
+bench/
+*.log
+.env

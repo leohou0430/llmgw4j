@@ -15,7 +15,15 @@ public enum ProtocolKind {
     RESPONSES("/responses", true, "response.completed"),
     MESSAGES("/messages", true, "message_stop"),
     IMAGES("/images/generations", false, ""),
-    VIDEOS("/videos", false, "");
+    VIDEOS("/videos", false, ""),
+    // W4.3 protocol-surface expansion (all non-streaming; speech is binary).
+    EMBEDDINGS("/embeddings", false, ""),
+    RERANK("/rerank", false, ""),
+    SPEECH("/audio/speech", false, ""),
+    // W4.3 completion of the market parity list: byte-body uploads + async batch.
+    TRANSCRIPTIONS("/audio/transcriptions", false, ""),
+    FILES("/files", false, ""),
+    BATCHES("/batches", false, "");
 
     private final String upstreamPath;
     private final boolean streamCapable;

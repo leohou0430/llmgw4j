@@ -1,0 +1,34 @@
+# llmgw4j v13 minimal deployment. TLS terminates at the front proxy — see
+# docs/DEPLOYMENT.md for the nginx topology (the gateway itself stays plain
+# HTTP by design, same stance as LiteLLM).
+#
+#   docker compose up gateway          # in-memory, single replica
+#   docker compose --profile redis up  # + shared Redis pack for multi-replica quota
+services:
+  gateway:
+    build: .
+    image: llmgw4j:latest
+    environment:
+      SPRING_PROFILES_ACTIVE: ${LLMGW_ENGINE:-webflux}
+      LLMGW_ADMIN_TOKEN: ${LLMGW_ADMIN_TOKEN:-}
+      DASHSCOPE_API_KEY: ${DASHSCOPE_API_KEY:-}
+      # Opt-in usage-ledger restore; the file lives on the llmgw-data volume.
+      GATEWAY_GOVERNANCE_SNAPSHOT_AUTO_RESTORE: ${LLMGW_SNAPSHOT_AUTO_RESTORE:-false}
+    ports:
+      - "8080:8080"
+    volumes:
+      - llmgw-data:/app/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:8080/actuator/health || exit 1"]
+      interval: 10s
+      timeout: 3s
+      start_period: 20s
+
+  redis:
+    image: redis:7-alpine
+    profiles: ["redis"]
+    ports:
+      - "6379:6379"
+
+volumes:
+  llmgw-data:

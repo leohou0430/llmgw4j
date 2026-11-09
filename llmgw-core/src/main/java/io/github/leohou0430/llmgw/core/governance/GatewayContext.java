@@ -32,6 +32,12 @@ public final class GatewayContext {
     /** -1 = the upstream never reported usage; otherwise the authoritative value. */
     private final AtomicInteger reportedCompletion = new AtomicInteger(-1);
     private volatile boolean cached;
+    /** v13 $ admission reservation (micro-USD); 0 = no budget applied. */
+    private volatile long budgetReservedMicroUsd;
+    /** B4: ownership group carried from the key ("" = ungrouped). */
+    private volatile String group = "";
+    /** B4: group-level $ reservation (micro-USD); 0 = no group budget applied. */
+    private volatile long groupBudgetReservedMicroUsd;
 
     /** 0 = not started. First CAS wins so a fallback attempt does not move T0. */
     private final AtomicLong upstreamStartNanos = new AtomicLong();
@@ -150,6 +156,17 @@ public final class GatewayContext {
     }
 
     public void markCached() { this.cached = true; }
+
+    /** $ reservation held at admission; settled by the budget ledger at finish. */
+    public void setBudgetReservedMicroUsd(long microUsd) { this.budgetReservedMicroUsd = microUsd; }
+    public long budgetReservedMicroUsd() { return budgetReservedMicroUsd; }
+
+    public void setGroup(String group) { this.group = group == null ? "" : group; }
+    public String group() { return group; }
+    public void setGroupBudgetReservedMicroUsd(long microUsd) {
+        this.groupBudgetReservedMicroUsd = microUsd;
+    }
+    public long groupBudgetReservedMicroUsd() { return groupBudgetReservedMicroUsd; }
 
     public String keyId() { return keyId; }
     public ProtocolKind kind() { return kind; }

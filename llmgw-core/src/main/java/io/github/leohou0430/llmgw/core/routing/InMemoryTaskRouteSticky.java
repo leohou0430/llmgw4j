@@ -5,14 +5,13 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Video task stickiness: an async video job only exists on the upstream that
- * created it, so polling and content requests MUST go back to that route.
- * Bounded by entry count and TTL — tasks are finite-lived upstream jobs, and
- * an unbounded map would grow with every create call. Expired/pinned-over
- * entries are pruned on insert; a miss simply falls back to protocol wildcard
- * routing (correct for single-upstream deployments and post-restart polls).
+ * In-memory task stickiness: bounded by entry count and TTL — tasks are
+ * finite-lived upstream jobs, and an unbounded map would grow with every
+ * create call. Expired/pinned-over entries are pruned on insert; a miss
+ * simply falls back to protocol wildcard routing (correct for
+ * single-upstream deployments and post-restart polls).
  */
-public final class StickyTaskRoutes {
+public final class InMemoryTaskRouteSticky implements TaskRouteSticky {
 
     private record Entry(String routeId, long expiresAtNanos) {
     }
@@ -21,11 +20,12 @@ public final class StickyTaskRoutes {
     private final int maxEntries;
     private final long ttlNanos;
 
-    public StickyTaskRoutes(int maxEntries, int ttlSeconds) {
+    public InMemoryTaskRouteSticky(int maxEntries, int ttlSeconds) {
         this.maxEntries = Math.max(1, maxEntries);
         this.ttlNanos = Math.max(60, ttlSeconds) * 1_000_000_000L;
     }
 
+    @Override
     public void bind(String taskId, String routeId) {
         if (taskId == null || taskId.isBlank() || routeId == null || routeId.isBlank()) {
             return;
@@ -36,7 +36,7 @@ public final class StickyTaskRoutes {
         tasks.put(taskId, new Entry(routeId, System.nanoTime() + ttlNanos));
     }
 
-    /** The route id the task was created on, or null when unknown/expired. */
+    @Override
     public String resolve(String taskId) {
         if (taskId == null || taskId.isBlank()) {
             return null;

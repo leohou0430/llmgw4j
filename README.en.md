@@ -12,6 +12,32 @@
 [简体中文完整文档](README.md) · [贡献指南](CONTRIBUTING.md) · [安全策略](SECURITY.md) · [压测口径](bench/README.md)
 
 llmgw4j is a **Java LLM API gateway** built on Spring Boot 4.1.2 / JDK 25.
+
+## Capability overview (parity gaps vs mainstream gateways, see docs/gap-analysis.md)
+
+- **Forwarding governance**: same-route retry + exponential backoff, three-tier
+  timeouts (connect / first-byte / idle-read), bidirectional header allowlists,
+  SSE heartbeat, weighted LB + failover + circuit breaker, hot reload for both
+  the route table and governance parameters
+- **Protocol surface (8 byte-faithful protocols)**: chat / responses / messages /
+  images / videos / embeddings / rerank / audio-speech — plus multipart uploads
+  (audio transcriptions, file uploads), file lifecycle and batch jobs with
+  sticky routing. Protocols are a ROUTING dimension, never translated
+- **Keys & budgets**: runtime API key management (create/revoke/TTL, JSON store),
+  token quotas with in-flight reservation + refunds, **hard $ budgets** priced
+  from the model catalog, per-group spend rollups
+- **Provider adapters**: `UpstreamAuthenticator` SPI — OpenAI-compatible Bearer
+  and native Anthropic (x-api-key + anthropic-version) per route
+- **Observability**: Prometheus metrics, TTFT/upstream/overhead timers, audit
+  ring, bounded request log, trace-context propagation (`-Potel` for full
+  spans), admin console
+- **Content & cache**: Guardrail SPI (local regex + external engine), semantic
+  cache (Embedder SPI + bucketed vector keys), exact cache
+- **Multi-replica**: `-Predis` (Lua-atomic limiter/quota/breaker + shared key
+  table, response cache and task stickiness)
+- **Engineering**: JUnit tests (5 modules) + 8 shell contract suites (~370
+  assertions) + Docker/compose + TLS front-proxy deployment guide
+
 It was designed to answer one question properly: *for a streaming LLM proxy,
 does a reactive data plane actually beat a virtual-thread data plane?*
 So instead of picking one, it implements **both behind a single shared
@@ -117,7 +143,7 @@ curl -sS -X POST http://127.0.0.1:8080/admin/routes/reload \
 - Downstream cancellation only hooks `onCancel`; billing and audit always
   settle via `doFinally`, and quota reservations are refunded.
 
-## Observability (v10)
+## Observability
 
 | Metric / field | Meaning |
 |---|---|

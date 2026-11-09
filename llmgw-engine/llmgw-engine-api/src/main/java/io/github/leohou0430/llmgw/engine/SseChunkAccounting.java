@@ -30,7 +30,8 @@ public final class SseChunkAccounting {
     }
 
     public static boolean apply(ProtocolKind kind, String rawSseLine, GatewayContext context) {
-        ChunkParser.SseChunk chunk = ChunkParser.parse(kind, rawSseLine);
+        ChunkParser.SseChunk chunk = io.github.leohou0430.llmgw.core.protocol.Protocols
+                .of(kind).parseChunk(rawSseLine);
         if (chunk.hasUsage()) {
             context.setCompletionTokens(chunk.completionTokens());
         } else if (!chunk.done() && !chunk.delta().isEmpty()) {

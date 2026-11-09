@@ -184,6 +184,85 @@ api-keys:
 
 ---
 
+
+## 3.1 v13 新增配置项（能力补齐，全部默认关闭/保持 v12 行为）
+
+### 转发治理（gateway.upstream.*）
+
+| 键 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `connect-timeout-ms` | int | `10000` | TCP 连接超时 |
+| `first-byte-timeout-ms` | int | `0`（关） | 流式调用响应头到达超时：悬挂上游在 200 提交前失败，保住 fallback 窗口 |
+| `idle-read-timeout-ms` | int | `0`（关） | 流内静默中止（慢过整个请求超时的截断） |
+| `heartbeat-interval-ms` | int | `0`（关） | SSE comment 心跳帧；网关唯一注入字节 |
+| `retry.attempts` | int | `1` | 同路由重试次数；1=关闭（v12 语义） |
+| `retry.backoff-base-ms` / `backoff-max-ms` | int | `200` / `2000` | 指数退避 + 全抖动 |
+
+### 双向 header 透传（gateway.headers.*）
+
+`upstream-allow`（默认 `anthropic-version`/`openai-beta`/`x-request-id`/`traceparent`/
+`tracestate`/`baggage`）与 `client-allow`（`x-ratelimit-*`/`retry-after` 等）。尾部
+`*` 前缀匹配；`Authorization`/Host/逐跳头/Content-Type 等受保护头**无论配置如何都
+不透传**（multipart 上传体例外：Content-Type 携带 boundary，必须透传）。
+
+### 模型目录与预算（gateway.models[] / api-keys[].budget-micro-usd）
+
+`gateway.models[].{model,provider,context-window-tokens,input-price-micro-usd-per-million,output-price-micro-usd-per-million}`；
+`*` 条目为未知模型兜底。key 预算为累计微美元，到额即拒 429 `spend budget exceeded`。
+
+### 密钥管理（gateway.keys-store-path）
+
+运行时 `POST /admin/keys` 创建的 key 持久化到该 0600 JSON 文件并随启动恢复；
+空值关闭持久化。
+
+### 观测（gateway.observability.request-log-capacity / traceparent）
+
+请求环形日志容量（`GET /admin/requests`）；traceparent/tracestate/baggage 默认
+透传上游，全量 span 导出用 `-Potel` profile + OTLP endpoint。
+
+### 内容治理（gateway.guardrails.*）
+
+`deny-patterns[]`（正则 vs 提取的 prompt，命中 400）与 `http-url`（外接审核引擎，
+POST `{model,prompt}` → `{action,reason}`，不可达时 fail-open）。
+
+### 语义缓存键（gateway.cache.semantic-*）
+
+`semantic-url` 指向 OpenAI 兼容 `/embeddings`；缓存键从精确哈希升级为分桶向量
+签名（`semantic-bucket-scale` = 相似度粒度）。embedder 失败自动降级精确键。
+
+### 认证与密钥（gateway.auth.*，B1/B5）
+
+| 键 | 默认 | 说明 |
+|---|---|---|
+| `jwt-secret` | `""` | HS256 JWT 校验密钥；空 = 关闭（仅静态 key） |
+| `jwt-issuer` | `""` | 期望的 `iss`（空 = 不校验） |
+| `jwt-quota-tokens` | `1000000` | JWT 虚拟 key 的配额 |
+| `rotate-overlap-seconds` | `300` | 轮换后旧 token 的宽限窗口 |
+| `hash-keys-at-rest` | `true` | key 存储落 SHA-256（明文不落盘） |
+| `admin-read-token` | `""` | 只读 admin token（可观测 GET 放行，变更拒绝） |
+
+### 限流与预算扩展（B4）
+
+`gateway.model-limits[]`：`{model, tokens-per-second, burst}`，模型匹配 exact > 前缀 > `*`，
+每个模型独立 token 桶（429 `model rate limit exceeded`）。
+`gateway.group-budgets[]`：`{group, budget-micro-usd}`，组级 $ 硬预算
+（429 `group spend budget exceeded`）。
+
+### 语义缓存相似度（B2）
+
+`gateway.cache.semantic-threshold`（0..1，0 = 关闭）开启余弦相似度检索；
+`semantic-vector-capacity`（默认 5000）为向量库容量。分桶键仍作 fallback。
+
+### 治理参数热更新
+
+`POST /admin/governance`（JSON 体，null 字段保持现值）原子换表：限流速率/桶容量、
+缓存大小/TTL、熔断阈值/冷却。路由表热更新仍是 `POST /admin/routes/reload`。
+
+### 快照自动恢复（gateway.governance.snapshot-auto-restore）
+
+`true` 时启动时从 snapshot-path 恢复用量账本（与 `POST /admin/snapshot/save`
+配合）；默认 `false` 保持基准纯净。
+
 ## 4. 代码默认 ≠ 随仓库发布值（重要）
 
 `application.yml` 覆盖了部分 Java 字段默认值，其中两项差 **10 倍**。如果你把 `application.yml` 拿掉、或换用自己的配置文件而没显式声明这些项，行为会静默变化：

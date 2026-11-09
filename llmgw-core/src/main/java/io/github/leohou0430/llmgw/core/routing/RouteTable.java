@@ -55,16 +55,18 @@ public final class RouteTable {
                     ? candidate
                     : new Route(candidate.id(), protocol.isBlank() ? "*" : protocol,
                             candidate.model(), candidate.targetModel(), candidate.targetUrl(),
-                            candidate.apiKey(), candidate.weight(), candidate.fallbackIds());
+                            candidate.apiKey(), candidate.provider(),
+                            candidate.weight(), candidate.fallbackIds());
             if (byId.putIfAbsent(route.id(), route) != null) {
                 throw new IllegalArgumentException("duplicate route id: " + route.id());
             }
             parsed.add(route);
         }
-        // An exact model match must beat a "*" wildcard regardless of weight;
-        // weight only orders routes within the same specificity class.
+        // An exact model match must beat a prefix, which beats a "*" wildcard,
+        // regardless of weight; weight only orders routes within the same
+        // specificity class.
         parsed.sort(Comparator
-                .comparingInt((Route r) -> "*".equals(r.model()) ? 1 : 0)
+                .comparingInt(Route::modelSpecificity)
                 .thenComparing(Comparator.comparingInt(Route::weight).reversed()));
         List<Route> frozen = List.copyOf(parsed);
         return new RouteTable(frozen, Map.copyOf(byId), frozen.get(0), version);
@@ -76,23 +78,49 @@ public final class RouteTable {
     }
 
     /**
-     * Protocol-aware resolution: a route matches when its protocol is "*" or
-     * the requested kind, and its model is exact or "*". Specificity classes,
-     * in order: exact protocol+model, exact protocol+wildcard model, then
-     * protocol-agnostic routes (kept for pre-v12 single-route configs);
-     * weight only orders within the same class.
+     * Protocol-aware resolution (v13): specificity is one number --
+     * {@code modelSpecificity * 2 + (protocol-is-wildcard ? 1 : 0)} -- so the
+     * ladder stays exactly the v12 order (exact model beats wildcard protocol
+     * beats wildcard model) while prefix models slot in between exact and
+     * wildcard. Ties inside one specificity class compete by weight.
      */
     public Route resolve(ProtocolKind kind, String model) {
-        List<Route> exact = candidates(kind, model, false, false);
-        if (!exact.isEmpty()) {
-            return weightedPick(exact);
+        String wire = kind.wireName();
+        boolean sawExactProtocol = false;
+        boolean sawAny = false;
+        for (Route route : routes) {
+            if (route.matches(wire) && route.matchesModel(model)) {
+                sawAny = true;
+                if (!isWildcardProtocol(route)) {
+                    sawExactProtocol = true;
+                    break; // cannot get more specific than an exact protocol match
+                }
+            }
         }
-        List<Route> protocolWildcard = candidates(kind, model, true, false);
-        if (!protocolWildcard.isEmpty()) {
-            return weightedPick(protocolWildcard);
+        if (!sawAny) {
+            return fallback;
         }
-        List<Route> legacy = candidates(kind, model, true, true);
-        return legacy.isEmpty() ? fallback : weightedPick(legacy);
+        List<Route> tied = null;
+        int bestSpec = Integer.MAX_VALUE;
+        for (Route route : routes) {
+            if (!route.matches(wire) || !route.matchesModel(model)) {
+                continue;
+            }
+            boolean protoWildcard = isWildcardProtocol(route);
+            if (sawExactProtocol && protoWildcard) {
+                // v12 legacy: an exact-protocol route always beats a "*" one.
+                continue;
+            }
+            int spec = route.modelSpecificity() * 2 + (protoWildcard ? 1 : 0);
+            if (spec < bestSpec) {
+                bestSpec = spec;
+                tied = new ArrayList<>(2);
+                tied.add(route);
+            } else if (spec == bestSpec) {
+                tied.add(route);
+            }
+        }
+        return tied == null || tied.isEmpty() ? fallback : weightedPick(tied);
     }
 
     /**

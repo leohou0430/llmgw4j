@@ -41,4 +41,28 @@ public final class QuotaMath {
     public static long billed(long promptTokens, long completionTokens) {
         return normalize(promptTokens) + normalize(completionTokens);
     }
+
+    /**
+     * v13 $ math: micro-USD cost of one request from its token counts and the
+     * catalog price (micro-USD per 1M tokens, per side). Integer-only:
+     * tokens x price fits a long for any realistic request (1e6 x 1e9 = 1e15),
+     * rounded half-up per side to keep repeated settlements drift-free.
+     * A null / unknown price costs nothing -- budget enforcement simply does
+     * not see the model until it is cataloged.
+     */
+    public static long costMicroUsd(long promptTokens, long completionTokens,
+                                     io.github.leohou0430.llmgw.core.model.ModelCatalog.ModelInfo price) {
+        if (price == null) {
+            return 0L;
+        }
+        return scaled(normalize(promptTokens), price.inputPriceMicroUsdPerMillion())
+                + scaled(normalize(completionTokens), price.outputPriceMicroUsdPerMillion());
+    }
+
+    private static long scaled(long tokens, long microUsdPerMillion) {
+        if (tokens <= 0 || microUsdPerMillion <= 0) {
+            return 0L;
+        }
+        return (tokens * microUsdPerMillion + 500_000) / 1_000_000;
+    }
 }

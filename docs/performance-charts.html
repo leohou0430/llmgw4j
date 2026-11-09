@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>llmgw4j 性能迭代折线图（v12 基线 → v13）</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<style>
+  body { font: 14px/1.5 -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; margin: 24px; background: #fafafa; color: #24292f; }
+  h1 { font-size: 20px; } h2 { font-size: 16px; margin-top: 32px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; max-width: 1200px; }
+  .card { background: #fff; border: 1px solid #d0d7de; border-radius: 8px; padding: 16px; }
+  .note { color: #57606a; font-size: 12px; }
+  .full { grid-column: 1 / -1; }
+</style>
+</head>
+<body>
+<h1>llmgw4j 性能迭代记录（v12 基线 → v13）</h1>
+<p class="note">数据与口径详见 <a href="PERFORMANCE.md">docs/PERFORMANCE.md</a>；三类口径不混用，单机数据为 directional。</p>
+
+<div class="grid">
+  <div class="card">
+    <h2>k6-A/B 口径：JSON 吞吐（req/s ↑）</h2>
+    <canvas id="jsonThroughput"></canvas>
+  </div>
+  <div class="card">
+    <h2>k6-A/B 口径：JSON p95（ms ↓）</h2>
+    <canvas id="jsonP95"></canvas>
+  </div>
+  <div class="card">
+    <h2>k6-A/B 口径：SSE 吞吐（req/s ↑）</h2>
+    <canvas id="sseThroughput"></canvas>
+  </div>
+  <div class="card">
+    <h2>microbench：解析 @16.5KB（ns/op ↓）</h2>
+    <canvas id="microbench"></canvas>
+  </div>
+  <div class="card full">
+    <h2>跨网关对标口径：JSON 吞吐（req/s ↑，standalone mock）</h2>
+    <canvas id="crossGateway"></canvas>
+  </div>
+</div>
+
+<script>
+const LABELS = ['v12 基线', 'v13 未优化(回归)', 'v13 优化后'];
+const GREEN = 'rgba(35,134,54,0.9)', RED = 'rgba(207,34,46,0.9)', GRAY = 'rgba(87,96,106,0.7)';
+const base = {
+  responsive: true,
+  plugins: { legend: { display: false } },
+  scales: { y: { beginAtZero: true } }
+};
+function line(id, labels, data, color, label) {
+  new Chart(document.getElementById(id), {
+    type: 'line',
+    data: { labels, datasets: [{ label, data, borderColor: color,
+      backgroundColor: color.replace('0.9', '0.15'), fill: true, tension: 0.25,
+      pointRadius: 5, pointBackgroundColor: color }] },
+    options: { ...base, plugins: { legend: { display: true, position: 'top' },
+      title: { display: false } } }
+  });
+}
+line('jsonThroughput', LABELS, [3734, 1937, 6107], GREEN, 'JSON req/s');
+line('jsonP95', LABELS, [22.03, 56.08, 13.80], RED, 'JSON p95 ms');
+line('sseThroughput', LABELS, [457, 438, 460], GREEN, 'SSE req/s');
+line('microbench', ['v12 基线', 'v13'], [70277, 61204], GRAY, 'ns/op @16542B');
+new Chart(document.getElementById('crossGateway'), {
+  type: 'line',
+  data: { labels: ['LiteLLM (latest)', 'llmgw4j v13'],
+    datasets: [{ label: 'JSON req/s（standalone mock，50VU）',
+      data: [90, 1949], borderColor: GREEN, backgroundColor: 'rgba(35,134,54,0.15)',
+      fill: true, tension: 0.25, pointRadius: 6, pointBackgroundColor: GREEN }] },
+  options: base
+});
+</script>
+</body>
+</html>

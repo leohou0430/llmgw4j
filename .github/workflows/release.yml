@@ -1,0 +1,74 @@
+name: release
+
+# #23 (作品级差距清单): tag -> 构建产物并发布 GitHub Release。
+# Maven Central 发布需要 Sonatype 账号与 GPG 签名密钥（仓库 secrets:
+# CENTRAL_TOKEN_USERNAME / CENTRAL_TOKEN_PASSWORD / GPG_PRIVATE_KEY /
+# GPG_PASSPHRASE），配置步骤见 docs/DEPLOYMENT.md 的「发布」一节；
+# 本 workflow 先把 fat jar / native 二进制 / docs 产物发到 GitHub Releases，
+# Central 上传作为可选 job，在 secrets 齐备时自动启用。
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 25
+      - name: Build fat jar (both engines inside)
+        run: bash bin/build.sh
+      - name: Boot-check both engines
+        run: |
+          java -jar llmgw-app/target/llmgw-app-0.1.0-SNAPSHOT.jar --spring.profiles.active=webflux --server.port=8091 &
+          for i in $(seq 1 40); do curl -fsS http://127.0.0.1:8091/actuator/health >/dev/null 2>&1 && break; sleep 1; done
+          curl -fsS http://127.0.0.1:8091/actuator/health
+          pkill -f "server.port=8091"
+      - name: Upload jar to the release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: llmgw-app/target/llmgw-app-0.1.0-SNAPSHOT.jar
+
+  native:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: graalvm/setup-graalvm@v1
+        with:
+          java-version: 25
+          distribution: graalvm
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build native image (webflux profile)
+        run: mvn -B -Pnative -Dllmgw.native.profile=webflux -DskipTests package
+      - name: Upload native binary to the release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: llmgw-app/target/llmgw-webflux
+
+  # Optional: enable after configuring Sonatype + GPG secrets.
+  central:
+    if: ${{ vars.PUBLISH_TO_CENTRAL == 'true' }}
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 25
+          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+          gpg-passphrase: GPG_PASSPHRASE
+      - name: Publish to Maven Central
+        env:
+          CENTRAL_USERNAME: ${{ secrets.CENTRAL_TOKEN_USERNAME }}
+          CENTRAL_PASSWORD: ${{ secrets.CENTRAL_TOKEN_PASSWORD }}
+        run: |
+          mvn -B deploy -DskipTests \
+            -Dcentral.username="$CENTRAL_USERNAME" -Dcentral.password="$CENTRAL_PASSWORD" \
+            -Dgpg.passphrase="${{ secrets.GPG_PASSPHRASE }}"

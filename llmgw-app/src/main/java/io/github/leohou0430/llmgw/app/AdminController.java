@@ -55,14 +55,26 @@ public class AdminController {
     private final SnapshotStore snapshots;
     private final Router router;
     private final ApiKeyRegistry apiKeys;
+    private final ObjectProvider<io.github.leohou0430.llmgw.core.governance.KeyAdminService> keyAdmin;
+    private final ObjectProvider<io.github.leohou0430.llmgw.core.governance.RequestLogSink> requestLogs;
+    private final ObjectProvider<io.github.leohou0430.llmgw.governance.inmemory.DynamicGovernanceSettings> governanceSettings;
+    private final ObjectProvider<io.github.leohou0430.llmgw.core.governance.SemanticCache> semanticCaches;
+    private final ObjectProvider<io.github.leohou0430.llmgw.core.governance.AuditSink> auditSink;
     private final OpenAiSdkVerifier sdkVerifier;
     private final ObjectProvider<MeterRegistry> meterRegistries;
     private final ObjectProvider<RouteConfigSource> routeSources;
     private final GatewayProperties properties;
     private final String adminToken;
+    private final String adminReadToken;
 
     public AdminController(GovernanceChain chain, SnapshotStore snapshots, Router router,
-                           ApiKeyRegistry apiKeys, OpenAiSdkVerifier sdkVerifier,
+                           ApiKeyRegistry apiKeys,
+                           ObjectProvider<io.github.leohou0430.llmgw.core.governance.KeyAdminService> keyAdmin,
+                           ObjectProvider<io.github.leohou0430.llmgw.core.governance.RequestLogSink> requestLogs,
+                           ObjectProvider<io.github.leohou0430.llmgw.governance.inmemory.DynamicGovernanceSettings> governanceSettings,
+                           ObjectProvider<io.github.leohou0430.llmgw.core.governance.SemanticCache> semanticCaches,
+                           ObjectProvider<io.github.leohou0430.llmgw.core.governance.AuditSink> auditSink,
+                           OpenAiSdkVerifier sdkVerifier,
                            ObjectProvider<MeterRegistry> meterRegistries,
                            ObjectProvider<RouteConfigSource> routeSources,
                            GatewayProperties properties) {
@@ -70,11 +82,36 @@ public class AdminController {
         this.snapshots = snapshots;
         this.router = router;
         this.apiKeys = apiKeys;
+        this.keyAdmin = keyAdmin;
+        this.requestLogs = requestLogs;
+        this.governanceSettings = governanceSettings;
+        this.semanticCaches = semanticCaches;
+        this.auditSink = auditSink;
         this.sdkVerifier = sdkVerifier;
         this.meterRegistries = meterRegistries;
         this.routeSources = routeSources;
         this.properties = properties;
         this.adminToken = properties.getAdminToken() == null ? "" : properties.getAdminToken();
+        this.adminReadToken = properties.getAdminReadToken() == null
+                ? "" : properties.getAdminReadToken();
+    }
+
+    /**
+     * B5: two-tier admin auth. Read token grants observability GETs only;
+     * mutations (keys/routes/governance/cache/rotate) always need the full
+     * admin token. When neither is configured, everything stays open (demo).
+     */
+    private boolean isReadAuthorized(String token) {
+        if (adminToken.isBlank()) {
+            return true;
+        }
+        if (!adminReadToken.isBlank() && MessageDigest.isEqual(
+                token.getBytes(StandardCharsets.UTF_8),
+                adminReadToken.getBytes(StandardCharsets.UTF_8))) {
+            return true;
+        }
+        return !adminToken.isBlank() && MessageDigest.isEqual(
+                token.getBytes(StandardCharsets.UTF_8), adminToken.getBytes(StandardCharsets.UTF_8));
     }
 
     /**
@@ -83,7 +120,7 @@ public class AdminController {
      * pins the route to one endpoint protocol; ""/"*" match every protocol.
      */
     public record RouteSpec(String id, String protocol, String model, String targetModel,
-                            String targetUrl, String apiKey, Integer weight,
+                            String targetUrl, String apiKey, String provider, Integer weight,
                             List<String> fallbacks) {
     }
 
@@ -179,7 +216,8 @@ public class AdminController {
             routes.add(new Route(spec.id(),
                     protocol.isBlank() ? "*" : protocol, model,
                     spec.targetModel() == null ? "" : spec.targetModel(),
-                    url, key, weight, fallbacks));
+                    url, key, spec.provider() == null ? "" : spec.provider(),
+                    weight, fallbacks));
         }
         for (Route route : routes) {
             for (String id : route.fallbackIds()) {
@@ -212,6 +250,7 @@ public class AdminController {
             item.put("targetModel", route.targetModel());
             item.put("targetUrl", route.targetUrl());
             item.put("weight", route.weight());
+            item.put("provider", route.provider());
             item.put("fallbackIds", route.fallbackIds());
             item.put("apiKeyConfigured", configured(route.apiKey()));
             safe.add(item);
@@ -226,6 +265,97 @@ public class AdminController {
         return apiKeys.all();
     }
 
+    /**
+     * v13 key lifecycle. The plaintext token appears in THIS response only and
+     * is persisted to the key store; metadata endpoints never echo it. A
+     * registry without {@code KeyAdminService} (custom read-only packs)
+     * answers 501.
+     */
+    public record CreateKeySpec(String name, String group, Long budgetMicroUsd, Long quotaTokens,
+                                List<String> allowedModels, Long ttlSeconds,
+                                Map<String, String> metadata) {
+    }
+
+    @PostMapping("/keys")
+    public Object createKey(@RequestHeader(value = "X-Admin-Token", required = false) String token,
+                            @RequestBody CreateKeySpec spec) {
+        requireAdmin(token);
+        io.github.leohou0430.llmgw.core.governance.KeyAdminService admin =
+                keyAdmin.getIfAvailable();
+        if (admin == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED,
+                    "registry does not support key management");
+        }
+        var created = admin.create(spec.name(),
+                spec.group(),
+                spec.budgetMicroUsd() == null ? 0 : spec.budgetMicroUsd(),
+                spec.quotaTokens() == null
+                        ? 1_000_000
+                        : spec.quotaTokens(),
+                spec.allowedModels() == null ? Set.of() : Set.copyOf(spec.allowedModels()),
+                spec.ttlSeconds(),
+                spec.metadata() == null ? Map.of() : spec.metadata());
+        Map<String, Object> out = new LinkedHashMap<>();
+        out.put("id", created.key().id());
+        out.put("name", created.key().name());
+        out.put("token", created.token());
+        out.put("group", created.key().group());
+        out.put("budgetMicroUsd", created.key().budgetMicroUsd());
+        out.put("metadata", created.key().metadata());
+        out.put("quotaTokens", created.key().quotaTokens());
+        out.put("allowedModels", created.key().allowedModels());
+        out.put("expiresAtEpochMs", created.key().expiresAtEpochMs());
+        return out;
+    }
+
+    @org.springframework.web.bind.annotation.DeleteMapping("/keys/{id}")
+    public Object revokeKey(@RequestHeader(value = "X-Admin-Token", required = false) String token,
+                            @org.springframework.web.bind.annotation.PathVariable("id") String id) {
+        requireAdmin(token);
+        io.github.leohou0430.llmgw.core.governance.KeyAdminService admin =
+                keyAdmin.getIfAvailable();
+        if (admin == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED,
+                    "registry does not support key management");
+        }
+        boolean revoked = admin.revoke(id);
+        if (!revoked) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "unknown key id " + id);
+        }
+        return Map.of("revoked", true, "id", id);
+    }
+
+    /**
+     * B1 key rotation: mint a NEW token for the same key; the old token stays
+     * valid for the overlap window (gateway.auth.rotate-overlap-seconds or the
+     * explicit value here) so clients migrate without downtime.
+     */
+    public record RotateSpec(Integer overlapSeconds) {
+    }
+
+    @org.springframework.web.bind.annotation.PostMapping("/keys/{id}/rotate")
+    public Object rotateKey(@RequestHeader(value = "X-Admin-Token", required = false) String token,
+                            @org.springframework.web.bind.annotation.PathVariable("id") String id,
+                            @RequestBody(required = false) RotateSpec spec) {
+        requireAdmin(token);
+        io.github.leohou0430.llmgw.core.governance.KeyAdminService admin =
+                keyAdmin.getIfAvailable();
+        if (admin == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED,
+                    "registry does not support key management");
+        }
+        var rotated = admin.rotate(id,
+                spec == null || spec.overlapSeconds() == null
+                        ? properties.getAuth().getRotateOverlapSeconds()
+                        : spec.overlapSeconds());
+        Map<String, Object> out = new LinkedHashMap<>();
+        out.put("id", rotated.key().id());
+        out.put("token", rotated.token());
+        out.put("overlapSeconds", spec == null || spec.overlapSeconds() == null
+                ? properties.getAuth().getRotateOverlapSeconds() : spec.overlapSeconds());
+        return out;
+    }
+
     /** Optional real-provider connectivity check; never called on request path. */
     @GetMapping("/verify")
     public Map<String, Object> verify(
@@ -235,6 +365,87 @@ public class AdminController {
         out.put("sdkValidation", sdkVerifier.validate("qwen-plus", "ping"));
         out.put("connectivity", sdkVerifier.verify());
         return out;
+    }
+
+    /**
+     * v13 request log (newest first). A bounded debugging surface: capacity
+     * comes from {@code gateway.observability.request-log-capacity}.
+     */
+    @GetMapping("/requests")
+    public Object requests(@RequestHeader(value = "X-Admin-Token", required = false) String token,
+                           @org.springframework.web.bind.annotation.RequestParam(defaultValue = "100") int limit) {
+        requireAdmin(token);
+        var sink = requestLogs.getIfAvailable();
+        if (sink == null) {
+            return List.of();
+        }
+        return sink.recent(Math.max(1, Math.min(limit, 1000)));
+    }
+
+    /**
+     * v13 minimal read-only console (single static page over the /admin JSON).
+     * The page itself re-prompts for the admin token in the browser; this
+     * endpoint stays ungated so the HTML can load, every DATA call is gated.
+     */
+    @GetMapping(value = "/console", produces = "text/html")
+    public String console() throws java.io.IOException {
+        try (var in = getClass().getResourceAsStream("/console/index.html")) {
+            return in == null ? "<html><body>console asset missing</body></html>"
+                    : new String(in.readAllBytes(), StandardCharsets.UTF_8);
+        }
+    }
+
+    /** B5: full audit-ring export (JSON). Read-token authorized. */
+    @GetMapping("/audit/export")
+    public Object exportAudit(
+            @RequestHeader(value = "X-Admin-Token", required = false) String token,
+            @RequestHeader(value = "X-Admin-Read-Token", required = false) String readToken) {
+        if (!isReadAuthorized(readToken != null && !readToken.isBlank() ? readToken : token)) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "admin auth required");
+        }
+        var sink = auditSink.getIfAvailable();
+        if (sink == null) {
+            return List.of();
+        }
+        return sink.recent(5000);
+    }
+
+    /** B8: cache invalidation (in-memory ring, Redis keyspace, or any store). */
+    @org.springframework.web.bind.annotation.DeleteMapping("/cache")
+    public Object invalidateCache(
+            @RequestHeader(value = "X-Admin-Token", required = false) String token) {
+        requireAdmin(token);
+        var cache = semanticCaches.getIfAvailable();
+        if (cache == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED, "no semantic cache bean");
+        }
+        cache.invalidateAll();
+        return Map.of("invalidated", true);
+    }
+
+    /**
+     * W3.5 governance hot reload: swap rate-limit / cache / circuit settings
+     * atomically without a restart. Null fields keep their current value.
+     */
+    public record GovernanceSpec(Long rateLimitTokensPerSecond, Long rateLimitBurst,
+                                 Integer cacheMaxSize, Integer cacheTtlSeconds,
+                                 Integer circuitFailureThreshold, Integer circuitCooldownMs) {
+    }
+
+    @PostMapping("/governance")
+    public Object reloadGovernance(
+            @RequestHeader(value = "X-Admin-Token", required = false) String token,
+            @RequestBody GovernanceSpec spec) {
+        requireAdmin(token);
+        var settings = governanceSettings.getIfAvailable();
+        if (settings == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED,
+                    "no dynamic governance settings bean");
+        }
+        var snapshot = settings.update(spec.rateLimitTokensPerSecond(), spec.rateLimitBurst(),
+                spec.cacheMaxSize(), spec.cacheTtlSeconds(),
+                spec.circuitFailureThreshold(), spec.circuitCooldownMs());
+        return Map.of("version", settings.version(), "snapshot", snapshot);
     }
 
     /**

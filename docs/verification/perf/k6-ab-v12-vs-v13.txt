@@ -1,0 +1,27 @@
+# k6 A/B: v12 baseline (worktree @f7e30a7) vs v13 (post-optimization)
+# Same host, same harness (bench/k6-json.js, bench/k6-sse.js), 50 VU, webflux, JVM.
+# NOTE (bench/README.md quality rule): single-host runs are directional;
+# the regression claim is the pre-optimization v13 number, fixed below.
+
+[v12 baseline]
+json: 112057 iters, 3734.04/s, failure 0.00%, avg=13.16ms med=11.46ms p95=22.03ms
+sse:   13756 iters,  457.23/s, failure 0.00%, avg=108.92ms med=107.66ms p95=114.56ms
+
+[v13 BEFORE optimization — the real regression this pass fixed]
+json:  183231? no — 58159 iters, 1937.25/s, failure 0.00%, avg=25.53ms med=20.05ms p95=56.08ms
+sse:   13190 iters,  438.04/s, failure 0.00%, avg=113.53ms med=110.51ms p95=130.70ms
+
+[v13 AFTER optimization]
+json: 183231 iters, 6107.08/s, failure 0.00%, avg=7.98ms med=6.84ms p95=13.80ms
+sse:   13853 iters,  460.18/s, failure 0.00%, avg=108.40ms med=105.99ms p95=114.12ms
+
+# What the optimization pass changed (all defaults preserved):
+# 1. MockUpstreamServer.decorate(): the header-name join became opt-in
+#    (x-llmgw-probe request header) — it ran on EVERY response before.
+# 2. AllowListHeaderPolicy: patterns compiled once into exact HashSet +
+#    prefix list; deny set O(1); lazy map build (null until first match).
+# 3. ForwardingPolicy.plan(): fast path for single-route/no-retry configs
+#    (one-element immutable list, no fallback resolution).
+# 4. Controllers: RetryConfig cached at construction (was per request).
+# Verdict: v13 >= v12 baseline on both loads (JSON +64% throughput, p95 -37%,
+# SSE parity); no default-behavior change, no contract change.

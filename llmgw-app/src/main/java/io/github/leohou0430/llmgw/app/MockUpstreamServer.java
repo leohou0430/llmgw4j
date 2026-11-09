@@ -1,6 +1,7 @@
 package io.github.leohou0430.llmgw.app;
 
 import io.github.leohou0430.llmgw.core.config.GatewayProperties;
+import io.github.leohou0430.llmgw.core.protocol.MultipartProbe;
 import io.github.leohou0430.llmgw.core.protocol.ProtocolCodec;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
@@ -80,6 +81,11 @@ public class MockUpstreamServer implements DisposableBean {
     private final GatewayProperties properties;
     private final Map<String, VideoTask> videoTasks = new ConcurrentHashMap<>();
     private final AtomicLong videoIds = new AtomicLong();
+    /** v13: fires-exactly-once state for the mock-fail-once-status-N marker. */
+    private final Map<String, java.util.concurrent.atomic.AtomicBoolean> onceMarkers =
+            new ConcurrentHashMap<>();
+    /** W4.3: batch ids minted by THIS mock (polling an unknown id 404s). */
+    private final java.util.Set<String> knownBatchIds = java.util.concurrent.ConcurrentHashMap.newKeySet();
     private HttpServer server;
 
     public MockUpstreamServer(GatewayProperties properties) {
@@ -94,6 +100,27 @@ public class MockUpstreamServer implements DisposableBean {
             server.createContext("/mock/v1/messages", this::handle);
             server.createContext("/mock/v1/images/generations", this::handle);
             server.createContext("/mock/v1/videos", this::handle);
+            server.createContext("/mock/v1/guardrail", this::handleGuardrail);
+            server.createContext("/mock/v1/embeddings", this::handleEmbeddings);
+            server.createContext("/mock/v1/audio/transcriptions", this::handle);
+            server.createContext("/mock/v1/files", this::handle);
+            server.createContext("/mock/v1/batches", this::handle);
+            server.createContext("/mock/v1/models", exchange ->
+                    writeJson(exchange, 200, "{\"object\":\"list\",\"data\":["
+                            + "{\"id\":\"qwen-plus\"},{\"id\":\"mock-model\"}]}"));
+            server.createContext("/mock/v1/rerank", exchange ->
+                    writeJson(exchange, 200, "{\"object\":\"list\",\"results\":["
+                            + "{\"index\":0,\"relevance_score\":0.9}]}"));
+            server.createContext("/mock/v1/audio/speech", exchange -> {
+                // Binary pass-through probe: deterministic pseudo-mp4 bytes.
+                byte[] audio = "mock-speech-bytes-".repeat(24).getBytes(StandardCharsets.UTF_8);
+                decorate(exchange);
+                exchange.getResponseHeaders().add("Content-Type", "audio/mpeg");
+                exchange.sendResponseHeaders(200, audio.length);
+                try (var out = exchange.getResponseBody()) {
+                    out.write(audio);
+                }
+            });
             server.setExecutor(Executors.newVirtualThreadPerTaskExecutor());
             server.start();
             log.info("Mock upstream listening on port {}", properties.getMock().getPort());
@@ -108,7 +135,19 @@ public class MockUpstreamServer implements DisposableBean {
             handleVideoFetch(exchange, path);
             return;
         }
-        if (path.endsWith("/videos")) {
+        // W4.3 completion: transcriptions / files / batches.
+        if (path.equals("/mock/v1/audio/transcriptions")) {
+            handleTranscriptions(exchange);
+            return;
+        }
+        if (path.equals("/mock/v1/files") || path.startsWith("/mock/v1/files/")) {
+            handleFiles(exchange, path);
+            return;
+        }
+        if (path.equals("/mock/v1/batches") || path.startsWith("/mock/v1/batches/")) {
+            handleBatches(exchange, path);
+            return;
+        }        if (path.endsWith("/videos")) {
             handleVideoCreate(exchange);
             return;
         }
@@ -127,11 +166,145 @@ public class MockUpstreamServer implements DisposableBean {
         handleChat(exchange);
     }
 
+    /**
+     * W4.1 external moderation engine emulation: {"action":"DENY"} when the
+     * prompt contains "deny-me", ALLOW otherwise. Same JSON contract
+     * HttpGuardrail speaks.
+     */
+    private void handleGuardrail(HttpExchange exchange) throws IOException {
+        String body = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
+        if (body.contains("deny-me")) {
+            writeJson(exchange, 200,
+                    "{\"action\":\"DENY\",\"reason\":\"mock engine flagged the prompt\"}");
+        } else {
+            writeJson(exchange, 200, "{\"action\":\"ALLOW\"}");
+        }
+    }
+
+    /**
+     * W4.2 deterministic bag-of-words embedder: word hash -> dimension bucket,
+     * L2-normalized. Same word multiset (any order, any surrounding text) gives
+     * the SAME vector, which is what makes the semantic-cache smoke
+     * deterministic. 16 dimensions.
+     */
+    private void handleEmbeddings(HttpExchange exchange) throws IOException {
+        String body = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
+        String input = "";
+        try {
+            var root = tryParse(body);
+            var inputNode = root.get("input");
+            if (inputNode != null && inputNode.isTextual()) {
+                input = inputNode.asText();
+            }
+        } catch (RuntimeException ignored) {
+            // fall through with empty input
+        }
+        double[] vector = new double[16];
+        for (String word : input.toLowerCase().split("[^a-z0-9]+")) {
+            if (word.isEmpty()) {
+                continue;
+            }
+            vector[Math.floorMod(word.hashCode(), vector.length)] += 1;
+        }
+        double norm = 0;
+        for (double v : vector) {
+            norm += v * v;
+        }
+        norm = Math.sqrt(norm);
+        if (norm > 0) {
+            for (int i = 0; i < vector.length; i++) {
+                vector[i] /= norm;
+            }
+        }
+        StringBuilder json = new StringBuilder("[");
+        for (int i = 0; i < vector.length; i++) {
+            if (i > 0) {
+                json.append(',');
+            }
+            json.append(String.format(java.util.Locale.ROOT, "%.6f", vector[i]));
+        }
+        json.append(']');
+        writeJson(exchange, 200, "{\"object\":\"list\",\"data\":[{\"object\":\"embedding\","
+                + "\"index\":0,\"embedding\":" + json + "}],"
+                + "\"usage\":{\"prompt_tokens\":1,\"total_tokens\":1}}");
+    }
+
+    /** W4.3 transcriptions: JSON answer for a multipart upload. */
+    private void handleTranscriptions(HttpExchange exchange) throws IOException {
+        byte[] body = exchange.getRequestBody().readAllBytes();
+        String model = MultipartProbe.field(body, "model");
+        writeJson(exchange, 200, "{\"text\":\"mock transcript of " + body.length
+                + " bytes\",\"model\":\"" + model + "\",\"usage\":{\"type\":\"tokens\","
+                + "\"input_tokens\":1,\"output_tokens\":1}}");
+    }
+
+    /** W4.3 files: multipart upload / list / retrieve / delete. */
+    private void handleFiles(HttpExchange exchange, String path) throws IOException {
+        String method = exchange.getRequestMethod();
+        if ("POST".equals(method)) {
+            byte[] body = exchange.getRequestBody().readAllBytes();
+            String purpose = MultipartProbe.field(body, "purpose");
+            writeJson(exchange, 200, "{\"id\":\"file-" + videoIds.incrementAndGet()
+                    + "\",\"object\":\"file\",\"bytes\":" + body.length
+                    + ",\"purpose\":\"" + purpose + "\"}");
+            return;
+        }
+        if (path.equals("/mock/v1/files")) {
+            writeJson(exchange, 200, "{\"object\":\"list\",\"data\":[]}");
+            return;
+        }
+        String id = path.substring("/mock/v1/files/".length());
+        if ("DELETE".equals(method)) {
+            writeJson(exchange, 200, "{\"id\":\"" + id + "\",\"deleted\":true}");
+        } else if (path.endsWith("/content")) {
+            byte[] content = ("mock-file-content-" + id + "-").repeat(16)
+                    .getBytes(StandardCharsets.UTF_8);
+            exchange.getResponseHeaders().add("Content-Type", "application/octet-stream");
+            exchange.sendResponseHeaders(200, content.length);
+            try (OutputStream out = exchange.getResponseBody()) {
+                out.write(content);
+            }
+        } else {
+            writeJson(exchange, 200, "{\"id\":\"" + id + "\",\"object\":\"file\","
+                    + "\"bytes\":128,\"purpose\":\"fine-tune\"}");
+        }
+    }
+
+    /** W4.3 batches: async job like videos — create mints a sticky batch id;
+     * polling an UNKNOWN id 404s, exactly like video tasks. */
+    private void handleBatches(HttpExchange exchange, String path) throws IOException {
+        if (path.equals("/mock/v1/batches")) {
+            String id = "batch-" + videoIds.incrementAndGet();
+            knownBatchIds.add(id);
+            writeJson(exchange, 200, "{\"id\":\"" + id
+                    + "\",\"object\":\"batch\",\"status\":\"validating\"}");
+            return;
+        }
+        String id = path.substring("/mock/v1/batches/".length());
+        if (path.endsWith("/cancel")) {
+            String batchId = id.substring(0, id.length() - "/cancel".length());
+            if (!knownBatchIds.contains(batchId)) {
+                writeJson(exchange, 404, "{\"error\":{\"message\":\"unknown batch " + batchId + "\"}}");
+                return;
+            }
+            writeJson(exchange, 200, "{\"id\":\"" + batchId
+                    + "\",\"object\":\"batch\",\"status\":\"cancelled\"}");
+            return;
+        }
+        if (!knownBatchIds.contains(id)) {
+            writeJson(exchange, 404, "{\"error\":{\"message\":\"unknown batch " + id + "\"}}");
+            return;
+        }
+        long elapsed = System.currentTimeMillis() % 2_000;
+        writeJson(exchange, 200, "{\"id\":\"" + id + "\",\"object\":\"batch\",\"status\":\""
+                + (elapsed < 1_000 ? "in_progress" : "completed") + "\"}");
+    }
+
     // ---------------------------------------------------------------- chat
 
     private void handleChat(HttpExchange exchange) throws IOException {
         String body = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
-        if (denyWithStatus(exchange, body)) {
+        if (denyOnceWithStatus(exchange, body) || denyWithStatus(exchange, body)) {
             return;
         }
         boolean stream = body.contains("\"stream\"") && body.contains("true");
@@ -147,10 +320,26 @@ public class MockUpstreamServer implements DisposableBean {
             return;
         }
         String content = body.contains("mock-echo-hash") ? "echo-" + hashPrefix(body) : "ok";
+        // v13 ingress probes inside the response BODY (header echoes would be
+        // filtered by the gateway's egress allowlist -- by design).
+        var requestHeaders = exchange.getRequestHeaders();
+        String echoVersion = requestHeaders.getFirst("anthropic-version");
+        String echoAuth = requestHeaders.getFirst("Authorization");
+        String apiKey = requestHeaders.getFirst("x-api-key");
+        String authStyle = apiKey != null ? "x-api-key"
+                : echoAuth != null ? "bearer" : "none";
         String json = "{\"id\":\"mock\",\"object\":\"chat.completion\","
                 + "\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\""
                 + content + "\"}}],"
-                + "\"usage\":{\"prompt_tokens\":1,\"completion_tokens\":1}}";
+                + "\"usage\":{\"prompt_tokens\":1,\"completion_tokens\":1}"
+                + ",\"echoAuthStyle\":\"" + authStyle + "\""
+                + (echoVersion != null
+                        ? ",\"echoAnthropicVersion\":\"" + echoVersion + "\"" : "")
+                + (echoAuth != null
+                        ? ",\"echoAuthorization\":\"" + echoAuth + "\"" : "")
+                + (apiKey != null
+                        ? ",\"echoApiKeyPresent\":true" : "")
+                + "}";
         writeJson(exchange, 200, json);
     }
 
@@ -158,7 +347,7 @@ public class MockUpstreamServer implements DisposableBean {
 
     private void handleResponses(HttpExchange exchange) throws IOException {
         String body = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
-        if (denyWithStatus(exchange, body)) {
+        if (denyOnceWithStatus(exchange, body) || denyWithStatus(exchange, body)) {
             return;
         }
         boolean stream = body.contains("\"stream\"") && body.contains("true");
@@ -187,7 +376,7 @@ public class MockUpstreamServer implements DisposableBean {
 
     private void handleMessages(HttpExchange exchange) throws IOException {
         String body = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
-        if (denyWithStatus(exchange, body)) {
+        if (denyOnceWithStatus(exchange, body) || denyWithStatus(exchange, body)) {
             return;
         }
         boolean stream = body.contains("\"stream\"") && body.contains("true");
@@ -217,7 +406,7 @@ public class MockUpstreamServer implements DisposableBean {
 
     private void handleImages(HttpExchange exchange) throws IOException {
         String body = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
-        if (denyWithStatus(exchange, body)) {
+        if (denyOnceWithStatus(exchange, body) || denyWithStatus(exchange, body)) {
             return;
         }
         JsonNode root = tryParse(body);
@@ -240,7 +429,7 @@ public class MockUpstreamServer implements DisposableBean {
 
     private void handleVideoCreate(HttpExchange exchange) throws IOException {
         String body = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
-        if (denyWithStatus(exchange, body)) {
+        if (denyOnceWithStatus(exchange, body) || denyWithStatus(exchange, body)) {
             return;
         }
         JsonNode root = tryParse(body);
@@ -294,6 +483,12 @@ public class MockUpstreamServer implements DisposableBean {
         int failAfter = failAfter(body);
         int eofAfter = eofAfter(body);
         boolean doneThenFail = body.contains("mock-done-then-fail");
+        decorate(exchange);
+        // v13 first-byte watchdog bait: headers deliberately late.
+        int stallHeaders = markerCount(body, "mock-stall-headers-", 0);
+        if (stallHeaders > 0) {
+            sleep(stallHeaders);
+        }
         exchange.getResponseHeaders().add("Content-Type", "text/event-stream");
         exchange.sendResponseHeaders(200, 0);
         // Deliberately NOT try-with-resources: the injector must be able to
@@ -301,13 +496,49 @@ public class MockUpstreamServer implements DisposableBean {
         OutputStream out = exchange.getResponseBody();
         sleep(properties.getMock().getDelayMs());
         int chunks = Math.max(1, properties.getMock().getChunks());
+        // v13 per-request chunk interval override (heartbeat test bait).
+        int intervalOverride = markerCount(body, "mock-chunk-interval-", -1);
+        long chunkInterval = intervalOverride >= 0
+                ? intervalOverride
+                : properties.getMock().getChunkIntervalMs();
+        // v13 idle-read watchdog bait: silence after the FIRST chunk.
+        int stallMid = markerCount(body, "mock-stall-mid-", 0);
+        // v13 SSE ingress probe: first frame reports which probe headers the
+        // mock actually received (in-band, immune to the egress allowlist).
+        String headerProbe = null;
+        if (body.contains("mock-echo-headers")) {
+            var requestHeaders = exchange.getRequestHeaders();
+            StringBuilder probe = new StringBuilder("hdrs{");
+            String av = requestHeaders.getFirst("anthropic-version");
+            if (av != null) {
+                probe.append("anthropic-version=").append(av).append('|');
+            }
+            String au = requestHeaders.getFirst("Authorization");
+            if (au != null) {
+                probe.append("Authorization=").append(au).append('|');
+            }
+            String ak = requestHeaders.getFirst("x-api-key");
+            if (ak != null) {
+                probe.append("x-api-key=").append(ak).append('|');
+            }
+            String xp = requestHeaders.getFirst("x-private");
+            if (xp != null) {
+                probe.append("x-private=").append(xp).append('|');
+            }
+            probe.append('}');
+            headerProbe = probe.toString();
+        }
         if (eofAfter == 0) {
             // Clean EOF with zero frames: the hardest truncation to notice.
             out.close();
             return;
         }
         for (int i = 0; i < chunks; i++) {
-            out.write(deltaFrame.apply(i).getBytes(StandardCharsets.UTF_8));
+            String frame = deltaFrame.apply(i);
+            if (headerProbe != null && i == 0) {
+                frame = "data: {\"debug-headers\":\"" + headerProbe + "\"}\n\n";
+            }
+            out.write(frame.getBytes(StandardCharsets.UTF_8));
             out.flush();
             if (failAfter > 0 && i + 1 == failAfter) {
                 throw new IOException("simulated upstream crash after " + failAfter + " chunks");
@@ -318,7 +549,10 @@ public class MockUpstreamServer implements DisposableBean {
                 out.close();
                 return;
             }
-            sleep(properties.getMock().getChunkIntervalMs());
+            if (stallMid > 0 && i == 0) {
+                sleep(stallMid);
+            }
+            sleep(chunkInterval);
         }
         if (usageFrame != null) {
             out.write(usageFrame.getBytes(StandardCharsets.UTF_8));
@@ -339,12 +573,80 @@ public class MockUpstreamServer implements DisposableBean {
         if (forcedStatus <= 0) {
             return false;
         }
+        if (body.contains("mock-retry-after")) {
+            // B9: upstream-declared Retry-After (seconds) — the gateway's retry
+            // planner must wait at least this long before re-attempting.
+            exchange.getResponseHeaders().add("Retry-After", "1");
+        }
+        String detail = "injected upstream status " + forcedStatus;
+        if (body.contains("mock-context-overflow")) {
+            // B10: context-overflow recognition probe.
+            detail = "This model's maximum context length is 8192 tokens, "
+                    + "however your messages resulted in 12000 tokens";
+        }
         writeJson(exchange, forcedStatus,
-                "{\"error\":{\"message\":\"injected upstream status " + forcedStatus + "\"}}");
+                "{\"error\":{\"message\":\"" + detail + "\"}}");
         return true;
     }
 
+    /**
+     * v13 retry-contract bait: the FIRST request carrying
+     * {@code mock-fail-once-status-N} fails with status N, every later one
+     * proceeds. A gateway that retries the same route recovers (200); a
+     * gateway that retries a 400 is caught by the 400-variant (502).
+     */
+    private boolean denyOnceWithStatus(HttpExchange exchange, String body) throws IOException {
+        int forcedStatus = markerCount(body, "mock-fail-once-status-", 0);
+        if (forcedStatus <= 0) {
+            return false;
+        }
+        java.util.concurrent.atomic.AtomicBoolean fired = onceMarkers
+                .computeIfAbsent("mock-fail-once-status-" + forcedStatus,
+                        key -> new java.util.concurrent.atomic.AtomicBoolean());
+        if (fired.compareAndSet(false, true)) {
+            if (body.contains("mock-retry-after")) {
+                // B9: same Retry-After contract as the always-fail variant.
+                exchange.getResponseHeaders().add("Retry-After", "1");
+            }
+            writeJson(exchange, forcedStatus,
+                    "{\"error\":{\"message\":\"injected once status " + forcedStatus + "\"}}");
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * v13 header-passthrough probes, applied to every mock response:
+     * x-echo-* mirrors what the gateway actually forwarded upstream,
+     * x-ratelimit-remaining exercises the egress allowlist, and
+     * x-private-upstream must never reach the client.
+     */
+    private void decorate(HttpExchange exchange) {
+        var requestHeaders = exchange.getRequestHeaders();
+        String anthropicVersion = requestHeaders.getFirst("anthropic-version");
+        if (anthropicVersion != null) {
+            exchange.getResponseHeaders().add("x-echo-anthropic-version", anthropicVersion);
+        }
+        String auth = requestHeaders.getFirst("Authorization");
+        if (auth != null) {
+            exchange.getResponseHeaders().add("x-echo-authorization", auth);
+        }
+        String priv = requestHeaders.getFirst("x-private");
+        if (priv != null) {
+            exchange.getResponseHeaders().add("x-echo-x-private", priv);
+        }
+        exchange.getResponseHeaders().add("x-ratelimit-remaining", "424242");
+        exchange.getResponseHeaders().add("x-private-upstream", "secret-marker");
+        // Ground-truth probe, gated: joining every received header name is
+        // benchmark-visible work, so only do it when the load explicitly asks.
+        if (requestHeaders.getFirst("x-llmgw-probe") != null) {
+            exchange.getResponseHeaders().add("x-echo-received",
+                    String.join(",", requestHeaders.keySet()));
+        }
+    }
+
     private void writeJson(HttpExchange exchange, int status, String json) throws IOException {
+        decorate(exchange);
         byte[] bytes = json.getBytes(StandardCharsets.UTF_8);
         exchange.getResponseHeaders().add("Content-Type", "application/json");
         exchange.sendResponseHeaders(status, bytes.length);

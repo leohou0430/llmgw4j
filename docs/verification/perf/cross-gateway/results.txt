@@ -1,0 +1,16 @@
+--- llmgw4j [json] ---
+    gateway_failure_rate...........: 0.00% 0 out of 58486
+    http_req_duration..............: avg=25.45ms min=20.68ms med=24.75ms max=249.36ms p(90)=28.23ms p(95)=30.07ms
+    iterations.....................: 58486 1949.220873/s
+--- llmgw4j [sse] ---
+    gateway_failure_rate...........: 0.00%  0 out of 13601
+    http_req_duration..............: avg=110.2ms  min=102.38ms med=109.89ms max=165.68ms p(90)=114.07ms p(95)=115.53ms
+    iterations.....................: 13601  451.855977/s
+--- LiteLLM [json] ---
+    gateway_failure_rate...........: 0.00%  0 out of 2724
+    http_req_duration..............: avg=554.86ms min=415.15ms med=536.86ms max=2.05s p(90)=556.96ms p(95)=574.06ms
+    iterations.....................: 2724   89.685107/s
+--- LiteLLM [sse] ---
+    gateway_failure_rate...........: 0.00%  0 out of 1310
+    http_req_duration..............: avg=1.15s min=513.22ms med=1.13s max=2.05s p(90)=1.21s p(95)=1.51s
+    iterations.....................: 1310   43.069747/s

@@ -6,6 +6,12 @@ spring:
   threads:
     virtual:
       enabled: true
+  servlet:
+    multipart:
+      # W4.3: this gateway is a BYTE pass-through — servlet multipart parsing
+      # would consume the upload body before the VT engine can forward it.
+      # Multipart handling stays with the client and the upstream.
+      enabled: false
 
 server:
   port: 8080
@@ -14,12 +20,50 @@ gateway:
   governance-enabled: true
   # Empty = /admin open (local demo). Set LLMGW_ADMIN_TOKEN in any shared env.
   admin-token: ${LLMGW_ADMIN_TOKEN:}
+  # B5: read-only admin token (observability GETs; no mutations).
+  admin-read-token: ${LLMGW_ADMIN_READ_TOKEN:}
   max-request-bytes: 4194304
+  # v13: runtime-created API keys (POST /admin/keys) persist here across
+  # restarts; blank disables the store.
+  keys-store-path: ./data/llmgw-keys.json
+  # B1 ingress auth: HS256 JWT validation (registry miss falls back to it) and
+  # key-at-rest hashing + rotation overlap. All defaults keep static keys only.
+  auth:
+    jwt-secret: ""
+    jwt-issuer: ""
+    jwt-quota-tokens: 1000000
+    rotate-overlap-seconds: 300
+    hash-keys-at-rest: true
+  # B4 per-model token buckets (exact > prefix > *; tokens/s + burst).
+  model-limits: []
+  # B4 per-group hard $ budgets.
+  group-budgets: []
   upstream:
     type: mock
     base-url: http://127.0.0.1:9090/mock/v1
     api-key: ${DASHSCOPE_API_KEY:}
     timeout-ms: 60000
+    # v13 three-tier timeouts (0 = disabled). timeout-ms stays the
+    # whole-request backstop; first-byte fails a hung upstream BEFORE the
+    # 200 commits (fallback still possible), idle-read aborts a mid-stream
+    # stall instead of hanging until the whole-request timeout.
+    connect-timeout-ms: 10000
+    first-byte-timeout-ms: 0
+    idle-read-timeout-ms: 0
+    # SSE keep-alive comment frame on idle streams (0 = off). The only bytes
+    # this gateway ever fabricates; excluded from accounting and contracts.
+    heartbeat-interval-ms: 0
+    # Same-route retry before the fallback chain. attempts=1 keeps v12
+    # semantics exactly; 5xx/408/429 and transport failures are retryable.
+    retry:
+      attempts: 1
+      backoff-base-ms: 200
+      backoff-max-ms: 2000
+  # v13 bidirectional header pass-through whitelists (trailing * = prefix).
+  # Auth/transport headers are always stripped regardless of these lists.
+  headers:
+    upstream-allow: [anthropic-version, openai-beta, x-request-id, traceparent, tracestate, baggage]
+    client-allow: [x-request-id, retry-after, x-ratelimit-*, anthropic-ratelimit-*, anthropic-request-id, anthropic-version, openai-request-id]
   governance:
     default-quota-tokens: 1000000
     rate-limit-tokens-per-second: 100000
@@ -27,6 +71,10 @@ gateway:
     cache-max-size: 1000
     cache-ttl-seconds: 300
     snapshot-path: ./data/llmgw-snapshot.json
+    # v13 opt-in: restore the usage ledger from snapshot-path at startup
+    # (pair with POST /admin/snapshot/save). Off by default: benchmark arms
+    # must start from a fresh process.
+    snapshot-auto-restore: false
     # Circuit breaker: consecutive no-delivery upstream failures per route
     # before it opens (skipped without network I/O while fallbacks run);
     # cooldown-ms is how long it stays open before one half-open probe.

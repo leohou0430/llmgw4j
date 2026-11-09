@@ -1,0 +1,13 @@
+# LiteLLM proxy for cross-gateway benchmarking: single model routed to the
+# standalone mock upstream. No master key (open access), matching llmgw4j's
+# sk-demo setup so every gateway under test carries identical auth work.
+model_list:
+  - model_name: qwen-plus
+    litellm_params:
+      model: openai/qwen-plus
+      api_base: http://host.docker.internal:9099/v1
+      api_key: sk-mock
+litellm_settings:
+  drop_params: true
+  num_retries: 0
+  request_timeout: 60

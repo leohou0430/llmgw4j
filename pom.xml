@@ -61,6 +61,8 @@
          llmgw-engine is both the aggregator and the parent POM of its children. -->
     <module>llmgw-engine</module>
     <module>llmgw-provider-openai</module>
+    <module>llmgw-provider-anthropic</module>
+    <module>llmgw-tokenizer-jtokkit</module>
     <module>llmgw-app</module>
   </modules>
 
@@ -69,6 +71,7 @@
     <maven.compiler.release>25</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <caffeine.version>3.3.1</caffeine.version>
+    <jtokkit.version>1.1.0</jtokkit.version>
     <openai-java.version>4.100.0</openai-java.version>
     <native-buildtools.version>1.1.18</native-buildtools.version>
     <llmgw.native.profile>webflux</llmgw.native.profile>
@@ -109,6 +112,15 @@
         <groupId>io.github.leohou0430</groupId><artifactId>llmgw-provider-openai</artifactId><version>${project.version}</version>
       </dependency>
       <dependency>
+        <groupId>io.github.leohou0430</groupId><artifactId>llmgw-provider-anthropic</artifactId><version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.leohou0430</groupId><artifactId>llmgw-tokenizer-jtokkit</artifactId><version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.knuddels</groupId><artifactId>jtokkit</artifactId><version>${jtokkit.version}</version>
+      </dependency>
+      <dependency>
         <groupId>io.github.leohou0430</groupId><artifactId>llmgw-governance-redis</artifactId><version>${project.version}</version>
       </dependency>
     </dependencies>
@@ -121,6 +133,23 @@
           <groupId>org.graalvm.buildtools</groupId>
           <artifactId>native-maven-plugin</artifactId>
           <version>${native-buildtools.version}</version>
+        </plugin>
+        <!-- #23 (作品级差距清单): Maven Central publication. The plugin is
+             INERT until invoked with credentials — the GitHub Release workflow
+             (.github/workflows/release.yml, optional `central` job) passes
+             -Dcentral.username/-Dcentral.password from repo secrets and this
+             block becomes live. Prerequisites (one-time, outside git):
+             a Sonatype Central account for io.github.leohou0430, a GPG key,
+             and the four secrets documented in docs/DEPLOYMENT.md. -->
+        <plugin>
+          <groupId>org.sonatype.central</groupId>
+          <artifactId>central-publishing-maven-plugin</artifactId>
+          <version>0.7.0</version>
+          <extensions>true</extensions>
+          <configuration>
+            <publishingServerId>central</publishingServerId>
+            <excludeInnerProjectArtifacts>true</excludeInnerProjectArtifacts>
+          </configuration>
         </plugin>
       </plugins>
     </pluginManagement>
