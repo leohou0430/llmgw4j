@@ -51,7 +51,7 @@ var defaultStrategy = catalog.getDefaultExtension();
 | `provider.ProviderVerifier` | `openai` |
 | `tokenizer.TokenCounter` | `heuristic`、可选 `jtokkit` |
 
-发现、组装和认证方言缓存位于启动路径，请求热路径使用已解析对象。纯协议默认目录仍为进程级缓存，`Protocols.register` 是显式全进程覆盖，不承载租户账本；引擎指标身份也仍是进程级。
+命名映射在目录创建时读取，认证方言在客户端创建时缓存；协议目录首次使用时初始化，随后请求使用已解析对象，不重复扫描资源。纯协议默认目录仍为进程级缓存，`Protocols.register` 是显式全进程覆盖，不承载租户账本；引擎指标身份也仍是进程级。
 
 ## 原生组装和生命周期
 

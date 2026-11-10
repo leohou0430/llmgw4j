@@ -37,3 +37,5 @@
 [编译日志](native-webflux-build.log)为 Maven native profile 的完整默认优化构建，构建宿主限制 4 CPU，不是 quick build。[二进制 manifest](native-results.json)记录 SHA256 与 GraalVM；health、JSON、SSE、退出清理通过，[流式](native-webflux-stream.log) 34 通过、[多协议](native-webflux-protocols.log) 28 通过，均零失败。整个过程没有直接 Dubbo 运行时或第三方 Dubbo 反射元数据。
 
 本地覆盖 macOS WebFlux；未覆盖 VT/G1、可选 Redis/jtokkit native，也没有重测性能、真实付费上游或公网 TLS。Linux amd64 WebFlux 由 tag workflow 独立完整编译并运行相同契约；不能把本地结果当作 Linux 结果。
+
+最终文档复核进一步区分初始化时机：认证缓存随客户端创建完成，而协议静态目录在首次使用时初始化；不再笼统承诺所有发现都在启动完成。此项只修正文档，不改变已验证代码。
