@@ -1,3 +1,5 @@
+> 历史中间实现证据：此目录对应直接依赖 Dubbo 的 cf1edea/v0.3.0；发布已取消。当前原生 SPI 验证见 [新报告](../native-extension-mechanism/README.md)，不得将旧结果当作新实现证据。
+
 # v0.3.0 原生基础与 Dubbo SPI 验证
 
 审查基线为已发布的 `c119ecf` / v0.2.0；当前源码采用统一 provider/tokenizer 多模块、原生配置/治理/资源生命周期、真实命名 Dubbo SPI、JDK Flow/Future 及 Jedis。API 迁移见 [EXTENSIONS](../../../EXTENSIONS.md)。这里只记录实际执行结果，不将旧性能数字作为重构性能证据。

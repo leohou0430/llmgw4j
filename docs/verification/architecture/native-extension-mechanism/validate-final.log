@@ -1,0 +1,286 @@
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] llmgw4j                                                            [pom]
+[INFO] llmgw-core                                                         [jar]
+[INFO] llmgw-governance                                                   [pom]
+[INFO] llmgw-governance-api                                               [jar]
+[INFO] llmgw-tokenizer                                                    [pom]
+[INFO] llmgw-tokenizer-api                                                [jar]
+[INFO] llmgw-tokenizer-heuristic                                          [jar]
+[INFO] llmgw-governance-default                                           [jar]
+[INFO] llmgw-governance-redis                                             [jar]
+[INFO] llmgw-engine                                                       [pom]
+[INFO] llmgw-engine-api                                                   [jar]
+[INFO] llmgw-provider                                                     [pom]
+[INFO] llmgw-provider-api                                                 [jar]
+[INFO] llmgw-engine-webflux                                               [jar]
+[INFO] llmgw-engine-vt                                                    [jar]
+[INFO] llmgw-provider-http-jdk                                            [jar]
+[INFO] llmgw-provider-openai                                              [jar]
+[INFO] llmgw-provider-openai-sdk                                          [jar]
+[INFO] llmgw-provider-anthropic                                           [jar]
+[INFO] llmgw-tokenizer-jtokkit                                            [jar]
+[INFO] llmgw-app                                                          [jar]
+[INFO] 
+[INFO] -----------------< io.github.leohou0430:llmgw-parent >------------------
+[INFO] Building llmgw4j 0.3.1                                            [1/21]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (no-dubbo-runtime) @ llmgw-parent ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-parent ---
+[INFO] Skipping Rule Enforcement.
+[INFO] 
+[INFO] ------------------< io.github.leohou0430:llmgw-core >-------------------
+[INFO] Building llmgw-core 0.3.1                                         [2/21]
+[INFO]   from llmgw-core/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (no-dubbo-runtime) @ llmgw-core ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-core ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] ---------------< io.github.leohou0430:llmgw-governance >----------------
+[INFO] Building llmgw-governance 0.3.1                                   [3/21]
+[INFO]   from llmgw-governance/pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (no-dubbo-runtime) @ llmgw-governance ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-governance ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] -------------< io.github.leohou0430:llmgw-governance-api >--------------
+[INFO] Building llmgw-governance-api 0.3.1                               [4/21]
+[INFO]   from llmgw-governance/llmgw-governance-api/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (no-dubbo-runtime) @ llmgw-governance-api ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-governance-api ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] ----------------< io.github.leohou0430:llmgw-tokenizer >----------------
+[INFO] Building llmgw-tokenizer 0.3.1                                    [5/21]
+[INFO]   from llmgw-tokenizer/pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (no-dubbo-runtime) @ llmgw-tokenizer ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-tokenizer ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --------------< io.github.leohou0430:llmgw-tokenizer-api >--------------
+[INFO] Building llmgw-tokenizer-api 0.3.1                                [6/21]
+[INFO]   from llmgw-tokenizer/llmgw-tokenizer-api/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (no-dubbo-runtime) @ llmgw-tokenizer-api ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-tokenizer-api ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] -----------< io.github.leohou0430:llmgw-tokenizer-heuristic >-----------
+[INFO] Building llmgw-tokenizer-heuristic 0.3.1                          [7/21]
+[INFO]   from llmgw-tokenizer/llmgw-tokenizer-heuristic/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (no-dubbo-runtime) @ llmgw-tokenizer-heuristic ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-tokenizer-heuristic ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] -----------< io.github.leohou0430:llmgw-governance-default >------------
+[INFO] Building llmgw-governance-default 0.3.1                           [8/21]
+[INFO]   from llmgw-governance/llmgw-governance-default/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (no-dubbo-runtime) @ llmgw-governance-default ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-governance-default ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] ------------< io.github.leohou0430:llmgw-governance-redis >-------------
+[INFO] Building llmgw-governance-redis 0.3.1                             [9/21]
+[INFO]   from llmgw-governance/llmgw-governance-redis/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (no-dubbo-runtime) @ llmgw-governance-redis ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-governance-redis ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] -----------------< io.github.leohou0430:llmgw-engine >------------------
+[INFO] Building llmgw-engine 0.3.1                                      [10/21]
+[INFO]   from llmgw-engine/pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (no-dubbo-runtime) @ llmgw-engine ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-engine ---
+[INFO] Skipping Rule Enforcement.
+[INFO] 
+[INFO] ---------------< io.github.leohou0430:llmgw-engine-api >----------------
+[INFO] Building llmgw-engine-api 0.3.1                                  [11/21]
+[INFO]   from llmgw-engine/llmgw-engine-api/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (no-dubbo-runtime) @ llmgw-engine-api ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-engine-api ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] ----------------< io.github.leohou0430:llmgw-provider >-----------------
+[INFO] Building llmgw-provider 0.3.1                                    [12/21]
+[INFO]   from llmgw-provider/pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (no-dubbo-runtime) @ llmgw-provider ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-provider ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --------------< io.github.leohou0430:llmgw-provider-api >---------------
+[INFO] Building llmgw-provider-api 0.3.1                                [13/21]
+[INFO]   from llmgw-provider/llmgw-provider-api/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (no-dubbo-runtime) @ llmgw-provider-api ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-provider-api ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] -------------< io.github.leohou0430:llmgw-engine-webflux >--------------
+[INFO] Building llmgw-engine-webflux 0.3.1                              [14/21]
+[INFO]   from llmgw-engine/llmgw-engine-webflux/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (no-dubbo-runtime) @ llmgw-engine-webflux ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-engine-webflux ---
+[INFO] Skipping Rule Enforcement.
+[INFO] 
+[INFO] ----------------< io.github.leohou0430:llmgw-engine-vt >----------------
+[INFO] Building llmgw-engine-vt 0.3.1                                   [15/21]
+[INFO]   from llmgw-engine/llmgw-engine-vt/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (no-dubbo-runtime) @ llmgw-engine-vt ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-engine-vt ---
+[INFO] Skipping Rule Enforcement.
+[INFO] 
+[INFO] ------------< io.github.leohou0430:llmgw-provider-http-jdk >------------
+[INFO] Building llmgw-provider-http-jdk 0.3.1                           [16/21]
+[INFO]   from llmgw-provider/llmgw-provider-http-jdk/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (no-dubbo-runtime) @ llmgw-provider-http-jdk ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-provider-http-jdk ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] -------------< io.github.leohou0430:llmgw-provider-openai >-------------
+[INFO] Building llmgw-provider-openai 0.3.1                             [17/21]
+[INFO]   from llmgw-provider/llmgw-provider-openai/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (no-dubbo-runtime) @ llmgw-provider-openai ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-provider-openai ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] -----------< io.github.leohou0430:llmgw-provider-openai-sdk >-----------
+[INFO] Building llmgw-provider-openai-sdk 0.3.1                         [18/21]
+[INFO]   from llmgw-provider/llmgw-provider-openai-sdk/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (no-dubbo-runtime) @ llmgw-provider-openai-sdk ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-provider-openai-sdk ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] -----------< io.github.leohou0430:llmgw-provider-anthropic >------------
+[INFO] Building llmgw-provider-anthropic 0.3.1                          [19/21]
+[INFO]   from llmgw-provider/llmgw-provider-anthropic/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (no-dubbo-runtime) @ llmgw-provider-anthropic ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-provider-anthropic ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] ------------< io.github.leohou0430:llmgw-tokenizer-jtokkit >------------
+[INFO] Building llmgw-tokenizer-jtokkit 0.3.1                           [20/21]
+[INFO]   from llmgw-tokenizer/llmgw-tokenizer-jtokkit/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (no-dubbo-runtime) @ llmgw-tokenizer-jtokkit ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-tokenizer-jtokkit ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] -------------------< io.github.leohou0430:llmgw-app >-------------------
+[INFO] Building llmgw-app 0.3.1                                         [21/21]
+[INFO]   from llmgw-app/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (no-dubbo-runtime) @ llmgw-app ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-app ---
+[INFO] Skipping Rule Enforcement.
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for llmgw4j 0.3.1:
+[INFO] 
+[INFO] llmgw4j ............................................ SUCCESS [  0.377 s]
+[INFO] llmgw-core ......................................... SUCCESS [  0.111 s]
+[INFO] llmgw-governance ................................... SUCCESS [  0.020 s]
+[INFO] llmgw-governance-api ............................... SUCCESS [  0.037 s]
+[INFO] llmgw-tokenizer .................................... SUCCESS [  0.010 s]
+[INFO] llmgw-tokenizer-api ................................ SUCCESS [  0.022 s]
+[INFO] llmgw-tokenizer-heuristic .......................... SUCCESS [  0.051 s]
+[INFO] llmgw-governance-default ........................... SUCCESS [  0.135 s]
+[INFO] llmgw-governance-redis ............................. SUCCESS [  0.145 s]
+[INFO] llmgw-engine ....................................... SUCCESS [  0.049 s]
+[INFO] llmgw-engine-api ................................... SUCCESS [  0.018 s]
+[INFO] llmgw-provider ..................................... SUCCESS [  0.010 s]
+[INFO] llmgw-provider-api ................................. SUCCESS [  0.014 s]
+[INFO] llmgw-engine-webflux ............................... SUCCESS [  0.329 s]
+[INFO] llmgw-engine-vt .................................... SUCCESS [  0.053 s]
+[INFO] llmgw-provider-http-jdk ............................ SUCCESS [  0.016 s]
+[INFO] llmgw-provider-openai .............................. SUCCESS [  0.016 s]
+[INFO] llmgw-provider-openai-sdk .......................... SUCCESS [  0.146 s]
+[INFO] llmgw-provider-anthropic ........................... SUCCESS [  0.011 s]
+[INFO] llmgw-tokenizer-jtokkit ............................ SUCCESS [  0.012 s]
+[INFO] llmgw-app .......................................... SUCCESS [  0.114 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  2.391 s
+[INFO] Finished at: 2026-11-11T00:07:39+08:00
+[INFO] ------------------------------------------------------------------------

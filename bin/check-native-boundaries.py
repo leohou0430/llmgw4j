@@ -38,6 +38,14 @@ def check(root):
         modules.append((pom, xml, module))
         if pom.parent.parent == root and len(pom.parent.name.split('-')) > 2:
             flat['-'.join(pom.parent.name.split('-')[:2])].append(pom.parent.name)
+        for dependency in xml.findall('m:dependencies/m:dependency', NS):
+            if dependency.findtext('m:groupId', '', NS).startswith('org.apache.dubbo'):
+                errors.append(f'{pom.relative_to(root)}: direct Dubbo dependency is forbidden')
+        for path in (pom.parent / 'src/main/java').rglob('*.java'):
+            if re.search(r'\borg\.apache\.dubbo\.', java_code(path.read_text())):
+                errors.append(f'{path.relative_to(root)}: direct Dubbo type is forbidden')
+        for path in (pom.parent / 'src/main/resources/META-INF/dubbo').rglob('*'):
+            if path.is_file(): errors.append(f'{path.relative_to(root)}: legacy Dubbo metadata is forbidden')
         if module.startswith(TRANSPORTS):
             continue
         if xml.findtext('m:packaging', 'jar', NS) != 'pom' and not enforced(pom):
@@ -64,7 +72,7 @@ def check(root):
     names = {}
     descriptors = 0
     for directory in root.glob('llmgw-*'):
-        for resource in directory.glob('**/src/main/resources/META-INF/dubbo/*'):
+        for resource in directory.glob('**/src/main/resources/META-INF/llmgw/extensions/*'):
             if not resource.is_file():
                 continue
             descriptors += 1
@@ -73,7 +81,7 @@ def check(root):
                 if not line:
                     continue
                 if '=' not in line:
-                    errors.append(f'{resource.relative_to(root)}: named Dubbo mapping required')
+                    errors.append(f'{resource.relative_to(root)}: named extension mapping required')
                     continue
                 aliases, implementation = [part.strip() for part in line.split('=', 1)]
                 source_name = implementation.split('$')[0].replace('.', '/') + '.java'

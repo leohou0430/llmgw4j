@@ -4,16 +4,13 @@
 **性能数字的解释口径以 `bench/README.md` 的数据质量红线为准**：宿主过载期间的数据只作方向参考，
 不得据此声称性能提升或退化。
 
-## [0.3.0] - 2026-11-10
+## [0.3.1] - 2026-11-10
 
-### Native SPI and modules
-
-- 基础能力使用真实 Dubbo SPI 和显式 Java 构造/实例生命周期，移除 core/provider/治理/tokenizer 的 Spring/Reactor 依赖与自动配置。
-- 上游契约改为 JDK Flow/Future；JDK HTTP 独立模块，保留背压、取消和正常完成保护，Reactor/心跳适配留在 WebFlux。
-- Provider 统一 api/http-jdk/openai/openai-sdk/anthropic；tokenizer 统一 api/heuristic/jtokkit，配置选择实际作用于准入估算。
-- Redis 改为 Jedis 原生池，保留六段原子 Lua；Spring 配置别名仅在 app 兼容，推荐 gateway.redis.*。
-- 新增源码/命名扩展/未来平铺实现规则、传递依赖 Enforcer、架构与生命周期测试；AOT 按描述文件注册元数据。
-- 内部 API/扩展方式有兼容变化，详见 [迁移说明](docs/EXTENSIONS.md)。完整资产与升级边界见 [v0.3.0 发布说明](docs/releases/v0.3.0.md)。
+- 参考 Dubbo 的命名映射、默认实现、惰性加载和别名机制，以项目内 JDK 实现替代直接 Dubbo 依赖；保留显式 Java 组装与实例资源管理。
+- 新增 ExtensionPoint、Extensions 与 `META-INF/llmgw/extensions`，目录实例隔离、重复名拒绝、公共构造器校验和明确错误；没有隐式注入、AOP 或动态代码生成。
+- 移除 dubbo-common 及其间接依赖和专用 native 元数据；Maven Enforcer 禁止所有模块重新引入 Dubbo。
+- 保留 Flow/Future transport、Jedis、provider/tokenizer 聚合与 api/实现模块规则，更新扩展迁移、配置及验证说明。
+- v0.3.0 是直接依赖 Dubbo 的中间 tag；目标修订后已取消发布，没有发行资产，未移动或覆盖该 tag。新版本使用 v0.3.1。
 
 ## [0.2.0] - 2026-11-10
 

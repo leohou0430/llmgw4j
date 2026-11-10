@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class NativeGovernanceModuleTest {
     @TempDir Path folder;
-    @Test void actualDubboModuleBuildsAndClosesTheGraphWithoutSpringOnItsClasspath() {
+    @Test void namedModuleBuildsAndClosesTheGraphWithoutSpringOnItsClasspath() {
         assertThrows(ClassNotFoundException.class, () -> Class.forName("org.springframework.context.ApplicationContext"));
         var p = new GatewayProperties();p.setKeysStorePath(folder.resolve("keys.json").toString());
         var context = new ExtensionContext();

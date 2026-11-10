@@ -14,7 +14,7 @@ import java.util.Map;
  * request-build time. When no authenticator supports a provider, the gateway
  * falls back to the OpenAI-compatible {@code Authorization: Bearer} default.
  */
-@org.apache.dubbo.common.extension.SPI("openai")
+@io.github.leohou0430.llmgw.core.extension.ExtensionPoint("openai")
 public interface UpstreamAuthenticator {
 
     /** true when this authenticator owns the named provider dialect. */

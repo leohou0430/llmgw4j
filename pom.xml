@@ -13,7 +13,7 @@
 
   <groupId>io.github.leohou0430</groupId>
   <artifactId>llmgw-parent</artifactId>
-  <version>0.3.0</version>
+  <version>0.3.1</version>
   <packaging>pom</packaging>
 
   <name>llmgw4j</name>
@@ -71,7 +71,6 @@
     <maven.compiler.release>25</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jedis.version>7.0.0</jedis.version>
-    <dubbo.version>3.3.6</dubbo.version>
     <caffeine.version>3.3.1</caffeine.version>
     <jtokkit.version>1.1.0</jtokkit.version>
     <openai-java.version>4.100.0</openai-java.version>
@@ -87,7 +86,6 @@
       <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-tokenizer-heuristic</artifactId><version>${project.version}</version></dependency>
       <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-provider-http-jdk</artifactId><version>${project.version}</version></dependency>
       <dependency><groupId>redis.clients</groupId><artifactId>jedis</artifactId><version>${jedis.version}</version></dependency>
-      <dependency><groupId>org.apache.dubbo</groupId><artifactId>dubbo-common</artifactId><version>${dubbo.version}</version></dependency>
       <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-provider-api</artifactId><version>${project.version}</version></dependency>
       <dependency>
         <groupId>com.github.ben-manes.caffeine</groupId>
@@ -142,6 +140,13 @@
         <artifactId>maven-enforcer-plugin</artifactId>
         <version>3.6.1</version>
         <executions><execution>
+          <id>no-dubbo-runtime</id>
+          <goals><goal>enforce</goal></goals>
+          <configuration><rules><bannedDependencies>
+            <searchTransitive>true</searchTransitive>
+            <excludes><exclude>org.apache.dubbo:*</exclude><exclude>org.apache.dubbo.*:*</exclude></excludes>
+          </bannedDependencies></rules></configuration>
+        </execution><execution>
           <id>native-foundation-dependencies</id>
           <goals><goal>enforce</goal></goals>
           <configuration>

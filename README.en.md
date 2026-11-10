@@ -18,9 +18,9 @@
 
 llmgw4j is a **Java LLM API gateway** built on Spring Boot 4.1.2 / JDK 25.
 
-Current release: **v0.3.0**. See [release notes](docs/releases/v0.3.0.md) and [performance evidence](docs/PERFORMANCE.md).
+Current release: **v0.3.1**. See [release notes](docs/releases/v0.3.1.md) and [performance evidence](docs/PERFORMANCE.md).
 
-Version 0.3.0: foundation discovery uses real Dubbo SPI with explicit native Java construction. Provider and tokenizer use aggregator/api/implementation modules; Spring/Reactor remain at HTTP adapters. See [extension and migration guide](docs/EXTENSIONS.md). Internal Java extension APIs changed since v0.2.0; HTTP routes remain compatible.
+Version 0.3.1: foundation discovery uses a project-owned named SPI inspired by Dubbo, without a Dubbo dependency. Services use explicit Java construction. Provider and tokenizer use aggregator/api/implementation modules; Spring/Reactor remain at HTTP adapters. See [extension and migration guide](docs/EXTENSIONS.md). Internal Java extension APIs changed since v0.2.0; HTTP routes remain compatible.
 
 ## Capability overview (parity gaps vs mainstream gateways, see docs/gap-analysis.md)
 
@@ -60,7 +60,7 @@ A/B harness needed to compare them without hidden variables.
 | Understands tokens | ✅ token-based quota & rate limiting | ❌ request/connection only | ✅ |
 | Data plane A/B | ✅ **same jar, one variable** (WebFlux vs virtual threads) | ❌ | ❌ |
 | Streaming contract | ✅ `data: [DONE]` is the *only* completion signal; never faked | ⚠️ often treats EOF as success | ⚠️ varies |
-| Governance | ✅ named Dubbo SPIs, native factories | ⚠️ plugin SDK | ⚠️ built-in features |
+| Governance | ✅ project-owned named SPIs, native factories | ⚠️ plugin SDK | ⚠️ built-in features |
 | TTFT / overhead accounting | ✅ dedicated metrics, headers, audit fields | ❌ | ⚠️ partial |
 | Reproducible evidence | ✅ ABBA paired A/B + published load timeline | ❌ | ❌ |
 
@@ -86,7 +86,7 @@ production replacement for Kong / Higress / Envoy. See
   │   Router · TokenLimiter · UsageLedger · CircuitBreaker    │
   │   SemanticCache · ApiKeyRegistry · AuditSink · Metrics    │
   │                           │                              │
-  │              named Dubbo SPIs + explicit native Java factories
+  │              project-owned named SPIs + explicit native Java factories
   └───────────────────────────┼──────────────────────────────┘
                               ▼
                  JdkHttpUpstream (java.net.http)
@@ -106,7 +106,7 @@ Each implementation depends on its domain API and never on a sibling; the
 APIs depend only on `llmgw-core`; the data planes never reference a governance
 implementation. `llmgw-app` is the composition root (both engines in one fat
 jar, selected by Spring profile). Foundation services use explicit construction
-and named Dubbo SPI; only the HTTP boundary uses Spring/Reactor.
+and the project-owned named SPI; only the HTTP boundary uses Spring/Reactor.
 `./bin/check-module-layout.sh` enforces these rules in CI.
 
 ## Quick start
@@ -190,7 +190,7 @@ The pre-v0.2.0 frozen performance review measured these changes: the SSE parser 
 
 The latest frozen-artifact A/B contains 64 samples and 4,217,770 requests, all error-free with matching upstream counts. WebFlux SSE median throughput increased 7.3% / 5.2% in separate governance-on/off batches, with overlapping ranges. JSON results change direction and some p99 values worsen; there is no evidence for a general stable throughput gain. A 4-thread experiment produced an SSE truncation, so the default remains 32.
 
-See the [full report](docs/verification/perf/2026-11-10/perf-review/README.md) for JFR, ranges, raw evidence and limitations. Historical cross-gateway results describe older fixed artifacts, not a new v0.3.0 ranking. Native performance, public TLS and remote governance latency were not remeasured. The SPI/Flow refactor in v0.3.0 has not been benchmarked; benchmark JAR hashes remain explicitly recorded.
+See the [full report](docs/verification/perf/2026-11-10/perf-review/README.md) for JFR, ranges, raw evidence and limitations. Historical cross-gateway results describe older fixed artifacts, not a new v0.3.1 ranking. Native performance, public TLS and remote governance latency were not remeasured. The SPI/Flow refactor in v0.3.1 has not been benchmarked; benchmark JAR hashes remain explicitly recorded.
 
 The URI cache remains unbounded for high-cardinality dynamic paths. Default concurrency is 64 and non-streaming response size is capped at 4 MiB; uploads and downloads still buffer whole bodies. See [benchmark instructions](bench/cross-gateway/README.md).
 

@@ -30,12 +30,18 @@ class NativeBoundaryTest(unittest.TestCase):
             root=Path(folder)
             for module in ['llmgw-a','llmgw-b']:
                 self.write(root,module+'/pom.xml',self.pom())
-                self.write(root,module+'/src/main/resources/META-INF/dubbo/example.Spi','same=example.Missing\n')
+                self.write(root,module+'/src/main/resources/META-INF/llmgw/extensions/example.Spi','same=example.Missing\n')
             errors=check(root)[0]
             self.assertTrue(any('source missing' in e for e in errors));self.assertTrue(any('duplicate extension' in e for e in errors))
     def test_foundation_cannot_skip_the_transitive_dependency_rule(self):
         with tempfile.TemporaryDirectory() as folder:
             root=Path(folder);self.write(root,'llmgw-core/pom.xml','<project xmlns="http://maven.apache.org/POM/4.0.0"/>')
             self.assertTrue(any('transitive dependency enforcement' in e for e in check(root)[0]))
+
+    def test_dubbo_cannot_reenter_through_http_or_foundation(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root=Path(folder);self.write(root,'llmgw-app/pom.xml',self.pom())
+            self.write(root,'llmgw-app/src/main/java/Bad.java','class Bad { org.apache.dubbo.rpc.model.FrameworkModel model; }')
+            self.assertTrue(any('direct Dubbo type' in e for e in check(root)[0]))
 
 if __name__ == '__main__':unittest.main()

@@ -1,0 +1,858 @@
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] llmgw4j                                                            [pom]
+[INFO] llmgw-core                                                         [jar]
+[INFO] llmgw-governance                                                   [pom]
+[INFO] llmgw-governance-api                                               [jar]
+[INFO] llmgw-tokenizer                                                    [pom]
+[INFO] llmgw-tokenizer-api                                                [jar]
+[INFO] llmgw-tokenizer-heuristic                                          [jar]
+[INFO] llmgw-governance-default                                           [jar]
+[INFO] llmgw-governance-redis                                             [jar]
+[INFO] llmgw-engine                                                       [pom]
+[INFO] llmgw-engine-api                                                   [jar]
+[INFO] llmgw-provider                                                     [pom]
+[INFO] llmgw-provider-api                                                 [jar]
+[INFO] llmgw-engine-webflux                                               [jar]
+[INFO] llmgw-engine-vt                                                    [jar]
+[INFO] llmgw-provider-http-jdk                                            [jar]
+[INFO] llmgw-provider-openai                                              [jar]
+[INFO] llmgw-provider-openai-sdk                                          [jar]
+[INFO] llmgw-provider-anthropic                                           [jar]
+[INFO] llmgw-tokenizer-jtokkit                                            [jar]
+[INFO] llmgw-app                                                          [jar]
+[INFO] 
+[INFO] -----------------< io.github.leohou0430:llmgw-parent >------------------
+[INFO] Building llmgw4j 0.3.1                                            [1/21]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ llmgw-parent ---
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (no-dubbo-runtime) @ llmgw-parent ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-parent ---
+[INFO] Skipping Rule Enforcement.
+[INFO] 
+[INFO] ------------------< io.github.leohou0430:llmgw-core >-------------------
+[INFO] Building llmgw-core 0.3.1                                         [2/21]
+[INFO]   from llmgw-core/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ llmgw-core ---
+[INFO] Deleting /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-core/target
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (no-dubbo-runtime) @ llmgw-core ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-core ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ llmgw-core ---
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ llmgw-core ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 53 source files with javac [debug parameters release 25] to target/classes
+[INFO] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/protocol/ChunkParser.java: 某些输入文件使用或覆盖了已过时的 API。
+[INFO] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/protocol/ChunkParser.java: 有关详细信息, 请使用 -Xlint:deprecation 重新编译。
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ llmgw-core ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-core/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ llmgw-core ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 8 source files with javac [debug parameters release 25] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ llmgw-core ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running io.github.leohou0430.llmgw.core.extension.ExtensionsTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.381 s -- in io.github.leohou0430.llmgw.core.extension.ExtensionsTest
+[INFO] Running io.github.leohou0430.llmgw.core.extension.ExtensionContextTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.038 s -- in io.github.leohou0430.llmgw.core.extension.ExtensionContextTest
+[INFO] Running io.github.leohou0430.llmgw.core.protocol.ProtocolCodecTest
+[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.603 s -- in io.github.leohou0430.llmgw.core.protocol.ProtocolCodecTest
+[INFO] Running io.github.leohou0430.llmgw.core.protocol.ProtocolSpiTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.059 s -- in io.github.leohou0430.llmgw.core.protocol.ProtocolSpiTest
+[INFO] Running io.github.leohou0430.llmgw.core.protocol.ProtocolDiscoveryTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.015 s -- in io.github.leohou0430.llmgw.core.protocol.ProtocolDiscoveryTest
+[INFO] Running io.github.leohou0430.llmgw.core.protocol.SsePayloadBoundaryTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.041 s -- in io.github.leohou0430.llmgw.core.protocol.SsePayloadBoundaryTest
+[INFO] Running io.github.leohou0430.llmgw.core.routing.TaskRouteIsolationTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.020 s -- in io.github.leohou0430.llmgw.core.routing.TaskRouteIsolationTest
+[INFO] Running io.github.leohou0430.llmgw.core.upstream.UpstreamRequestTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.021 s -- in io.github.leohou0430.llmgw.core.upstream.UpstreamRequestTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 34, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- jar:3.5.1:jar (default-jar) @ llmgw-core ---
+[INFO] Building jar: /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-core/target/llmgw-core-0.3.1.jar
+[INFO] 
+[INFO] ---------------< io.github.leohou0430:llmgw-governance >----------------
+[INFO] Building llmgw-governance 0.3.1                                   [3/21]
+[INFO]   from llmgw-governance/pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ llmgw-governance ---
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (no-dubbo-runtime) @ llmgw-governance ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-governance ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] -------------< io.github.leohou0430:llmgw-governance-api >--------------
+[INFO] Building llmgw-governance-api 0.3.1                               [4/21]
+[INFO]   from llmgw-governance/llmgw-governance-api/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ llmgw-governance-api ---
+[INFO] Deleting /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-governance/llmgw-governance-api/target
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (no-dubbo-runtime) @ llmgw-governance-api ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-governance-api ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ llmgw-governance-api ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-governance/llmgw-governance-api/src/main/resources
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-governance/llmgw-governance-api/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ llmgw-governance-api ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 4 source files with javac [debug parameters release 25] to target/classes
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ llmgw-governance-api ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-governance/llmgw-governance-api/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ llmgw-governance-api ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 1 source file with javac [debug parameters release 25] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ llmgw-governance-api ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running io.github.leohou0430.llmgw.governance.QuotaMathTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.170 s -- in io.github.leohou0430.llmgw.governance.QuotaMathTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- jar:3.5.1:jar (default-jar) @ llmgw-governance-api ---
+[INFO] Building jar: /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-governance/llmgw-governance-api/target/llmgw-governance-api-0.3.1.jar
+[INFO] 
+[INFO] ----------------< io.github.leohou0430:llmgw-tokenizer >----------------
+[INFO] Building llmgw-tokenizer 0.3.1                                    [5/21]
+[INFO]   from llmgw-tokenizer/pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ llmgw-tokenizer ---
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (no-dubbo-runtime) @ llmgw-tokenizer ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-tokenizer ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --------------< io.github.leohou0430:llmgw-tokenizer-api >--------------
+[INFO] Building llmgw-tokenizer-api 0.3.1                                [6/21]
+[INFO]   from llmgw-tokenizer/llmgw-tokenizer-api/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ llmgw-tokenizer-api ---
+[INFO] Deleting /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-tokenizer/llmgw-tokenizer-api/target
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (no-dubbo-runtime) @ llmgw-tokenizer-api ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-tokenizer-api ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ llmgw-tokenizer-api ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-tokenizer/llmgw-tokenizer-api/src/main/resources
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-tokenizer/llmgw-tokenizer-api/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ llmgw-tokenizer-api ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 1 source file with javac [debug parameters release 25] to target/classes
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ llmgw-tokenizer-api ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-tokenizer/llmgw-tokenizer-api/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ llmgw-tokenizer-api ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ llmgw-tokenizer-api ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] --- jar:3.5.1:jar (default-jar) @ llmgw-tokenizer-api ---
+[INFO] Building jar: /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-tokenizer/llmgw-tokenizer-api/target/llmgw-tokenizer-api-0.3.1.jar
+[INFO] 
+[INFO] -----------< io.github.leohou0430:llmgw-tokenizer-heuristic >-----------
+[INFO] Building llmgw-tokenizer-heuristic 0.3.1                          [7/21]
+[INFO]   from llmgw-tokenizer/llmgw-tokenizer-heuristic/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ llmgw-tokenizer-heuristic ---
+[INFO] Deleting /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-tokenizer/llmgw-tokenizer-heuristic/target
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (no-dubbo-runtime) @ llmgw-tokenizer-heuristic ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-tokenizer-heuristic ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ llmgw-tokenizer-heuristic ---
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ llmgw-tokenizer-heuristic ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 1 source file with javac [debug parameters release 25] to target/classes
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ llmgw-tokenizer-heuristic ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-tokenizer/llmgw-tokenizer-heuristic/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ llmgw-tokenizer-heuristic ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ llmgw-tokenizer-heuristic ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] --- jar:3.5.1:jar (default-jar) @ llmgw-tokenizer-heuristic ---
+[INFO] Building jar: /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-tokenizer/llmgw-tokenizer-heuristic/target/llmgw-tokenizer-heuristic-0.3.1.jar
+[INFO] 
+[INFO] -----------< io.github.leohou0430:llmgw-governance-default >------------
+[INFO] Building llmgw-governance-default 0.3.1                           [8/21]
+[INFO]   from llmgw-governance/llmgw-governance-default/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ llmgw-governance-default ---
+[INFO] Deleting /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-governance/llmgw-governance-default/target
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (no-dubbo-runtime) @ llmgw-governance-default ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-governance-default ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ llmgw-governance-default ---
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ llmgw-governance-default ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 23 source files with javac [debug parameters release 25] to target/classes
+[INFO] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/DefaultGovernanceChain.java: 某些输入文件使用或覆盖了已过时的 API。
+[INFO] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/DefaultGovernanceChain.java: 有关详细信息, 请使用 -Xlint:deprecation 重新编译。
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ llmgw-governance-default ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-governance/llmgw-governance-default/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ llmgw-governance-default ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 9 source files with javac [debug parameters release 25] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ llmgw-governance-default ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running io.github.leohou0430.llmgw.governance.inmemory.CacheIsolationTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.510 s -- in io.github.leohou0430.llmgw.governance.inmemory.CacheIsolationTest
+[INFO] Running io.github.leohou0430.llmgw.governance.inmemory.ManagedApiKeyRegistryTest
+SLF4J(W): No SLF4J providers were found.
+SLF4J(W): Defaulting to no-operation (NOP) logger implementation
+SLF4J(W): See https://www.slf4j.org/codes.html#noProviders for further details.
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.269 s -- in io.github.leohou0430.llmgw.governance.inmemory.ManagedApiKeyRegistryTest
+[INFO] Running io.github.leohou0430.llmgw.governance.inmemory.ModelRateAccountingTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.022 s -- in io.github.leohou0430.llmgw.governance.inmemory.ModelRateAccountingTest
+[INFO] Running io.github.leohou0430.llmgw.governance.inmemory.JwtTokenValidatorTest
+[INFO] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.098 s -- in io.github.leohou0430.llmgw.governance.inmemory.JwtTokenValidatorTest
+[INFO] Running io.github.leohou0430.llmgw.governance.inmemory.NativeGovernanceModuleTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.234 s -- in io.github.leohou0430.llmgw.governance.inmemory.NativeGovernanceModuleTest
+[INFO] Running io.github.leohou0430.llmgw.governance.inmemory.GovernanceSafetyTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.012 s -- in io.github.leohou0430.llmgw.governance.inmemory.GovernanceSafetyTest
+[INFO] Running io.github.leohou0430.llmgw.governance.inmemory.HttpGuardrailTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.248 s -- in io.github.leohou0430.llmgw.governance.inmemory.HttpGuardrailTest
+[INFO] Running io.github.leohou0430.llmgw.governance.inmemory.ConfigModelCatalogTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.009 s -- in io.github.leohou0430.llmgw.governance.inmemory.ConfigModelCatalogTest
+[INFO] Running io.github.leohou0430.llmgw.governance.inmemory.InMemoryBudgetLedgerTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.482 s -- in io.github.leohou0430.llmgw.governance.inmemory.InMemoryBudgetLedgerTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 52, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- jar:3.5.1:jar (default-jar) @ llmgw-governance-default ---
+[INFO] Building jar: /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-governance/llmgw-governance-default/target/llmgw-governance-default-0.3.1.jar
+[INFO] 
+[INFO] ------------< io.github.leohou0430:llmgw-governance-redis >-------------
+[INFO] Building llmgw-governance-redis 0.3.1                             [9/21]
+[INFO]   from llmgw-governance/llmgw-governance-redis/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ llmgw-governance-redis ---
+[INFO] Deleting /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-governance/llmgw-governance-redis/target
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (no-dubbo-runtime) @ llmgw-governance-redis ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-governance-redis ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ llmgw-governance-redis ---
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ llmgw-governance-redis ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 8 source files with javac [debug parameters release 25] to target/classes
+[INFO] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-governance/llmgw-governance-redis/src/main/java/io/github/leohou0430/llmgw/governance/redis/RedisApiKeyRegistry.java: /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-governance/llmgw-governance-redis/src/main/java/io/github/leohou0430/llmgw/governance/redis/RedisApiKeyRegistry.java使用或覆盖了已过时的 API。
+[INFO] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-governance/llmgw-governance-redis/src/main/java/io/github/leohou0430/llmgw/governance/redis/RedisApiKeyRegistry.java: 有关详细信息, 请使用 -Xlint:deprecation 重新编译。
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ llmgw-governance-redis ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-governance/llmgw-governance-redis/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ llmgw-governance-redis ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 1 source file with javac [debug parameters release 25] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ llmgw-governance-redis ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running io.github.leohou0430.llmgw.governance.redis.RedisTokenLimiterTest
+SLF4J(W): No SLF4J providers were found.
+SLF4J(W): Defaulting to no-operation (NOP) logger implementation
+SLF4J(W): See https://www.slf4j.org/codes.html#noProviders for further details.
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.060 s -- in io.github.leohou0430.llmgw.governance.redis.RedisTokenLimiterTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- jar:3.5.1:jar (default-jar) @ llmgw-governance-redis ---
+[INFO] Building jar: /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-governance/llmgw-governance-redis/target/llmgw-governance-redis-0.3.1.jar
+[INFO] 
+[INFO] -----------------< io.github.leohou0430:llmgw-engine >------------------
+[INFO] Building llmgw-engine 0.3.1                                      [10/21]
+[INFO]   from llmgw-engine/pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ llmgw-engine ---
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (no-dubbo-runtime) @ llmgw-engine ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-engine ---
+[INFO] Skipping Rule Enforcement.
+[INFO] 
+[INFO] ---------------< io.github.leohou0430:llmgw-engine-api >----------------
+[INFO] Building llmgw-engine-api 0.3.1                                  [11/21]
+[INFO]   from llmgw-engine/llmgw-engine-api/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ llmgw-engine-api ---
+[INFO] Deleting /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-api/target
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (no-dubbo-runtime) @ llmgw-engine-api ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-engine-api ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ llmgw-engine-api ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-api/src/main/resources
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-api/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ llmgw-engine-api ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 9 source files with javac [debug parameters release 25] to target/classes
+[INFO] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-api/src/main/java/io/github/leohou0430/llmgw/engine/EngineRoutes.java: /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-api/src/main/java/io/github/leohou0430/llmgw/engine/EngineRoutes.java使用或覆盖了已过时的 API。
+[INFO] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-api/src/main/java/io/github/leohou0430/llmgw/engine/EngineRoutes.java: 有关详细信息, 请使用 -Xlint:deprecation 重新编译。
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ llmgw-engine-api ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-api/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ llmgw-engine-api ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 2 source files with javac [debug parameters release 25] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ llmgw-engine-api ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running io.github.leohou0430.llmgw.engine.FileReferencePolicyTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.089 s -- in io.github.leohou0430.llmgw.engine.FileReferencePolicyTest
+[INFO] Running io.github.leohou0430.llmgw.engine.ForwardingPolicyTest
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.075 s -- in io.github.leohou0430.llmgw.engine.ForwardingPolicyTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- jar:3.5.1:jar (default-jar) @ llmgw-engine-api ---
+[INFO] Building jar: /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-api/target/llmgw-engine-api-0.3.1.jar
+[INFO] 
+[INFO] ----------------< io.github.leohou0430:llmgw-provider >-----------------
+[INFO] Building llmgw-provider 0.3.1                                    [12/21]
+[INFO]   from llmgw-provider/pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ llmgw-provider ---
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (no-dubbo-runtime) @ llmgw-provider ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-provider ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --------------< io.github.leohou0430:llmgw-provider-api >---------------
+[INFO] Building llmgw-provider-api 0.3.1                                [13/21]
+[INFO]   from llmgw-provider/llmgw-provider-api/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ llmgw-provider-api ---
+[INFO] Deleting /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-provider/llmgw-provider-api/target
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (no-dubbo-runtime) @ llmgw-provider-api ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-provider-api ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ llmgw-provider-api ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-provider/llmgw-provider-api/src/main/resources
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-provider/llmgw-provider-api/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ llmgw-provider-api ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 3 source files with javac [debug parameters release 25] to target/classes
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ llmgw-provider-api ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-provider/llmgw-provider-api/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ llmgw-provider-api ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ llmgw-provider-api ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] --- jar:3.5.1:jar (default-jar) @ llmgw-provider-api ---
+[INFO] Building jar: /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-provider/llmgw-provider-api/target/llmgw-provider-api-0.3.1.jar
+[INFO] 
+[INFO] -------------< io.github.leohou0430:llmgw-engine-webflux >--------------
+[INFO] Building llmgw-engine-webflux 0.3.1                              [14/21]
+[INFO]   from llmgw-engine/llmgw-engine-webflux/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ llmgw-engine-webflux ---
+[INFO] Deleting /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-webflux/target
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (no-dubbo-runtime) @ llmgw-engine-webflux ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-engine-webflux ---
+[INFO] Skipping Rule Enforcement.
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ llmgw-engine-webflux ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-webflux/src/main/resources
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-webflux/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ llmgw-engine-webflux ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 2 source files with javac [debug parameters release 25] to target/classes
+[INFO] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-webflux/src/main/java/io/github/leohou0430/llmgw/engine/webflux/WebfluxGatewayController.java: /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-webflux/src/main/java/io/github/leohou0430/llmgw/engine/webflux/WebfluxGatewayController.java使用或覆盖了已过时的 API。
+[INFO] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-webflux/src/main/java/io/github/leohou0430/llmgw/engine/webflux/WebfluxGatewayController.java: 有关详细信息, 请使用 -Xlint:deprecation 重新编译。
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ llmgw-engine-webflux ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-webflux/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ llmgw-engine-webflux ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ llmgw-engine-webflux ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] --- jar:3.5.1:jar (default-jar) @ llmgw-engine-webflux ---
+[INFO] Building jar: /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-webflux/target/llmgw-engine-webflux-0.3.1.jar
+[INFO] 
+[INFO] ----------------< io.github.leohou0430:llmgw-engine-vt >----------------
+[INFO] Building llmgw-engine-vt 0.3.1                                   [15/21]
+[INFO]   from llmgw-engine/llmgw-engine-vt/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ llmgw-engine-vt ---
+[INFO] Deleting /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-vt/target
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (no-dubbo-runtime) @ llmgw-engine-vt ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-engine-vt ---
+[INFO] Skipping Rule Enforcement.
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ llmgw-engine-vt ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-vt/src/main/resources
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-vt/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ llmgw-engine-vt ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 2 source files with javac [debug parameters release 25] to target/classes
+[INFO] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-vt/src/main/java/io/github/leohou0430/llmgw/engine/vt/VirtualThreadGatewayController.java: /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-vt/src/main/java/io/github/leohou0430/llmgw/engine/vt/VirtualThreadGatewayController.java使用或覆盖了已过时的 API。
+[INFO] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-vt/src/main/java/io/github/leohou0430/llmgw/engine/vt/VirtualThreadGatewayController.java: 有关详细信息, 请使用 -Xlint:deprecation 重新编译。
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ llmgw-engine-vt ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-vt/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ llmgw-engine-vt ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ llmgw-engine-vt ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] --- jar:3.5.1:jar (default-jar) @ llmgw-engine-vt ---
+[INFO] Building jar: /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-vt/target/llmgw-engine-vt-0.3.1.jar
+[INFO] 
+[INFO] ------------< io.github.leohou0430:llmgw-provider-http-jdk >------------
+[INFO] Building llmgw-provider-http-jdk 0.3.1                           [16/21]
+[INFO]   from llmgw-provider/llmgw-provider-http-jdk/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ llmgw-provider-http-jdk ---
+[INFO] Deleting /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-provider/llmgw-provider-http-jdk/target
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (no-dubbo-runtime) @ llmgw-provider-http-jdk ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-provider-http-jdk ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ llmgw-provider-http-jdk ---
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ llmgw-provider-http-jdk ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 2 source files with javac [debug parameters release 25] to target/classes
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ llmgw-provider-http-jdk ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-provider/llmgw-provider-http-jdk/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ llmgw-provider-http-jdk ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 3 source files with javac [debug parameters release 25] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ llmgw-provider-http-jdk ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running io.github.leohou0430.llmgw.provider.http.jdk.NativeUpstreamApiTest
+SLF4J(W): No SLF4J providers were found.
+SLF4J(W): Defaulting to no-operation (NOP) logger implementation
+SLF4J(W): See https://www.slf4j.org/codes.html#noProviders for further details.
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.514 s -- in io.github.leohou0430.llmgw.provider.http.jdk.NativeUpstreamApiTest
+[INFO] Running io.github.leohou0430.llmgw.provider.http.jdk.UpstreamResponseLimitTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.413 s -- in io.github.leohou0430.llmgw.provider.http.jdk.UpstreamResponseLimitTest
+[INFO] Running io.github.leohou0430.llmgw.provider.http.jdk.JdkFlowTransportTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.902 s -- in io.github.leohou0430.llmgw.provider.http.jdk.JdkFlowTransportTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- jar:3.5.1:jar (default-jar) @ llmgw-provider-http-jdk ---
+[INFO] Building jar: /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-provider/llmgw-provider-http-jdk/target/llmgw-provider-http-jdk-0.3.1.jar
+[INFO] 
+[INFO] -------------< io.github.leohou0430:llmgw-provider-openai >-------------
+[INFO] Building llmgw-provider-openai 0.3.1                             [17/21]
+[INFO]   from llmgw-provider/llmgw-provider-openai/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ llmgw-provider-openai ---
+[INFO] Deleting /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-provider/llmgw-provider-openai/target
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (no-dubbo-runtime) @ llmgw-provider-openai ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-provider-openai ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ llmgw-provider-openai ---
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ llmgw-provider-openai ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 1 source file with javac [debug parameters release 25] to target/classes
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ llmgw-provider-openai ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-provider/llmgw-provider-openai/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ llmgw-provider-openai ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ llmgw-provider-openai ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] --- jar:3.5.1:jar (default-jar) @ llmgw-provider-openai ---
+[INFO] Building jar: /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-provider/llmgw-provider-openai/target/llmgw-provider-openai-0.3.1.jar
+[INFO] 
+[INFO] -----------< io.github.leohou0430:llmgw-provider-openai-sdk >-----------
+[INFO] Building llmgw-provider-openai-sdk 0.3.1                         [18/21]
+[INFO]   from llmgw-provider/llmgw-provider-openai-sdk/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ llmgw-provider-openai-sdk ---
+[INFO] Deleting /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-provider/llmgw-provider-openai-sdk/target
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (no-dubbo-runtime) @ llmgw-provider-openai-sdk ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-provider-openai-sdk ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ llmgw-provider-openai-sdk ---
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ llmgw-provider-openai-sdk ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 1 source file with javac [debug parameters release 25] to target/classes
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ llmgw-provider-openai-sdk ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-provider/llmgw-provider-openai-sdk/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ llmgw-provider-openai-sdk ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 1 source file with javac [debug parameters release 25] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ llmgw-provider-openai-sdk ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running io.github.leohou0430.llmgw.provider.openai.sdk.OpenAiVerifierDiscoveryTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.591 s -- in io.github.leohou0430.llmgw.provider.openai.sdk.OpenAiVerifierDiscoveryTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- jar:3.5.1:jar (default-jar) @ llmgw-provider-openai-sdk ---
+[INFO] Building jar: /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-provider/llmgw-provider-openai-sdk/target/llmgw-provider-openai-sdk-0.3.1.jar
+[INFO] 
+[INFO] -----------< io.github.leohou0430:llmgw-provider-anthropic >------------
+[INFO] Building llmgw-provider-anthropic 0.3.1                          [19/21]
+[INFO]   from llmgw-provider/llmgw-provider-anthropic/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ llmgw-provider-anthropic ---
+[INFO] Deleting /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-provider/llmgw-provider-anthropic/target
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (no-dubbo-runtime) @ llmgw-provider-anthropic ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-provider-anthropic ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ llmgw-provider-anthropic ---
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ llmgw-provider-anthropic ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 1 source file with javac [debug parameters release 25] to target/classes
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ llmgw-provider-anthropic ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-provider/llmgw-provider-anthropic/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ llmgw-provider-anthropic ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 1 source file with javac [debug parameters release 25] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ llmgw-provider-anthropic ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running io.github.leohou0430.llmgw.provider.anthropic.AnthropicAuthenticatorTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.118 s -- in io.github.leohou0430.llmgw.provider.anthropic.AnthropicAuthenticatorTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- jar:3.5.1:jar (default-jar) @ llmgw-provider-anthropic ---
+[INFO] Building jar: /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-provider/llmgw-provider-anthropic/target/llmgw-provider-anthropic-0.3.1.jar
+[INFO] 
+[INFO] ------------< io.github.leohou0430:llmgw-tokenizer-jtokkit >------------
+[INFO] Building llmgw-tokenizer-jtokkit 0.3.1                           [20/21]
+[INFO]   from llmgw-tokenizer/llmgw-tokenizer-jtokkit/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ llmgw-tokenizer-jtokkit ---
+[INFO] Deleting /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-tokenizer/llmgw-tokenizer-jtokkit/target
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (no-dubbo-runtime) @ llmgw-tokenizer-jtokkit ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-tokenizer-jtokkit ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ llmgw-tokenizer-jtokkit ---
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ llmgw-tokenizer-jtokkit ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 1 source file with javac [debug parameters release 25] to target/classes
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ llmgw-tokenizer-jtokkit ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-tokenizer/llmgw-tokenizer-jtokkit/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ llmgw-tokenizer-jtokkit ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 1 source file with javac [debug parameters release 25] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ llmgw-tokenizer-jtokkit ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running io.github.leohou0430.llmgw.tokenizer.jtokkit.JtokkitTokenCounterTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.416 s -- in io.github.leohou0430.llmgw.tokenizer.jtokkit.JtokkitTokenCounterTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- jar:3.5.1:jar (default-jar) @ llmgw-tokenizer-jtokkit ---
+[INFO] Building jar: /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-tokenizer/llmgw-tokenizer-jtokkit/target/llmgw-tokenizer-jtokkit-0.3.1.jar
+[INFO] 
+[INFO] -------------------< io.github.leohou0430:llmgw-app >-------------------
+[INFO] Building llmgw-app 0.3.1                                         [21/21]
+[INFO]   from llmgw-app/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ llmgw-app ---
+[INFO] Deleting /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (no-dubbo-runtime) @ llmgw-app ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-app ---
+[INFO] Skipping Rule Enforcement.
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ llmgw-app ---
+[INFO] Copying 4 resources from src/main/resources to target/classes
+[INFO] Copying 3 resources from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ llmgw-app ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 8 source files with javac [debug parameters release 25] to target/classes
+[INFO] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/AdminController.java: 某些输入文件使用或覆盖了已过时的 API。
+[INFO] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/AdminController.java: 有关详细信息, 请使用 -Xlint:deprecation 重新编译。
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ llmgw-app ---
+[INFO] Copying 1 resource from src/test/resources to target/test-classes
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ llmgw-app ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 7 source files with javac [debug parameters release 25] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ llmgw-app ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running io.github.leohou0430.llmgw.app.NativeRuntimeBridgeTest
+23:51:46.599 [main] WARN org.springframework.context.annotation.AnnotationConfigApplicationContext -- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'gatewayRuntime' defined in io.github.leohou0430.llmgw.app.GatewayRuntimeConfiguration: Failed to instantiate [io.github.leohou0430.llmgw.core.extension.ExtensionContext]: Factory method 'gatewayRuntime' threw exception with message: unknown extension 'missing-module' for io.github.leohou0430.llmgw.core.extension.ExtensionModule; available: [in-memory, jdk-http, redis, test-policy]
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.867 s -- in io.github.leohou0430.llmgw.app.NativeRuntimeBridgeTest
+[INFO] Running io.github.leohou0430.llmgw.app.ProductionConfigurationTest
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.141 s -- in io.github.leohou0430.llmgw.app.ProductionConfigurationTest
+[INFO] Running io.github.leohou0430.llmgw.app.ExtensionRuntimeHintsTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.058 s -- in io.github.leohou0430.llmgw.app.ExtensionRuntimeHintsTest
+[INFO] Running io.github.leohou0430.llmgw.app.AdminAuthorizationTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.079 s -- in io.github.leohou0430.llmgw.app.AdminAuthorizationTest
+[INFO] Running io.github.leohou0430.llmgw.app.ProviderDiscoveryTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.005 s -- in io.github.leohou0430.llmgw.app.ProviderDiscoveryTest
+[INFO] Running io.github.leohou0430.llmgw.app.TokenizerSelectionTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.353 s -- in io.github.leohou0430.llmgw.app.TokenizerSelectionTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 21, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- jar:3.5.1:jar (default-jar) @ llmgw-app ---
+[INFO] Building jar: /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/llmgw-app-0.3.1.jar
+[INFO] 
+[INFO] --- spring-boot:4.1.2:repackage (repackage) @ llmgw-app ---
+[INFO] Replacing main artifact /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/llmgw-app-0.3.1.jar with repackaged archive, adding nested dependencies in BOOT-INF/.
+[INFO] The original artifact has been renamed to /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/llmgw-app-0.3.1.jar.original
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for llmgw4j 0.3.1:
+[INFO] 
+[INFO] llmgw4j ............................................ SUCCESS [  0.434 s]
+[INFO] llmgw-core ......................................... SUCCESS [  8.475 s]
+[INFO] llmgw-governance ................................... SUCCESS [  0.026 s]
+[INFO] llmgw-governance-api ............................... SUCCESS [  2.889 s]
+[INFO] llmgw-tokenizer .................................... SUCCESS [  0.018 s]
+[INFO] llmgw-tokenizer-api ................................ SUCCESS [  0.193 s]
+[INFO] llmgw-tokenizer-heuristic .......................... SUCCESS [  0.182 s]
+[INFO] llmgw-governance-default ........................... SUCCESS [  7.130 s]
+[INFO] llmgw-governance-redis ............................. SUCCESS [  3.216 s]
+[INFO] llmgw-engine ....................................... SUCCESS [  0.008 s]
+[INFO] llmgw-engine-api ................................... SUCCESS [  4.614 s]
+[INFO] llmgw-provider ..................................... SUCCESS [  0.037 s]
+[INFO] llmgw-provider-api ................................. SUCCESS [  0.237 s]
+[INFO] llmgw-engine-webflux ............................... SUCCESS [  1.425 s]
+[INFO] llmgw-engine-vt .................................... SUCCESS [  0.413 s]
+[INFO] llmgw-provider-http-jdk ............................ SUCCESS [  3.564 s]
+[INFO] llmgw-provider-openai .............................. SUCCESS [  0.105 s]
+[INFO] llmgw-provider-openai-sdk .......................... SUCCESS [  2.812 s]
+[INFO] llmgw-provider-anthropic ........................... SUCCESS [  1.575 s]
+[INFO] llmgw-tokenizer-jtokkit ............................ SUCCESS [  3.726 s]
+[INFO] llmgw-app .......................................... SUCCESS [  7.162 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  48.850 s
+[INFO] Finished at: 2026-11-10T23:51:49+08:00
+[INFO] ------------------------------------------------------------------------

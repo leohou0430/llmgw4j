@@ -1,0 +1,14 @@
+{
+  "platform": "macOS x86_64",
+  "build": "Maven native profile, full default optimization; host builder limited to 4 processors",
+  "compiler": "native-image 25 2025-09-16\nGraalVM Runtime Environment Oracle GraalVM 25+37.1 (build 25+37-LTS-jvmci-b01)\nSubstrate VM Oracle GraalVM 25+37.1 (build 25+37-LTS, serial gc, compressed references)",
+  "binary": "bench/results/native-extension-031/llmgw-webflux",
+  "sha256": "e4de26ad4296232e51259962e9078022d8d8c19fd4ac0c3a985f6606d3f52f06",
+  "checks": {
+    "health_json_sse_shutdown": true,
+    "stream_pass": 34,
+    "stream_fail": 0,
+    "protocol_pass": 28,
+    "protocol_fail": 0
+  }
+}

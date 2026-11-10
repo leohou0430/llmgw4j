@@ -1,6 +1,6 @@
 # llmgw4j 配置说明
 
-> v0.3.0 使用原生 Dubbo SPI。内部 API、模块及 Redis 配置升级方式见 [扩展与迁移说明](EXTENSIONS.md)。
+> v0.3.1 使用项目内原生 SPI。内部 API、模块及 Redis 配置升级方式见 [扩展与迁移说明](EXTENSIONS.md)。
 
 审查修复补充：`gateway.production=true`（或 `LLMGW_PRODUCTION=true`）启用生产启动校验。
 `gateway.max-response-bytes` 默认 `4194304`，独立限制上游非流式响应；
@@ -8,7 +8,7 @@
 当前金额预算仅为演示估算账本，生产启用会被拒绝；未知模型价格不能当作免费。
 未知资源返回 `404`，文件和批任务列表暂不支持并返回 `501`。
 
-> **适用版本**：`0.3.0`（包名 `io.github.leohou0430.llmgw`）
+> **适用版本**：`0.3.1`（包名 `io.github.leohou0430.llmgw`）
 > **文档日期**：2026-11-10，逐项核对 `GatewayProperties.java`、`application*.yml`、`bin/*.sh`、`bench/*` 实读结果
 > **配套**：[使用手册](USER_GUIDE.md) · [项目 README](../README.md) · [压测口径](../bench/README.md)
 
@@ -42,7 +42,7 @@
 | 主配置 | `llmgw-app/src/main/resources/application.yml` | 主配置文件，行数随版本演进 |
 | Profile 配置 | 同目录 `application-webflux.yml` / `application-vt.yml` / `application-real.yml` | 按引擎或真实上游覆盖主配置 |
 | 环境后置处理器 | `llmgw-app/src/main/resources/META-INF/spring.factories` | 注册 `EngineKindEnvironmentPostProcessor`，把 `llmgw.engine` 写进 System Property 供指标打标签 |
-| 原生扩展 | 各实现包的 `META-INF/dubbo/` | Dubbo 命名发现、显式 Java 构造，app 仅桥接原生图 |
+| 原生扩展 | 各实现包的 `META-INF/llmgw/extensions/` | 按名称发现、显式 Java 构造，app 仅桥接原生图 |
 | 构建配置 | `pom.xml`、`llmgw-app/pom.xml` | 版本锁定、能力域与可选 Maven profiles |
 
 ### 1.3 明确不存在的配置形式
@@ -456,7 +456,7 @@ gateway:
 
 ```bash
 export DASHSCOPE_API_KEY='<密钥>'
-java -jar llmgw-app/target/llmgw-app-0.3.0.jar \
+java -jar llmgw-app/target/llmgw-app-0.3.1.jar \
   --spring.profiles.active=webflux,real \
   --gateway.upstream.base-url=http://127.0.0.1:8000/v1 \
   --gateway.routes[0].target-url=http://127.0.0.1:8000/v1 \
@@ -663,4 +663,4 @@ management:
 
 ## 原生扩展选择补充
 
-`gateway.extension-modules` 是在内建模块后加载的 Dubbo 模块名列表，默认空。模块在 seal 前显式替换绑定，未知模块失败。`gateway.tokenizer` 默认 `heuristic`；`jtokkit` 需要 `-Pjtokkit`，配置了但未链接时失败。真实 tokenizer 只作用于支持的文本准入估算；authoritative usage 和媒体单位语义不变。基础类 `GatewayProperties.validate()` 在原生治理入口和 Boot 绑定后均执行，基础不再实现 InitializingBean。
+`gateway.extension-modules` 是在内建模块后加载的 命名模块名列表，默认空。模块在 seal 前显式替换绑定，未知模块失败。`gateway.tokenizer` 默认 `heuristic`；`jtokkit` 需要 `-Pjtokkit`，配置了但未链接时失败。真实 tokenizer 只作用于支持的文本准入估算；authoritative usage 和媒体单位语义不变。基础类 `GatewayProperties.validate()` 在原生治理入口和 Boot 绑定后均执行，基础不再实现 InitializingBean。

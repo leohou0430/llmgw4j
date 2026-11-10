@@ -26,7 +26,7 @@ mvn -B -Predis clean verify                # Redis profile 同样执行 JUnit
 mvn -B -Predis,jtokkit,otel clean verify   # 组合 profile（CI 同样执行）
 ```
 
-默认产物：`llmgw-app/target/llmgw-app-0.3.0.jar`。
+默认产物：`llmgw-app/target/llmgw-app-0.3.1.jar`。
 `-Predis` 只在显式启用时才把 `llmgw-governance/llmgw-governance-redis` 链入 fat jar；
 默认 jar 不含任何 Redis 依赖，这是刻意保持的边界。
 
@@ -48,7 +48,7 @@ llmgw-<domain>/                      聚合 POM（packaging=pom），同时是�
 1. 聚合 POM 必须 `packaging=pom`，并列出 `<domain>-api`；根 `pom.xml` **只列聚合目录**，不列嵌套路径。
 2. `api` 只依赖 `llmgw-core`，**不得依赖任何其他 `llmgw-*` 模块**，也不得引入具体实现的技术栈。
 3. 每个实现模块以聚合 POM 为 parent，并显式依赖 `<domain>-api`。
-4. **实现之间互不依赖**。可替换性靠命名 Dubbo SPI module 与显式 `replace`，不靠互相引用。
+4. **实现之间互不依赖**。可替换性靠命名 项目内命名 SPI module 与显式 `replace`，不靠互相引用。
 5. 实现的 Java 包必须是 api 包的**子包**（如 `...llmgw.engine.webflux`、`...llmgw.governance.inmemory`），避免跨 jar split package。
 6. 通用领域契约留 core；provider/tokenizer 等跨层契约放各自 api，按依赖方向消除反向环。基础模块不得依赖 Spring/Reactor，必须启用传递依赖检查。
 
@@ -72,7 +72,7 @@ engine 的配置类继承 `AbstractEngineConfiguration` 即可自动登记 `Engi
 **新增一个全新能力域**：按上面的目录模板建聚合 + api + 至少两个实现；校验脚本会
 自动发现新域（根目录下一级、且 `packaging=pom` 的 `llmgw-*` 目录），无需改脚本。
 
-Provider 与 tokenizer 均已采用聚合/api/实现模块，不能再恢复平铺例外。新增认证适配实现 `provider.UpstreamAuthenticator`，通过 `META-INF/dubbo` 注册唯一名称；有依赖的实现用 `ExtensionModule` 显式构造，不使用 Spring component。示例与旧 API 迁移见 [docs/EXTENSIONS.md](docs/EXTENSIONS.md)。
+Provider 与 tokenizer 均已采用聚合/api/实现模块，不能再恢复平铺例外。新增认证适配实现 `provider.UpstreamAuthenticator`，通过 `META-INF/llmgw/extensions` 注册唯一名称；有依赖的实现用 `ExtensionModule` 显式构造，不使用 Spring component。示例与旧 API 迁移见 [docs/EXTENSIONS.md](docs/EXTENSIONS.md)。
 
 新增基础域 parent 必须设置 `llmgw.foundation.enforcer.skip=false`，其 jar 子模块继承规则。运行：
 
@@ -89,8 +89,8 @@ HTTP 回归可用 `LLMGW_TEST_JAR=/absolute/path/verified.jar` 固定被测产�
 ## 3. 两个数据面
 
 ```bash
-java -jar llmgw-app/target/llmgw-app-0.3.0.jar --spring.profiles.active=webflux
-java -jar llmgw-app/target/llmgw-app-0.3.0.jar --spring.profiles.active=vt
+java -jar llmgw-app/target/llmgw-app-0.3.1.jar --spring.profiles.active=webflux
+java -jar llmgw-app/target/llmgw-app-0.3.1.jar --spring.profiles.active=vt
 ```
 
 同一套 `llmgw-governance/llmgw-governance-default` 治理层驱动两条数据面。
@@ -121,7 +121,7 @@ java -jar llmgw-app/target/llmgw-app-0.3.0.jar --spring.profiles.active=vt
 - 核心只依赖 SPI：`Router`、`UpstreamProvider`、`TokenLimiter`、`UsageLedger`、
   `CircuitBreaker`、`SemanticCache`、`ApiKeyRegistry`、`AuditSink`、
   `SnapshotStore`、`RouteConfigSource`。默认实现由
-  Dubbo ExtensionModule 显式构造，核心不得 import 实现包；Spring/Reactor 仅在 HTTP 边缘。
+  ExtensionModule 显式构造，核心不得 import 实现包；Spring/Reactor 仅在 HTTP 边缘。
 - 热路径避免额外分配：不做重复 JSON 解析、不拼字符串、不查 registry；
   计时用 `System.nanoTime()` + 原子时间戳，格式化与指标上报放治理虚拟线程旁路。
 - 响应头只能在提交前设置。WebFlux 的 `writeWith` 会在订阅 body 前提交头，

@@ -1,12 +1,12 @@
 package io.github.leohou0430.llmgw.core.protocol;
 
-import org.apache.dubbo.common.extension.ExtensionLoader;
+import io.github.leohou0430.llmgw.core.extension.Extensions;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ProtocolDiscoveryTest {
-    @Test void everyWireProtocolIsAnActualNamedDubboExtension() {
-        var loader = ExtensionLoader.getExtensionLoader(Protocol.class);
+    @Test void everyWireProtocolIsANamedProjectExtension() {
+        var loader = Extensions.load(Protocol.class);
         for (var kind : ProtocolKind.values()) {
             assertEquals(kind, loader.getExtension(kind.wireName()).kind());
         }

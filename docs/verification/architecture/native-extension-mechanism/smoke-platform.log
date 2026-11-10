@@ -1,0 +1,53 @@
+======== v13 platform: budget / hot reload / requests / console / keys ========
+--- engine=webflux ---
+[PASS] webflux first request inside budget succeeds
+[PASS] webflux second request hits the hard budget stop
+[PASS] webflux snapshot carries per-key spend
+[PASS] webflux group rollup answers which team burned what
+[PASS] webflux key metadata accepted
+[PASS] webflux key created (key-<test-value:c562faec>)
+[PASS] webflux freshly created key authenticates
+[PASS] webflux key revoke acknowledged
+[PASS] webflux revoked key is 401
+[PASS] webflux tiny bucket rejects before reload
+[PASS] webflux governance hot swap acknowledged
+[PASS] webflux request passes WITHOUT restart after hot reload
+[PASS] webflux rotate minted a new token
+[PASS] webflux rotated new token authenticates
+[PASS] webflux old token works in overlap window
+[PASS] webflux old token dies after overlap
+[PASS] webflux JWT (HS256) authenticates as virtual key
+[PASS] webflux per-model rate limit rejects (429)
+[PASS] webflux request log carries served requests
+[PASS] webflux request log carries denied requests
+[PASS] webflux admin console serves
+[PASS] webflux pattern guardrail blocks locally
+[PASS] webflux external engine blocks
+[PASS] webflux clean request passes both guardrails
+--- engine=vt ---
+[PASS] vt first request inside budget succeeds
+[PASS] vt second request hits the hard budget stop
+[PASS] vt snapshot carries per-key spend
+[PASS] vt group rollup answers which team burned what
+[PASS] vt key metadata accepted
+[PASS] vt key created (key-<test-value:245f2494>)
+[PASS] vt freshly created key authenticates
+[PASS] vt key revoke acknowledged
+[PASS] vt revoked key is 401
+[PASS] vt tiny bucket rejects before reload
+[PASS] vt governance hot swap acknowledged
+[PASS] vt request passes WITHOUT restart after hot reload
+[PASS] vt rotate minted a new token
+[PASS] vt rotated new token authenticates
+[PASS] vt old token works in overlap window
+[PASS] vt old token dies after overlap
+[PASS] vt JWT (HS256) authenticates as virtual key
+[PASS] vt per-model rate limit rejects (429)
+[PASS] vt request log carries served requests
+[PASS] vt request log carries denied requests
+[PASS] vt admin console serves
+[PASS] vt pattern guardrail blocks locally
+[PASS] vt external engine blocks
+[PASS] vt clean request passes both guardrails
+=================================================
+PASS=48 FAIL=0

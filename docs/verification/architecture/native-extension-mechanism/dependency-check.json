@@ -1,0 +1,9 @@
+{
+  "jar": "bench/results/native-extension-031/default.jar",
+  "forbidden_libraries": [
+    "dubbo",
+    "fastjson",
+    "javassist"
+  ],
+  "found": []
+}

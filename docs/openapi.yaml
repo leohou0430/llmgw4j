@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: llmgw4j API
-  version: 0.3.0
+  version: 0.3.1
   description: |
     Java LLM API gateway (llmgw4j). Supported data-plane protocols use pass-through
     parity: each endpoint only routes to upstreams speaking the SAME protocol

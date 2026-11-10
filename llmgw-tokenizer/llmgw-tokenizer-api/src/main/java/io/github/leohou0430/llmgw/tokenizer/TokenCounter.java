@@ -1,10 +1,10 @@
 package io.github.leohou0430.llmgw.tokenizer;
 
 import io.github.leohou0430.llmgw.core.protocol.ParsedRequest;
-import org.apache.dubbo.common.extension.SPI;
+import io.github.leohou0430.llmgw.core.extension.ExtensionPoint;
 
 /** Named admission estimator. Authoritative upstream usage still overrides final accounting. */
-@SPI("heuristic")
+@ExtensionPoint("heuristic")
 public interface TokenCounter {
     int count(String text);
     String name();

@@ -1,0 +1,19 @@
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.1.2)
+
+2026-11-11T00:04:19.075+08:00  INFO 52951 --- [llmgw] [           main] i.g.l.llmgw.app.LlmGatewayApplication    : Starting AOT-processed LlmGatewayApplication using Java 25 with PID 52951 (/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/native-extension-031/llmgw-webflux started by leo in /private/var/folders/wx/9749nb1j7bbg_3n7kb15lbb80000gn/T/llmgw-native-preflight-l7z8hw_h)
+2026-11-11T00:04:19.095+08:00  INFO 52951 --- [llmgw] [           main] i.g.l.llmgw.app.LlmGatewayApplication    : The following 1 profile is active: "webflux"
+2026-11-11T00:04:19.121+08:00  INFO 52951 --- [llmgw] [           main] i.g.l.llmgw.app.MockUpstreamServer       : Mock upstream listening on port 64134
+2026-11-11T00:04:19.141+08:00  INFO 52951 --- [llmgw] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 4 endpoints beneath base path '/actuator'
+2026-11-11T00:04:19.149+08:00  WARN 52951 --- [llmgw] [           main] i.m.c.i.binder.jvm.JvmGcMetrics          : GC notifications will not be available because no GarbageCollectorMXBean of the JVM provides any. GCs=[young generation scavenger, complete scavenger]
+2026-11-11T00:04:19.168+08:00  INFO 52951 --- [llmgw] [           main] o.s.boot.reactor.netty.NettyWebServer    : Netty started on port 64133 (http)
+2026-11-11T00:04:19.189+08:00  INFO 52951 --- [llmgw] [           main] i.g.l.llmgw.app.LlmGatewayApplication    : Started LlmGatewayApplication in 0.135 seconds (process running for 0.158)
+2026-11-11T00:04:19.687+08:00  INFO 52951 --- [llmgw] [ionShutdownHook] o.s.boot.reactor.netty.GracefulShutdown  : Commencing graceful shutdown. Waiting for active requests to complete
+2026-11-11T00:04:19.687+08:00  INFO 52951 --- [llmgw] [ netty-shutdown] o.s.boot.reactor.netty.GracefulShutdown  : Graceful shutdown complete

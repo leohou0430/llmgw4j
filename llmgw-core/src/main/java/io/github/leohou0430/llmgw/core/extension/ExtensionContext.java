@@ -1,12 +1,11 @@
 package io.github.leohou0430.llmgw.core.extension;
 
-import org.apache.dubbo.rpc.model.FrameworkModel;
 import java.util.*;
 import java.util.function.Supplier;
 
 /** Per-runtime explicit definitions and ownership; no scanning, reflection-based injection or Spring. */
 public final class ExtensionContext implements AutoCloseable {
-    private final FrameworkModel extensions = new FrameworkModel();
+    private final Extensions<ExtensionModule> extensions = Extensions.load(ExtensionModule.class);
     private final Map<Class<?>, Supplier<?>> definitions = new LinkedHashMap<>();
     private final Map<Class<?>, Object> instances = new HashMap<>();
     private final Set<Class<?>> external = new HashSet<>();
@@ -62,7 +61,7 @@ public final class ExtensionContext implements AutoCloseable {
 
     public synchronized void loadModule(String name) {
         configuring();
-        extensions.getExtensionLoader(ExtensionModule.class).getExtension(name).configure(this);
+        extensions.getExtension(name).configure(this);
     }
 
     public synchronized void seal() { open();sealed = true; }
@@ -84,13 +83,7 @@ public final class ExtensionContext implements AutoCloseable {
                 failure.addSuppressed(e);
             }
         }
-        try { extensions.destroy(); }
-        catch (RuntimeException e) {
-            if (failure == null) failure = new IllegalStateException("failed to destroy extension scope");
-            failure.addSuppressed(e);
-        } finally {
-            definitions.clear();instances.clear();owned.clear();tracked.clear();
-        }
+        definitions.clear();instances.clear();owned.clear();tracked.clear();
         if (failure != null) throw failure;
     }
 }

@@ -1,14 +1,14 @@
 # llmgw4j 生产环境最佳实践
 
-> v0.3.0 使用原生 Dubbo SPI。内部 API、模块及 Redis 配置升级方式见 [扩展与迁移说明](EXTENSIONS.md)。
+> v0.3.1 使用项目内原生 SPI。内部 API、模块及 Redis 配置升级方式见 [扩展与迁移说明](EXTENSIONS.md)。
 
-适用版本：**0.3.0**。更新：2026-11-10。配置字段以 [配置说明](CONFIGURATION.md)和源码为准，完整端点见 [OpenAPI](openapi.yaml)。
+适用版本：**0.3.1**。更新：2026-11-10。配置字段以 [配置说明](CONFIGURATION.md)和源码为准，完整端点见 [OpenAPI](openapi.yaml)。
 
 ## 部署边界
 
 llmgw4j 提供 Java 模型数据面、协议透传和可替换治理 SPI。默认配置是本地 mock 演示。企业 OIDC/JWKS/RBAC、持久化财务预算、跨副本配置发布和完整资源目录尚未内建，不能把参考实现直接当作完整多租户计费平台。
 
-推荐由 Nginx/Envoy/LB 终止 TLS、隔离管理入口。JVM 默认包支持 WebFlux 和 VT；native 必须按引擎构建。v0.3.0 Release 提供 Linux amd64 WebFlux native，其他平台自行编译。目标 OS、CPU、GC 和启动参数均需单独验证，历史 macOS 冷启动/RSS 数字不能推广到生产。
+推荐由 Nginx/Envoy/LB 终止 TLS、隔离管理入口。JVM 默认包支持 WebFlux 和 VT；native 必须按引擎构建。v0.3.1 Release 提供 Linux amd64 WebFlux native，其他平台自行编译。目标 OS、CPU、GC 和启动参数均需单独验证，历史 macOS 冷启动/RSS 数字不能推广到生产。
 
 ## 最小生产配置
 
@@ -49,7 +49,7 @@ gateway:
 
 ```sh
 java -XX:MaxGCPauseMillis=10 -Xms256m -Xmx1024m \
-  -jar llmgw-app/target/llmgw-app-0.3.0.jar \
+  -jar llmgw-app/target/llmgw-app-0.3.1.jar \
   --spring.profiles.active=webflux \
   --spring.config.additional-location=file:./application-prod.yml
 ```

@@ -1,7 +1,7 @@
 package io.github.leohou0430.llmgw.app;
 
 import io.github.leohou0430.llmgw.provider.ProviderVerifier;
-import org.apache.dubbo.common.extension.ExtensionLoader;
+import io.github.leohou0430.llmgw.core.extension.Extensions;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -9,6 +9,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration(proxyBeanMethods = false)
 public class ProviderConfiguration {
     @Bean public ProviderVerifier providerVerifier() {
-        return ExtensionLoader.getExtensionLoader(ProviderVerifier.class).getDefaultExtension();
+        return Extensions.load(ProviderVerifier.class).getDefaultExtension();
     }
 }

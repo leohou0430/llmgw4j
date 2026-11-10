@@ -16,11 +16,7 @@ class ExtensionRuntimeHintsTest {
         for (var type : new Class<?>[]{DefaultProtocols.Chat.class,DefaultGovernanceModule.class,JdkHttpModule.class,OpenAiAuthenticator.class,GatewayProperties.Redis.class}) {
             assertNotNull(hints.reflection().getTypeHint(type),type.getName());
         }
-        var thirdParty = hints.reflection().getTypeHint(org.apache.dubbo.common.json.impl.FastJson2Impl.class);
-        assertNotNull(thirdParty);
-        assertFalse(thirdParty.getMemberCategories().contains(
-                org.springframework.aot.hint.MemberCategory.INVOKE_PUBLIC_METHODS));
-        assertFalse(thirdParty.getMemberCategories().contains(
-                org.springframework.aot.hint.MemberCategory.INVOKE_DECLARED_METHODS));
+        assertNull(hints.reflection().getTypeHint(
+                org.springframework.aot.hint.TypeReference.of("org.apache.dubbo.common.json.impl.FastJson2Impl")));
     }
 }

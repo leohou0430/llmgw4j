@@ -1,45 +1,68 @@
-# 原生扩展与模块开发（v0.3.0）
+# 原生扩展与模块开发（v0.3.1）
 
-本说明适用于 v0.3.0；v0.2.0 的旧扩展 API 以对应 tag 为准。基础模块不依赖 Spring、Spring Boot 或 Reactor；HTTP 框架仅保留在 app、engine-webflux、engine-vt。基础仍按职责使用 Dubbo common、Jackson、Caffeine、Micrometer、Jedis 等库，不宣称零外部依赖或整个应用脱离 Boot。
+本项目参考 Dubbo SPI 的命名映射、默认实现、惰性实例化和别名机制，使用项目内的 JDK 实现；**不直接使用 Dubbo，也不声称兼容其 SPI 协议**。基础模块不依赖 Spring、Boot、Reactor，HTTP 框架保留在 app、engine-webflux、engine-vt。
 
-## 模块结构
+依据经 Context7 检索的 [Dubbo 扩展机制说明](https://github.com/apache/dubbo-website/blob/master/content/en/overview/mannual/java-sdk/reference-manual/architecture/dubbo-spi.md)。只借鉴本项目需要的发现原则；不复制 Dubbo IoC/AOP、排序激活、adaptive 代码生成、RPC 或注册中心。基础扩展加载本身只使用 JDK API。
 
-| 能力域 | api | 实现 child modules |
+## 模块规则
+
+| 能力域 | api | 独立实现 child modules |
 |---|---|---|
 | engine | engine-api | webflux、vt |
 | governance | governance-api | default、redis |
 | provider | provider-api | http-jdk、openai、openai-sdk、anthropic |
 | tokenizer | tokenizer-api | heuristic、jtokkit |
 
-表中前缀统一为 `llmgw-`。聚合目录兼作 parent，根 POM 只列聚合层；api 依赖 core，实现显式依赖本域 api，同域实现之间无依赖且不共享 api 的裸 Java 包。跨域只依赖所需 api；app 是可选择多个实现包的组合根。OpenAI 原生 Bearer 认证与大 SDK 的验证/连通性能力已分包，使用认证适配器不必引入 SDK；默认 app 为保持既有管理功能仍链接 SDK 验证包。
+统一前缀 `llmgw-`，聚合目录兼作 parent，根 POM 只列聚合层；api 依赖 core，实现显式依赖本域 api，不依赖同域其他实现，不共享 api 的裸 Java 包。未来多实现能力遵循相同规则。app 是组合根，轻量 OpenAI 认证与 SDK 校验分包，默认 app 为管理校验功能仍链接 SDK。
 
-## 实际采用的 Dubbo SPI
+## 命名扩展
 
-锁定并验证 `org.apache.dubbo:dubbo-common:3.3.6`，不引入 RPC、registry 或 Spring starter。接口使用 `@SPI`，实现通过 `META-INF/dubbo/<接口全名>` 的 `名字=实现类` 映射加载：
+使用项目注解 `core.extension.ExtensionPoint` 声明接口，可指定默认名称：
 
-| 扩展接口 | 内建名称 |
+```java
+@ExtensionPoint("first")
+public interface Strategy { String name(); }
+```
+
+`src/main/resources/META-INF/llmgw/extensions/com.example.Strategy` 为 UTF-8 文本，每行 `别名=实现全名`，支持注释与逗号别名：
+
+```properties
+# 无参公共构造器；不会在发现目录时构造所有实现
+first,alias=com.example.FirstStrategy
+```
+
+```java
+var catalog = Extensions.load(Strategy.class);
+var selected = catalog.getExtension("first");
+var defaultStrategy = catalog.getDefaultExtension();
+```
+
+- 目录读取名称映射，不扫描 Java 包，不初始化全部类；首次选择实现时才加载类、检查接口和公共无参构造器并构造。
+- 同一目录中同一实现类的多个别名复用一个实例；并发 lookup 只构造一次。不同目录实例不共享缓存，没有静态全局实例表。
+- 默认使用当前线程 context ClassLoader，缺失时回退到接口 ClassLoader；也可显式 `Extensions.load(type, loader)`。插件 ClassLoader 仍由调用者管理。
+- 重复名称（即使映射到同一类）、非法描述、未知名称、缺失默认、类型不符和构造失败均明确报错；错误保留资源位置或真实原因，不按 classpath 顺序悄悄覆盖。
+- 扩展实现保持无状态。涉及资源和依赖的服务，由 ExtensionModule 在 ExtensionContext 中显式构造；加载器不做反射注入或生命周期猜测。
+
+| 接口 | 内建名称 |
 |---|---|
-| `core.extension.ExtensionModule` | `in-memory`、`redis`、`jdk-http` |
-| `core.protocol.Protocol` | 11 个 `ProtocolKind.wireName()` |
-| `provider.UpstreamAuthenticator` | `openai`（别名 `openai-compatible`、`default`）、`anthropic` |
+| `core.extension.ExtensionModule` | `in-memory`、可选 `redis`、`jdk-http` |
+| `core.protocol.Protocol` | 11 个 ProtocolKind wire names |
+| `provider.UpstreamAuthenticator` | `openai`（别名 openai-compatible/default）、`anthropic` |
 | `provider.ProviderVerifier` | `openai` |
 | `tokenizer.TokenCounter` | `heuristic`、可选 `jtokkit` |
 
-无依赖的策略直接由真实 `ExtensionLoader` 创建；有构造依赖的治理/客户端通过 `ExtensionModule` 显式组装，不用 setter 注入或 Spring bean 优先级。扩展查找、组装在启动时完成；请求热路径持有已解析的对象。
+发现、组装和认证方言缓存位于启动路径，请求热路径使用已解析对象。纯协议默认目录仍为进程级缓存，`Protocols.register` 是显式全进程覆盖，不承载租户账本；引擎指标身份也仍是进程级。
 
-依据：[Dubbo SPI 官方说明](https://github.com/apache/dubbo-website/blob/master/content/en/overview/mannual/java-sdk/reference-manual/architecture/dubbo-spi.md)，经 Context7 检索并以实际依赖/测试验证；不是自写 ServiceLoader 仿制品。
+## 原生组装和生命周期
 
-## 无 Spring 的组合入口
-
-在 classpath 上选择 core、所需 api、治理默认包、heuristic tokenizer、JDK HTTP 与认证实现包后：
+classpath 选择 core、所需 api、治理默认包、heuristic tokenizer、JDK HTTP 与认证包后：
 
 ```java
-var properties = new GatewayProperties(); // 默认是本地演示配置；生产需设置凭据并校验
+var properties = new GatewayProperties();
 try (var runtime = new ExtensionContext()) {
     runtime.external(GatewayProperties.class, properties);
     runtime.loadModule("in-memory");
-    // 如需 Redis，先配置 properties.getRedis()，并在 classpath 上加入 Redis 包：
-    // runtime.loadModule("redis");
+    // 如链接 Redis 并配置 properties.getRedis()，此处 loadModule("redis")。
     runtime.loadModule("jdk-http");
     runtime.seal();
     var governance = runtime.get(GovernanceChain.class);
@@ -47,55 +70,32 @@ try (var runtime = new ExtensionContext()) {
 }
 ```
 
-`ExtensionContext` 是按类型保存显式 Java 构造函数的实例级容器，不扫描字段/构造参数，不自动发现服务 bean。其 Dubbo factory scope 独立，治理、限流、账本、HTTP/Redis 资源由该实例持有。创建对象延迟到首次 `get`，同一类型复用同一实例；循环、重复、缺失、已创建对象的替换均明确报错。
+原生治理入口执行普通 POJO 的 validate；app 在 Boot 配置绑定后也执行校验。ExtensionContext 保存显式 typed suppliers，按需创建，每个 context 独立持有状态与资源。循环/重复/缺失定义、已创建对象的替换均失败；seal 后不能修改绑定。
 
-`seal` 后不能再改定义。关闭时按创建逆序释放已创建的 AutoCloseable，重复关闭无效；`external` 提供的对象仍由调用者负责关闭。app 只是将这张原生图导出给 HTTP 控制器，不再扫描治理/provider/tokenizer 实现或读取它们的 Spring 自动配置文件。启动快照恢复在应用入口显式执行。
+关闭时逆创建顺序关闭已创建的 AutoCloseable，每个对象只关一次；external 注册的绑定由调用者管理，不触发容器关闭；不要将同一外部资源再以普通 bind 注册为 owned 别名。app 只导出该原生图给 HTTP 控制器，不再扫描治理/provider/tokenizer 或读取它们的 Boot 自动配置。快照恢复在应用入口显式执行。
 
-协议目录和无状态 Dubbo 策略有进程级缓存，不承载租户/账本资源；兼容的 `Protocols.register` 是启动时显式的全进程覆盖，不支持同进程不同应用各自覆盖协议行为。引擎指标身份也仍是进程级，不能据此承诺同 JVM 中多个异构引擎标签隔离。
-
-## 替换一个治理实现
-
-自定义实现放入独立 child module，依赖能力域 api 和所需其他 api。定义一个无参、命名的模块 factory：
+自定义 factory 是无参、无状态 ExtensionModule，实现放入独立 child module：
 
 ```java
 public final class CompanyRules implements ExtensionModule {
     public void configure(ExtensionContext runtime) {
-        runtime.replace(TokenLimiter.class, () -> new CompanyLimiter(
-            runtime.get(GatewayProperties.class)));
+        runtime.replace(TokenLimiter.class,
+            () -> new CompanyLimiter(runtime.get(GatewayProperties.class)));
     }
 }
 ```
 
-`src/main/resources/META-INF/dubbo/io.github.leohou0430.llmgw.core.extension.ExtensionModule`：
+在 `META-INF/llmgw/extensions/io.github.leohou0430.llmgw.core.extension.ExtensionModule` 注册 `company-rules=com.example.CompanyRules`，运行时配置 `gateway.extension-modules: [company-rules]`。它在内建模块后、服务解析前执行；替换需显式，不能用重名 metadata 或 `@Primary` 代替。
 
-```properties
-company-rules=com.example.CompanyRules
-```
+## 上游、tokenizer 与 Redis
 
-app 配置：
+UpstreamProvider 公开 JDK Flow.Publisher、CompletableFuture 和阻塞接口。流为冷源，订阅独立管理需求、取消及 watchdog；正常结束不取消 transport，取消/超时传到真实 HTTP future/body subscription。Reactor 转换与异步心跳只在 WebFlux，VT 使用阻塞 JDK HTTP。
 
-```yaml
-gateway:
-  extension-modules: [company-rules]
-```
+认证实现按 route.provider 选择；空 provider 是 OpenAI 默认方言，未知显式名字在 IO 前失败，即使没有配置密钥。认证实现不保存运行凭据。OpenAI SDK 仅用于显式校验/连通性路径。
 
-这些模块在内建治理、可选 Redis、JDK transport 注册后、任何服务解析前加载。也可在原生入口直接调用 `loadModule("company-rules")`。替换必须显式，未知名字不能悄悄降级；不要用与内建扩展重名的资源条目模拟覆盖。旧 `@Component` / `@Primary` / `@ConditionalOnMissingBean` 扩展方式不再适用于基础能力。
+`gateway.tokenizer=heuristic` 默认复用已解析估算；`-Pjtokkit` 链接后再显式选择 jtokkit，未知/未链接实现失败。所选 tokenizer 作用于支持的文本准入估算，原始 JSON 不变；上游 usage 优先，无 usage 输出仍为启发式估算。
 
-## Provider 和上游契约
-
-认证适配器实现 `provider.UpstreamAuthenticator` 并注册唯一名称；route 的 `provider` 选择该名称。空 provider 采用 OpenAI 默认方言，未知显式 provider 在网络 I/O 前失败，即使未配置密钥也不会默默变为其他方言。认证实现必须无状态，密钥从本次请求参数获取。
-
-`provider.UpstreamProvider` 公开 `Flow.Publisher<String>`、`CompletableFuture<String/byte[]>` 及阻塞接口。流 publisher 为冷源，每次订阅独立管理需求、取消和 watchdog；正常完成不取消 transport，避免破坏复用连接。Future 操作在调用时启动，WebFlux 使用 supplier 延迟调用，避免缓存命中/未订阅时发请求。取消会传播到真实 HTTP future。Reactor 转换与异步心跳只在 WebFlux 适配层，VT 仍使用阻塞 JDK HTTP/ChunkSink 心跳。
-
-## Tokenizer
-
-默认 `gateway.tokenizer=heuristic` 复用已解析的估算，避免重复扫描。`-Pjtokkit` 加入实现包后，显式 `gateway.tokenizer=jtokkit` 才启用。选择未链接的实现会失败；不再把配置忽略后偷偷回到 heuristic。
-
-真实 tokenizer 用于文本准入的 prompt 估算，并将结果带入治理决策，原始 JSON 不改变。上游 authoritative usage 仍优先；没有 usage 的 completion 回退仍是现有启发式，不承诺所有厂商或流式输出都实现精确 BPE 计费。media 单位计量和无请求体轮询保持原语义。
-
-## Redis 原生客户端与配置
-
-`-Predis` 链接 Jedis 7.0.0 与 Redis 实现包，默认包不含 Redis 客户端。六段原有 Lua 正文保持一致；EVALSHA 缓存失效时回退 EVAL，配额预留/结算、模型桶容量/退款仍是原子操作。连接池、凭据、数据库、TLS 和超时从普通 POJO 读取，池由 ExtensionContext 关闭。客户端为独立 Redis 服务/单节点连接池，不宣称提供 Redis Cluster/Sentinel 自动发现。
+`-Predis` 链接 Jedis 7 与实现包，默认包无 Redis 客户端。六段 Lua 保持原子预留/结算与模型桶语义；EVALSHA 失效回退 EVAL，缓存按 SCAN 页失效。池归 ExtensionContext 关闭，仅支持单节点连接池，未提供 Cluster/Sentinel 自动发现或财务硬预算。
 
 ```yaml
 gateway:
@@ -111,20 +111,19 @@ gateway:
     pool-size: 64
 ```
 
-app 边缘兼容 `spring.data.redis.host/port/database/username/password/ssl.enabled/timeout`，原生模块不引用这些 Spring 配置名。新 `gateway.redis.*` 优先；旧 URL 配置需要迁移为独立字段并会明确报错。基础库不再接收 `StringRedisTemplate`，不能把 Spring Data 类型传给构造函数。缓存失效按 SCAN 页删除，保留其他资源命名空间。
+app 边缘有限兼容旧 spring.data.redis 独立字段，新 gateway.redis 字段优先；旧 URL 形式须迁移。基础构造函数不再接收 Spring Data 类型。
 
-## 迁移和检查
+## 迁移、AOT 和验证
 
-| 原契约/实现 | 新位置/方式 |
+| 原位置/方式 | 当前 |
 |---|---|
-| `core.upstream.UpstreamProvider` | `provider.UpstreamProvider`，Flow/Future |
-| `core.upstream.UpstreamAuthenticator` | `provider.UpstreamAuthenticator`，Dubbo 命名发现 |
-| `core.governance.TokenCounter` | `tokenizer.TokenCounter` |
-| `app.JdkHttpUpstream` | `provider.http.jdk.JdkHttpUpstream`，AutoCloseable |
-| `provider.openai.OpenAiSdkVerifier` | `provider.openai.sdk.OpenAiSdkVerifier`，调用方优先使用 ProviderVerifier |
-| core 的 Spring 配置注解/InitializingBean | 普通 GatewayProperties.validate，绑定留在 app |
-| ProtocolRegistrar / 两个治理 AutoConfiguration | Dubbo 描述文件、ExtensionModule 和显式构造 |
+| core.upstream 的 provider 契约 | provider-api 中 provider 包，Flow/Future |
+| core.governance.TokenCounter | tokenizer-api 的 tokenizer 包 |
+| app.JdkHttpUpstream | provider-http-jdk，AutoCloseable |
+| provider.openai.OpenAiSdkVerifier | provider.openai.sdk.OpenAiSdkVerifier，优先依赖 ProviderVerifier |
+| Boot 自动配置 / Component 覆盖基础实现 | ExtensionModule 显式构造及 replace |
+| v0.3.0 中间实现的 Dubbo 注解/描述文件 | 项目 ExtensionPoint / META-INF/llmgw/extensions；移除 Dubbo 依赖 |
 
-`bin/check-module-layout.sh` 校验域结构，`bin/check-native-boundaries.py` 校验全部基础源码、发现资源和多实现平铺，Maven Enforcer 校验直接及传递 Spring/Reactor 依赖。后续新增能力同样受规则约束；见根 [AGENTS.md](../AGENTS.md)。
+v0.3.0 tag 保留中间源码，其发布已取消；v0.3.1 才对应本说明。原生 AOT 只读取项目描述文件并登记公共构造器/配置类型，不需要 Dubbo 常量、scope bean 或 Fastjson2 元数据。Netty/JDK 25 的 shared arena 支持仍需保留，二进制按引擎构建并实际回归。
 
-CI 包括规则的正/负测试、默认/Redis/组合 profile、双引擎契约及身份/资源隔离。AOT 按 classpath 中的 Dubbo 描述文件登记扩展和配置反射元数据；Dubbo 内部常量字段和 scope bean 构造器另以经过 agent 采集的 `META-INF/native-image/llmgw/dubbo-runtime` 元数据补齐。升级 Dubbo 后需重新采集并验证，不能只更新依赖版本。Netty/JDK 25 的 shared arena 构建支持已放在独立 native-image.properties，避免被 Boot AOT 默认文件覆盖。native 仍须按引擎编译，并运行实际二进制回归，不能只凭生成 hints 宣称 native 可用。当前验证及逐文件审查记录见 [架构审查](verification/architecture/native-spi/README.md)。v0.3.0 发布不沿用旧性能数字；tag 对应源码与资产由发布工作流重新验证。
+Maven Enforcer 禁止所有模块直接或间接引入 Dubbo，并阻止基础包引入 Spring/Reactor。模块/源码 guard 与新增负例约束后续实现。验证范围和逐文件清单见 [当前审查报告](verification/architecture/native-extension-mechanism/README.md)；不沿用中间实现或旧性能数字作为当前证据。

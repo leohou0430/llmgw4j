@@ -1,0 +1,38 @@
+[
+  {
+    "profile": "default",
+    "exit_code": 0,
+    "junit": {
+      "tests": 148,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "jar": "bench/results/native-extension-031/default.jar",
+    "sha256": "e8398739def24c1b582d8469f50dea5f6cb5932aed73250b62e296d142ef671d"
+  },
+  {
+    "profile": "redis",
+    "exit_code": 0,
+    "junit": {
+      "tests": 148,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "jar": "bench/results/native-extension-031/redis.jar",
+    "sha256": "2fdf70db839c0c398296a203d37ff11fae4813cd7cbd8726d2a056e73d8a9375"
+  },
+  {
+    "profile": "combined",
+    "exit_code": 0,
+    "junit": {
+      "tests": 148,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "jar": "bench/results/native-extension-031/combined.jar",
+    "sha256": "27cd507b1160821dbaf8a541c9127345ef6be1619877873457efe3b97ee36b13"
+  }
+]

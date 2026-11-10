@@ -5,7 +5,7 @@
 ## 原生基础与扩展
 
 - 基础模块（core、各能力域 api/实现包）不得依赖或引用 Spring、Spring Boot、Reactor；HTTP 框架只允许出现在 app、engine-webflux、engine-vt。
-- 使用真实 Dubbo SPI：`@SPI`、`META-INF/dubbo/<接口全名>`、命名 `ExtensionLoader`。不引入 Dubbo RPC/registry/starter；不使用自写 ServiceLoader 冒充 Dubbo SPI。
+- 参考 Dubbo SPI 的命名、默认实现、惰性发现和作用域原则，以项目内 `ExtensionPoint` / `Extensions` 和 `META-INF/llmgw/extensions/<接口全名>` 实现；不直接依赖任何 Dubbo 包，不复制其 IoC/AOP、RPC 或字节码生成。
 - 有依赖的实现由命名 `ExtensionModule` 使用显式构造函数组装；状态与资源属于每个 `ExtensionContext`。禁止静态全局的有状态治理实例/资源和隐式 Spring bean 优先级；纯无状态协议目录缓存不含运行凭据或账本。
 - 修改基础绑定时，在 seal 前显式 `replace`；未知模块/显式扩展名必须失败。HTTP 适配桥仅导出原生图，不能重新做实现扫描。
 - 上游公开异步契约使用 JDK Flow/CompletableFuture。正常流完成不能取消 HTTP transport；取消、首字节/空闲超时及 SSE 完整性都必须回归。

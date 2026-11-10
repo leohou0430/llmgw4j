@@ -50,7 +50,7 @@ def round_order(arms, rnd):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, required=True)
-    parser.add_argument('--jar', type=Path, default=ROOT / 'llmgw-app/target/llmgw-app-0.3.0.jar')
+    parser.add_argument('--jar', type=Path, default=ROOT / 'llmgw-app/target/llmgw-app-0.3.1.jar')
     parser.add_argument('--before-jar', type=Path, help='Optional immutable artifact before performance changes')
     parser.add_argument('--rounds', type=int, default=3)
     parser.add_argument('--duration', default='10s')

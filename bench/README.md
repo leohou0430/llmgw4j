@@ -1,6 +1,6 @@
 # 压测口径
 
-> v0.3.0 当前结果与限制见 [性能说明](../docs/PERFORMANCE.md)和[最新 A/B](../docs/verification/perf/2026-11-10/perf-review/README.md)。下文 v1–v13 数字是历史记录，不能当作当前发布性能。
+> v0.3.1 当前结果与限制见 [性能说明](../docs/PERFORMANCE.md)和[最新 A/B](../docs/verification/perf/2026-11-10/perf-review/README.md)。下文 v1–v13 数字是历史记录，不能当作当前发布性能。
 
 目标：**单变量对照实验**，不是跑个好看的数字。
 

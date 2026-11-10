@@ -2,7 +2,7 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-JAR="$ROOT/llmgw-app/target/llmgw-app-0.3.0.jar"
+JAR="$ROOT/llmgw-app/target/llmgw-app-0.3.1.jar"
 NATIVE_WEBFLUX="${NATIVE_WEBFLUX:-$ROOT/bin/native/llmgw-webflux}"
 NATIVE_VT="${NATIVE_VT:-$ROOT/bin/native/llmgw-vt}"
 RESULTS="$ROOT/bench/results"

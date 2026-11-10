@@ -13,13 +13,13 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-/** Native constructor composition, discovered as a Dubbo module before any service is resolved. */
+/** Native constructor composition, discovered as a named module before any service is resolved. */
 public final class DefaultGovernanceModule implements ExtensionModule {
     @Override public void configure(ExtensionContext c) {
         var p = c.get(GatewayProperties.class);
         p.validate();
         c.bindDefault(io.github.leohou0430.llmgw.tokenizer.TokenCounter.class, () ->
-                org.apache.dubbo.common.extension.ExtensionLoader.getExtensionLoader(io.github.leohou0430.llmgw.tokenizer.TokenCounter.class).getExtension(p.getTokenizer()));
+                io.github.leohou0430.llmgw.core.extension.Extensions.load(io.github.leohou0430.llmgw.tokenizer.TokenCounter.class).getExtension(p.getTokenizer()));
         c.bindDefault(ExecutorService.class, Executors::newVirtualThreadPerTaskExecutor);
         c.bindDefault(DynamicGovernanceSettings.class, () -> new DynamicGovernanceSettings(p));
         c.bindDefault(ApiKeyRegistry.class, () -> new ManagedApiKeyRegistry(p, new JsonKeyStore(p)));

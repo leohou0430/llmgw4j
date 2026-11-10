@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Static lookup of the protocol implementations. Defaults are discovered through Dubbo SPI for all wire
+ * Static lookup of the protocol implementations. Defaults are discovered through project-owned named extensions for all wire
  * protocols; {@link #register(Protocol)} lets a deployment override any of
  * them explicitly in native Java. Spring scanning is not involved.
  */
@@ -33,11 +33,11 @@ public final class Protocols {
     }
 
     private static void loadDefaults() {
-        var loader = org.apache.dubbo.common.extension.ExtensionLoader.getExtensionLoader(Protocol.class);
+        var loader = io.github.leohou0430.llmgw.core.extension.Extensions.load(Protocol.class);
         for (ProtocolKind kind : ProtocolKind.values()) BY_KIND.put(kind, loader.getExtension(kind.wireName()));
     }
 
-    /** Test-only: restore the named Dubbo implementations. */
+    /** Test-only: restore the named protocol implementations. */
     static void resetToDefaults() {
         BY_KIND.clear();
         loadDefaults();

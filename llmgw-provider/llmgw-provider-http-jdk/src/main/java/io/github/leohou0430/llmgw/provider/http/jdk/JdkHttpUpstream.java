@@ -65,7 +65,7 @@ public class JdkHttpUpstream implements UpstreamProvider, AutoCloseable {
 
     public JdkHttpUpstream(GatewayProperties properties) {
         this.properties = properties;
-        var loader = org.apache.dubbo.common.extension.ExtensionLoader.getExtensionLoader(
+        var loader = io.github.leohou0430.llmgw.core.extension.Extensions.load(
                 io.github.leohou0430.llmgw.provider.UpstreamAuthenticator.class);
         Map<String, io.github.leohou0430.llmgw.provider.UpstreamAuthenticator> discovered = new java.util.LinkedHashMap<>();
         for (String name : loader.getSupportedExtensions()) discovered.put(name, loader.getExtension(name));

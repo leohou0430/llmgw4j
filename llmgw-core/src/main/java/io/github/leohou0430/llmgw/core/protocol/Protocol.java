@@ -16,7 +16,7 @@ import tools.jackson.databind.JsonNode;
  * extracts only what governance needs, {@link #parseChunk} never rewrites a
  * line, and no method ever re-serializes a payload.
  */
-@org.apache.dubbo.common.extension.SPI("chat")
+@io.github.leohou0430.llmgw.core.extension.ExtensionPoint("chat")
 public interface Protocol {
 
     ProtocolKind kind();

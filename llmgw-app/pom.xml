@@ -6,7 +6,7 @@
   <parent>
     <groupId>io.github.leohou0430</groupId>
     <artifactId>llmgw-parent</artifactId>
-    <version>0.3.0</version>
+    <version>0.3.1</version>
   </parent>
   <artifactId>llmgw-app</artifactId>
   <name>llmgw-app</name>
@@ -57,7 +57,7 @@
     </profile>
     <!-- B6 opt-in real tokenizer: jtokkit (tiktoken BPE). Select with
          gateway.tokenizer=jtokkit; without it the heuristic default applies.
-         JtokkitTokenCounter is discovered by named Dubbo SPI when this module
+         JtokkitTokenCounter is discovered by the project-owned named SPI when this module
          is on the classpath. -->
     <profile>
       <id>jtokkit</id>

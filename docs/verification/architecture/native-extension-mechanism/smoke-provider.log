@@ -1,0 +1,29 @@
+======== v13 provider adapter: credential dialect per route ========
+--- engine=webflux ---
+[PASS] webflux anthropic route authenticates with x-api-key
+[PASS] webflux anthropic route sends anthropic-version
+[PASS] webflux anthropic route never sends Authorization
+[PASS] webflux upstream credential never echoed back
+[PASS] webflux default route keeps Bearer auth
+[PASS] webflux default route uses the route key
+[PASS] webflux SSE anthropic route forwards x-api-key upstream
+[PASS] webflux SSE anthropic route forwards anthropic-version upstream
+[PASS] webflux SSE anthropic route sends no Authorization header
+[PASS] webflux SSE anthropic route completes
+[PASS] webflux admin routes view carries the provider field
+[PASS] webflux admin routes view never leaks the provider key
+--- engine=vt ---
+[PASS] vt anthropic route authenticates with x-api-key
+[PASS] vt anthropic route sends anthropic-version
+[PASS] vt anthropic route never sends Authorization
+[PASS] vt upstream credential never echoed back
+[PASS] vt default route keeps Bearer auth
+[PASS] vt default route uses the route key
+[PASS] vt SSE anthropic route forwards x-api-key upstream
+[PASS] vt SSE anthropic route forwards anthropic-version upstream
+[PASS] vt SSE anthropic route sends no Authorization header
+[PASS] vt SSE anthropic route completes
+[PASS] vt admin routes view carries the provider field
+[PASS] vt admin routes view never leaks the provider key
+=================================================
+PASS=24 FAIL=0

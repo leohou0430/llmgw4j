@@ -6,7 +6,7 @@
   <parent>
     <groupId>io.github.leohou0430</groupId>
     <artifactId>llmgw-parent</artifactId>
-    <version>0.3.0</version>
+    <version>0.3.1</version>
   </parent>
   <artifactId>llmgw-core</artifactId>
   <name>llmgw-core</name>
@@ -14,7 +14,6 @@
 
   <properties><llmgw.foundation.enforcer.skip>false</llmgw.foundation.enforcer.skip></properties>
   <dependencies>
-    <dependency><groupId>org.apache.dubbo</groupId><artifactId>dubbo-common</artifactId></dependency>
     <dependency><groupId>tools.jackson.core</groupId><artifactId>jackson-databind</artifactId></dependency>
     <dependency><groupId>org.slf4j</groupId><artifactId>slf4j-api</artifactId></dependency>
     <dependency>

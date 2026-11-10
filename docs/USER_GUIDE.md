@@ -1,6 +1,6 @@
-# llmgw4j 使用指南（v0.3.0）
+# llmgw4j 使用指南（v0.3.1）
 
-JDK 25 的 LLM HTTP 网关。一个 JVM JAR 可选择 WebFlux/Netty 或 Servlet/虚拟线程两种引擎；原生基础模块通过 Dubbo SPI 组装，共用 JDK HttpClient 转发与治理逻辑。它提供协议透传和可替换治理能力，完整端点以 [OpenAPI](openapi.yaml) 为准。
+JDK 25 的 LLM HTTP 网关。一个 JVM JAR 可选择 WebFlux/Netty 或 Servlet/虚拟线程两种引擎；原生基础模块通过 项目内命名 SPI 组装，共用 JDK HttpClient 转发与治理逻辑。它提供协议透传和可替换治理能力，完整端点以 [OpenAPI](openapi.yaml) 为准。
 
 从 v0.2.0 升级的 Java 扩展作者须先阅读 [扩展与迁移说明](EXTENSIONS.md)。HTTP 入口仍使用 Spring Boot，基础模块去框架依赖不等于整个应用无框架。
 
@@ -10,7 +10,7 @@ JDK 25 的 LLM HTTP 网关。一个 JVM JAR 可选择 WebFlux/Netty 或 Servlet/
 
 ```bash
 mvn -B clean verify
-java -jar llmgw-app/target/llmgw-app-0.3.0.jar \
+java -jar llmgw-app/target/llmgw-app-0.3.1.jar \
   --spring.profiles.active=webflux --server.port=8080
 ```
 
@@ -33,7 +33,7 @@ curl -N http://127.0.0.1:8080/v1/chat/completions \
 关闭 mock，替换上游及路由基址，并通过环境或密钥系统注入凭据：
 
 ```bash
-java -jar llmgw-app/target/llmgw-app-0.3.0.jar \
+java -jar llmgw-app/target/llmgw-app-0.3.1.jar \
   --spring.profiles.active=webflux \
   --gateway.mock.enabled=false \
   --gateway.upstream.type=openai-compatible \
@@ -81,7 +81,7 @@ java -jar llmgw-app/target/llmgw-app-0.3.0.jar \
 
 ```bash
 mvn -B -Predis clean verify
-java -jar llmgw-app/target/llmgw-app-0.3.0.jar \
+java -jar llmgw-app/target/llmgw-app-0.3.1.jar \
   --spring.profiles.active=webflux \
   --gateway.redis.enabled=true \
   --gateway.redis.host=127.0.0.1 --gateway.redis.port=6379
@@ -106,7 +106,7 @@ java -jar llmgw-app/target/llmgw-app-0.3.0.jar \
 | `llmgw-provider/` | API、JDK HTTP、OpenAI 认证、OpenAI SDK 验证、Anthropic 认证 |
 | `llmgw-tokenizer/` | API、heuristic、jtokkit |
 
-core 与能力基础模块不依赖 Spring/Reactor；app 和 HTTP 引擎负责框架适配。命名 Dubbo SPI 使用 `@SPI`、`META-INF/dubbo/<接口>`、ExtensionLoader；有依赖服务由 ExtensionModule 显式构造。ExtensionContext 按实例管理状态和资源，seal 前可显式替换绑定，关闭时逆序释放。详见 [扩展开发](EXTENSIONS.md)和根 [AGENTS.md](../AGENTS.md)。
+core 与能力基础模块不依赖 Spring/Reactor；app 和 HTTP 引擎负责框架适配。命名 项目内命名 SPI 使用 `@ExtensionPoint`、`META-INF/llmgw/extensions/<接口>`、Extensions；有依赖服务由 ExtensionModule 显式构造。ExtensionContext 按实例管理状态和资源，seal 前可显式替换绑定，关闭时逆序释放。详见 [扩展开发](EXTENSIONS.md)和根 [AGENTS.md](../AGENTS.md)。
 
 ## 构建、Native 与验证
 
@@ -119,7 +119,7 @@ bash bin/smoke-stream-errors.sh
 bash bin/smoke-multi-protocol.sh
 ```
 
-JUnit、真实 Redis、隔离/鉴权、双引擎协议与流契约由 CI 执行。Redis JUnit 使用 `LLMGW_TEST_REDIS_PORT` 指向测试实例；没有实例时相应测试会跳过，不能称为完成真实 Redis 验证。完整结果见 [架构验证](verification/architecture/native-spi/README.md)。
+JUnit、真实 Redis、隔离/鉴权、双引擎协议与流契约由 CI 执行。Redis JUnit 使用 `LLMGW_TEST_REDIS_PORT` 指向测试实例；没有实例时相应测试会跳过，不能称为完成真实 Redis 验证。完整结果见 [架构验证](verification/architecture/native-extension-mechanism/README.md)。
 
 Native 每引擎独立编译，Spring AOT 在构建期选择 profile：
 
@@ -142,4 +142,4 @@ G1 为 Oracle GraalVM 的 opt-in 实验 profile `native-g1`，默认 native 使�
 - 未知扩展：确认模块在 classpath、SPI 名字正确、资源描述文件已打包；基础实现不再由 Spring component 扫描。
 - URI 缓存仍无容量上限；动态路径高基数需要长期堆验证。协议注册覆盖和引擎指标身份仍为进程级。
 
-v0.3.0 未重新压测。旧性能数字属于证据内冻结的旧产物；本地 mock 契约检查不能代表公网 TLS、真实供应商或远程治理的延迟和生产容量。见 [性能说明](PERFORMANCE.md)及 [安全策略](../SECURITY.md)。
+v0.3.1 未重新压测。旧性能数字属于证据内冻结的旧产物；本地 mock 契约检查不能代表公网 TLS、真实供应商或远程治理的延迟和生产容量。见 [性能说明](PERFORMANCE.md)及 [安全策略](../SECURITY.md)。

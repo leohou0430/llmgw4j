@@ -1,0 +1,134 @@
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] llmgw4j                                                            [pom]
+[INFO] llmgw-core                                                         [jar]
+[INFO] 
+[INFO] -----------------< io.github.leohou0430:llmgw-parent >------------------
+[INFO] Building llmgw4j 0.3.0                                             [1/2]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-parent ---
+[INFO] Skipping Rule Enforcement.
+[INFO] 
+[INFO] ------------------< io.github.leohou0430:llmgw-core >-------------------
+[INFO] Building llmgw-core 0.3.0                                          [2/2]
+[INFO]   from llmgw-core/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-core ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ llmgw-core ---
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ llmgw-core ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 51 source files with javac [debug parameters release 25] to target/classes
+[INFO] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/protocol/ChunkParser.java: 某些输入文件使用或覆盖了已过时的 API。
+[INFO] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/protocol/ChunkParser.java: 有关详细信息, 请使用 -Xlint:deprecation 重新编译。
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ llmgw-core ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-core/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ llmgw-core ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 8 source files with javac [debug parameters release 25] to target/test-classes
+[INFO] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/protocol/ProtocolDiscoveryTest.java: /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/protocol/ProtocolDiscoveryTest.java使用或覆盖了已过时的 API。
+[INFO] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/protocol/ProtocolDiscoveryTest.java: 有关详细信息, 请使用 -Xlint:deprecation 重新编译。
+[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR : 
+[INFO] -------------------------------------------------------------
+[ERROR] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/extension/ExtensionsTest.java:[13,6] 找不到符号
+  符号:   类 ExtensionPoint
+  位置: 类 io.github.leohou0430.llmgw.core.extension.ExtensionsTest
+[ERROR] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/extension/ExtensionsTest.java:[26,37] 找不到符号
+  符号:   变量 Extensions
+  位置: 类 io.github.leohou0430.llmgw.core.extension.ExtensionsTest
+[ERROR] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/extension/ExtensionsTest.java:[33,19] 找不到符号
+  符号:   变量 Extensions
+  位置: 类 io.github.leohou0430.llmgw.core.extension.ExtensionsTest
+[ERROR] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/extension/ExtensionsTest.java:[33,64] 找不到符号
+  符号:   变量 Extensions
+  位置: 类 io.github.leohou0430.llmgw.core.extension.ExtensionsTest
+[ERROR] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/extension/ExtensionsTest.java:[43,28] 找不到符号
+  符号:   变量 Extensions
+  位置: 类 io.github.leohou0430.llmgw.core.extension.ExtensionsTest
+[ERROR] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/extension/ExtensionsTest.java:[54,70] 找不到符号
+  符号:   变量 Extensions
+  位置: 类 io.github.leohou0430.llmgw.core.extension.ExtensionsTest
+[ERROR] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/extension/ExtensionsTest.java:[60,58] 找不到符号
+  符号:   变量 Extensions
+  位置: 类 io.github.leohou0430.llmgw.core.extension.ExtensionsTest
+[ERROR] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/extension/ExtensionsTest.java:[63,28] 找不到符号
+  符号:   变量 Extensions
+  位置: 类 io.github.leohou0430.llmgw.core.extension.ExtensionsTest
+[ERROR] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/extension/ExtensionsTest.java:[71,32] 找不到符号
+  符号:   变量 Extensions
+  位置: 类 io.github.leohou0430.llmgw.core.extension.ExtensionsTest
+[ERROR] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/extension/ExtensionsTest.java:[80,24] 找不到符号
+  符号:   变量 Extensions
+  位置: 类 io.github.leohou0430.llmgw.core.extension.ExtensionsTest
+[ERROR] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/extension/ExtensionsTest.java:[81,23] 找不到符号
+  符号:   变量 Extensions
+  位置: 类 io.github.leohou0430.llmgw.core.extension.ExtensionsTest
+[INFO] 11 errors 
+[INFO] -------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for llmgw4j 0.3.0:
+[INFO] 
+[INFO] llmgw4j ............................................ SUCCESS [  0.342 s]
+[INFO] llmgw-core ......................................... FAILURE [  2.534 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  3.462 s
+[INFO] Finished at: 2026-11-10T23:42:16+08:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.15.0:testCompile (default-testCompile) on project llmgw-core: Compilation failure: Compilation failure: 
+[ERROR] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/extension/ExtensionsTest.java:[13,6] 找不到符号
+[ERROR]   符号:   类 ExtensionPoint
+[ERROR]   位置: 类 io.github.leohou0430.llmgw.core.extension.ExtensionsTest
+[ERROR] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/extension/ExtensionsTest.java:[26,37] 找不到符号
+[ERROR]   符号:   变量 Extensions
+[ERROR]   位置: 类 io.github.leohou0430.llmgw.core.extension.ExtensionsTest
+[ERROR] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/extension/ExtensionsTest.java:[33,19] 找不到符号
+[ERROR]   符号:   变量 Extensions
+[ERROR]   位置: 类 io.github.leohou0430.llmgw.core.extension.ExtensionsTest
+[ERROR] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/extension/ExtensionsTest.java:[33,64] 找不到符号
+[ERROR]   符号:   变量 Extensions
+[ERROR]   位置: 类 io.github.leohou0430.llmgw.core.extension.ExtensionsTest
+[ERROR] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/extension/ExtensionsTest.java:[43,28] 找不到符号
+[ERROR]   符号:   变量 Extensions
+[ERROR]   位置: 类 io.github.leohou0430.llmgw.core.extension.ExtensionsTest
+[ERROR] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/extension/ExtensionsTest.java:[54,70] 找不到符号
+[ERROR]   符号:   变量 Extensions
+[ERROR]   位置: 类 io.github.leohou0430.llmgw.core.extension.ExtensionsTest
+[ERROR] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/extension/ExtensionsTest.java:[60,58] 找不到符号
+[ERROR]   符号:   变量 Extensions
+[ERROR]   位置: 类 io.github.leohou0430.llmgw.core.extension.ExtensionsTest
+[ERROR] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/extension/ExtensionsTest.java:[63,28] 找不到符号
+[ERROR]   符号:   变量 Extensions
+[ERROR]   位置: 类 io.github.leohou0430.llmgw.core.extension.ExtensionsTest
+[ERROR] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/extension/ExtensionsTest.java:[71,32] 找不到符号
+[ERROR]   符号:   变量 Extensions
+[ERROR]   位置: 类 io.github.leohou0430.llmgw.core.extension.ExtensionsTest
+[ERROR] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/extension/ExtensionsTest.java:[80,24] 找不到符号
+[ERROR]   符号:   变量 Extensions
+[ERROR]   位置: 类 io.github.leohou0430.llmgw.core.extension.ExtensionsTest
+[ERROR] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/extension/ExtensionsTest.java:[81,23] 找不到符号
+[ERROR]   符号:   变量 Extensions
+[ERROR]   位置: 类 io.github.leohou0430.llmgw.core.extension.ExtensionsTest
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+[ERROR] 
+[ERROR] After correcting the problems, you can resume the build with the command
+[ERROR]   mvn <args> -rf :llmgw-core
