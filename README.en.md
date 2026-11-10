@@ -1,5 +1,10 @@
 # llmgw4j
 
+> Production requires `gateway.production=true`, non-demo client keys and an admin token.
+> Defaults are local demos. The built-in monetary ledger is in-memory, including with Redis;
+> durable distributed monetary hard budgets are not supported in production.
+> CI runs Maven verify, strict OpenAPI YAML/operation checks and both-engine stream contracts.
+
 > **One governance layer. Two switchable data planes. Evidence you can reproduce.**
 >
 > Naming: `llmgw` (LLM Gateway) + `4j` (for Java — log4j / dom4j style).
@@ -13,6 +18,8 @@
 
 llmgw4j is a **Java LLM API gateway** built on Spring Boot 4.1.2 / JDK 25.
 
+Current release: **v0.2.0**. See [release notes](docs/releases/v0.2.0.md) and [performance evidence](docs/PERFORMANCE.md).
+
 ## Capability overview (parity gaps vs mainstream gateways, see docs/gap-analysis.md)
 
 - **Forwarding governance**: same-route retry + exponential backoff, three-tier
@@ -24,8 +31,9 @@ llmgw4j is a **Java LLM API gateway** built on Spring Boot 4.1.2 / JDK 25.
   (audio transcriptions, file uploads), file lifecycle and batch jobs with
   sticky routing. Protocols are a ROUTING dimension, never translated
 - **Keys & budgets**: runtime API key management (create/revoke/TTL, JSON store),
-  token quotas with in-flight reservation + refunds, **hard $ budgets** priced
-  from the model catalog, per-group spend rollups
+  token quotas with in-flight reservation + refunds, **demo estimated $ budgets** priced
+  from the model catalog (disabled in production), per-group spend rollups
+- **JWT**: optional HS256 verification with issuer/audience constraints and numeric expiry/not-before checks; shared JSON parsing avoids per-validation mapper creation. OIDC/JWKS are not built in.
 - **Provider adapters**: `UpstreamAuthenticator` SPI — OpenAI-compatible Bearer
   and native Anthropic (x-api-key + anthropic-version) per route
 - **Observability**: Prometheus metrics, TTFT/upstream/overhead timers, audit
@@ -35,8 +43,7 @@ llmgw4j is a **Java LLM API gateway** built on Spring Boot 4.1.2 / JDK 25.
   cache (Embedder SPI + bucketed vector keys), exact cache
 - **Multi-replica**: `-Predis` (Lua-atomic limiter/quota/breaker + shared key
   table, response cache and task stickiness)
-- **Engineering**: JUnit tests (5 modules) + 8 shell contract suites (~370
-  assertions) + Docker/compose + TLS front-proxy deployment guide
+- **Engineering**: 117 JUnit tests (including real Redis verification) + both-engine contract, isolation and authentication regressions + Docker/compose + TLS front-proxy deployment guide
 
 It was designed to answer one question properly: *for a streaming LLM proxy,
 does a reactive data plane actually beat a virtual-thread data plane?*
@@ -172,32 +179,15 @@ the governance virtual-thread side path, never on the hot path.
   fat jar contains no Redis dependency at all. This trades 2–4 Redis
   round-trips per request for cross-replica consistency.
 
-## Benchmarks and the data-quality red line
+## Performance and measurement limits
 
-The project deliberately publishes its own measurement discipline, because
-several historical experiments were ruined by host overload (`vm.loadavg`
-80–110) and produced contradictory numbers (JSON −50% while SSE appeared
-+4.6× in the same run).
+The SSE parser copies payload text once; WebFlux header copying avoids multi-value collections. Local allocations dropped by 22%–48% for SSE and 32% for headers. This does not imply equal end-to-end speedups.
 
-Before any performance number is accepted:
+The latest frozen-artifact A/B contains 64 samples and 4,217,770 requests, all error-free with matching upstream counts. WebFlux SSE median throughput increased 7.3% / 5.2% in separate governance-on/off batches, with overlapping ranges. JSON results change direction and some p99 values worsen; there is no evidence for a general stable throughput gain. A 4-thread experiment produced an SSE truncation, so the default remains 32.
 
-1. a **15s-granularity host load timeline** must exist;
-2. **per-round raw CSV** must be checked for consistent paired-difference
-   signs — flipping directions means noise, not a result;
-3. the `0/0` wire experiment and the `20/10` main matrix are **separate
-   regimes** and must never be subtracted row-by-row;
-4. both arms must be build-identical except for the tested variable.
+See the [full report](docs/verification/perf/2026-11-10/perf-review/README.md) for JFR, ranges, raw evidence and limitations. Historical cross-gateway results describe older fixed artifacts, not a new v0.2.0 ranking. Native performance, public TLS and remote governance latency were not remeasured. The release build changes version metadata; the benchmark JAR hashes remain explicitly recorded.
 
-A 2026-11-08 finding: on this 16-core host, a 50 VU wire run **itself**
-pushes load1 from 4–7 to 100+ within a minute even with no external load
-and no leftover processes, so ABBA interleaving cannot cancel the drift.
-Two fresh paired runs produced opposite medians and are archived as invalid
-samples. A conclusive A/B needs a dedicated idle host, or lower VUS with
-inter-round cooldown; see `bench/README.md`.
-
-Overloaded runs are archived for reproduction but **never** become a
-conclusion. See [bench/README.md](bench/README.md) and the
-[benchmark issue template](.github/ISSUE_TEMPLATE/benchmark_report.yml).
+The URI cache remains unbounded for high-cardinality dynamic paths. Default concurrency is 64 and non-streaming response size is capped at 4 MiB; uploads and downloads still buffer whole bodies. See [benchmark instructions](bench/cross-gateway/README.md).
 
 ## Regression suite
 
@@ -207,6 +197,10 @@ conclusion. See [bench/README.md](bench/README.md) and the
 | `./bin/smoke-observability.sh` | 30 (both engines; includes `engine` metric label assertions) |
 | `./bin/smoke-hot-reload.sh webflux` / `vt` | 10 each |
 | `./bin/smoke-redis-cluster.sh` | 7 |
+| `./bin/smoke-v13-extensions.sh` | 54 |
+| `./bin/smoke-v13-hardening.sh` | 46 |
+| `python3 bin/smoke-tenant-isolation.py` | both engines |
+| `python3 bin/smoke-admin-auth.py` / `smoke-jwt-auth.py` | authentication boundaries |
 
 New capabilities get their own script; the historical 67/34 counts stay
 comparable across versions.

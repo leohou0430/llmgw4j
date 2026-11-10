@@ -1,0 +1,27 @@
+======== v13 extensions: semantic cache + new protocols ========
+--- engine=webflux -- W4.2 semantic cache ---
+[PASS] webflux semantic: request A served
+[PASS] webflux semantic: reordered request B served
+[PASS] webflux semantic: both bodies share ONE cache entry
+[PASS] webflux semantic: a different question gets its own entry
+--- engine=webflux -- W4.3 new protocols ---
+[PASS] webflux embeddings pass-through served
+[PASS] webflux rerank pass-through served
+[PASS] webflux speech binary pass-through (432 bytes)
+[PASS] webflux embeddings without key -> 401
+[PASS] webflux speech without key -> 401
+[PASS] webflux embeddings metered under its protocol
+--- engine=vt -- W4.2 semantic cache ---
+[PASS] vt semantic: request A served
+[PASS] vt semantic: reordered request B served
+[PASS] vt semantic: both bodies share ONE cache entry
+[PASS] vt semantic: a different question gets its own entry
+--- engine=vt -- W4.3 new protocols ---
+[PASS] vt embeddings pass-through served
+[PASS] vt rerank pass-through served
+[PASS] vt speech binary pass-through (432 bytes)
+[PASS] vt embeddings without key -> 401
+[PASS] vt speech without key -> 401
+[PASS] vt embeddings metered under its protocol
+=================================================
+PASS=20 FAIL=0

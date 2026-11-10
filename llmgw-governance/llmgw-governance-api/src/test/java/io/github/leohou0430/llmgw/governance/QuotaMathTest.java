@@ -39,6 +39,13 @@ class QuotaMathTest {
     }
 
     @Test
+    void arithmeticOverflowCannotAdmitOverspending() {
+        assertFalse(QuotaMath.admits(Long.MAX_VALUE - 5, 4, 10, Long.MAX_VALUE));
+        assertFalse(QuotaMath.admits(0, Long.MAX_VALUE, 1, Long.MAX_VALUE));
+        assertFalse(QuotaMath.admits(-1, 0, 1, 100));
+    }
+
+    @Test
     void onlySuccessfulRequestsAreBillable() {
         assertTrue(QuotaMath.chargeable(record(true, 10, 5)));
         assertFalse(QuotaMath.chargeable(record(false, 10, 5)));

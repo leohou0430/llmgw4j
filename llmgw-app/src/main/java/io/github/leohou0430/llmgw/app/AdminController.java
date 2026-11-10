@@ -96,22 +96,15 @@ public class AdminController {
                 ? "" : properties.getAdminReadToken();
     }
 
-    /**
-     * B5: two-tier admin auth. Read token grants observability GETs only;
-     * mutations (keys/routes/governance/cache/rotate) always need the full
-     * admin token. When neither is configured, everything stays open (demo).
-     */
+    /** Audit export accepts either credential; only a fully unconfigured demo is open. */
     private boolean isReadAuthorized(String token) {
-        if (adminToken.isBlank()) {
-            return true;
-        }
-        if (!adminReadToken.isBlank() && MessageDigest.isEqual(
-                token.getBytes(StandardCharsets.UTF_8),
-                adminReadToken.getBytes(StandardCharsets.UTF_8))) {
-            return true;
-        }
-        return !adminToken.isBlank() && MessageDigest.isEqual(
-                token.getBytes(StandardCharsets.UTF_8), adminToken.getBytes(StandardCharsets.UTF_8));
+        return (adminToken.isBlank() && adminReadToken.isBlank())
+                || tokenMatches(adminToken, token) || tokenMatches(adminReadToken, token);
+    }
+
+    private static boolean tokenMatches(String expected, String supplied) {
+        return !expected.isBlank() && supplied != null && MessageDigest.isEqual(
+                expected.getBytes(StandardCharsets.UTF_8), supplied.getBytes(StandardCharsets.UTF_8));
     }
 
     /**
@@ -505,12 +498,10 @@ public class AdminController {
     }
 
     private void requireAdmin(String supplied) {
-        if (adminToken.isBlank()) {
+        if (adminToken.isBlank() && adminReadToken.isBlank()) {
             return; // local demo mode
         }
-        byte[] expected = adminToken.getBytes(StandardCharsets.UTF_8);
-        byte[] actual = (supplied == null ? "" : supplied).getBytes(StandardCharsets.UTF_8);
-        if (!MessageDigest.isEqual(expected, actual)) {
+        if (!tokenMatches(adminToken, supplied)) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "admin token required");
         }
     }

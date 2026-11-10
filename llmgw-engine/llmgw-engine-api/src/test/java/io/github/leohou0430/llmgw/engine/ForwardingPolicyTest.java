@@ -97,10 +97,10 @@ class ForwardingPolicyTest {
 
     @Test
     void retryableClassificationFollowsHttpSemantics() {
-        assertTrue(ForwardingPolicy.retryable(new UpstreamStatusException(500, "boom")));
-        assertTrue(ForwardingPolicy.retryable(new UpstreamStatusException(503, "boom")));
+        assertFalse(ForwardingPolicy.retryable(new UpstreamStatusException(500, "boom")));
+        assertFalse(ForwardingPolicy.retryable(new UpstreamStatusException(503, "boom")));
         assertTrue(ForwardingPolicy.retryable(new UpstreamStatusException(429, "rate limited")));
-        assertTrue(ForwardingPolicy.retryable(new UpstreamStatusException(408, "timeout")));
+        assertFalse(ForwardingPolicy.retryable(new UpstreamStatusException(408, "timeout")));
         assertFalse(ForwardingPolicy.retryable(new UpstreamStatusException(400, "bad request")));
         assertFalse(ForwardingPolicy.retryable(new UpstreamStatusException(401, "unauthorized")));
         assertFalse(ForwardingPolicy.retryable(new UpstreamStatusException(403, "forbidden")));
@@ -108,27 +108,38 @@ class ForwardingPolicyTest {
         // An open circuit must not burn another delay cycle on the same route.
         assertFalse(ForwardingPolicy.retryable(new CircuitOpenException("a")));
         // Transport/timeouts/truncation-style IllegalStateExceptions are transient.
-        assertTrue(ForwardingPolicy.retryable(new IllegalStateException("connection reset")));
+        assertFalse(ForwardingPolicy.retryable(new IllegalStateException("connection reset")));
     }
 
     @Test
     void nextViableRetriesSameRouteOnRetryableError() {
         List<ForwardingPolicy.Attempt> plan = planOf(2, List.of("a", "b"));
-        assertEquals(1, ForwardingPolicy.nextViable(plan, 0, new UpstreamStatusException(500, "x")));
+        assertEquals(1, ForwardingPolicy.nextViable(plan, 0, new UpstreamStatusException(429, "x")));
     }
 
     @Test
     void nextViableSkipsRemainingSameRouteAttemptsOnNonRetryableError() {
         List<ForwardingPolicy.Attempt> plan = planOf(3, List.of("a", "b"));
         // a1 a2 a3 b1: a 400 skips a2/a3 and lands on b1 (index 3).
-        assertEquals(3, ForwardingPolicy.nextViable(plan, 0, new UpstreamStatusException(400, "x")));
+        assertEquals(-1, ForwardingPolicy.nextViable(plan, 0, new UpstreamStatusException(400, "x")));
     }
 
     @Test
     void nextViableReportsExhaustedChain() {
         List<ForwardingPolicy.Attempt> plan = planOf(2, List.of("a"));
-        assertEquals(-1, ForwardingPolicy.nextViable(plan, 1, new UpstreamStatusException(500, "x")));
+        assertEquals(-1, ForwardingPolicy.nextViable(plan, 1, new UpstreamStatusException(429, "x")));
         assertEquals(-1, ForwardingPolicy.nextViable(plan, 0, new UpstreamStatusException(400, "x")));
+    }
+
+    @Test
+    void unknownOutcomeStopsAllAttemptsButUnsentConnectionsMayFailOver() {
+        var plan = planOf(2, List.of("a", "b"));
+        assertEquals(-1, ForwardingPolicy.nextViable(plan, 0,
+                new IllegalStateException(new java.net.http.HttpTimeoutException("unknown outcome"))));
+        assertEquals(-1, ForwardingPolicy.nextViable(plan, 0, new UpstreamStatusException(500, "unknown")));
+        assertEquals(1, ForwardingPolicy.nextViable(plan, 0,
+                new IllegalStateException(new java.net.ConnectException("refused"))));
+        assertEquals(2, ForwardingPolicy.nextViable(plan, 0, new CircuitOpenException("a")));
     }
 
     private static List<ForwardingPolicy.Attempt> planOf(int attempts, List<String> routeIds) {

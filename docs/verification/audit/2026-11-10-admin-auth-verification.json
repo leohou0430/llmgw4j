@@ -1,0 +1,29 @@
+{
+  "date": "2026-11-10",
+  "previous_goal_turn": "progress: source investigation identified differing authorization branches",
+  "junit": {
+    "tests": 105,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 2
+  },
+  "targeted_tests": 14,
+  "jar_sha256": "019f85405eb1575f8fcbcea934db247b534c8972165b52669fe51d4c49da6cba",
+  "http": {
+    "engines": [
+      "webflux",
+      "vt"
+    ],
+    "configurations": [
+      "protected",
+      "read-only",
+      "demo"
+    ],
+    "passed": 6,
+    "failed": 0
+  },
+  "scope": "admin authorization and production configuration; no data-plane performance changes",
+  "full_rbac": false,
+  "published": false,
+  "superseded_by": "2026-11-10-final-verification.json"
+}

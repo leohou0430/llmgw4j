@@ -1,0 +1,552 @@
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] llmgw4j                                                            [pom]
+[INFO] llmgw-core                                                         [jar]
+[INFO] llmgw-governance                                                   [pom]
+[INFO] llmgw-governance-api                                               [jar]
+[INFO] llmgw-governance-default                                           [jar]
+[INFO] llmgw-governance-redis                                             [jar]
+[INFO] llmgw-engine                                                       [pom]
+[INFO] llmgw-engine-api                                                   [jar]
+[INFO] llmgw-engine-webflux                                               [jar]
+[INFO] llmgw-engine-vt                                                    [jar]
+[INFO] llmgw-provider-openai                                              [jar]
+[INFO] llmgw-app                                                          [jar]
+[INFO] 
+[INFO] -----------------< io.github.leohou0430:llmgw-parent >------------------
+[INFO] Building llmgw4j 0.1.0-SNAPSHOT                                   [1/12]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ llmgw-parent ---
+[INFO] 
+[INFO] ------------------< io.github.leohou0430:llmgw-core >-------------------
+[INFO] Building llmgw-core 0.1.0-SNAPSHOT                                [2/12]
+[INFO]   from llmgw-core/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ llmgw-core ---
+[INFO] Deleting /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-core/target
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ llmgw-core ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-core/src/main/resources
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-core/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ llmgw-core ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 36 source files with javac [debug parameters release 25] to target/classes
+[INFO] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/protocol/ChunkParser.java: 某些输入文件使用或覆盖了已过时的 API。
+[INFO] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/protocol/ChunkParser.java: 有关详细信息, 请使用 -Xlint:deprecation 重新编译。
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ llmgw-core ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-core/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ llmgw-core ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ llmgw-core ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.1:jar (default-jar) @ llmgw-core ---
+[INFO] Building jar: /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-core/target/llmgw-core-0.1.0-SNAPSHOT.jar
+[INFO] 
+[INFO] ---------------< io.github.leohou0430:llmgw-governance >----------------
+[INFO] Building llmgw-governance 0.1.0-SNAPSHOT                          [3/12]
+[INFO]   from llmgw-governance/pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ llmgw-governance ---
+[INFO] 
+[INFO] -------------< io.github.leohou0430:llmgw-governance-api >--------------
+[INFO] Building llmgw-governance-api 0.1.0-SNAPSHOT                      [4/12]
+[INFO]   from llmgw-governance/llmgw-governance-api/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ llmgw-governance-api ---
+[INFO] Deleting /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-governance/llmgw-governance-api/target
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ llmgw-governance-api ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-governance/llmgw-governance-api/src/main/resources
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-governance/llmgw-governance-api/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ llmgw-governance-api ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 4 source files with javac [debug parameters release 25] to target/classes
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ llmgw-governance-api ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-governance/llmgw-governance-api/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ llmgw-governance-api ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ llmgw-governance-api ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.1:jar (default-jar) @ llmgw-governance-api ---
+[INFO] Building jar: /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-governance/llmgw-governance-api/target/llmgw-governance-api-0.1.0-SNAPSHOT.jar
+[INFO] 
+[INFO] -----------< io.github.leohou0430:llmgw-governance-default >------------
+[INFO] Building llmgw-governance-default 0.1.0-SNAPSHOT                  [5/12]
+[INFO]   from llmgw-governance/llmgw-governance-default/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ llmgw-governance-default ---
+[INFO] Deleting /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-governance/llmgw-governance-default/target
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ llmgw-governance-default ---
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ llmgw-governance-default ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 11 source files with javac [debug parameters release 25] to target/classes
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ llmgw-governance-default ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-governance/llmgw-governance-default/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ llmgw-governance-default ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ llmgw-governance-default ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.1:jar (default-jar) @ llmgw-governance-default ---
+[INFO] Building jar: /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-governance/llmgw-governance-default/target/llmgw-governance-default-0.1.0-SNAPSHOT.jar
+[INFO] 
+[INFO] ------------< io.github.leohou0430:llmgw-governance-redis >-------------
+[INFO] Building llmgw-governance-redis 0.1.0-SNAPSHOT                    [6/12]
+[INFO]   from llmgw-governance/llmgw-governance-redis/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ llmgw-governance-redis ---
+[INFO] Deleting /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-governance/llmgw-governance-redis/target
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ llmgw-governance-redis ---
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ llmgw-governance-redis ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 5 source files with javac [debug parameters release 25] to target/classes
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ llmgw-governance-redis ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-governance/llmgw-governance-redis/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ llmgw-governance-redis ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ llmgw-governance-redis ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.1:jar (default-jar) @ llmgw-governance-redis ---
+[INFO] Building jar: /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-governance/llmgw-governance-redis/target/llmgw-governance-redis-0.1.0-SNAPSHOT.jar
+[INFO] 
+[INFO] -----------------< io.github.leohou0430:llmgw-engine >------------------
+[INFO] Building llmgw-engine 0.1.0-SNAPSHOT                              [7/12]
+[INFO]   from llmgw-engine/pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ llmgw-engine ---
+[INFO] 
+[INFO] ---------------< io.github.leohou0430:llmgw-engine-api >----------------
+[INFO] Building llmgw-engine-api 0.1.0-SNAPSHOT                          [8/12]
+[INFO]   from llmgw-engine/llmgw-engine-api/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ llmgw-engine-api ---
+[INFO] Deleting /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-api/target
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ llmgw-engine-api ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-api/src/main/resources
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-api/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ llmgw-engine-api ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 9 source files with javac [debug parameters release 25] to target/classes
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ llmgw-engine-api ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-api/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ llmgw-engine-api ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ llmgw-engine-api ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.1:jar (default-jar) @ llmgw-engine-api ---
+[INFO] Building jar: /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-api/target/llmgw-engine-api-0.1.0-SNAPSHOT.jar
+[INFO] 
+[INFO] -------------< io.github.leohou0430:llmgw-engine-webflux >--------------
+[INFO] Building llmgw-engine-webflux 0.1.0-SNAPSHOT                      [9/12]
+[INFO]   from llmgw-engine/llmgw-engine-webflux/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ llmgw-engine-webflux ---
+[INFO] Deleting /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-webflux/target
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ llmgw-engine-webflux ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-webflux/src/main/resources
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-webflux/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ llmgw-engine-webflux ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 2 source files with javac [debug parameters release 25] to target/classes
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ llmgw-engine-webflux ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-webflux/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ llmgw-engine-webflux ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ llmgw-engine-webflux ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.1:jar (default-jar) @ llmgw-engine-webflux ---
+[INFO] Building jar: /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-webflux/target/llmgw-engine-webflux-0.1.0-SNAPSHOT.jar
+[INFO] 
+[INFO] ----------------< io.github.leohou0430:llmgw-engine-vt >----------------
+[INFO] Building llmgw-engine-vt 0.1.0-SNAPSHOT                          [10/12]
+[INFO]   from llmgw-engine/llmgw-engine-vt/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ llmgw-engine-vt ---
+[INFO] Deleting /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-vt/target
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ llmgw-engine-vt ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-vt/src/main/resources
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-vt/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ llmgw-engine-vt ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 2 source files with javac [debug parameters release 25] to target/classes
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ llmgw-engine-vt ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-vt/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ llmgw-engine-vt ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ llmgw-engine-vt ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.1:jar (default-jar) @ llmgw-engine-vt ---
+[INFO] Building jar: /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-vt/target/llmgw-engine-vt-0.1.0-SNAPSHOT.jar
+[INFO] 
+[INFO] -------------< io.github.leohou0430:llmgw-provider-openai >-------------
+[INFO] Building llmgw-provider-openai 0.1.0-SNAPSHOT                    [11/12]
+[INFO]   from llmgw-provider-openai/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ llmgw-provider-openai ---
+[INFO] Deleting /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-provider-openai/target
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ llmgw-provider-openai ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-provider-openai/src/main/resources
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-provider-openai/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ llmgw-provider-openai ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 1 source file with javac [debug parameters release 25] to target/classes
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ llmgw-provider-openai ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-provider-openai/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ llmgw-provider-openai ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ llmgw-provider-openai ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.1:jar (default-jar) @ llmgw-provider-openai ---
+[INFO] Building jar: /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-provider-openai/target/llmgw-provider-openai-0.1.0-SNAPSHOT.jar
+[INFO] 
+[INFO] -------------------< io.github.leohou0430:llmgw-app >-------------------
+[INFO] Building llmgw-app 0.1.0-SNAPSHOT                                [12/12]
+[INFO]   from llmgw-app/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ llmgw-app ---
+[INFO] Deleting /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ llmgw-app ---
+[INFO] Copying 4 resources from src/main/resources to target/classes
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ llmgw-app ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 6 source files with javac [debug parameters release 25] to target/classes
+[INFO] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/AdminController.java: 某些输入文件使用或覆盖了已过时的 API。
+[INFO] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/AdminController.java: 有关详细信息, 请使用 -Xlint:deprecation 重新编译。
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ llmgw-app ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ llmgw-app ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ llmgw-app ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.1:jar (default-jar) @ llmgw-app ---
+[INFO] Building jar: /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/llmgw-app-0.1.0-SNAPSHOT.jar
+[INFO] 
+[INFO] --- spring-boot:4.1.2:repackage (repackage) @ llmgw-app ---
+[INFO] Replacing main artifact /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/llmgw-app-0.1.0-SNAPSHOT.jar with repackaged archive, adding nested dependencies in BOOT-INF/.
+[INFO] The original artifact has been renamed to /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/llmgw-app-0.1.0-SNAPSHOT.jar.original
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for llmgw4j 0.1.0-SNAPSHOT:
+[INFO] 
+[INFO] llmgw4j ............................................ SUCCESS [  0.113 s]
+[INFO] llmgw-core ......................................... SUCCESS [  2.279 s]
+[INFO] llmgw-governance ................................... SUCCESS [  0.004 s]
+[INFO] llmgw-governance-api ............................... SUCCESS [  0.147 s]
+[INFO] llmgw-governance-default ........................... SUCCESS [  0.395 s]
+[INFO] llmgw-governance-redis ............................. SUCCESS [  0.275 s]
+[INFO] llmgw-engine ....................................... SUCCESS [  0.003 s]
+[INFO] llmgw-engine-api ................................... SUCCESS [  0.168 s]
+[INFO] llmgw-engine-webflux ............................... SUCCESS [  0.455 s]
+[INFO] llmgw-engine-vt .................................... SUCCESS [  0.187 s]
+[INFO] llmgw-provider-openai .............................. SUCCESS [  0.232 s]
+[INFO] llmgw-app .......................................... SUCCESS [  1.347 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  5.989 s
+[INFO] Finished at: 2026-11-09T00:13:03+08:00
+[INFO] ------------------------------------------------------------------------
+Build finished: /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/llmgw-app-0.1.0-SNAPSHOT.jar
+=== smoke-multi-protocol ===
+########## webflux ##########
+-- responses + messages: happy paths --
+  [PASS] responses non-stream 200 -- 200 application/json {"id":"resp_mock","object":"response","status":"completed","
+  [PASS] responses SSE: deltas + response.completed, NO [DONE] -- 200 text/event-stream deltas=8 completed=1 done=0
+  [PASS] messages non-stream 200 -- 200 application/json {"id":"msg_mock","type":"message","role":"assistant","conten
+  [PASS] messages SSE: deltas + message_stop, NO [DONE] -- 200 text/event-stream deltas=8 stop=1 done=0
+-- governance covers every endpoint --
+  [PASS] responses without key -> 401 -- 401 {"error":{"message":"invalid api key","type":"gateway_error"
+  [PASS] messages invalid json -> 400 -- 400 {"error":{"message":"invalid json: Unrecognized token 'not':
+-- images: n units, never cached --
+  [PASS] images n=3 -> 3 b64 entries -- 200 application/json entries=3
+  [PASS] images n=99 capped at 10 -- 200 entries=10
+  [PASS] images never enter the semantic cache -- cacheSize=0
+-- videos: create -> poll -> content --
+  [PASS] video create 200 + task id -- 200 id=video-1
+  [PASS] video poll reaches completed -- status=completed id=video-1
+  [PASS] video content 200 video/mp4 -- 200 video/mp4 bytes=432
+  [PASS] video create/poll never cached -- cacheSize=0
+-- per-protocol metering (1+8+1+8+0 = 18 completion tokens) --
+  [PASS] usage frames from every protocol counted exactly -- completionTokens=18 requests=5 errors=0 (expect 18/5/0)
+-- protocol routing: each kind lands on its own route --
+  [PASS] five protocols resolved to five protocol-specific routes -- chat=1 responses=1 messages=1 images=1 videos=1
+-- responses truncation contract (no [DONE] ever) --
+  [PASS] responses mid-stream crash -> in-band error, NO fabricated terminators -- 200 err_event=1 done=0 completed=0
+  [PASS] responses zero-frame EOF -> 502 naming its own terminator -- 502 application/json {"error":{"message":"upstream: upstream closed SSE stream without response.compl
+  [PASS] responses mid-stream EOF -> in-band error only -- 200 err_event=1 done=0 completed=0
+  [PASS] responses disconnect after response.completed stays a success -- 200 completed=1 err_event=0
+  [PASS] responses upstream 429 -> gateway 502 -- 502 {"error":{"message":"upstream: upstream status 429: {\"error\":{\"message\":\"in
+-- messages truncation contract (no [DONE] ever) --
+  [PASS] messages mid-stream crash -> in-band error, NO fabricated terminators -- 200 err_event=1 done=0 stop=0
+  [PASS] messages zero-frame EOF -> 502 naming its own terminator -- 502 application/json {"error":{"message":"upstream: upstream closed SSE stream without message_stop",
+  [PASS] messages disconnect after message_stop stays a success -- 200 stop=1 err_event=0
+-- images/videos failure injection --
+  [PASS] images upstream 500 -> gateway 502 -- 502 {"error":{"message":"upstream: upstream status 500: {\"error\":{\"message\":\"in
+  [PASS] video create upstream 503 -> gateway 502 -- 502 {"error":{"message":"upstream: upstream status 503: {\"error\":{\"message\":\"in
+-- sticky video routing: a task exists only on its creating upstream --
+  [PASS] GW1: create + poll its own task -- status=completed id=video-1
+  [PASS] GW2 cannot poll GW1's task (sticky pinning holds) -- code=502 id=video-1 on gw2
+  [PASS] GW2 create + poll its own task via wildcard fallback -- status=completed id=video-1
+########## vt ##########
+-- responses + messages: happy paths --
+  [PASS] responses non-stream 200 -- 200 application/json {"id":"resp_mock","object":"response","status":"completed","
+  [PASS] responses SSE: deltas + response.completed, NO [DONE] -- 200 text/event-stream;charset=UTF-8 deltas=8 completed=1 done=0
+  [PASS] messages non-stream 200 -- 200 application/json {"id":"msg_mock","type":"message","role":"assistant","conten
+  [PASS] messages SSE: deltas + message_stop, NO [DONE] -- 200 text/event-stream;charset=UTF-8 deltas=8 stop=1 done=0
+-- governance covers every endpoint --
+  [PASS] responses without key -> 401 -- 401 {"error":{"message":"invalid api key","type":"gateway_error"
+  [PASS] messages invalid json -> 400 -- 400 {"error":{"message":"invalid json: Unrecognized token 'not':
+-- images: n units, never cached --
+  [PASS] images n=3 -> 3 b64 entries -- 200 application/json entries=3
+  [PASS] images n=99 capped at 10 -- 200 entries=10
+  [PASS] images never enter the semantic cache -- cacheSize=0
+-- videos: create -> poll -> content --
+  [PASS] video create 200 + task id -- 200 id=video-1
+  [PASS] video poll reaches completed -- status=completed id=video-1
+  [PASS] video content 200 video/mp4 -- 200 video/mp4 bytes=432
+  [PASS] video create/poll never cached -- cacheSize=0
+-- per-protocol metering (1+8+1+8+0 = 18 completion tokens) --
+  [PASS] usage frames from every protocol counted exactly -- completionTokens=18 requests=5 errors=0 (expect 18/5/0)
+-- protocol routing: each kind lands on its own route --
+  [PASS] five protocols resolved to five protocol-specific routes -- chat=1 responses=1 messages=1 images=1 videos=1
+-- responses truncation contract (no [DONE] ever) --
+  [PASS] responses mid-stream crash -> in-band error, NO fabricated terminators -- 200 err_event=1 done=0 completed=0
+  [PASS] responses zero-frame EOF -> 502 naming its own terminator -- 502 application/json;charset=UTF-8 {"error":{"message":"upstream: upstream closed SSE stream without response.compl
+  [PASS] responses mid-stream EOF -> in-band error only -- 200 err_event=1 done=0 completed=0
+  [PASS] responses disconnect after response.completed stays a success -- 200 completed=1 err_event=0
+  [PASS] responses upstream 429 -> gateway 502 -- 502 {"error":{"message":"upstream: upstream status 429: {\"error\":{\"message\":\"in
+-- messages truncation contract (no [DONE] ever) --
+  [PASS] messages mid-stream crash -> in-band error, NO fabricated terminators -- 200 err_event=1 done=0 stop=0
+  [PASS] messages zero-frame EOF -> 502 naming its own terminator -- 502 application/json;charset=UTF-8 {"error":{"message":"upstream: upstream closed SSE stream without message_stop",
+  [PASS] messages disconnect after message_stop stays a success -- 200 stop=1 err_event=0
+-- images/videos failure injection --
+  [PASS] images upstream 500 -> gateway 502 -- 502 {"error":{"message":"upstream: upstream status 500: {\"error\":{\"message\":\"in
+  [PASS] video create upstream 503 -> gateway 502 -- 502 {"error":{"message":"upstream: upstream status 503: {\"error\":{\"message\":\"in
+-- sticky video routing: a task exists only on its creating upstream --
+  [PASS] GW1: create + poll its own task -- status=completed id=video-1
+  [PASS] GW2 cannot poll GW1's task (sticky pinning holds) -- code=502 id=video-1 on gw2
+  [PASS] GW2 create + poll its own task via wildcard fallback -- status=completed id=video-1
+==========================================
+PASS=56 FAIL=0
+=== smoke-stream-errors ===
+########## webflux ##########
+-- normal paths (default mock upstream) --
+  [PASS] non-stream 200 + JSON body -- 200 application/json {"id":"mock","object":"chat.completion","choices":[{"index":
+  [PASS] SSE 200 + chunks + [DONE], no error event -- 200 text/event-stream data_lines=10 done=1 err_event=0
+  [PASS] missing key -> 401 -- 401 {"error":{"message":"invalid api key","type":"gateway_error"
+  [PASS] invalid json -> 400 -- 400 {"error":{"message":"invalid json: Unrecognized token 'not':
+-- upstream unreachable, NO fallback --
+  [PASS] non-stream upstream failure -> 502 JSON -- 502 application/json {"error":{"message":"upstream: ClosedChannelException","type":"gateway
+  [PASS] SSE failure before first chunk -> 502 JSON (no fake 200) -- 502 application/json {"error":{"message":"upstream: ClosedChannelException","type":"gateway
+-- upstream unreachable, WITH fallback --
+  [PASS] non-stream fallback -> 200 -- 200 {"id":"mock","object":"chat.completion","choices":
+  [PASS] SSE fallback -> 200 + [DONE] -- 200 done=1
+-- failure AFTER the first chunk --
+  [PASS] mid-stream failure -> in-band error event + [DONE] -- 200 text/event-stream err_event=1 done=1
+  [PASS] no fallback splicing after first chunk -- 200 tok0=1 err_event=1
+-- silent truncation: clean EOF, no [DONE], no exception thrown --
+  [PASS] zero-frame EOF -> 502 JSON (not fabricated success) -- 502 application/json {"error":{"message":"upstream: upstream closed SSE stream without [DONE]","type"
+  [PASS] mid-stream EOF -> in-band error + single [DONE] -- 200 text/event-stream err_event=1 done=1 tok0=1 reason=1
+  [PASS] EOF truncation never triggers fallback splicing -- 200 tok0=1 err_event=1
+  [PASS] admin snapshot 200 + usage (native AOT hints) -- 200 {"governanceEnabled":true,"usage":{"demo":{"requests":3,"pro
+  [PASS] truncated streams billed as failures -- errors=2 (expect >=2)
+-- v5: non-2xx upstream never becomes SSE data --
+  [PASS] 429 upstream -> 502 JSON with status detail -- 502 application/json {"error":{"message":"upstream: upstream status 429: {\"error\":{\"message\":\"injected ups
+  [PASS] 500 upstream on SSE -> 502 JSON, no error body leaked as data -- 502 application/json {"error":{"message":"upstream: upstream status 500: {\"error\":{\"message\":\"injected ups
+-- v5: [DONE] followed by disconnect is still a success --
+  [PASS] late disconnect after [DONE] -> no spurious error event -- 200 done=1 err_event=0
+  [PASS] completed stream billed as success -- errors=0 (expect 0)
+-- v5: cache key covers the whole request --
+  [PASS] different temperature never hits the other request's cache -- A=echo-bfb9652e2da6 B=echo-4c1c83ccc63b
+  [PASS] cache actually populated (so the miss was real) -- cacheSize=2
+-- v5: exact completion-token metering --
+  [PASS] usage chunk replaces delta estimate (1 + 8 = 9) -- completionTokens=9 requests=2 errors=0
+-- v5: admin surface (token gate + no upstream key leak) --
+  [PASS] admin token gates /admin/routes and key is redacted -- no_token=401 with_token=200 [{"id":"mock-primary","protocol":"","model":"*","targetModel":"","targetUrl":"http://127.0
+-- v5: request body cap + idempotent snapshot restore --
+  [PASS] oversized request -> 413 -- 413 application/json
+  [PASS] repeated snapshot/load replaces instead of doubling -- requests=1 (expect 1)
+-- v5: client disconnect still settles the ledger --
+  [PASS] aborted stream is billed as a failed request -- requests=1 errors=1
+-- v5: concurrent SSE must not cancel sibling upstream requests --
+  [PASS] 40-way concurrent SSE: zero 502 / zero Request cancelled -- non200=0 cancelled=0
+-- v6: correlation id echoes, generates, and reaches audit --
+  [PASS] incoming X-Request-Id echoed in response -- got=smoke-req-42
+  [PASS] absent X-Request-Id gets a generated gw- id -- got=gw-439d10718aae6268
+  [PASS] request id reaches audit events -- matches=1
+-- v6: circuit breaker opens and falls back without network I/O --
+  [PASS] 2 failures open the circuit; 3rd request served via fallback -- s1=200 s2=200 s3=200 open_events=1
+  [PASS] CircuitOpenException never leaks to the client -- leak=0
+-- v6: weighted random routing follows configured weights --
+  [PASS] weighted routing distributes ~1:3 (tolerance +/-12pp) -- w-light=59(0.295) w-heavy=141(0.705)
+########## vt ##########
+-- normal paths (default mock upstream) --
+  [PASS] non-stream 200 + JSON body -- 200 application/json {"id":"mock","object":"chat.completion","choices":[{"index":
+  [PASS] SSE 200 + chunks + [DONE], no error event -- 200 text/event-stream;charset=UTF-8 data_lines=10 done=1 err_event=0
+  [PASS] missing key -> 401 -- 401 {"error":{"message":"invalid api key","type":"gateway_error"
+  [PASS] invalid json -> 400 -- 400 {"error":{"message":"invalid json: Unrecognized token 'not':
+-- upstream unreachable, NO fallback --
+  [PASS] non-stream upstream failure -> 502 JSON -- 502 application/json {"error":{"message":"upstream: ClosedChannelException","type":"gateway
+  [PASS] SSE failure before first chunk -> 502 JSON (no fake 200) -- 502 application/json;charset=UTF-8 {"error":{"message":"upstream: ClosedChannelException","type":"gateway
+-- upstream unreachable, WITH fallback --
+  [PASS] non-stream fallback -> 200 -- 200 {"id":"mock","object":"chat.completion","choices":
+  [PASS] SSE fallback -> 200 + [DONE] -- 200 done=1
+-- failure AFTER the first chunk --
+  [PASS] mid-stream failure -> in-band error event + [DONE] -- 200 text/event-stream;charset=UTF-8 err_event=1 done=1
+  [PASS] no fallback splicing after first chunk -- 200 tok0=1 err_event=1
+-- silent truncation: clean EOF, no [DONE], no exception thrown --
+  [PASS] zero-frame EOF -> 502 JSON (not fabricated success) -- 502 application/json;charset=UTF-8 {"error":{"message":"upstream: upstream closed SSE stream without [DONE]","type"
+  [PASS] mid-stream EOF -> in-band error + single [DONE] -- 200 text/event-stream;charset=UTF-8 err_event=1 done=1 tok0=1 reason=1
+  [PASS] EOF truncation never triggers fallback splicing -- 200 tok0=1 err_event=1
+  [PASS] admin snapshot 200 + usage (native AOT hints) -- 200 {"governanceEnabled":true,"usage":{"demo":{"requests":3,"pro
+  [PASS] truncated streams billed as failures -- errors=2 (expect >=2)
+-- v5: non-2xx upstream never becomes SSE data --
+  [PASS] 429 upstream -> 502 JSON with status detail -- 502 application/json {"error":{"message":"upstream: upstream status 429: {\"error\":{\"message\":\"injected ups
+  [PASS] 500 upstream on SSE -> 502 JSON, no error body leaked as data -- 502 application/json;charset=UTF-8 {"error":{"message":"upstream: upstream status 500: {\"error\":{\"message\":\"injected ups
+-- v5: [DONE] followed by disconnect is still a success --
+  [PASS] late disconnect after [DONE] -> no spurious error event -- 200 done=1 err_event=0
+  [PASS] completed stream billed as success -- errors=0 (expect 0)
+-- v5: cache key covers the whole request --
+  [PASS] different temperature never hits the other request's cache -- A=echo-bfb9652e2da6 B=echo-4c1c83ccc63b
+  [PASS] cache actually populated (so the miss was real) -- cacheSize=2
+-- v5: exact completion-token metering --
+  [PASS] usage chunk replaces delta estimate (1 + 8 = 9) -- completionTokens=9 requests=2 errors=0
+-- v5: admin surface (token gate + no upstream key leak) --
+  [PASS] admin token gates /admin/routes and key is redacted -- no_token=401 with_token=200 [{"id":"mock-primary","protocol":"","model":"*","targetModel":"","targetUrl":"http://127.0
+-- v5: request body cap + idempotent snapshot restore --
+  [PASS] oversized request -> 413 -- 413 application/json
+  [PASS] repeated snapshot/load replaces instead of doubling -- requests=1 (expect 1)
+-- v5: client disconnect still settles the ledger --
+  [PASS] aborted stream is billed as a failed request -- requests=1 errors=1
+-- v5: concurrent SSE must not cancel sibling upstream requests --
+  [PASS] 40-way concurrent SSE: zero 502 / zero Request cancelled -- non200=0 cancelled=0
+-- v6: correlation id echoes, generates, and reaches audit --
+  [PASS] incoming X-Request-Id echoed in response -- got=smoke-req-42
+  [PASS] absent X-Request-Id gets a generated gw- id -- got=gw-849b94fb4f213abb
+  [PASS] request id reaches audit events -- matches=1
+-- v6: circuit breaker opens and falls back without network I/O --
+  [PASS] 2 failures open the circuit; 3rd request served via fallback -- s1=200 s2=200 s3=200 open_events=1
+  [PASS] CircuitOpenException never leaks to the client -- leak=0
+-- v6: weighted random routing follows configured weights --
+  [PASS] weighted routing distributes ~1:3 (tolerance +/-12pp) -- w-light=45(0.225) w-heavy=155(0.775)
+########## static check: single JSON parse on hot path ##########
+  [PASS] controllers reuse decision.parsed() -- ProtocolCodec.parse occurrences in controllers=0
+==========================================
+PASS=67 FAIL=0
+=== smoke-observability ===
+=== engine=webflux ===
+  [PASS] json overhead header -- X-LLMGW-Overhead-Ms: 52.0
+  [PASS] json upstream header -- X-LLMGW-Upstream-Ms: 88.9
+  [PASS] correlation id echoed -- X-Request-Id: obs-correlation-1
+  [PASS] sse preflight overhead header -- X-LLMGW-Overhead-Ms: 1.5
+  [PASS] sse omits post-commit upstream header -- no upstream header (timing lives in meters)
+  [PASS] sse still completes -- data: [DONE] present
+  [PASS] ttft timer registered -- llmgw.ttft
+  [PASS] upstream timer registered -- llmgw.upstream
+  [PASS] gateway overhead timer registered -- llmgw.overhead
+  [PASS] engine metric tag = webflux -- engine tags: engine=webflux,
+  [PASS] no unresolved engine tag -- engine tags: engine=webflux,
+  [PASS] metrics json has no NaN -- finite values only
+  [PASS] audit carries ttftMs -- ttftMs
+  [PASS] audit carries gatewayOverheadMs -- gatewayOverheadMs
+  [PASS] audit carries upstreamMs -- upstreamMs
+=== engine=vt ===
+  [PASS] json overhead header -- X-LLMGW-Overhead-Ms: 21.5
+  [PASS] json upstream header -- X-LLMGW-Upstream-Ms: 69.5
+  [PASS] correlation id echoed -- X-Request-Id: obs-correlation-1
+  [PASS] sse preflight overhead header -- X-LLMGW-Overhead-Ms: 0.4
+  [PASS] sse omits post-commit upstream header -- no upstream header (timing lives in meters)
+  [PASS] sse still completes -- data: [DONE] present
+  [PASS] ttft timer registered -- llmgw.ttft
+  [PASS] upstream timer registered -- llmgw.upstream
+  [PASS] gateway overhead timer registered -- llmgw.overhead
+  [PASS] engine metric tag = vt -- engine tags: engine=vt,
+  [PASS] no unresolved engine tag -- engine tags: engine=vt,
+  [PASS] metrics json has no NaN -- finite values only
+  [PASS] audit carries ttftMs -- ttftMs
+  [PASS] audit carries gatewayOverheadMs -- gatewayOverheadMs
+  [PASS] audit carries upstreamMs -- upstreamMs
+PASS=30 FAIL=0
+=== smoke-hot-reload ===
+=== engine=webflux streams=40 ===
+  [PASS] initial config version is 0 -- version=0
+  [PASS] first reload applied atomically -- status=200 version=1
+  [PASS] reload response never echoes provider key -- only apiKeyConfigured exposed
+  [PASS] new requests use 1:3 weights -- r-a share=0.250 (expected ~0.25)
+  [PASS] in-flight SSE streams survive reload -- complete=40 bad=0 streams=40
+  [PASS] reload landed while streams were active -- status=200 version=2
+  [PASS] config version header advances -- version=2
+  [PASS] new requests use 3:1 weights -- r-a share=0.760 (expected ~0.75)
+  [PASS] invalid configs rejected without changing table -- version=2 all400=1
+  [PASS] admin token gates reload -- status=401
+PASS=10 FAIL=0

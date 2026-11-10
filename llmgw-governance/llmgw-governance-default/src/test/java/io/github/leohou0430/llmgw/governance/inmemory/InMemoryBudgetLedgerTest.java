@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * The $ admission rule mirrors the token quota: atomic committed+reserved
@@ -38,6 +39,42 @@ class InMemoryBudgetLedgerTest {
         assertEquals(0, ledger.spendMicroUsd().getOrDefault("k", 0L));
         assertTrue(ledger.tryReserve("k", 1_000_000, 1_000_000),
                 "released reservation frees the full budget");
+    }
+
+    @Test
+    void concurrentSettlementNeverCreatesFreeBudget() throws Exception {
+        int count = 20000;
+        for (int i = 0; i < count; i++) assertTrue(ledger.tryReserve("race-" + i, 100, 100));
+        var barrier = new java.util.concurrent.CyclicBarrier(2);
+        var extra = new java.util.concurrent.atomic.AtomicInteger();
+        try (var pool = java.util.concurrent.Executors.newFixedThreadPool(2)) {
+            var settle = pool.submit(() -> {
+                for (int i = 0; i < count; i++) {
+                    barrier.await(); ledger.settle("race-" + i, 100, 100); barrier.await();
+                }
+                return null;
+            });
+            var admit = pool.submit(() -> {
+                for (int i = 0; i < count; i++) {
+                    barrier.await();
+                    if (ledger.tryReserve("race-" + i, 100, 100)) extra.incrementAndGet();
+                    barrier.await();
+                }
+                return null;
+            });
+            settle.get(30, java.util.concurrent.TimeUnit.SECONDS);
+            admit.get(30, java.util.concurrent.TimeUnit.SECONDS);
+        }
+        assertEquals(0, extra.get(), "settlement must not expose released funds before charging them");
+    }
+
+    @Test
+    void invalidSettlementCannotCorruptHeldFunds() {
+        assertTrue(ledger.tryReserve("k", 100, 100));
+        assertThrows(IllegalArgumentException.class, () -> ledger.settle("k", 101, 0));
+        assertFalse(ledger.tryReserve("k", 1, 100));
+        ledger.settle("k", 100, 100);
+        assertFalse(ledger.tryReserve("k", 1, 100));
     }
 
     @Test

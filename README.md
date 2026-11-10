@@ -16,6 +16,9 @@ Java 包名 `io.github.leohou0430.llmgw`，采用 [Apache-2.0](LICENSE) 许可�
 > 这是给 Java 团队看的网关：不引入 Python/Go 组件，不改现有微服务治理习惯。
 > 它是**可复现的参考实现与测量台**，不是 Kong / Higress / Envoy 的即插即用替代品；
 > 部署前的安全边界见 [SECURITY.md](SECURITY.md)。
+> 生产必须启用 `gateway.production=true`；默认配置仅用于本地演示。金额硬预算尚无内建持久共享账本，不能作为生产财务保证。
+
+> 当前发布：**v0.2.0**。升级变化与兼容边界见 [发布说明](docs/releases/v0.2.0.md)，性能证据见 [性能说明](docs/PERFORMANCE.md)。
 
 ## 核心能力（对照主流网关差距分析补齐，详见 [docs/gap-analysis.md](docs/gap-analysis.md)）
 
@@ -24,22 +27,21 @@ Java 包名 `io.github.leohou0430.llmgw`，采用 [Apache-2.0](LICENSE) 许可�
 - **协议面（8 协议字节透传）**：chat / responses / messages / images / videos /
   embeddings / rerank / audio-speech——协议是**路由维度而非转换维度**
 - **密钥与预算**：API key 运行时管理（创建/吊销/TTL/metadata，**SHA-256 哈希存储**，
-  重启恢复）、**key 轮换**（overlap 窗口）、**HS256 JWT 入口认证**（`TokenValidator` SPI，
-  可换 RS256/OIDC）、token 配额（在途预留+退款）、**$ 硬预算**（模型价目 → 微美元记账
-  → 到额即拒）、**per-model 限流**与 **per-group 硬预算**、按组花费聚合
+  重启恢复）、**key 轮换**（overlap 窗口）、**HS256 JWT 入口认证**（issuer/audience 与时间声明校验；
+  其他算法可用 `TokenValidator` SPI 自行扩展）、token 配额（在途预留+退款）、**金额预算实验**（模型价目 → 内存微美元记账，生产硬预算暂不支持）、**per-model 限流**与 **per-group 金额预算实验**、按组花费聚合
 - **provider 适配**：`UpstreamAuthenticator` SPI——OpenAI 兼容 Bearer 与 Anthropic
   原生（x-api-key + anthropic-version）方言随路由选择
 - **可观测**：Micrometer/Prometheus 指标、TTFT/上游耗时/网关开销、审计环、
   请求日志（`/admin/requests`）、trace 上下文传播（`-Potel` 全量 span）、管理控制台
 - **内容与缓存**：Guardrail SPI（本地正则 + 外接审核引擎，均带决策/向量缓存）、
-  **语义缓存**（Embedder SPI + 分桶键 + **余弦相似度向量检索**，实测同义改写命中）、
+  **语义缓存**（Embedder SPI + 请求分区 + **进程内余弦相似度检索**，实测同义改写命中）、
   精确缓存、`DELETE /admin/cache` 失效 + `X-LLMGW-No-Cache` 旁路
 - **多副本**：`-Predis`（Lua 原子限流/配额/熔断 + 跨副本 key 表与响应缓存）
 - **转发韧性**：同路由重试 + 指数退避、**上游 `Retry-After` 感知**、context-overflow
   识别（跳过同路由重试直达 fallback）、三段式超时、加权 LB + failover + 熔断
-- **管理面**：审计导出（`/admin/audit/export`）、**只读 admin token**、请求日志、
+- **管理面**：审计导出（`/admin/audit/export`）、**审计导出只读 token**、请求日志、
   指标、路由与治理参数双热更新、控制台
-- **工程化**：6 模块 45 个 JUnit + 10 个 shell 契约套件（378 断言）+ Docker/compose
+- **工程化**：117 个 JUnit（含真实 Redis 验证）+ 双引擎契约与隔离/鉴权回归+ Docker/compose
   + TLS 前置部署文档（[docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)）+ 可选 tokenizer
   （`-Pjtokkit`）与 OTel（`-Potel`）
 
@@ -175,7 +177,7 @@ public class RedisTokenLimiter implements TokenLimiter {
 3. **为什么治理分热路径/旁路**：鉴权、配额、限流是纯内存原子操作，留在热路径；SSE 计量、账单、审计、快照交给公共 `VirtualThreadPerTaskExecutor`，避免阻塞事件循环，也让两个引擎的对照公平。
 4. **为什么不用 Spring AI / LangChain4j**：它们是应用框架（`ChatModel` / `AiServices`），目标是帮应用「调模型」；网关要的是「原样转发字节流」。选官方 `openai-java` 只做校验与连通性验证，是折中且克制的选择。
 5. **为什么全内存**：零外部依赖、native 编译最干净。持久化通过 `SnapshotStore` SPI + JSON 快照导出，README 明说这是单机演示。
-6. **实测印证了「瓶颈不在网关」**：50 VU 下 SSE 场景 p50 的 8 组变异系数只有 2.3%，而 mock 上游固定占 100ms。当上游是秒级推理时，选 WebFlux 还是虚拟线程、JVM 还是 Native，对端到端延迟几乎无影响；真正值得花钱优化的是 Native 的冷启动（10.5×）与尾延迟（见 5.1 / 风险清单）。这个结论比「哪个框架 RPS 更高」更能指导选型。
+6. **推理延迟与代理开销应分场景测量**：历史内嵌 mock 的 8 组结果只适用于当时配置，不能推广到所有运行时或竞品。当前统一容器测试分别保留低延迟与模拟推理场景；当代理开销相对较小时，端到端差距会缩小，但不能据此假定网关永远不是瓶颈。当前结果和范围见 [对比报告](docs/gap-analysis.md)。
 7. **流式失败要按「首字节是否已出」分层处理**：HTTP 状态在第一个字节写出后才不可逆。网关在首 chunk 前保持响应未提交（VT 不再提前 `flushBuffer()`），上游失败就返回真正的 **502 + JSON**；一旦已发 chunk，只能带内报错 `event: error` 再补 `[DONE]`。**fallback 只允许在首 chunk 前发生**，否则两个上游的 chunk 会拼成一段语义错乱的回答。`bin/smoke-stream-errors.sh` 用 mock 的 `mock-fail-after-N` / `mock-eof-after-N` 标记覆盖这些边界，v5 扩充为 JVM 双引擎 55 项、单个 native 28 项断言。
 8. **请求体只解析一次**：`GatewayPipeline.enter` 解析出的 `ParsedRequest` 挂在 `GatewayDecision` 上，两个 controller 直接复用，不再各 parse 一遍同一个 JSON。准入与转发共用一次反序列化结果，是网关热路径最基本的节约。
 9. **传输层 EOF ≠ 协议层完成**：上游干净关闭连接时 HTTP 客户端不会抛异常，代理若把「没报错」当成功、甚至替上游补一帧终止帧，就会把被截断的回答伪装成完整回答——客户端不报错、账单不记失败、上游故障被静默吞掉。本项目把「上游是否显式发出**该协议自己的终止帧**」作为唯一完成判据（chat=`data: [DONE]`、Responses=`response.completed`、Messages=`message_stop`；images / videos 无流式），两个引擎共用 `ProtocolCodec.truncatedMessage(kind)`；网关**永远不伪造终止帧**——带内错误后的 `[DONE]` 只对 CHAT 追加，responses / messages 的错误事件之后直接干净断流，绝不替上游补另一种协议的终止帧。这是透明代理与「自作主张的中间件」的分界线。
@@ -283,17 +285,7 @@ curl -sS -H 'X-Admin-Token: change-me' http://127.0.0.1:8080/admin/routes
 接真实上游（阿里百炼 OpenAI 兼容端点，读环境变量 `DASHSCOPE_API_KEY`）：
 
 ```bash
-java -jar llmgw-app/target/llmgw-app-0.1.0-SNAPSHOT.jar \
-  --spring.profiles.active=webflux,real
-curl -sS http://127.0.0.1:8080/admin/verify   # SDK 连通性验证
-```
-
-关闭治理（纯透传对照用）：`--gateway.governance-enabled=false`
-
-接真实上游（阿里百炼 OpenAI 兼容端点，读环境变量 `DASHSCOPE_API_KEY`）：
-
-```bash
-java -jar llmgw-app/target/llmgw-app-0.1.0-SNAPSHOT.jar \
+java -jar llmgw-app/target/llmgw-app-0.2.0.jar \
   --spring.profiles.active=webflux,real
 curl -sS http://127.0.0.1:8080/admin/verify   # SDK 连通性验证
 ```
@@ -376,16 +368,9 @@ JVM 冷启动 **3.538–6.946s**、native **0.387–0.560s**（矩阵实测，�
 
 ## 五、性能
 
-50 VU、内嵌 mock 上游、同 `bench/k6-*.js` 脚本：
+本轮减少 SSE 字符串复制和 WebFlux header 集合创建，局部分配分别下降约 22%–48% 和 32%。64 个 A/B 样本、约 422 万请求零错误。WebFlux SSE 吞吐中位数在治理开/关两批分别 +7.3% / +5.2%，但范围重叠；JSON 一正一负，不能声称全面稳定提速。
 
-| 场景 | 吞吐 | p95 |
-|---|---|---|
-| JSON | 6107/s | 13.8ms |
-| SSE | 460/s | 114ms |
-
-跨网关同口径对标（standalone mock：llmgw4j 1949/s vs LiteLLM 90/s，JSON）与
-全部优化迭代数字见 **[docs/PERFORMANCE.md](docs/PERFORMANCE.md)**；横向排行与
-剩余差距见 [docs/gap-analysis.md](docs/gap-analysis.md)。
+[最新性能说明](docs/PERFORMANCE.md)提供完整结果、JFR、失败的线程实验和剩余风险。跨网关对照是旧固定产物的历史批次，不能作为本次发布的最新排名；本轮未开展 native 性能复测。
 
 ## 六、风险清单（当前）
 
@@ -396,12 +381,12 @@ JVM 冷启动 **3.538–6.946s**、native **0.387–0.560s**（矩阵实测，�
 | **配额不是最终用量硬上限** | 准入按估算做含在途的原子预留，成功后按实际用量结算；并发下最终 used 可能略超 quota（预留+结算语义，非超卖竞态）。需要硬上限改「按估算上限结算」 |
 | **Redis 模式是延迟换一致性** | 每请求 2–4 次 Redis 往返，未做流水线合并；只需跨副本一致时启用，默认全内存零影响 |
 | **Native 需按引擎分编** | AOT 构建期求值 `@Profile`，两个引擎各一个二进制 |
-| **token 计量在无 usage 帧时是估算** | `estimateTokens` 启发式（len/4 + CJK）；接真 tokenizer 在 P2 清单（docs/gap-analysis.md B6） |
+| **token 计量在无 usage 帧时是估算** | `estimateTokens` 启发式（len/4 + CJK）；可用 `-Pjtokkit` 接入可选 tokenizer，模型覆盖需验证 |
 | **压测口径要一致** | 单机 directional；A/B 结论以同 worktree 基线为准，数据质量红线见 `bench/README.md` |
-| **剩余能力差距** | 见 [docs/gap-analysis.md](docs/gap-analysis.md) 第二节 20 项清单与处理方向（入口认证深度/真向量缓存/流式治理/per-model 限流等） |
-## 七、版本事实（Maven Central 实查）
+| **剩余能力差距** | 见 [docs/gap-analysis.md](docs/gap-analysis.md)：持久化金额账本、OIDC/RBAC、分布式控制面、文件目录与流式 I/O |
+## 七、构建依赖版本（以 pom.xml 为准）
 
-- Spring Boot `4.1.2`（GA）；`4.2.0-RC2` 为候选版，未采用
+- Spring Boot `4.1.2`
 - `com.openai:openai-java` `4.100.0`
 - Caffeine `3.3.1`
 - `native-maven-plugin` `1.1.18`
@@ -421,23 +406,21 @@ JVM 冷启动 **3.538–6.946s**、native **0.387–0.560s**（矩阵实测，�
 **提 issue 的规矩**：`.github/ISSUE_TEMPLATE` 提供缺陷报告、功能建议、性能数据三种表单，
 不允许空白 issue。性能类必须附 15s 粒度宿主负载时间线、逐轮原始 CSV 与逐轮一致性分析 ——
 本项目历史上多次因宿主过载（`vm.loadavg` 80–110）得到互相矛盾的数字，
-这类样本只留档、不作结论（见 5.10 与 `bench/README.md`）。
+这类样本只留档、不作结论（见 `bench/README.md`）。
 
 **提交 PR**：模板要求逐条确认流式契约（`[DONE]` 唯一完成判据、不伪造终止帧、
 首 chunk 前后两套错误语义、`onCancel` 取消结算）与双引擎行为一致，
 并贴出四个回归脚本的 PASS/FAIL。
 
-**CI**：`.github/workflows/ci.yml` 用 JDK 25 跑默认 fat jar 构建、两个引擎的启动健康检查，
-以及 `-Predis` 可选模块编译。完整 67/34 契约回归依赖本机辅助命令与较长耗时，
-native 编译又需按引擎分编，两者按 `CONTRIBUTING.md` 在本地执行，暂不进 CI。
+**CI**：JDK 25 下执行默认和 `-Predis` 的 `mvn clean verify`、模块布局、OpenAPI 严格 YAML/操作结构校验，以及同一 jar 的双引擎流式错误契约。tag 发布构建默认/Redis JAR、Linux amd64 WebFlux native、文档和 SHA256；全部构建及 native 流契约通过后统一发布。
 
 
 ## 九、文档索引
 
 | 文档 | 内容 |
 |---|---|
-| [docs/PERFORMANCE.md](docs/PERFORMANCE.md) | 全程性能优化记录（含折线图，每次迭代的具体数字） |
-| [docs/gap-analysis.md](docs/gap-analysis.md) | 最新差距反向验证 + 处理方向 + 跨网关性能排行 |
+| [docs/PERFORMANCE.md](docs/PERFORMANCE.md) | v0.2.0 性能结论、范围、证据及历史归档 |
+| [docs/gap-analysis.md](docs/gap-analysis.md) | 当前能力边界、优先级与历史统一容器对照 |
 | [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) | 部署拓扑 / TLS 立场 / 多副本 |
 | [docs/USER_GUIDE.md](docs/USER_GUIDE.md) / [docs/CONFIGURATION.md](docs/CONFIGURATION.md) | 接口与配置全典 |
 | [CHANGELOG.md](CHANGELOG.md) | 版本变更史 |

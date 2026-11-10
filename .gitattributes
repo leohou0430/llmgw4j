@@ -16,3 +16,8 @@
 *.png  binary
 *.jpg  binary
 *.pdf  binary
+
+*.jfr binary
+# Preserve raw verification output, including Maven whitespace.
+docs/verification/**/*.log -whitespace
+docs/verification/**/*.patch -whitespace

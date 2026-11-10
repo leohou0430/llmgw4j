@@ -6,13 +6,14 @@
   <parent>
     <groupId>io.github.leohou0430</groupId>
     <artifactId>llmgw-parent</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
+    <version>0.2.0</version>
   </parent>
   <artifactId>llmgw-app</artifactId>
   <name>llmgw-app</name>
   <description>Runnable gateway application, mock upstream, admin API and native hints</description>
 
   <dependencies>
+    <dependency><groupId>org.junit.jupiter</groupId><artifactId>junit-jupiter</artifactId><scope>test</scope></dependency>
     <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-core</artifactId></dependency>
     <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-governance-default</artifactId></dependency>
     <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-engine-webflux</artifactId></dependency>

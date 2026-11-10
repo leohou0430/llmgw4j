@@ -1,0 +1,35 @@
+======== v13 platform: budget / hot reload / requests / console / keys ========
+--- engine=webflux ---
+bin/smoke-v13-platform.sh: line 99: local: can only be used in a function
+[PASS] webflux first request inside budget succeeds
+[PASS] webflux second request hits the hard budget stop
+[PASS] webflux snapshot carries per-key spend
+[PASS] webflux group rollup answers which team burned what
+[PASS] webflux key created (key-1)
+[PASS] webflux freshly created key authenticates
+[PASS] webflux key revoke acknowledged
+[PASS] webflux revoked key is 401
+[PASS] webflux tiny bucket rejects before reload
+[PASS] webflux governance hot swap acknowledged
+[PASS] webflux request passes WITHOUT restart after hot reload
+[PASS] webflux request log carries served requests
+[PASS] webflux request log carries denied requests
+[PASS] webflux admin console serves
+--- engine=vt ---
+bin/smoke-v13-platform.sh: line 99: local: can only be used in a function
+[PASS] vt first request inside budget succeeds
+[PASS] vt second request hits the hard budget stop
+[PASS] vt snapshot carries per-key spend
+[PASS] vt group rollup answers which team burned what
+[PASS] vt key created (key-1)
+[PASS] vt freshly created key authenticates
+[PASS] vt key revoke acknowledged
+[PASS] vt revoked key is 401
+[PASS] vt tiny bucket rejects before reload
+[PASS] vt governance hot swap acknowledged
+[PASS] vt request passes WITHOUT restart after hot reload
+[PASS] vt request log carries served requests
+[PASS] vt request log carries denied requests
+[PASS] vt admin console serves
+=================================================
+PASS=28 FAIL=0

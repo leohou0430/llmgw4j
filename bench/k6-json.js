@@ -48,7 +48,13 @@ export default function () {
     tags: { engine: ENGINE, governance: GOV, runtime: RUNTIME, mode: 'json' },
     timeout: '60s',
   });
-  const ok = check(res, { 'status is 200': (r) => r.status === 200 });
+  const ok = check(res, {
+    'status is 200': (r) => r.status === 200,
+    'completion is intact': (r) => {
+      try { return r.json().choices[0].message.content === 'ok'; } catch (_) { return false; }
+    },
+  });
+  if (!ok) console.warn(`failed status=${res.status} error=${res.error || ''} body=${String(res.body).slice(0, 1000)}`);
   latency.add(res.timings.duration);
   requests.add(1);
   failures.add(ok ? 0 : 1);

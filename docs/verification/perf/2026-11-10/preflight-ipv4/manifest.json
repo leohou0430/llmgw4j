@@ -1,0 +1,89 @@
+{
+  "started_at": "2026-11-09T16:29:42.255909+00:00",
+  "host": {
+    "platform": "macOS-15.8.2-x86_64-i386-64bit-Mach-O",
+    "cpu_count": 16
+  },
+  "cpu_per_gateway": 4,
+  "memory_per_gateway": "2g",
+  "proxy_cpu": 2,
+  "proxy_memory": "128m",
+  "upstream_cpu": 4,
+  "upstream_memory": "1g",
+  "vus": 50,
+  "rounds": 3,
+  "duration": "10s",
+  "warmup": "3s",
+  "lane": "common static bearer auth + proxy only",
+  "jar_sha256": "3ffc8d2186198aec3ddb5b36466d980aaf42bae132bcf7263a0cf7d2c1df939c",
+  "before_jar_sha256": null,
+  "images": {
+    "base": {
+      "reference": "llmgw-audit:redis",
+      "id": "sha256:5c64f5afb430812dbae5cec0dca35081092b9cdfb081f492983f8212ce4075e6",
+      "digests": [],
+      "created": "2026-11-09T23:25:39.855844576+08:00",
+      "architecture": "amd64"
+    },
+    "litellm": {
+      "reference": "ghcr.io/berriai/litellm:v1.108.3",
+      "id": "sha256:c672792f3dcb436e594f4c090e9ea60a3029f99b45496aed3f6c626cb36cf93e",
+      "digests": [
+        "ghcr.io/berriai/litellm@sha256:f14d0a035d84d1a8bc98538faf5999e456641fd4cfa191822fd4be1934c1f4f6"
+      ],
+      "created": "2026-11-07T19:18:09.625203975Z",
+      "architecture": "amd64"
+    },
+    "bifrost": {
+      "reference": "maximhq/bifrost:v2.5.0",
+      "id": "sha256:c7084efceb7eafb9419228449f2c3ccf5badf61438e734d7e95d1e599d88b0e5",
+      "digests": [
+        "maximhq/bifrost@sha256:b5258c5f11c79064fc8280e49513f54c0b1da81c78bd11d3b4c1f62f8926d1ab"
+      ],
+      "created": "2026-11-06T18:38:28.265010416Z",
+      "architecture": "amd64"
+    },
+    "portkey": {
+      "reference": "portkeyai/gateway:1.15.2",
+      "id": "sha256:b47412b694489cf55103c9524f52e16f0b47d3dbeab5d76e1ccca0e59d055bb4",
+      "digests": [
+        "portkeyai/gateway@sha256:97f094d9c8a764cbfaa2a7138c0017b247ca923bb06db1b4c13b7f8a33b5200d"
+      ],
+      "created": "2026-01-12T08:47:25.44765685Z",
+      "architecture": "amd64"
+    },
+    "nginx": {
+      "reference": "nginx:stable-alpine",
+      "id": "sha256:1390db6b01a8b0c865b157c7f036b0772534418b1701f598737de546d208b6e4",
+      "digests": [
+        "nginx@sha256:583b7f2fce1cdb8da5ad5c39ebd3c33b98b87d493190e548bdee1fa8c619c311"
+      ],
+      "created": "2026-11-05T19:55:28.659872988Z",
+      "architecture": "amd64"
+    }
+  },
+  "preflight": [
+    {
+      "arm": "bifrost",
+      "json": "PASS",
+      "sse": "PASS",
+      "invalid_auth": 401
+    },
+    {
+      "arm": "portkey",
+      "json": "PASS",
+      "sse": "PASS",
+      "invalid_auth": 401
+    }
+  ],
+  "setup_errors": [],
+  "profiles": {},
+  "docker": {
+    "ServerVersion": "29.8.2",
+    "NCPU": 16,
+    "MemTotal": 21044813824,
+    "OperatingSystem": "OrbStack",
+    "Architecture": "x86_64"
+  },
+  "finished_at": "2026-11-09T16:29:49.477019+00:00"
+}

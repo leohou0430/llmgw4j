@@ -210,7 +210,7 @@ public class JdkHttpUpstream implements UpstreamProvider {
                     headersArrived.set(true);
                     listener.onHeaders(info.statusCode(), info.headers().map());
                     return info.statusCode() >= 300
-                            ? HttpResponse.BodySubscribers.ofString(StandardCharsets.UTF_8)
+                            ? HttpResponse.BodySubscribers.limiting(HttpResponse.BodySubscribers.ofString(StandardCharsets.UTF_8), properties.getMaxResponseBytes())
                             : HttpResponse.BodySubscribers.mapping(
                             HttpResponse.BodySubscribers.fromLineSubscriber(lineSubscriber), ignored -> "");
                 };
@@ -390,7 +390,7 @@ public class JdkHttpUpstream implements UpstreamProvider {
         HttpRequest http = build(request, false);
         try {
             HttpResponse<String> response = client.send(http,
-                    HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
+                    HttpResponse.BodyHandlers.limiting(HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8), properties.getMaxResponseBytes()));
             listener.onHeaders(response.statusCode(), response.headers().map());
             return bodyOrThrow(response);
         } catch (IOException e) {
@@ -406,7 +406,7 @@ public class JdkHttpUpstream implements UpstreamProvider {
     public byte[] fetchRaw(UpstreamRequest request) {
         HttpRequest http = build(request, false);
         try {
-            HttpResponse<byte[]> response = client.send(http, HttpResponse.BodyHandlers.ofByteArray());
+            HttpResponse<byte[]> response = client.send(http, HttpResponse.BodyHandlers.limiting(HttpResponse.BodyHandlers.ofByteArray(), properties.getMaxResponseBytes()));
             return bytesOrThrow(response);
         } catch (IOException e) {
             throw new IllegalStateException(e);
@@ -432,7 +432,7 @@ public class JdkHttpUpstream implements UpstreamProvider {
         return Mono.defer(() -> {
             HttpRequest http = build(request, false);
             CompletableFuture<String> future = client
-                    .sendAsync(http, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8))
+                    .sendAsync(http, HttpResponse.BodyHandlers.limiting(HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8), properties.getMaxResponseBytes()))
                     .thenApply(response -> {
                         listener.onHeaders(response.statusCode(), response.headers().map());
                         return bodyOrThrow(response);
@@ -451,7 +451,7 @@ public class JdkHttpUpstream implements UpstreamProvider {
         return Mono.defer(() -> {
             HttpRequest http = build(request, false);
             CompletableFuture<byte[]> future = client
-                    .sendAsync(http, HttpResponse.BodyHandlers.ofByteArray())
+                    .sendAsync(http, HttpResponse.BodyHandlers.limiting(HttpResponse.BodyHandlers.ofByteArray(), properties.getMaxResponseBytes()))
                     .thenApply(JdkHttpUpstream::bytesOrThrow);
             return Mono.fromFuture(future, false)
                     .onErrorMap(JdkHttpUpstream::asRuntimeException);

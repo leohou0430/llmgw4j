@@ -14,6 +14,52 @@ import java.util.Map;
 /** Route resolution shared by both data planes' blocking fallback loops. */
 public final class EngineRoutes {
 
+    public static boolean ownsReferencedFiles(ParsedRequest request, String tenantId, Route route,
+                                              io.github.leohou0430.llmgw.core.routing.TaskRouteSticky store) {
+        for (String id : referencedFiles(request)) {
+            if (id.isBlank() || route == null
+                    || !route.id().equals(store.resolve(tenantId, ProtocolKind.FILES.wireName(), id))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /** Provider file ids cannot be moved to another upstream during fallback. */
+    public static List<ForwardingPolicy.Attempt> forwardPlan(Router router, Route primary,
+            ForwardingPolicy.RetryConfig retry, ParsedRequest request) {
+        if (!referencedFiles(request).isEmpty()) {
+            return primary == null ? List.of() : List.of(new ForwardingPolicy.Attempt(primary, 1, 0));
+        }
+        return ForwardingPolicy.plan(router, primary, retry);
+    }
+
+    private static List<String> referencedFiles(ParsedRequest request) {
+        String raw = request.rawJson();
+        // Escaped field names still require JSON inspection; ordinary text needs no second tree.
+        if (raw == null || (!raw.contains("file_id") && !raw.contains("\\u"))) {
+            return List.of();
+        }
+        List<String> ids = new ArrayList<>();
+        collectFiles(io.github.leohou0430.llmgw.core.protocol.ProtocolCodec.tryParse(raw), ids);
+        return ids;
+    }
+
+    private static void collectFiles(tools.jackson.databind.JsonNode node, List<String> ids) {
+        if (node == null) return;
+        if (node.isObject()) {
+            for (var field : node.properties()) {
+                if ("file_id".equals(field.getKey()) || "input_file_id".equals(field.getKey())) {
+                    ids.add(field.getValue().isTextual() ? field.getValue().asText() : "");
+                } else {
+                    collectFiles(field.getValue(), ids);
+                }
+            }
+        } else if (node.isArray()) {
+            for (int i = 0; i < node.size(); i++) collectFiles(node.get(i), ids);
+        }
+    }
+
     private EngineRoutes() {
     }
 

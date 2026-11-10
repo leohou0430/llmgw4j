@@ -3,10 +3,10 @@ package io.github.leohou0430.llmgw.core.governance;
 import java.util.Map;
 
 /**
- * Per-key $ spend ledger (v13). The hard-budget counterpart of the token
- * quota: admission RESERVES an estimated micro-USD amount atomically, settle
- * books the real cost. {@code "花费到限额即拒绝"} is what separates a gateway
- * from a pure observability product.
+ * Per-key estimated $ spend ledger (demo). Admission reserves an estimated
+ * micro-USD amount atomically; settlement
+ * books reported cost. Production requires durable recovery and proven cost bounds;
+ * the built-in implementation does not provide those guarantees.
  *
  * <p>Units are micro-USD (1e-6 $) end to end -- longs, no floating point.
  * Budget 0 = disabled (the key is unmetered in $ terms).
@@ -21,7 +21,8 @@ public interface BudgetLedger {
 
     /**
      * Settlement: release the reservation and book the actual spend
-     * (failures / cache hits book nothing and release everything).
+     * (cache hits and known unsent failures release everything). Unknown upstream
+     * outcomes must retain the reservation until reconciled.
      */
     void settle(String keyId, long reservedMicroUsd, long actualMicroUsd);
 

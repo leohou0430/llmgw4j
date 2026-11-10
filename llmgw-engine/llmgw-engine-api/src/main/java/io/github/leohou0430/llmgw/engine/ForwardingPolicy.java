@@ -21,9 +21,9 @@ import java.util.concurrent.ThreadLocalRandom;
  * added -- there was no single place to put it. Delete this class and the
  * attempt rules reappear in both controllers, twice as complex.
  *
- * <p>Contract preserved from v12: with {@code retry.attempts = 1} (the default)
- * the plan degenerates to primary-then-fallbacks on ANY error, byte-identical
- * to the previous behavior. Retries are strictly additive.
+ * <p>Unknown outcomes stop the plan: a lost response is not proof that a paid
+ * request was never accepted. Only proven non-delivery or explicit rejection
+ * may advance to another attempt.
  */
 public final class ForwardingPolicy {
 
@@ -112,6 +112,9 @@ public final class ForwardingPolicy {
      * failed upstream, not the next one).
      */
     public static long effectiveDelayMs(List<Attempt> plan, int from, int next, Throwable error) {
+        if (next < 0 || next >= plan.size()) {
+            return 0;
+        }
         long planned = plan.get(next).delayBeforeMs();
         if (next < plan.size()
                 && plan.get(next).route().id().equals(plan.get(from).route().id())
@@ -126,9 +129,8 @@ public final class ForwardingPolicy {
      * Index of the next viable attempt after {@code from} failed with
      * {@code error}, or -1 when the chain is exhausted. Retryable errors
      * advance to the very next attempt (which may retry the same route);
-     * non-retryable errors skip the remaining attempts of the CURRENT route
-     * and jump to the first attempt of the next candidate, preserving v12's
-     * "any failure moves on to the fallback" contract.
+     * an open circuit or explicit context rejection may skip to a fallback.
+     * All other errors stop because the upstream outcome may be unknown.
      */
     public static int nextViable(List<Attempt> plan, int from, Throwable error) {
         int next = from + 1;
@@ -138,6 +140,11 @@ public final class ForwardingPolicy {
         if (retryable(error)) {
             return next;
         }
+        if (!(error instanceof CircuitOpenException)
+                && !(error instanceof UpstreamStatusException status
+                    && status.status() >= 400 && status.status() < 500 && isContextOverflow(status))) {
+            return -1;
+        }
         String failedRoute = plan.get(from).route().id();
         while (next < plan.size() && plan.get(next).route().id().equals(failedRoute)) {
             next++;
@@ -145,15 +152,6 @@ public final class ForwardingPolicy {
         return next < plan.size() ? next : -1;
     }
 
-    /**
-     * Retry classification. HTTP semantics: 5xx / 408 / 429 are transient,
-     * other 4xx are the caller's or the request's fault -- retrying them
-     * wastes latency without changing the outcome. An open circuit is also
-     * "non-retryable" for the same route (the breaker would just reject the
-     * retry locally), but the fallback chain still advances. Everything else
-     * -- transport failures, timeouts, JDK client errors -- is treated as
-     * transient, which is the conservative default for an LLM gateway.
-     */
     /**
      * B10: context-overflow recognition. A 4xx whose body names a context
      * limit is NOT a caller bug — the model cannot fit the prompt, so the
@@ -177,9 +175,18 @@ public final class ForwardingPolicy {
             return false;
         }
         if (error instanceof UpstreamStatusException status) {
-            int code = status.status();
-            return code >= 500 || code == 408 || code == 429;
+            return status.status() == 429;
         }
-        return true;
+        for (Throwable cause = error; cause != null; cause = cause.getCause()) {
+            if (cause instanceof java.net.ConnectException
+                    || cause instanceof java.net.UnknownHostException
+                    || cause instanceof java.net.http.HttpConnectTimeoutException) {
+                return true;
+            }
+            if (cause == cause.getCause()) {
+                break;
+            }
+        }
+        return false;
     }
 }

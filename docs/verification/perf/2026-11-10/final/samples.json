@@ -1,0 +1,1370 @@
+[
+  {
+    "requests": 109723,
+    "rps": 10021.426927418794,
+    "error_rate": 0,
+    "p50_ms": 2.344,
+    "p95_ms": 5.19,
+    "p99_ms": 10.414,
+    "arm": "direct",
+    "profile": "wire",
+    "mode": "json",
+    "round": 1,
+    "exit_code": 0,
+    "upstream_requests": 109723,
+    "loadavg": [
+      14.51904296875,
+      7.234375,
+      5.63134765625
+    ]
+  },
+  {
+    "requests": 18997,
+    "rps": 1898.2051634337959,
+    "error_rate": 0,
+    "p50_ms": 12.643,
+    "p95_ms": 71.0934,
+    "p99_ms": 76.53324,
+    "arm": "llmgw-webflux-proxy",
+    "profile": "wire",
+    "mode": "json",
+    "round": 1,
+    "exit_code": 0,
+    "upstream_requests": 18997,
+    "loadavg": [
+      17.84033203125,
+      8.18212890625,
+      5.98583984375
+    ]
+  },
+  {
+    "requests": 40334,
+    "rps": 4021.970364617829,
+    "error_rate": 0,
+    "p50_ms": 7.297499999999999,
+    "p95_ms": 41.959399999999995,
+    "p99_ms": 52.46439999999996,
+    "arm": "llmgw-vt-proxy",
+    "profile": "wire",
+    "mode": "json",
+    "round": 1,
+    "exit_code": 0,
+    "upstream_requests": 40334,
+    "loadavg": [
+      16.06787109375,
+      8.125,
+      5.9912109375
+    ]
+  },
+  {
+    "requests": 3304,
+    "rps": 327.5339469506035,
+    "error_rate": 0,
+    "p50_ms": 151.53,
+    "p95_ms": 176.25415,
+    "p99_ms": 188.96090999999993,
+    "arm": "litellm",
+    "profile": "wire",
+    "mode": "json",
+    "round": 1,
+    "exit_code": 0,
+    "upstream_requests": 3304,
+    "loadavg": [
+      14.98046875,
+      8.1533203125,
+      6.02587890625
+    ]
+  },
+  {
+    "requests": 40134,
+    "rps": 4009.884133591667,
+    "error_rate": 0,
+    "p50_ms": 10.718,
+    "p95_ms": 26.265,
+    "p99_ms": 35.27101999999999,
+    "arm": "bifrost",
+    "profile": "wire",
+    "mode": "json",
+    "round": 1,
+    "exit_code": 0,
+    "upstream_requests": 40134,
+    "loadavg": [
+      14.595703125,
+      8.2958984375,
+      6.10107421875
+    ]
+  },
+  {
+    "requests": 4939,
+    "rps": 490.10604013272854,
+    "error_rate": 0,
+    "p50_ms": 84.382,
+    "p95_ms": 144.9183,
+    "p99_ms": 158.2963,
+    "arm": "portkey",
+    "profile": "wire",
+    "mode": "json",
+    "round": 1,
+    "exit_code": 0,
+    "upstream_requests": 4939,
+    "loadavg": [
+      12.1552734375,
+      8.0673828125,
+      6.05712890625
+    ]
+  },
+  {
+    "requests": 107137,
+    "rps": 8420.187449906969,
+    "error_rate": 0,
+    "p50_ms": 2.389,
+    "p95_ms": 5.073,
+    "p99_ms": 9.228479999999996,
+    "arm": "direct",
+    "profile": "wire",
+    "mode": "json",
+    "round": 2,
+    "exit_code": 0,
+    "upstream_requests": 107137,
+    "loadavg": [
+      13.42822265625,
+      8.4755859375,
+      6.2255859375
+    ]
+  },
+  {
+    "requests": 5453,
+    "rps": 542.7240687524801,
+    "error_rate": 0,
+    "p50_ms": 80.335,
+    "p95_ms": 126.01339999999998,
+    "p99_ms": 172.1598,
+    "arm": "portkey",
+    "profile": "wire",
+    "mode": "json",
+    "round": 2,
+    "exit_code": 0,
+    "upstream_requests": 5453,
+    "loadavg": [
+      11.744140625,
+      8.27783203125,
+      6.181640625
+    ]
+  },
+  {
+    "requests": 41188,
+    "rps": 4113.049545430534,
+    "error_rate": 0,
+    "p50_ms": 10.328,
+    "p95_ms": 25.355650000000004,
+    "p99_ms": 34.52064999999999,
+    "arm": "bifrost",
+    "profile": "wire",
+    "mode": "json",
+    "round": 2,
+    "exit_code": 0,
+    "upstream_requests": 41188,
+    "loadavg": [
+      10.9931640625,
+      8.29296875,
+      6.22412109375
+    ]
+  },
+  {
+    "requests": 3160,
+    "rps": 312.9922384858228,
+    "error_rate": 0,
+    "p50_ms": 156.789,
+    "p95_ms": 190.53005,
+    "p99_ms": 258.7707799999998,
+    "arm": "litellm",
+    "profile": "wire",
+    "mode": "json",
+    "round": 2,
+    "exit_code": 0,
+    "upstream_requests": 3160,
+    "loadavg": [
+      10.1513671875,
+      8.20068359375,
+      6.21533203125
+    ]
+  },
+  {
+    "requests": 59452,
+    "rps": 5844.789439818636,
+    "error_rate": 0,
+    "p50_ms": 5.699,
+    "p95_ms": 11.05,
+    "p99_ms": 42.54897999997901,
+    "arm": "llmgw-vt-proxy",
+    "profile": "wire",
+    "mode": "json",
+    "round": 2,
+    "exit_code": 0,
+    "upstream_requests": 59452,
+    "loadavg": [
+      12.9658203125,
+      8.85546875,
+      6.4697265625
+    ]
+  },
+  {
+    "requests": 24587,
+    "rps": 2452.669865867778,
+    "error_rate": 0,
+    "p50_ms": 10.249,
+    "p95_ms": 62.364599999999975,
+    "p99_ms": 66.78641999999999,
+    "arm": "llmgw-webflux-proxy",
+    "profile": "wire",
+    "mode": "json",
+    "round": 2,
+    "exit_code": 0,
+    "upstream_requests": 24587,
+    "loadavg": [
+      11.2919921875,
+      8.62939453125,
+      6.4169921875
+    ]
+  },
+  {
+    "requests": 59908,
+    "rps": 5988.209500570053,
+    "error_rate": 0,
+    "p50_ms": 5.854,
+    "p95_ms": 10.656649999999994,
+    "p99_ms": 16.27251,
+    "arm": "llmgw-vt-proxy",
+    "profile": "wire",
+    "mode": "json",
+    "round": 3,
+    "exit_code": 0,
+    "upstream_requests": 59908,
+    "loadavg": [
+      12.0439453125,
+      8.95068359375,
+      6.57080078125
+    ]
+  },
+  {
+    "requests": 2980,
+    "rps": 295.1098709894519,
+    "error_rate": 0,
+    "p50_ms": 166.9305,
+    "p95_ms": 201.99554999999998,
+    "p99_ms": 219.69779000000003,
+    "arm": "litellm",
+    "profile": "wire",
+    "mode": "json",
+    "round": 3,
+    "exit_code": 0,
+    "upstream_requests": 2980,
+    "loadavg": [
+      11.10791015625,
+      8.8525390625,
+      6.56396484375
+    ]
+  },
+  {
+    "requests": 37021,
+    "rps": 3698.2966717028207,
+    "error_rate": 0,
+    "p50_ms": 11.657,
+    "p95_ms": 28.222,
+    "p99_ms": 37.66120000000001,
+    "arm": "bifrost",
+    "profile": "wire",
+    "mode": "json",
+    "round": 3,
+    "exit_code": 0,
+    "upstream_requests": 37021,
+    "loadavg": [
+      10.3896484375,
+      8.7744140625,
+      6.56298828125
+    ]
+  },
+  {
+    "requests": 4541,
+    "rps": 450.50072446191155,
+    "error_rate": 0,
+    "p50_ms": 94.792,
+    "p95_ms": 151.439,
+    "p99_ms": 180.4656000000003,
+    "arm": "portkey",
+    "profile": "wire",
+    "mode": "json",
+    "round": 3,
+    "exit_code": 0,
+    "upstream_requests": 4541,
+    "loadavg": [
+      9.720703125,
+      8.6826171875,
+      6.55615234375
+    ]
+  },
+  {
+    "requests": 110919,
+    "rps": 10964.607485853729,
+    "error_rate": 0,
+    "p50_ms": 2.356,
+    "p95_ms": 5.194,
+    "p99_ms": 9.630819999999993,
+    "arm": "direct",
+    "profile": "wire",
+    "mode": "json",
+    "round": 3,
+    "exit_code": 0,
+    "upstream_requests": 110919,
+    "loadavg": [
+      10.55078125,
+      8.890625,
+      6.654296875
+    ]
+  },
+  {
+    "requests": 53900,
+    "rps": 5347.268904728533,
+    "error_rate": 0,
+    "p50_ms": 6.1625,
+    "p95_ms": 15.571199999999982,
+    "p99_ms": 50.72909000000002,
+    "arm": "llmgw-webflux-proxy",
+    "profile": "wire",
+    "mode": "json",
+    "round": 3,
+    "exit_code": 0,
+    "upstream_requests": 53900,
+    "loadavg": [
+      10.35693359375,
+      8.8955078125,
+      6.681640625
+    ]
+  },
+  {
+    "requests": 101327,
+    "rps": 9993.288627008913,
+    "error_rate": 0,
+    "p50_ms": 2.782,
+    "p95_ms": 5.928,
+    "p99_ms": 9.810220000000015,
+    "arm": "direct",
+    "profile": "wire",
+    "mode": "sse",
+    "round": 1,
+    "exit_code": 0,
+    "upstream_requests": 101327,
+    "loadavg": [
+      8.3037109375,
+      8.91455078125,
+      6.97509765625
+    ]
+  },
+  {
+    "requests": 46186,
+    "rps": 4275.114236613586,
+    "error_rate": 0,
+    "p50_ms": 8.308,
+    "p95_ms": 19.3265,
+    "p99_ms": 29.651850000000028,
+    "arm": "llmgw-webflux-proxy",
+    "profile": "wire",
+    "mode": "sse",
+    "round": 1,
+    "exit_code": 0,
+    "upstream_requests": 46186,
+    "loadavg": [
+      9.46728515625,
+      9.146484375,
+      7.080078125
+    ]
+  },
+  {
+    "requests": 45819,
+    "rps": 4578.339882907052,
+    "error_rate": 0,
+    "p50_ms": 8.779,
+    "p95_ms": 18.243,
+    "p99_ms": 30.437019999999997,
+    "arm": "llmgw-vt-proxy",
+    "profile": "wire",
+    "mode": "sse",
+    "round": 1,
+    "exit_code": 0,
+    "upstream_requests": 45819,
+    "loadavg": [
+      9.60009765625,
+      9.1767578125,
+      7.1142578125
+    ]
+  },
+  {
+    "requests": 1595,
+    "rps": 156.20268625529962,
+    "error_rate": 0,
+    "p50_ms": 315.904,
+    "p95_ms": 369.4948,
+    "p99_ms": 396.92403999999993,
+    "arm": "litellm",
+    "profile": "wire",
+    "mode": "sse",
+    "round": 1,
+    "exit_code": 0,
+    "upstream_requests": 1595,
+    "loadavg": [
+      9.11962890625,
+      9.087890625,
+      7.1064453125
+    ]
+  },
+  {
+    "requests": 24887,
+    "rps": 2483.8554882557064,
+    "error_rate": 0,
+    "p50_ms": 18.047,
+    "p95_ms": 38.4287,
+    "p99_ms": 49.44123999999999,
+    "arm": "bifrost",
+    "profile": "wire",
+    "mode": "sse",
+    "round": 1,
+    "exit_code": 0,
+    "upstream_requests": 24887,
+    "loadavg": [
+      10.43017578125,
+      9.36572265625,
+      7.2275390625
+    ]
+  },
+  {
+    "requests": 4912,
+    "rps": 487.6300603283363,
+    "error_rate": 0,
+    "p50_ms": 88.892,
+    "p95_ms": 148.72465,
+    "p99_ms": 221.62698000000003,
+    "arm": "portkey",
+    "profile": "wire",
+    "mode": "sse",
+    "round": 1,
+    "exit_code": 0,
+    "upstream_requests": 4912,
+    "loadavg": [
+      9.58837890625,
+      9.22119140625,
+      7.201171875
+    ]
+  },
+  {
+    "requests": 102415,
+    "rps": 10084.375347707371,
+    "error_rate": 0,
+    "p50_ms": 2.717,
+    "p95_ms": 5.723,
+    "p99_ms": 10.057160000000003,
+    "arm": "direct",
+    "profile": "wire",
+    "mode": "sse",
+    "round": 2,
+    "exit_code": 0,
+    "upstream_requests": 102415,
+    "loadavg": [
+      10.86181640625,
+      9.5087890625,
+      7.32666015625
+    ]
+  },
+  {
+    "requests": 5314,
+    "rps": 528.1713414071125,
+    "error_rate": 0,
+    "p50_ms": 82.844,
+    "p95_ms": 143.31795,
+    "p99_ms": 192.07817999999997,
+    "arm": "portkey",
+    "profile": "wire",
+    "mode": "sse",
+    "round": 2,
+    "exit_code": 0,
+    "upstream_requests": 5314,
+    "loadavg": [
+      9.4267578125,
+      9.2548828125,
+      7.27392578125
+    ]
+  },
+  {
+    "requests": 28052,
+    "rps": 2801.623167701795,
+    "error_rate": 0,
+    "p50_ms": 15.869,
+    "p95_ms": 33.90334999999999,
+    "p99_ms": 43.52022999999994,
+    "arm": "bifrost",
+    "profile": "wire",
+    "mode": "sse",
+    "round": 2,
+    "exit_code": 0,
+    "upstream_requests": 28052,
+    "loadavg": [
+      9.6748046875,
+      9.31201171875,
+      7.31689453125
+    ]
+  },
+  {
+    "requests": 1652,
+    "rps": 161.95583037067885,
+    "error_rate": 0,
+    "p50_ms": 300.695,
+    "p95_ms": 376.33384999999976,
+    "p99_ms": 465.18138,
+    "arm": "litellm",
+    "profile": "wire",
+    "mode": "sse",
+    "round": 2,
+    "exit_code": 0,
+    "upstream_requests": 1652,
+    "loadavg": [
+      9.34326171875,
+      9.251953125,
+      7.31884765625
+    ]
+  },
+  {
+    "requests": 51030,
+    "rps": 4748.207744649706,
+    "error_rate": 0,
+    "p50_ms": 7.566,
+    "p95_ms": 14.678099999999992,
+    "p99_ms": 24.876419999999996,
+    "arm": "llmgw-vt-proxy",
+    "profile": "wire",
+    "mode": "sse",
+    "round": 2,
+    "exit_code": 0,
+    "upstream_requests": 51030,
+    "loadavg": [
+      9.91845703125,
+      9.39794921875,
+      7.4052734375
+    ]
+  },
+  {
+    "requests": 45842,
+    "rps": 4575.823497505467,
+    "error_rate": 0,
+    "p50_ms": 8.177,
+    "p95_ms": 20.44479999999999,
+    "p99_ms": 32.27661999999994,
+    "arm": "llmgw-webflux-proxy",
+    "profile": "wire",
+    "mode": "sse",
+    "round": 2,
+    "exit_code": 0,
+    "upstream_requests": 45842,
+    "loadavg": [
+      8.70703125,
+      9.154296875,
+      7.341796875
+    ]
+  },
+  {
+    "requests": 46910,
+    "rps": 4609.0039756712185,
+    "error_rate": 0,
+    "p50_ms": 8.525,
+    "p95_ms": 16.962549999999997,
+    "p99_ms": 26.261909999999997,
+    "arm": "llmgw-vt-proxy",
+    "profile": "wire",
+    "mode": "sse",
+    "round": 3,
+    "exit_code": 0,
+    "upstream_requests": 46910,
+    "loadavg": [
+      9.52685546875,
+      9.3134765625,
+      7.4189453125
+    ]
+  },
+  {
+    "requests": 1571,
+    "rps": 154.366796930233,
+    "error_rate": 0,
+    "p50_ms": 314.928,
+    "p95_ms": 394.77,
+    "p99_ms": 446.83429999999964,
+    "arm": "litellm",
+    "profile": "wire",
+    "mode": "sse",
+    "round": 3,
+    "exit_code": 0,
+    "upstream_requests": 1571,
+    "loadavg": [
+      9.13134765625,
+      9.23681640625,
+      7.4130859375
+    ]
+  },
+  {
+    "requests": 26820,
+    "rps": 2680.0181265953825,
+    "error_rate": 0,
+    "p50_ms": 16.7365,
+    "p95_ms": 34.6142,
+    "p99_ms": 43.04467000000001,
+    "arm": "bifrost",
+    "profile": "wire",
+    "mode": "sse",
+    "round": 3,
+    "exit_code": 0,
+    "upstream_requests": 26820,
+    "loadavg": [
+      9.41796875,
+      9.2939453125,
+      7.45458984375
+    ]
+  },
+  {
+    "requests": 5283,
+    "rps": 525.6497266432375,
+    "error_rate": 0,
+    "p50_ms": 81.633,
+    "p95_ms": 147.36579999999992,
+    "p99_ms": 195.0585800000003,
+    "arm": "portkey",
+    "profile": "wire",
+    "mode": "sse",
+    "round": 3,
+    "exit_code": 0,
+    "upstream_requests": 5283,
+    "loadavg": [
+      8.43701171875,
+      9.0869140625,
+      7.40185546875
+    ]
+  },
+  {
+    "requests": 101174,
+    "rps": 9965.984799740581,
+    "error_rate": 0,
+    "p50_ms": 2.599,
+    "p95_ms": 5.614349999999991,
+    "p99_ms": 9.42735000000002,
+    "arm": "direct",
+    "profile": "wire",
+    "mode": "sse",
+    "round": 3,
+    "exit_code": 0,
+    "upstream_requests": 101174,
+    "loadavg": [
+      9.78173828125,
+      9.36181640625,
+      7.51904296875
+    ]
+  },
+  {
+    "requests": 42986,
+    "rps": 4291.062319928813,
+    "error_rate": 0,
+    "p50_ms": 8.56,
+    "p95_ms": 24.519,
+    "p99_ms": 35.86290000000004,
+    "arm": "llmgw-webflux-proxy",
+    "profile": "wire",
+    "mode": "sse",
+    "round": 3,
+    "exit_code": 0,
+    "upstream_requests": 42986,
+    "loadavg": [
+      10.91015625,
+      9.61376953125,
+      7.62939453125
+    ]
+  },
+  {
+    "requests": 21419,
+    "rps": 2137.2226881469905,
+    "error_rate": 0,
+    "p50_ms": 22.375,
+    "p95_ms": 25.7851,
+    "p99_ms": 27.17182,
+    "arm": "direct",
+    "profile": "inference",
+    "mode": "json",
+    "round": 1,
+    "exit_code": 0,
+    "upstream_requests": 21419,
+    "loadavg": [
+      5.80419921875,
+      8.2392578125,
+      7.3193359375
+    ]
+  },
+  {
+    "requests": 20401,
+    "rps": 2009.9279663333864,
+    "error_rate": 0,
+    "p50_ms": 23.445,
+    "p95_ms": 27.717,
+    "p99_ms": 29.768,
+    "arm": "llmgw-webflux-proxy",
+    "profile": "inference",
+    "mode": "json",
+    "round": 1,
+    "exit_code": 0,
+    "upstream_requests": 20401,
+    "loadavg": [
+      7.203125,
+      8.462890625,
+      7.4169921875
+    ]
+  },
+  {
+    "requests": 20127,
+    "rps": 2010.1143898603227,
+    "error_rate": 0,
+    "p50_ms": 24.056,
+    "p95_ms": 28.038,
+    "p99_ms": 29.97088000000002,
+    "arm": "llmgw-vt-proxy",
+    "profile": "inference",
+    "mode": "json",
+    "round": 1,
+    "exit_code": 0,
+    "upstream_requests": 20127,
+    "loadavg": [
+      7.59716796875,
+      8.49853515625,
+      7.44091796875
+    ]
+  },
+  {
+    "requests": 4077,
+    "rps": 404.1132924726589,
+    "error_rate": 0,
+    "p50_ms": 117.941,
+    "p95_ms": 163.8936,
+    "p99_ms": 185.7642399999999,
+    "arm": "litellm",
+    "profile": "inference",
+    "mode": "json",
+    "round": 1,
+    "exit_code": 0,
+    "upstream_requests": 4077,
+    "loadavg": [
+      7.19140625,
+      8.3828125,
+      7.41162109375
+    ]
+  },
+  {
+    "requests": 21131,
+    "rps": 2107.991703704413,
+    "error_rate": 0,
+    "p50_ms": 22.614,
+    "p95_ms": 27.804000000000002,
+    "p99_ms": 31.942700000000002,
+    "arm": "bifrost",
+    "profile": "inference",
+    "mode": "json",
+    "round": 1,
+    "exit_code": 0,
+    "upstream_requests": 21131,
+    "loadavg": [
+      7.95654296875,
+      8.51953125,
+      7.478515625
+    ]
+  },
+  {
+    "requests": 6745,
+    "rps": 671.4346991678889,
+    "error_rate": 0,
+    "p50_ms": 67.196,
+    "p95_ms": 101.87599999999998,
+    "p99_ms": 123.06503999999971,
+    "arm": "portkey",
+    "profile": "inference",
+    "mode": "json",
+    "round": 1,
+    "exit_code": 0,
+    "upstream_requests": 6745,
+    "loadavg": [
+      7.046875,
+      8.3046875,
+      7.4140625
+    ]
+  },
+  {
+    "requests": 21186,
+    "rps": 2117.113574559302,
+    "error_rate": 0,
+    "p50_ms": 22.918,
+    "p95_ms": 25.926,
+    "p99_ms": 27.49595000000002,
+    "arm": "direct",
+    "profile": "inference",
+    "mode": "json",
+    "round": 2,
+    "exit_code": 0,
+    "upstream_requests": 21186,
+    "loadavg": [
+      6.1103515625,
+      8.0634765625,
+      7.3388671875
+    ]
+  },
+  {
+    "requests": 6482,
+    "rps": 644.5622838386995,
+    "error_rate": 0,
+    "p50_ms": 70.78999999999999,
+    "p95_ms": 107.20599999999997,
+    "p99_ms": 133.17050999999998,
+    "arm": "portkey",
+    "profile": "inference",
+    "mode": "json",
+    "round": 2,
+    "exit_code": 0,
+    "upstream_requests": 6482,
+    "loadavg": [
+      5.91357421875,
+      7.9609375,
+      7.310546875
+    ]
+  },
+  {
+    "requests": 21305,
+    "rps": 2126.101945515507,
+    "error_rate": 0,
+    "p50_ms": 22.698,
+    "p95_ms": 27.291800000000002,
+    "p99_ms": 31.184919999999977,
+    "arm": "bifrost",
+    "profile": "inference",
+    "mode": "json",
+    "round": 2,
+    "exit_code": 0,
+    "upstream_requests": 21305,
+    "loadavg": [
+      7.78759765625,
+      8.27880859375,
+      7.4296875
+    ]
+  },
+  {
+    "requests": 3633,
+    "rps": 360.3455985069611,
+    "error_rate": 0,
+    "p50_ms": 121.546,
+    "p95_ms": 171.39679999999998,
+    "p99_ms": 215.23379999999997,
+    "arm": "litellm",
+    "profile": "inference",
+    "mode": "json",
+    "round": 2,
+    "exit_code": 0,
+    "upstream_requests": 3633,
+    "loadavg": [
+      7.4384765625,
+      8.18701171875,
+      7.40673828125
+    ]
+  },
+  {
+    "requests": 20238,
+    "rps": 2019.4301550874063,
+    "error_rate": 0,
+    "p50_ms": 23.8985,
+    "p95_ms": 28.279149999999998,
+    "p99_ms": 30.072260000000004,
+    "arm": "llmgw-vt-proxy",
+    "profile": "inference",
+    "mode": "json",
+    "round": 2,
+    "exit_code": 0,
+    "upstream_requests": 20238,
+    "loadavg": [
+      6.3681640625,
+      7.93310546875,
+      7.32568359375
+    ]
+  },
+  {
+    "requests": 20000,
+    "rps": 1995.5971140871895,
+    "error_rate": 0,
+    "p50_ms": 24.512,
+    "p95_ms": 28.133,
+    "p99_ms": 30.33101,
+    "arm": "llmgw-webflux-proxy",
+    "profile": "inference",
+    "mode": "json",
+    "round": 2,
+    "exit_code": 0,
+    "upstream_requests": 20000,
+    "loadavg": [
+      5.767578125,
+      7.7236328125,
+      7.26123046875
+    ]
+  },
+  {
+    "requests": 20334,
+    "rps": 2029.0835306053432,
+    "error_rate": 0,
+    "p50_ms": 23.914,
+    "p95_ms": 27.714349999999996,
+    "p99_ms": 29.640359999999987,
+    "arm": "llmgw-vt-proxy",
+    "profile": "inference",
+    "mode": "json",
+    "round": 3,
+    "exit_code": 0,
+    "upstream_requests": 20334,
+    "loadavg": [
+      5.50830078125,
+      7.60107421875,
+      7.22265625
+    ]
+  },
+  {
+    "requests": 4194,
+    "rps": 415.6483579214014,
+    "error_rate": 0,
+    "p50_ms": 116.0735,
+    "p95_ms": 147.9945,
+    "p99_ms": 167.05858999999964,
+    "arm": "litellm",
+    "profile": "inference",
+    "mode": "json",
+    "round": 3,
+    "exit_code": 0,
+    "upstream_requests": 4194,
+    "loadavg": [
+      5.4296875,
+      7.51513671875,
+      7.1962890625
+    ]
+  },
+  {
+    "requests": 21121,
+    "rps": 2107.3361558860042,
+    "error_rate": 0,
+    "p50_ms": 22.776,
+    "p95_ms": 27.879,
+    "p99_ms": 32.3184,
+    "arm": "bifrost",
+    "profile": "inference",
+    "mode": "json",
+    "round": 3,
+    "exit_code": 0,
+    "upstream_requests": 21121,
+    "loadavg": [
+      5.17431640625,
+      7.35791015625,
+      7.1455078125
+    ]
+  },
+  {
+    "requests": 6864,
+    "rps": 683.3998065094429,
+    "error_rate": 0,
+    "p50_ms": 66.017,
+    "p95_ms": 102.24725,
+    "p99_ms": 126.25574999999996,
+    "arm": "portkey",
+    "profile": "inference",
+    "mode": "json",
+    "round": 3,
+    "exit_code": 0,
+    "upstream_requests": 6864,
+    "loadavg": [
+      4.60595703125,
+      7.1640625,
+      7.0791015625
+    ]
+  },
+  {
+    "requests": 21274,
+    "rps": 2124.66470665665,
+    "error_rate": 0,
+    "p50_ms": 22.744,
+    "p95_ms": 25.990049999999997,
+    "p99_ms": 27.36727,
+    "arm": "direct",
+    "profile": "inference",
+    "mode": "json",
+    "round": 3,
+    "exit_code": 0,
+    "upstream_requests": 21274,
+    "loadavg": [
+      4.1982421875,
+      6.9931640625,
+      7.01953125
+    ]
+  },
+  {
+    "requests": 19560,
+    "rps": 1954.331587124072,
+    "error_rate": 0,
+    "p50_ms": 25.062,
+    "p95_ms": 28.64,
+    "p99_ms": 30.335820000000002,
+    "arm": "llmgw-webflux-proxy",
+    "profile": "inference",
+    "mode": "json",
+    "round": 3,
+    "exit_code": 0,
+    "upstream_requests": 19560,
+    "loadavg": [
+      4.5068359375,
+      6.96142578125,
+      7.00732421875
+    ]
+  },
+  {
+    "requests": 4388,
+    "rps": 434.05787431729607,
+    "error_rate": 0,
+    "p50_ms": 113.3205,
+    "p95_ms": 119.1579,
+    "p99_ms": 121.96213,
+    "arm": "direct",
+    "profile": "inference",
+    "mode": "sse",
+    "round": 1,
+    "exit_code": 0,
+    "upstream_requests": 4388,
+    "loadavg": [
+      4.9560546875,
+      6.62109375,
+      6.87890625
+    ]
+  },
+  {
+    "requests": 4403,
+    "rps": 435.926868837199,
+    "error_rate": 0,
+    "p50_ms": 113.049,
+    "p95_ms": 121.1963,
+    "p99_ms": 123.29798,
+    "arm": "llmgw-webflux-proxy",
+    "profile": "inference",
+    "mode": "sse",
+    "round": 1,
+    "exit_code": 0,
+    "upstream_requests": 4403,
+    "loadavg": [
+      5.7919921875,
+      6.74755859375,
+      6.9208984375
+    ]
+  },
+  {
+    "requests": 4376,
+    "rps": 434.473916721795,
+    "error_rate": 0,
+    "p50_ms": 113.7875,
+    "p95_ms": 120.90325,
+    "p99_ms": 123.7045,
+    "arm": "llmgw-vt-proxy",
+    "profile": "inference",
+    "mode": "sse",
+    "round": 1,
+    "exit_code": 0,
+    "upstream_requests": 4376,
+    "loadavg": [
+      5.1416015625,
+      6.57470703125,
+      6.85693359375
+    ]
+  },
+  {
+    "requests": 1897,
+    "rps": 186.66909129840602,
+    "error_rate": 0,
+    "p50_ms": 270.959,
+    "p95_ms": 319.07919999999996,
+    "p99_ms": 344.04875999999996,
+    "arm": "litellm",
+    "profile": "inference",
+    "mode": "sse",
+    "round": 1,
+    "exit_code": 0,
+    "upstream_requests": 1897,
+    "loadavg": [
+      5.19921875,
+      6.5390625,
+      6.84033203125
+    ]
+  },
+  {
+    "requests": 4552,
+    "rps": 452.3836404082743,
+    "error_rate": 0,
+    "p50_ms": 109.559,
+    "p95_ms": 115.77170000000001,
+    "p99_ms": 120.94257999999999,
+    "arm": "bifrost",
+    "profile": "inference",
+    "mode": "sse",
+    "round": 1,
+    "exit_code": 0,
+    "upstream_requests": 4552,
+    "loadavg": [
+      4.9599609375,
+      6.439453125,
+      6.80078125
+    ]
+  },
+  {
+    "requests": 3833,
+    "rps": 378.9567014533034,
+    "error_rate": 0,
+    "p50_ms": 125.648,
+    "p95_ms": 160.05459999999994,
+    "p99_ms": 192.82951999999983,
+    "arm": "portkey",
+    "profile": "inference",
+    "mode": "sse",
+    "round": 1,
+    "exit_code": 0,
+    "upstream_requests": 3833,
+    "loadavg": [
+      4.6455078125,
+      6.3251953125,
+      6.755859375
+    ]
+  },
+  {
+    "requests": 4384,
+    "rps": 435.50524021878977,
+    "error_rate": 0,
+    "p50_ms": 113.844,
+    "p95_ms": 118.70179999999998,
+    "p99_ms": 121.32,
+    "arm": "direct",
+    "profile": "inference",
+    "mode": "sse",
+    "round": 2,
+    "exit_code": 0,
+    "upstream_requests": 4384,
+    "loadavg": [
+      4.23828125,
+      6.18212890625,
+      6.69970703125
+    ]
+  },
+  {
+    "requests": 3841,
+    "rps": 380.0296919840053,
+    "error_rate": 0,
+    "p50_ms": 125.777,
+    "p95_ms": 159.182,
+    "p99_ms": 183.23499999999996,
+    "arm": "portkey",
+    "profile": "inference",
+    "mode": "sse",
+    "round": 2,
+    "exit_code": 0,
+    "upstream_requests": 3841,
+    "loadavg": [
+      4.63671875,
+      6.20751953125,
+      6.70263671875
+    ]
+  },
+  {
+    "requests": 4650,
+    "rps": 460.4316888693758,
+    "error_rate": 0,
+    "p50_ms": 107.279,
+    "p95_ms": 114.70365,
+    "p99_ms": 117.96838000000004,
+    "arm": "bifrost",
+    "profile": "inference",
+    "mode": "sse",
+    "round": 2,
+    "exit_code": 0,
+    "upstream_requests": 4650,
+    "loadavg": [
+      4.87158203125,
+      6.201171875,
+      6.69384765625
+    ]
+  },
+  {
+    "requests": 1883,
+    "rps": 185.272462687228,
+    "error_rate": 0,
+    "p50_ms": 267.202,
+    "p95_ms": 321.87899999999996,
+    "p99_ms": 346.25374000000005,
+    "arm": "litellm",
+    "profile": "inference",
+    "mode": "sse",
+    "round": 2,
+    "exit_code": 0,
+    "upstream_requests": 1883,
+    "loadavg": [
+      4.96728515625,
+      6.15771484375,
+      6.6689453125
+    ]
+  },
+  {
+    "requests": 4400,
+    "rps": 437.6690621090198,
+    "error_rate": 0,
+    "p50_ms": 113.735,
+    "p95_ms": 119.22805,
+    "p99_ms": 121.68044000000002,
+    "arm": "llmgw-vt-proxy",
+    "profile": "inference",
+    "mode": "sse",
+    "round": 2,
+    "exit_code": 0,
+    "upstream_requests": 4400,
+    "loadavg": [
+      5.02001953125,
+      6.13427734375,
+      6.654296875
+    ]
+  },
+  {
+    "requests": 4376,
+    "rps": 434.3132907409885,
+    "error_rate": 0,
+    "p50_ms": 113.9755,
+    "p95_ms": 119.9405,
+    "p99_ms": 122.62225000000001,
+    "arm": "llmgw-webflux-proxy",
+    "profile": "inference",
+    "mode": "sse",
+    "round": 2,
+    "exit_code": 0,
+    "upstream_requests": 4376,
+    "loadavg": [
+      4.55517578125,
+      5.99755859375,
+      6.599609375
+    ]
+  },
+  {
+    "requests": 4350,
+    "rps": 433.73479560123116,
+    "error_rate": 0,
+    "p50_ms": 114.868,
+    "p95_ms": 120.23440000000001,
+    "p99_ms": 122.94553,
+    "arm": "llmgw-vt-proxy",
+    "profile": "inference",
+    "mode": "sse",
+    "round": 3,
+    "exit_code": 0,
+    "upstream_requests": 4350,
+    "loadavg": [
+      4.087890625,
+      5.84912109375,
+      6.53955078125
+    ]
+  },
+  {
+    "requests": 1879,
+    "rps": 184.6932632173881,
+    "error_rate": 0,
+    "p50_ms": 269.709,
+    "p95_ms": 315.99819999999994,
+    "p99_ms": 340.35992,
+    "arm": "litellm",
+    "profile": "inference",
+    "mode": "sse",
+    "round": 3,
+    "exit_code": 0,
+    "upstream_requests": 1879,
+    "loadavg": [
+      4.68896484375,
+      5.91943359375,
+      6.55615234375
+    ]
+  },
+  {
+    "requests": 4500,
+    "rps": 446.7963805918801,
+    "error_rate": 0,
+    "p50_ms": 111.3735,
+    "p95_ms": 115.51245,
+    "p99_ms": 126.06733000000007,
+    "arm": "bifrost",
+    "profile": "inference",
+    "mode": "sse",
+    "round": 3,
+    "exit_code": 0,
+    "upstream_requests": 4500,
+    "loadavg": [
+      4.8232421875,
+      5.9052734375,
+      6.54345703125
+    ]
+  },
+  {
+    "requests": 3891,
+    "rps": 385.0783952711463,
+    "error_rate": 0,
+    "p50_ms": 123.91,
+    "p95_ms": 156.478,
+    "p99_ms": 183.5748,
+    "arm": "portkey",
+    "profile": "inference",
+    "mode": "sse",
+    "round": 3,
+    "exit_code": 0,
+    "upstream_requests": 3891,
+    "loadavg": [
+      4.46875,
+      5.79296875,
+      6.49560546875
+    ]
+  },
+  {
+    "requests": 4400,
+    "rps": 438.30620948406977,
+    "error_rate": 0,
+    "p50_ms": 113.7475,
+    "p95_ms": 119.26729999999999,
+    "p99_ms": 122.48102,
+    "arm": "direct",
+    "profile": "inference",
+    "mode": "sse",
+    "round": 3,
+    "exit_code": 0,
+    "upstream_requests": 4400,
+    "loadavg": [
+      3.78125,
+      5.60205078125,
+      6.41943359375
+    ]
+  },
+  {
+    "requests": 4381,
+    "rps": 435.6535006364757,
+    "error_rate": 0,
+    "p50_ms": 111.08,
+    "p95_ms": 114.861,
+    "p99_ms": 128.4946,
+    "arm": "llmgw-webflux-proxy",
+    "profile": "inference",
+    "mode": "sse",
+    "round": 3,
+    "exit_code": 0,
+    "upstream_requests": 4381,
+    "loadavg": [
+      3.359375,
+      5.4501953125,
+      6.35546875
+    ]
+  }
+]

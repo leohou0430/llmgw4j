@@ -103,4 +103,104 @@ class ManagedApiKeyRegistryTest {
         var created = registry.create("runtime", 1, Set.of(), null);
         assertTrue(registry.find(created.token()).isPresent());
     }
+
+    @Test
+    void revocationKillsEveryRotatedTokenAndSurvivesRestart(@TempDir Path tmp) {
+        var props = propertiesWith(tmp.resolve("keys.json"));
+        var registry = new ManagedApiKeyRegistry(props, new JsonKeyStore(props));
+        var original = registry.create("a", 100, Set.of(), null);
+        var second = registry.rotate(original.key().id(), 300);
+        var third = registry.rotate(original.key().id(), 300);
+        assertTrue(registry.revoke(original.key().id()));
+        for (String token : java.util.List.of(original.token(), second.token(), third.token())) {
+            assertTrue(registry.find(token).isEmpty(), "revoke must invalidate all token generations");
+        }
+        var restored = new ManagedApiKeyRegistry(props, new JsonKeyStore(props));
+        assertTrue(restored.find(original.token()).isEmpty());
+        assertTrue(restored.find(second.token()).isEmpty());
+        assertTrue(restored.find(third.token()).isEmpty());
+    }
+
+    @Test
+    void restartDoesNotReenableExpiredRotationToken(@TempDir Path tmp) {
+        var props = propertiesWith(tmp.resolve("keys.json"));
+        var registry = new ManagedApiKeyRegistry(props, new JsonKeyStore(props));
+        var original = registry.create("a", 100, Set.of(), null);
+        var rotated = registry.rotate(original.key().id(), 0);
+        assertTrue(registry.find(original.token()).isEmpty());
+        var restored = new ManagedApiKeyRegistry(props, new JsonKeyStore(props));
+        assertTrue(restored.find(original.token()).isEmpty());
+        assertTrue(restored.find(rotated.token()).isPresent());
+        assertEquals(rotated.key().id(), restored.byId(rotated.key().id()).orElseThrow().id());
+    }
+
+    @Test
+    void restartPreservesOverlapWithoutTreatingLegacyAsCurrent(@TempDir Path tmp) {
+        var props = propertiesWith(tmp.resolve("keys.json"));
+        var registry = new ManagedApiKeyRegistry(props, new JsonKeyStore(props));
+        var original = registry.create("a", 100, Set.of(), null);
+        var rotated = registry.rotate(original.key().id(), 300);
+        var restored = new ManagedApiKeyRegistry(props, new JsonKeyStore(props));
+        assertTrue(restored.find(original.token()).isPresent());
+        assertTrue(restored.find(rotated.token()).isPresent());
+        assertTrue(restored.revoke(rotated.key().id()));
+        assertTrue(restored.find(original.token()).isEmpty());
+        assertTrue(restored.find(rotated.token()).isEmpty());
+    }
+
+    @Test
+    void newKeyIdentityNeverReusesRestoredIdentity(@TempDir Path tmp) {
+        var props = propertiesWith(tmp.resolve("keys.json"));
+        var first = new ManagedApiKeyRegistry(props, new JsonKeyStore(props));
+        var a = first.create("a", 100, Set.of(), null);
+        var restored = new ManagedApiKeyRegistry(props, new JsonKeyStore(props));
+        var b = restored.create("b", 100, Set.of(), null);
+        assertNotEquals(a.key().id(), b.key().id());
+        assertTrue(restored.revoke(b.key().id()));
+        assertTrue(restored.find(a.token()).isPresent());
+    }
+
+    @Test
+    void failedPersistDoesNotPublishCreatedKey(@TempDir Path tmp) throws Exception {
+        Path blocked = tmp.resolve("not-a-directory");
+        java.nio.file.Files.writeString(blocked, "block");
+        var props = propertiesWith(blocked.resolve("keys.json"));
+        var registry = new ManagedApiKeyRegistry(props, new JsonKeyStore(props));
+        int before = registry.all().size();
+        org.junit.jupiter.api.Assertions.assertThrows(IllegalStateException.class,
+                () -> registry.create("a", 100, Set.of(), null));
+        assertEquals(before, registry.all().size());
+    }
+
+    @Test
+    void concurrentStoresDoNotLoseCreatedKeys(@TempDir Path tmp) throws Exception {
+        var props = propertiesWith(tmp.resolve("keys.json"));
+        var registries = java.util.List.of(
+                new ManagedApiKeyRegistry(props, new JsonKeyStore(props)),
+                new ManagedApiKeyRegistry(props, new JsonKeyStore(props)));
+        try (var executor = java.util.concurrent.Executors.newFixedThreadPool(8)) {
+            var futures = new java.util.ArrayList<java.util.concurrent.Future<KeyAdminService.CreatedKey>>();
+            for (int i = 0; i < 64; i++) {
+                final int index = i;
+                futures.add(executor.submit(() -> registries.get(index % 2).create("app-" + index, 100, Set.of(), null)));
+            }
+            // Wait for all writes before restoring the actual persisted state.
+            var tokens = new java.util.ArrayList<String>();
+            for (var future : futures) tokens.add(future.get().token());
+            var restored = new ManagedApiKeyRegistry(props, new JsonKeyStore(props));
+            for (String token : tokens) assertTrue(restored.find(token).isPresent(), "every successful create must persist");
+            assertEquals(64, new JsonKeyStore(props).load().size());
+        }
+    }
+
+    @Test
+    void restoreRejectsAmbiguousCurrentIdentities(@TempDir Path tmp) {
+        var props = propertiesWith(tmp.resolve("keys.json"));
+        var store = new JsonKeyStore(props);
+        var key = new io.github.leohou0430.llmgw.core.governance.ApiKeyRegistry.ApiKey("same-id", "app", 100, Set.of());
+        store.upsert("sk-one", key);
+        store.upsert("sk-two", key);
+        org.junit.jupiter.api.Assertions.assertThrows(IllegalStateException.class,
+                () -> new ManagedApiKeyRegistry(props, new JsonKeyStore(props)));
+    }
 }

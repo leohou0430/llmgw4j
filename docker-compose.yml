@@ -3,7 +3,8 @@
 # HTTP by design, same stance as LiteLLM).
 #
 #   docker compose up gateway          # in-memory, single replica
-#   docker compose --profile redis up  # + shared Redis pack for multi-replica quota
+#   docker compose -f docker-compose.yml -f docker-compose.redis.yml up --build
+# This file is a loopback-only demo. For production see docs/DEPLOYMENT.md.
 services:
   gateway:
     build: .
@@ -15,7 +16,7 @@ services:
       # Opt-in usage-ledger restore; the file lives on the llmgw-data volume.
       GATEWAY_GOVERNANCE_SNAPSHOT_AUTO_RESTORE: ${LLMGW_SNAPSHOT_AUTO_RESTORE:-false}
     ports:
-      - "8080:8080"
+      - "127.0.0.1:8080:8080"
     volumes:
       - llmgw-data:/app/data
     healthcheck:
@@ -23,12 +24,6 @@ services:
       interval: 10s
       timeout: 3s
       start_period: 20s
-
-  redis:
-    image: redis:7-alpine
-    profiles: ["redis"]
-    ports:
-      - "6379:6379"
 
 volumes:
   llmgw-data:

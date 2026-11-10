@@ -1,0 +1,93 @@
+{
+  "rankings": [
+    {
+      "profile": "wire",
+      "mode": "json",
+      "arm": "llmgw-vt-proxy",
+      "rps_median": 6092.277995343476,
+      "p50_ms_median": 5.805,
+      "p95_ms_median": 10.826774999999994,
+      "p99_ms_median": 37.772200000000055,
+      "rps_min": 5089.524481197605,
+      "rps_max": 6923.720225084959
+    },
+    {
+      "profile": "wire",
+      "mode": "json",
+      "arm": "llmgw-vt-before",
+      "rps_median": 6025.2507544425625,
+      "p50_ms_median": 5.8145,
+      "p95_ms_median": 11.086949999999998,
+      "p99_ms_median": 19.616899999999937,
+      "rps_min": 5355.991114779675,
+      "rps_max": 6627.828402686047
+    },
+    {
+      "profile": "wire",
+      "mode": "json",
+      "arm": "llmgw-webflux-proxy",
+      "rps_median": 5766.33580876568,
+      "p50_ms_median": 5.966,
+      "p95_ms_median": 14.779925000000002,
+      "p99_ms_median": 48.502250000000025,
+      "rps_min": 4323.117665083184,
+      "rps_max": 6201.7763769784115
+    },
+    {
+      "profile": "wire",
+      "mode": "json",
+      "arm": "llmgw-webflux-before",
+      "rps_median": 5226.125901758403,
+      "p50_ms_median": 6.577500000000001,
+      "p95_ms_median": 15.997649999999979,
+      "p99_ms_median": 38.74397999999999,
+      "rps_min": 4164.590188685332,
+      "rps_max": 6261.119817367302
+    },
+    {
+      "profile": "wire",
+      "mode": "sse",
+      "arm": "llmgw-vt-proxy",
+      "rps_median": 4591.404528212699,
+      "p50_ms_median": 8.7345,
+      "p95_ms_median": 17.341149999999978,
+      "p99_ms_median": 26.82526999999988,
+      "rps_min": 4514.9485084522785,
+      "rps_max": 4781.093650518126
+    },
+    {
+      "profile": "wire",
+      "mode": "sse",
+      "arm": "llmgw-vt-before",
+      "rps_median": 4462.120458333044,
+      "p50_ms_median": 9.032499999999999,
+      "p95_ms_median": 18.580725,
+      "p99_ms_median": 28.011464999999994,
+      "rps_min": 4309.949656067523,
+      "rps_max": 4753.859854217896
+    },
+    {
+      "profile": "wire",
+      "mode": "sse",
+      "arm": "llmgw-webflux-proxy",
+      "rps_median": 4076.9773971690074,
+      "p50_ms_median": 8.9925,
+      "p95_ms_median": 25.646875,
+      "p99_ms_median": 36.59547500000001,
+      "rps_min": 3962.252155168123,
+      "rps_max": 4209.073190055239
+    },
+    {
+      "profile": "wire",
+      "mode": "sse",
+      "arm": "llmgw-webflux-before",
+      "rps_median": 3799.5016699260104,
+      "p50_ms_median": 9.6985,
+      "p95_ms_median": 29.277924999999996,
+      "p99_ms_median": 41.941320000000005,
+      "rps_min": 3347.1171617916875,
+      "rps_max": 4007.1732987157493
+    }
+  ],
+  "excluded": []
+}

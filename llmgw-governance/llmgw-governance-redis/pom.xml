@@ -6,7 +6,7 @@
   <parent>
     <groupId>io.github.leohou0430</groupId>
     <artifactId>llmgw-governance</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
+    <version>0.2.0</version>
   </parent>
   <artifactId>llmgw-governance-redis</artifactId>
   <name>llmgw-governance-redis</name>
@@ -15,6 +15,8 @@
   <!-- Opt-in only: llmgw-app pulls this module in with -Predis. The default
        (zero-dependency, all in-memory) build never sees spring-data-redis. -->
   <dependencies>
+    <dependency><groupId>org.junit.jupiter</groupId><artifactId>junit-jupiter</artifactId><scope>test</scope></dependency>
+    <dependency><groupId>io.lettuce</groupId><artifactId>lettuce-core</artifactId><scope>test</scope></dependency>
     <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-core</artifactId></dependency>
     <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-governance-api</artifactId></dependency>
     <dependency><groupId>org.springframework.data</groupId><artifactId>spring-data-redis</artifactId></dependency>

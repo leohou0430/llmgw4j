@@ -16,76 +16,45 @@ concurrency:
 
 jobs:
   verify:
-    name: Build + health smoke (JDK 25)
+    name: Tests + both engine contracts (JDK 25)
     runs-on: ubuntu-latest
+    timeout-minutes: 30
+    services:
+      redis:
+        image: redis:7-alpine
+        ports: ['6379:6379']
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s --health-timeout 3s --health-retries 10
+    env:
+      LLMGW_TEST_REDIS_PORT: '6379'
     steps:
       - uses: actions/checkout@v5
-
-      - name: Set up JDK 25
-        uses: actions/setup-java@v5
+      - uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: '25'
           cache: maven
-
-      # Every capability domain must follow aggregator + api + implementations.
-      # Discovers new domains automatically; see CONTRIBUTING.md section 2.
-      - name: Check module layout
-        run: ./bin/check-module-layout.sh
-
-      - name: Build default fat jar
-        run: mvn -B -DskipTests clean package
-
-      # Both data planes must boot from the SAME jar, switched only by profile.
-      # The full 67/34 contract suite is intentionally NOT run here: it needs
-      # macOS-specific helpers and takes ~10-17 minutes. See CONTRIBUTING.md.
-      - name: Boot both engines and check health
+      - name: Install contract tools
         run: |
-          JAR=llmgw-app/target/llmgw-app-0.1.0-SNAPSHOT.jar
-          for engine in webflux vt; do
-            java -jar "$JAR" --spring.profiles.active="$engine" \
-              > "/tmp/llmgw-$engine.log" 2>&1 &
-            pid=$!
-            ok=0
-            for i in $(seq 1 60); do
-              if curl -fsS http://127.0.0.1:8080/actuator/health >/dev/null 2>&1; then
-                ok=1
-                break
-              fi
-              sleep 1
-            done
-            if [ "$ok" -ne 1 ]; then
-              echo "::error::$engine failed to become healthy"
-              cat "/tmp/llmgw-$engine.log"
-              kill "$pid" 2>/dev/null || true
-              exit 1
-            fi
-            # The engine identity must be published before beans are created,
-            # otherwise every Micrometer meter is tagged engine=unknown.
-            # Send one request first: meters only exist after traffic.
-            curl -fsS -X POST http://127.0.0.1:8080/v1/chat/completions \
-              -H 'Content-Type: application/json' \
-              -H 'Authorization: Bearer sk-demo' \
-              -d '{"model":"qwen-plus","messages":[{"role":"user","content":"ci-engine-label"}],"stream":false}' \
-              > /dev/null
-            metrics="$(curl -fsS http://127.0.0.1:8080/admin/metrics)"
-            kill "$pid" 2>/dev/null || true
-            wait "$pid" 2>/dev/null || true
-            if ! printf '%s' "$metrics" | grep -q "engine=$engine"; then
-              echo "::error::$engine metric label missing or wrong: $metrics"
-              exit 1
-            fi
-            if printf '%s' "$metrics" | grep -q 'engine=unknown'; then
-              echo "::error::$engine leaked engine=unknown into metrics"
-              exit 1
-            fi
-            echo "$engine healthy; engine metric label ok"
-          done
-
-      # Optional module: must compile and link only with -Predis.
-      - name: Verify optional Redis profile
-        run: mvn -B -DskipTests -Predis clean package
-
-# Native image builds are deliberately NOT in CI: GraalVM 25 compilation is
-# per-engine (AOT evaluates @Profile at build time), takes many minutes, and
-# the local build script assumes macOS. See README.md section 5.x.
+          sudo apt-get update
+          sudo apt-get install -y lsof jq
+          python3 -m pip install 'PyYAML>=6,<7'
+      - name: Validate public contract and YAML
+        run: python3 bin/check-openapi.py docs/openapi.yaml .github/workflows/ci.yml .github/workflows/release.yml docker-compose.yml docker-compose.redis.yml
+      - name: Verify benchmark evidence parser and mock contract
+        run: python3 -m unittest discover -s bench/cross-gateway -p 'test_*.py'
+      - name: Check module layout
+        run: bash bin/check-module-layout.sh
+      - name: Verify default artifact (including JUnit)
+        run: mvn -B clean verify
+      - name: Verify both data planes against the same artifact
+        run: |
+          bash bin/smoke-stream-errors.sh
+          bash bin/smoke-v13-extensions.sh
+          bash bin/smoke-v13-hardening.sh
+          python3 bin/smoke-tenant-isolation.py
+          python3 bin/smoke-admin-auth.py
+          python3 bin/smoke-jwt-auth.py
+      - name: Verify optional Redis profile (including JUnit)
+        run: mvn -B -Predis clean verify

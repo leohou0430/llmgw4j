@@ -1,0 +1,2 @@
+> @portkey-ai/gateway@1.15.2 start:node
+> node build/start-server.js

@@ -1,0 +1,59 @@
+======== v13 extensions: semantic cache + new protocols ========
+--- engine=webflux -- W4.2 semantic cache ---
+[PASS] webflux semantic: request A served
+[PASS] webflux semantic: reordered request B served
+[PASS] webflux semantic: both bodies share ONE cache entry
+[PASS] webflux semantic: a different question gets its own entry
+--- engine=webflux -- W4.3 new protocols ---
+[PASS] webflux embeddings pass-through served
+[PASS] webflux rerank pass-through served
+[PASS] webflux speech binary pass-through (432 bytes)
+[PASS] webflux context-overflow surfaces the upstream reason
+[PASS] webflux embeddings without key -> 401
+[PASS] webflux speech without key -> 401
+[PASS] webflux embeddings metered under its protocol
+[PASS] webflux GET /v1/models catalog pass-through
+[PASS] webflux batch cancel pass-through (sticky)
+[PASS] webflux file content pass-through (528 bytes)
+[PASS] webflux cache fill before invalidation
+[PASS] webflux DELETE /admin/cache clears the store
+[PASS] webflux cacheSize is 0 after invalidation
+[PASS] webflux no-cache request never enters the store
+[PASS] webflux transcriptions multipart upload served
+[PASS] webflux transcriptions probe extracted the model field
+[PASS] webflux file upload served
+[PASS] webflux file retrieve reaches the uploading upstream
+[PASS] webflux file DELETE pass-through served
+[PASS] webflux batch create served
+[PASS] webflux batch poll is sticky-routed to the creating upstream
+[PASS] webflux unknown batch id -> sticky miss 502 (wildcard upstream)
+--- engine=vt -- W4.2 semantic cache ---
+[PASS] vt semantic: request A served
+[PASS] vt semantic: reordered request B served
+[PASS] vt semantic: both bodies share ONE cache entry
+[PASS] vt semantic: a different question gets its own entry
+--- engine=vt -- W4.3 new protocols ---
+[PASS] vt embeddings pass-through served
+[PASS] vt rerank pass-through served
+[PASS] vt speech binary pass-through (432 bytes)
+[PASS] vt context-overflow surfaces the upstream reason
+[PASS] vt embeddings without key -> 401
+[PASS] vt speech without key -> 401
+[PASS] vt embeddings metered under its protocol
+[PASS] vt GET /v1/models catalog pass-through
+[PASS] vt batch cancel pass-through (sticky)
+[PASS] vt file content pass-through (528 bytes)
+[PASS] vt cache fill before invalidation
+[PASS] vt DELETE /admin/cache clears the store
+[PASS] vt cacheSize is 0 after invalidation
+[PASS] vt no-cache request never enters the store
+[PASS] vt transcriptions multipart upload served
+[PASS] vt transcriptions probe extracted the model field
+[PASS] vt file upload served
+[PASS] vt file retrieve reaches the uploading upstream
+[PASS] vt file DELETE pass-through served
+[PASS] vt batch create served
+[PASS] vt batch poll is sticky-routed to the creating upstream
+[PASS] vt unknown batch id -> sticky miss 502 (wildcard upstream)
+=================================================
+PASS=52 FAIL=0

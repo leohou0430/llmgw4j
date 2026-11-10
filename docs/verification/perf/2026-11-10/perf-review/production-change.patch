@@ -1,0 +1,66 @@
+--- a/llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/protocol/ChunkParser.java
++++ b/llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/protocol/ChunkParser.java
+@@ -59,14 +59,10 @@
+         if (kind == ProtocolKind.CHAT) {
+             return chat(rawLine);
+         }
+-        if (rawLine == null || rawLine.isBlank()) {
++        String payload = dataPayload(rawLine);
++        if (payload == null) {
+             return SseChunk.passthrough(rawLine == null ? "" : rawLine);
+         }
+-        String line = rawLine.trim();
+-        if (!line.startsWith("data:")) {
+-            return SseChunk.passthrough(rawLine);
+-        }
+-        String payload = line.substring(5).trim();
+         if ("[DONE]".equals(payload)) {
+             // Defensive: a [DONE] on a responses/messages stream is still a
+             // terminator, whatever the upstream chose to send.
+@@ -192,15 +188,23 @@
+         return found;
+     }
+ 
++    /** Preserve String.trim's ASCII boundary rules while copying the payload only once. */
++    private static String dataPayload(String raw) {
++        if (raw == null) return null;
++        int start = 0, end = raw.length();
++        while (start < end && raw.charAt(start) <= ' ') start++;
++        while (end > start && raw.charAt(end - 1) <= ' ') end--;
++        if (end - start < 5 || !raw.startsWith("data:", start)) return null;
++        start += 5;
++        while (start < end && raw.charAt(start) <= ' ') start++;
++        return raw.substring(start, end);
++    }
++
+     private static SseChunk chat(String rawLine) {
+-        if (rawLine == null || rawLine.isBlank()) {
++        String payload = dataPayload(rawLine);
++        if (payload == null) {
+             return SseChunk.passthrough(rawLine == null ? "" : rawLine);
+         }
+-        String line = rawLine.trim();
+-        if (!line.startsWith("data:")) {
+-            return SseChunk.passthrough(rawLine);
+-        }
+-        String payload = line.substring(5).trim();
+         if ("[DONE]".equals(payload)) {
+             return new SseChunk(rawLine, "", true, 0, false);
+         }
+--- a/llmgw-engine/llmgw-engine-webflux/src/main/java/io/github/leohou0430/llmgw/engine/webflux/WebfluxGatewayController.java
++++ b/llmgw-engine/llmgw-engine-webflux/src/main/java/io/github/leohou0430/llmgw/engine/webflux/WebfluxGatewayController.java
+@@ -877,10 +877,10 @@
+     private static Map<String, String> firstValues(HttpHeaders headers) {
+         Map<String, String> out = new LinkedHashMap<>();
+         // Spring Framework 7: HttpHeaders no longer implements Map.
+-        for (Map.Entry<String, List<String>> entry : headers.headerSet()) {
+-            List<String> values = entry.getValue();
+-            if (values != null && !values.isEmpty() && values.get(0) != null) {
+-                out.put(entry.getKey(), values.get(0));
++        for (String name : headers.headerNames()) {
++            String value = headers.getFirst(name);
++            if (value != null) {
++                out.put(name, value);
+             }
+         }
+         return out;

@@ -1,0 +1,26 @@
+{
+  "sse-before-64": {
+    "cpu_ns_median": 590.97,
+    "bytes_median": 1332.55
+  },
+  "sse-after-64": {
+    "cpu_ns_median": 557.4,
+    "bytes_median": 1036.87
+  },
+  "sse-before-4096": {
+    "cpu_ns_median": 4566.13,
+    "bytes_median": 17460.55
+  },
+  "sse-after-4096": {
+    "cpu_ns_median": 3866.57,
+    "bytes_median": 9100.87
+  },
+  "header-before": {
+    "cpu_ns_median": 3637.16,
+    "bytes_median": 8008.0
+  },
+  "header-after": {
+    "cpu_ns_median": 2096.04,
+    "bytes_median": 5464.0
+  }
+}

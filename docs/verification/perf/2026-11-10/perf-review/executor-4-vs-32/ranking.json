@@ -1,0 +1,45 @@
+{
+  "rankings": [
+    {
+      "profile": "wire",
+      "mode": "json",
+      "arm": "llmgw-webflux-proxy",
+      "rps_median": 6399.117862922736,
+      "p50_ms_median": 5.185,
+      "p95_ms_median": 15.60625,
+      "p99_ms_median": 45.430899999999994,
+      "rps_min": 2774.21356505081,
+      "rps_max": 6715.553216480553
+    },
+    {
+      "profile": "wire",
+      "mode": "json",
+      "arm": "llmgw-webflux-before",
+      "rps_median": 5053.712173494769,
+      "p50_ms_median": 5.708,
+      "p95_ms_median": 16.86875,
+      "p99_ms_median": 70.04100000000174,
+      "rps_min": 2847.8709707599355,
+      "rps_max": 5239.721085779279
+    },
+    {
+      "profile": "wire",
+      "mode": "sse",
+      "arm": "llmgw-webflux-before",
+      "rps_median": 4200.529795594344,
+      "p50_ms_median": 8.865,
+      "p95_ms_median": 24.213449999999998,
+      "p99_ms_median": 33.77484,
+      "rps_min": 4183.7326840822725,
+      "rps_max": 4293.396859965299
+    }
+  ],
+  "excluded": [
+    {
+      "profile": "wire",
+      "mode": "sse",
+      "arm": "llmgw-webflux-proxy",
+      "reason": "failed requests, invalid evidence or k6 failure"
+    }
+  ]
+}

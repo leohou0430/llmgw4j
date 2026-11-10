@@ -1,0 +1,5 @@
+PASS docs/openapi.yaml
+PASS .github/workflows/ci.yml
+PASS .github/workflows/release.yml
+PASS docker-compose.yml
+PASS docker-compose.redis.yml

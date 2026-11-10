@@ -1,0 +1,3 @@
+FAIL webflux/protected: webflux/protected GET /admin/audit/export: expected 401, got 500
+FAIL webflux/read-only: webflux/read-only DELETE /admin/cache: expected 401, got 200
+PASS webflux/demo: administrative credential boundaries

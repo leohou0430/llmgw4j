@@ -1,0 +1,224 @@
+########## webflux ##########
+-- normal paths (default mock upstream) --
+  [PASS] non-stream 200 + JSON body -- 200 application/json {"id":"mock","object":"chat.completion","choices":[{"index":
+  [PASS] SSE 200 + chunks + [DONE], no error event -- 200 text/event-stream data_lines=10 done=1 err_event=0
+  [PASS] missing key -> 401 -- 401 {"error":{"message":"invalid api key","type":"gateway_error"
+  [PASS] invalid json -> 400 -- 400 {"error":{"message":"invalid json: Unrecognized token 'not':
+-- upstream unreachable, NO fallback --
+  [PASS] non-stream upstream failure -> 502 JSON -- 502 application/json {"error":{"message":"upstream: ClosedChannelException","type":"gateway
+  [PASS] SSE failure before first chunk -> 502 JSON (no fake 200) -- 502 application/json {"error":{"message":"upstream: ClosedChannelException","type":"gateway
+-- upstream unreachable, WITH fallback --
+  [PASS] non-stream fallback -> 200 -- 200 {"id":"mock","object":"chat.completion","choices":
+  [PASS] SSE fallback -> 200 + [DONE] -- 200 done=1
+-- failure AFTER the first chunk --
+  [PASS] mid-stream failure -> in-band error event + [DONE] -- 200 text/event-stream err_event=1 done=1
+  [PASS] no fallback splicing after first chunk -- 200 tok0=1 err_event=1
+-- silent truncation: clean EOF, no [DONE], no exception thrown --
+  [PASS] zero-frame EOF -> 502 JSON (not fabricated success) -- 502 application/json {"error":{"message":"upstream: upstream closed SSE stream without [DONE]","type"
+  [PASS] mid-stream EOF -> in-band error + single [DONE] -- 200 text/event-stream err_event=1 done=1 tok0=1 reason=1
+  [PASS] EOF truncation never triggers fallback splicing -- 200 tok0=1 err_event=1
+  [PASS] admin snapshot 200 + usage (native AOT hints) -- 200 {"governanceEnabled":true,"usage":{"demo":{"requests":3,"pro
+  [PASS] truncated streams billed as failures -- errors=2 (expect >=2)
+-- v5: non-2xx upstream never becomes SSE data --
+  [PASS] 429 upstream -> 502 JSON with status detail -- 502 application/json {"error":{"message":"upstream: upstream status 429: {\"error\":{\"message\":\"injected ups
+  [PASS] 500 upstream on SSE -> 502 JSON, no error body leaked as data -- 502 application/json {"error":{"message":"upstream: upstream status 500: {\"error\":{\"message\":\"injected ups
+-- v5: [DONE] followed by disconnect is still a success --
+  [PASS] late disconnect after [DONE] -> no spurious error event -- 200 done=1 err_event=0
+  [PASS] completed stream billed as success -- errors=0 (expect 0)
+-- v5: cache key covers the whole request --
+  [PASS] different temperature never hits the other request's cache -- A=echo-bfb9652e2da6 B=echo-4c1c83ccc63b
+  [PASS] cache actually populated (so the miss was real) -- cacheSize=2
+-- v5: exact completion-token metering --
+  [PASS] usage chunk replaces delta estimate (1 + 8 = 9) -- completionTokens=9 requests=2 errors=0
+-- v5: admin surface (token gate + no upstream key leak) --
+  [PASS] admin token gates /admin/routes and key is redacted -- no_token=401 with_token=200 [{"id":"mock-primary","protocol":"","model":"*","targetModel":"","targetUrl":"http://127.0
+-- v5: request body cap + idempotent snapshot restore --
+  [PASS] oversized request -> 413 -- 413 application/json
+  [PASS] repeated snapshot/load replaces instead of doubling -- requests=1 (expect 1)
+-- v5: client disconnect still settles the ledger --
+  [PASS] aborted stream is billed as a failed request -- requests=1 errors=1
+-- v5: concurrent SSE must not cancel sibling upstream requests --
+  [PASS] 40-way concurrent SSE: zero 502 / zero Request cancelled -- non200=0 cancelled=0
+-- v6: correlation id echoes, generates, and reaches audit --
+  [PASS] incoming X-Request-Id echoed in response -- got=smoke-req-42
+  [PASS] absent X-Request-Id gets a generated gw- id -- got=gw-c5758dd61dd0e295
+  [PASS] request id reaches audit events -- matches=1
+-- v6: circuit breaker opens and falls back without network I/O --
+  [PASS] 2 failures open the circuit; 3rd request served via fallback -- s1=200 s2=200 s3=200 open_events=1
+  [PASS] CircuitOpenException never leaks to the client -- leak=0
+-- v6: weighted random routing follows configured weights --
+  [PASS] weighted routing distributes ~1:3 (tolerance +/-12pp) -- w-light=41(0.205) w-heavy=159(0.795)
+########## vt ##########
+-- normal paths (default mock upstream) --
+  [PASS] non-stream 200 + JSON body -- 200 application/json {"id":"mock","object":"chat.completion","choices":[{"index":
+  [PASS] SSE 200 + chunks + [DONE], no error event -- 200 text/event-stream;charset=UTF-8 data_lines=10 done=1 err_event=0
+  [PASS] missing key -> 401 -- 401 {"error":{"message":"invalid api key","type":"gateway_error"
+  [PASS] invalid json -> 400 -- 400 {"error":{"message":"invalid json: Unrecognized token 'not':
+-- upstream unreachable, NO fallback --
+  [PASS] non-stream upstream failure -> 502 JSON -- 502 application/json {"error":{"message":"upstream: ClosedChannelException","type":"gateway
+  [PASS] SSE failure before first chunk -> 502 JSON (no fake 200) -- 502 application/json;charset=UTF-8 {"error":{"message":"upstream: ClosedChannelException","type":"gateway
+-- upstream unreachable, WITH fallback --
+  [PASS] non-stream fallback -> 200 -- 200 {"id":"mock","object":"chat.completion","choices":
+  [PASS] SSE fallback -> 200 + [DONE] -- 200 done=1
+-- failure AFTER the first chunk --
+  [PASS] mid-stream failure -> in-band error event + [DONE] -- 200 text/event-stream;charset=UTF-8 err_event=1 done=1
+  [PASS] no fallback splicing after first chunk -- 200 tok0=1 err_event=1
+-- silent truncation: clean EOF, no [DONE], no exception thrown --
+  [PASS] zero-frame EOF -> 502 JSON (not fabricated success) -- 502 application/json;charset=UTF-8 {"error":{"message":"upstream: upstream closed SSE stream without [DONE]","type"
+  [PASS] mid-stream EOF -> in-band error + single [DONE] -- 200 text/event-stream;charset=UTF-8 err_event=1 done=1 tok0=1 reason=1
+  [PASS] EOF truncation never triggers fallback splicing -- 200 tok0=1 err_event=1
+  [PASS] admin snapshot 200 + usage (native AOT hints) -- 200 {"governanceEnabled":true,"usage":{"demo":{"requests":3,"pro
+  [PASS] truncated streams billed as failures -- errors=2 (expect >=2)
+-- v5: non-2xx upstream never becomes SSE data --
+  [PASS] 429 upstream -> 502 JSON with status detail -- 502 application/json {"error":{"message":"upstream: upstream status 429: {\"error\":{\"message\":\"injected ups
+  [PASS] 500 upstream on SSE -> 502 JSON, no error body leaked as data -- 502 application/json;charset=UTF-8 {"error":{"message":"upstream: upstream status 500: {\"error\":{\"message\":\"injected ups
+-- v5: [DONE] followed by disconnect is still a success --
+  [PASS] late disconnect after [DONE] -> no spurious error event -- 200 done=1 err_event=0
+  [PASS] completed stream billed as success -- errors=0 (expect 0)
+-- v5: cache key covers the whole request --
+  [PASS] different temperature never hits the other request's cache -- A=echo-bfb9652e2da6 B=echo-4c1c83ccc63b
+  [PASS] cache actually populated (so the miss was real) -- cacheSize=2
+-- v5: exact completion-token metering --
+  [PASS] usage chunk replaces delta estimate (1 + 8 = 9) -- completionTokens=9 requests=2 errors=0
+-- v5: admin surface (token gate + no upstream key leak) --
+  [PASS] admin token gates /admin/routes and key is redacted -- no_token=401 with_token=200 [{"id":"mock-primary","protocol":"","model":"*","targetModel":"","targetUrl":"http://127.0
+-- v5: request body cap + idempotent snapshot restore --
+  [PASS] oversized request -> 413 -- 413 application/json
+  [PASS] repeated snapshot/load replaces instead of doubling -- requests=1 (expect 1)
+-- v5: client disconnect still settles the ledger --
+  [PASS] aborted stream is billed as a failed request -- requests=1 errors=1
+-- v5: concurrent SSE must not cancel sibling upstream requests --
+  [PASS] 40-way concurrent SSE: zero 502 / zero Request cancelled -- non200=0 cancelled=0
+-- v6: correlation id echoes, generates, and reaches audit --
+  [PASS] incoming X-Request-Id echoed in response -- got=smoke-req-42
+  [PASS] absent X-Request-Id gets a generated gw- id -- got=gw-65e530c705a0dd92
+  [PASS] request id reaches audit events -- matches=1
+-- v6: circuit breaker opens and falls back without network I/O --
+  [PASS] 2 failures open the circuit; 3rd request served via fallback -- s1=200 s2=200 s3=200 open_events=1
+  [PASS] CircuitOpenException never leaks to the client -- leak=0
+-- v6: weighted random routing follows configured weights --
+  [PASS] weighted routing distributes ~1:3 (tolerance +/-12pp) -- w-light=57(0.285) w-heavy=143(0.715)
+########## static check: single JSON parse on hot path ##########
+  [PASS] controllers reuse decision.parsed() -- ProtocolCodec.parse occurrences in controllers=0
+==========================================
+PASS=67 FAIL=0
+======== v13 extensions: semantic cache + new protocols ========
+--- engine=webflux -- W4.2 semantic cache ---
+[PASS] webflux semantic: request A served
+[PASS] webflux semantic: reordered request B served
+[PASS] webflux semantic: both bodies share ONE cache entry
+[PASS] webflux different sampling has its own cache entry
+[PASS] webflux semantic: a different question gets its own entry
+--- engine=webflux -- W4.3 new protocols ---
+[PASS] webflux embeddings pass-through served
+[PASS] webflux rerank pass-through served
+[PASS] webflux speech binary pass-through (432 bytes)
+[PASS] webflux context-overflow surfaces the upstream reason
+[PASS] webflux embeddings without key -> 401
+[PASS] webflux speech without key -> 401
+[PASS] webflux embeddings metered under its protocol
+[PASS] webflux GET /v1/models catalog pass-through
+[PASS] webflux batch cancel pass-through (sticky)
+[PASS] webflux file content pass-through (528 bytes)
+[PASS] webflux cache fill before invalidation
+[PASS] webflux DELETE /admin/cache clears the store
+[PASS] webflux cacheSize is 0 after invalidation
+[PASS] webflux no-cache request never enters the store
+[PASS] webflux transcriptions multipart upload served
+[PASS] webflux transcriptions probe extracted the model field
+[PASS] webflux file upload served
+[PASS] webflux file retrieve reaches the uploading upstream
+[PASS] webflux file DELETE pass-through served
+[PASS] webflux batch create served
+[PASS] webflux batch poll is sticky-routed to the creating upstream
+[PASS] webflux unknown batch id -> 404 without upstream access
+--- engine=vt -- W4.2 semantic cache ---
+[PASS] vt semantic: request A served
+[PASS] vt semantic: reordered request B served
+[PASS] vt semantic: both bodies share ONE cache entry
+[PASS] vt different sampling has its own cache entry
+[PASS] vt semantic: a different question gets its own entry
+--- engine=vt -- W4.3 new protocols ---
+[PASS] vt embeddings pass-through served
+[PASS] vt rerank pass-through served
+[PASS] vt speech binary pass-through (432 bytes)
+[PASS] vt context-overflow surfaces the upstream reason
+[PASS] vt embeddings without key -> 401
+[PASS] vt speech without key -> 401
+[PASS] vt embeddings metered under its protocol
+[PASS] vt GET /v1/models catalog pass-through
+[PASS] vt batch cancel pass-through (sticky)
+[PASS] vt file content pass-through (528 bytes)
+[PASS] vt cache fill before invalidation
+[PASS] vt DELETE /admin/cache clears the store
+[PASS] vt cacheSize is 0 after invalidation
+[PASS] vt no-cache request never enters the store
+[PASS] vt transcriptions multipart upload served
+[PASS] vt transcriptions probe extracted the model field
+[PASS] vt file upload served
+[PASS] vt file retrieve reaches the uploading upstream
+[PASS] vt file DELETE pass-through served
+[PASS] vt batch create served
+[PASS] vt batch poll is sticky-routed to the creating upstream
+[PASS] vt unknown batch id -> 404 without upstream access
+=================================================
+PASS=54 FAIL=0
+======== v13 hardening: retry / timeouts / heartbeat / headers / breaker ========
+--- engine=webflux -- retry + header passthrough (defaults otherwise) ---
+[PASS] webflux ambiguous 5xx is not automatically retried
+[PASS] webflux SSE ambiguous 5xx is not retried
+[PASS] webflux 4xx is not retried
+[PASS] webflux 429 with Retry-After still recovers via retry
+[PASS] webflux Retry-After honored (recovered in 1079ms >= 1000ms)
+[PASS] webflux ingress allowlist forwards anthropic-version upstream
+[PASS] webflux route credentials become the upstream Authorization
+[PASS] webflux caller token never forwarded upstream
+[PASS] webflux SSE ingress forwards anthropic-version upstream
+[PASS] webflux SSE upstream Authorization is the route key
+[PASS] webflux SSE caller token never forwarded upstream
+[PASS] webflux SSE ingress strips non-allowlisted headers upstream
+[PASS] webflux egress allowlist forwards x-ratelimit-* to client
+[PASS] webflux non-allowlisted upstream header never reaches client
+--- engine=webflux -- three-tier timeouts ---
+[PASS] webflux first-byte watchdog fails a hung upstream as 502
+[PASS] webflux idle-read stall reports in-band error
+[PASS] webflux idle-read reason is precise
+[PASS] webflux idle-read abort never fabricates a terminator
+--- engine=webflux -- SSE heartbeat ---
+[PASS] webflux heartbeat injects comment frames (22)
+[PASS] webflux heartbeat coexists with protocol data
+[PASS] webflux heartbeat does not break the terminator
+--- engine=webflux -- video sticky-miss circuit breaker ---
+[PASS] webflux unknown-task video poll returns 404
+[PASS] webflux unknown resource never falls through to shared upstream
+--- engine=vt -- retry + header passthrough (defaults otherwise) ---
+[PASS] vt ambiguous 5xx is not automatically retried
+[PASS] vt SSE ambiguous 5xx is not retried
+[PASS] vt 4xx is not retried
+[PASS] vt 429 with Retry-After still recovers via retry
+[PASS] vt Retry-After honored (recovered in 1148ms >= 1000ms)
+[PASS] vt ingress allowlist forwards anthropic-version upstream
+[PASS] vt route credentials become the upstream Authorization
+[PASS] vt caller token never forwarded upstream
+[PASS] vt SSE ingress forwards anthropic-version upstream
+[PASS] vt SSE upstream Authorization is the route key
+[PASS] vt SSE caller token never forwarded upstream
+[PASS] vt SSE ingress strips non-allowlisted headers upstream
+[PASS] vt egress allowlist forwards x-ratelimit-* to client
+[PASS] vt non-allowlisted upstream header never reaches client
+--- engine=vt -- three-tier timeouts ---
+[PASS] vt first-byte watchdog fails a hung upstream as 502
+[PASS] vt idle-read stall reports in-band error
+[PASS] vt idle-read reason is precise
+[PASS] vt idle-read abort never fabricates a terminator
+--- engine=vt -- SSE heartbeat ---
+[PASS] vt heartbeat injects comment frames (21)
+[PASS] vt heartbeat coexists with protocol data
+[PASS] vt heartbeat does not break the terminator
+--- engine=vt -- video sticky-miss circuit breaker ---
+[PASS] vt unknown-task video poll returns 404
+[PASS] vt unknown resource never falls through to shared upstream
+=================================================
+PASS=46 FAIL=0
+PASS webflux: cache, task ownership, uploads, listing and concurrency boundaries
+PASS vt: cache, task ownership, uploads, listing and concurrency boundaries

@@ -21,11 +21,11 @@
 
 ```bash
 ./bin/build.sh                              # 默认 fat jar
-mvn -B -DskipTests clean package           # 等价的 Maven 命令
-mvn -B -DskipTests -Predis clean package   # 可选 Redis 模块 + Lettuce
+mvn -B clean verify                        # 构建并执行 JUnit（CI 门槛）
+mvn -B -Predis clean verify                # Redis profile 同样执行 JUnit
 ```
 
-默认产物：`llmgw-app/target/llmgw-app-0.1.0-SNAPSHOT.jar`。
+默认产物：`llmgw-app/target/llmgw-app-0.2.0.jar`。
 `-Predis` 只在显式启用时才把 `llmgw-governance/llmgw-governance-redis` 链入 fat jar；
 默认 jar 不含任何 Redis 依赖，这是刻意保持的边界。
 
@@ -83,8 +83,8 @@ UpstreamAuthenticator`（supports(provider) + authHeaders(apiKey)），声明为
 ## 3. 两个数据面
 
 ```bash
-java -jar llmgw-app/target/llmgw-app-0.1.0-SNAPSHOT.jar --spring.profiles.active=webflux
-java -jar llmgw-app/target/llmgw-app-0.1.0-SNAPSHOT.jar --spring.profiles.active=vt
+java -jar llmgw-app/target/llmgw-app-0.2.0.jar --spring.profiles.active=webflux
+java -jar llmgw-app/target/llmgw-app-0.2.0.jar --spring.profiles.active=vt
 ```
 
 同一套 `llmgw-governance/llmgw-governance-default` 治理层驱动两条数据面。

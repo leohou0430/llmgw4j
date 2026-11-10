@@ -99,6 +99,7 @@ public class WebfluxGatewayController {
     private final GatewayProperties properties;
     /** W3.6: sticky store is an injectable SPI (in-memory default, Redis pack). */
     private final TaskRouteSticky taskRoutes;
+    private final java.util.concurrent.Semaphore requestSlots;
     private final HeaderPolicy headerPolicy;
     private final ForwardingPolicy.RetryConfig retryConfig;
 
@@ -111,6 +112,7 @@ public class WebfluxGatewayController {
         this.provider = provider;
         this.breaker = breaker;
         this.properties = properties;
+        this.requestSlots = new java.util.concurrent.Semaphore(properties.getMaxConcurrentRequests());
         this.taskRoutes = taskRoutes;
         this.headerPolicy = headerPolicy;
         GatewayProperties.Upstream.Retry retry = properties.getUpstream().getRetry();
@@ -248,6 +250,17 @@ public class WebfluxGatewayController {
 
     private Mono<Void> handleKind(ProtocolKind kind, ServerHttpRequest request,
                                   ServerHttpResponse response) {
+        return Mono.defer(() -> {
+            if (!requestSlots.tryAcquire()) {
+                return writeError(response, GatewayDecision.deny(503, "gateway request capacity exceeded"));
+            }
+            return Mono.defer(() -> handleKindWithinCapacity(kind, request, response))
+                    .doFinally(signal -> requestSlots.release());
+        });
+    }
+
+    private Mono<Void> handleKindWithinCapacity(ProtocolKind kind, ServerHttpRequest request,
+                                  ServerHttpResponse response) {
         long arrived = System.nanoTime();
         long max = Math.max(1, properties.getMaxRequestBytes());
         Map<String, String> clientHeaders = firstValues(request.getHeaders());
@@ -258,6 +271,7 @@ public class WebfluxGatewayController {
                     return raw;
                 })
                 .defaultIfEmpty("{}")
+                .publishOn(reactor.core.scheduler.Schedulers.boundedElastic())
                 .flatMap(raw -> dispatch(kind, raw,
                         request.getHeaders().getFirst("Authorization"), clientHeaders, response,
                         request.getHeaders().getFirst(EngineHeaders.REQUEST_ID), arrived))
@@ -272,6 +286,17 @@ public class WebfluxGatewayController {
      */
     private Mono<Void> handleBinaryKind(ProtocolKind kind, String contentType,
                                         ServerHttpRequest request, ServerHttpResponse response) {
+        return Mono.defer(() -> {
+            if (!requestSlots.tryAcquire()) {
+                return writeError(response, GatewayDecision.deny(503, "gateway request capacity exceeded"));
+            }
+            return Mono.defer(() -> handleBinaryKindWithinCapacity(kind, contentType, request, response))
+                    .doFinally(signal -> requestSlots.release());
+        });
+    }
+
+    private Mono<Void> handleBinaryKindWithinCapacity(ProtocolKind kind, String contentType,
+                                        ServerHttpRequest request, ServerHttpResponse response) {
         long arrived = System.nanoTime();
         long max = Math.max(1, properties.getMaxRequestBytes());
         Map<String, String> clientHeaders = firstValues(request.getHeaders());
@@ -282,6 +307,7 @@ public class WebfluxGatewayController {
                     return raw;
                 })
                 .defaultIfEmpty("{}")
+                .publishOn(reactor.core.scheduler.Schedulers.boundedElastic())
                 .flatMap(rawJson -> {
                     String requestId = GatewayPipeline.requestId(
                             request.getHeaders().getFirst(EngineHeaders.REQUEST_ID));
@@ -343,6 +369,10 @@ public class WebfluxGatewayController {
         }
         ParsedRequest parsed = decision.parsed();
         GatewayContext context = GatewayPipeline.context(decision, requestId, arrivedNanos);
+        if (!EngineRoutes.ownsReferencedFiles(parsed, decision.keyId(), decision.route(), taskRoutes)) {
+            GatewayPipeline.finish(chain, context, false);
+            return writeError(response, GatewayDecision.deny(404, "referenced file not found on this route"));
+        }
         Route route = decision.route();
         int timeout = properties.getUpstream().getTimeoutMs();
         ForwardingPolicy.RetryConfig retry = retryConfig;
@@ -365,7 +395,7 @@ public class WebfluxGatewayController {
                 bodyMono = Mono.just(cached.get());
             } else {
                 bodyMono = completeAttempts(
-                                ForwardingPolicy.plan(router, route, retry), 0,
+                                EngineRoutes.forwardPlan(router, route, retry, parsed), 0,
                                 rawJson, parsed, timeout, context, winner, pass, egress)
                         .map(Completed::body);
             }
@@ -384,10 +414,10 @@ public class WebfluxGatewayController {
                             // A video job lives on the upstream that created it:
                             // pin the task id (async-job protocols only) to the
                             // route that served the create.
-                            String taskId = Protocols.of(kind).taskId(root);
-                            if (!taskId.isEmpty()) {
-                                taskRoutes.bind(taskId, winner.get().id());
-                            }
+                        }
+                        String taskId = cached.isEmpty() ? Protocols.of(kind).taskId(root) : "";
+                        if (!taskId.isEmpty()) {
+                            taskRoutes.bind(decision.keyId(), kind.wireName(), taskId, winner.get().id());
                         }
                         return writeJson(response, body, context);
                     })
@@ -414,7 +444,7 @@ public class WebfluxGatewayController {
         AtomicBoolean started = new AtomicBoolean(false);
         AtomicBoolean doneSeen = new AtomicBoolean(false);
         Flux<String> chunks = streamAttempts(
-                        ForwardingPolicy.plan(router, route, retry), 0,
+                        EngineRoutes.forwardPlan(router, route, retry, parsed), 0,
                         rawJson, parsed, timeout, started, context, pass, egress)
                 .doOnNext(line -> {
                     // Comment frames (": ...") are transport-level and must not
@@ -621,19 +651,47 @@ public class WebfluxGatewayController {
     private Mono<Void> handleStickyFetch(ProtocolKind kind, String upstreamPath, String contentType,
                                          String taskId, UpstreamMethod method,
                                          ServerHttpRequest request, ServerHttpResponse response) {
+        return Mono.defer(() -> {
+            if (!requestSlots.tryAcquire()) {
+                return writeError(response, GatewayDecision.deny(503, "gateway request capacity exceeded"));
+            }
+            return Mono.defer(() -> handleStickyFetchWithinCapacity(kind, upstreamPath, contentType, taskId, method, request, response))
+                    .doFinally(signal -> requestSlots.release());
+        });
+    }
+
+    private Mono<Void> handleStickyFetchWithinCapacity(ProtocolKind kind, String upstreamPath, String contentType,
+                                         String taskId, UpstreamMethod method,
+                                         ServerHttpRequest request, ServerHttpResponse response) {
+        return Mono.defer(() -> handleScopedFetch(kind, upstreamPath, contentType,
+                taskId, method, request, response))
+                .subscribeOn(reactor.core.scheduler.Schedulers.boundedElastic());
+    }
+
+    private Mono<Void> handleScopedFetch(ProtocolKind kind, String upstreamPath, String contentType,
+                                         String taskId, UpstreamMethod method,
+                                         ServerHttpRequest request, ServerHttpResponse response) {
         long arrived = System.nanoTime();
         String requestId = GatewayPipeline.requestId(
                 request.getHeaders().getFirst(EngineHeaders.REQUEST_ID));
         response.getHeaders().set(EngineHeaders.REQUEST_ID, requestId);
         ParsedRequest parsed = ParsedRequest.bodyless(kind);
-        Route pinned = taskId == null ? null : router.byId(taskRoutes.resolve(taskId));
-        boolean isPinned = pinned != null;
-        Route route = isPinned ? pinned : router.resolve(kind, "*");
-        GatewayDecision decision = chain.enter(
-                request.getHeaders().getFirst("Authorization"), parsed, route);
-        if (!decision.allowed()) {
-            return writeError(response, decision);
+        GatewayDecision admission = chain.enter(
+                request.getHeaders().getFirst("Authorization"), parsed, router.resolve(kind, "*"));
+        if (!admission.allowed()) {
+            return writeError(response, admission);
         }
+        Route pinned = taskId == null ? null
+                : router.byId(taskRoutes.resolve(admission.keyId(), kind.wireName(), taskId));
+        if ((taskId != null && pinned == null)
+                || (taskId == null && (kind == ProtocolKind.FILES || kind == ProtocolKind.BATCHES))) {
+            GatewayPipeline.finish(chain, GatewayPipeline.context(admission, requestId, arrived), false);
+            return writeError(response, GatewayDecision.deny(taskId == null ? 501 : 404,
+                    taskId == null ? "tenant-scoped resource listing is unavailable" : "resource not found"));
+        }
+        boolean isPinned = pinned != null;
+        Route route = isPinned ? pinned : admission.route();
+        GatewayDecision decision = admission.withRoute(route);
         GatewayContext context = GatewayPipeline.context(decision, requestId, arrived);
         AtomicBoolean settled = new AtomicBoolean(false);
         return Mono.defer(() -> {
@@ -680,6 +738,17 @@ public class WebfluxGatewayController {
      */
     private Mono<Void> handleUpload(ProtocolKind kind, ServerHttpRequest request,
                                     ServerHttpResponse response) {
+        return Mono.defer(() -> {
+            if (!requestSlots.tryAcquire()) {
+                return writeError(response, GatewayDecision.deny(503, "gateway request capacity exceeded"));
+            }
+            return Mono.defer(() -> handleUploadWithinCapacity(kind, request, response))
+                    .doFinally(signal -> requestSlots.release());
+        });
+    }
+
+    private Mono<Void> handleUploadWithinCapacity(ProtocolKind kind, ServerHttpRequest request,
+                                    ServerHttpResponse response) {
         long arrived = System.nanoTime();
         long max = Math.max(1, properties.getMaxRequestBytes());
         Map<String, String> clientHeaders = firstValues(request.getHeaders());
@@ -691,6 +760,7 @@ public class WebfluxGatewayController {
                     return bytes;
                 })
                 .defaultIfEmpty(new byte[0])
+                .publishOn(reactor.core.scheduler.Schedulers.boundedElastic())
                 .flatMap(body -> {
                     String requestId = GatewayPipeline.requestId(
                             request.getHeaders().getFirst(EngineHeaders.REQUEST_ID));
@@ -729,6 +799,13 @@ public class WebfluxGatewayController {
                             })
                             .flatMap(bytes -> {
                                 context.markUpstreamEnd();
+                                if (kind == ProtocolKind.FILES) {
+                                    String resourceId = ProtocolCodec.tryParse(new String(bytes, StandardCharsets.UTF_8))
+                                            .path("id").asText("");
+                                    if (!resourceId.isBlank()) {
+                                        taskRoutes.bind(decision.keyId(), kind.wireName(), resourceId, decision.route().id());
+                                    }
+                                }
                                 response.getHeaders().set(EngineHeaders.OVERHEAD_MS,
                                         EngineTimings.total(context));
                                 response.setStatusCode(HttpStatus.OK);
@@ -800,10 +877,10 @@ public class WebfluxGatewayController {
     private static Map<String, String> firstValues(HttpHeaders headers) {
         Map<String, String> out = new LinkedHashMap<>();
         // Spring Framework 7: HttpHeaders no longer implements Map.
-        for (Map.Entry<String, List<String>> entry : headers.headerSet()) {
-            List<String> values = entry.getValue();
-            if (values != null && !values.isEmpty() && values.get(0) != null) {
-                out.put(entry.getKey(), values.get(0));
+        for (String name : headers.headerNames()) {
+            String value = headers.getFirst(name);
+            if (value != null) {
+                out.put(name, value);
             }
         }
         return out;

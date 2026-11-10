@@ -39,6 +39,11 @@ public record GatewayDecision(
         return new GatewayDecision(true, 200, "ok", keyId, parsed.model(), route, parsed, 0, "", 0);
     }
 
+    public GatewayDecision withRoute(Route resolved) {
+        return new GatewayDecision(allowed, status, reason, keyId, model, resolved, parsed,
+                budgetReservedMicroUsd, keyGroup, groupBudgetReservedMicroUsd);
+    }
+
     public GatewayDecision withBudgetReserved(long microUsd) {
         return new GatewayDecision(allowed, status, reason, keyId, model, route, parsed,
                 microUsd, keyGroup, groupBudgetReservedMicroUsd);

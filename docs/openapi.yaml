@@ -1,13 +1,19 @@
 openapi: 3.1.0
 info:
   title: llmgw4j API
-  version: v12
+  version: 0.2.0
   description: |
-    Java LLM API gateway (llmgw4j). v12 speaks five protocols with pass-through
+    Java LLM API gateway (llmgw4j). Supported data-plane protocols use pass-through
     parity: each endpoint only routes to upstreams speaking the SAME protocol
     (routes carry a `protocol` field, default `*` for backwards compatibility);
     the gateway never translates between protocols and never re-serializes
     payloads.
+
+    Resource reads and mutations require ownership; unknown or foreign ids return 404.
+    Requests carrying file_id or input_file_id require a same-tenant file on the selected route.
+    Capacity exhaustion or a configured mandatory governance outage returns 503.
+    Buffered non-streaming responses are bounded by gateway.max-response-bytes (default 4MiB);
+    exceeding this limit is reported as an upstream error. Production monetary budgets are unavailable.
 
     Streaming completion contract: a stream is successful ONLY when the upstream
     emitted its own protocol terminator — chat `data: [DONE]`,
@@ -410,15 +416,14 @@ paths:
             application/json:
               schema: { type: object }
     get:
-      summary: "List files (unpinned; honors the circuit breaker)"
+      summary: "Tenant-scoped files listing is currently unsupported"
       tags: [data-plane]
       security: [{ bearerAuth: [] }]
       responses:
-        '200':
-          description: "Upstream file list, forwarded verbatim"
-          content:
-            application/json:
-              schema: { type: object }
+        '501':
+          description: Listing is disabled to avoid exposing other tenants' upstream resources.
+        '401':
+          description: Missing or invalid API key.
 
   /v1/files/{id}:
     get:
@@ -461,17 +466,27 @@ paths:
             application/json:
               schema: { type: object }
     get:
-      summary: "List batches (unpinned)"
+      summary: "Tenant-scoped batches listing is currently unsupported"
       tags: [data-plane]
       security: [{ bearerAuth: [] }]
       responses:
+        '501':
+          description: Listing is disabled to avoid exposing other tenants' upstream resources.
+        '401':
+          description: Missing or invalid API key.
+
+  /v1/batches/{id}:
+    get:
+      summary: "Poll a batch: sticky-routed to the creating route"
+      tags: [data-plane]
+      security: [{ bearerAuth: [] }]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses:
         '200':
-          description: "Upstream batch list"
+          description: "Batch status object"
           content:
             application/json:
               schema: { type: object }
-
-  /v1/batches/{id}:
 
   /v1/models:
     get:
@@ -511,24 +526,343 @@ paths:
             application/octet-stream:
               schema: { type: string, format: binary }
 
+
+  /admin/snapshot:
     get:
-      summary: "Poll a batch: sticky-routed to the creating route"
-      tags: [data-plane]
-      security: [{ bearerAuth: [] }]
+      summary: "Usage and cache snapshot"
+      tags: [admin]
+      security: [{ adminToken: [] }]
+      responses:
+        '200':
+          description: Operation succeeded; API key plaintext is returned only on create or rotate.
+          content:
+            application/json:
+              schema: {}
+        '401':
+          description: Missing or invalid administrative token.
+        '400':
+          description: Invalid configuration or request.
+        '404':
+          description: Resource or identity not found.
+        '501':
+          description: The configured implementation does not support this operation.
+  /admin/snapshot/save:
+    post:
+      summary: "Persist token usage snapshot"
+      tags: [admin]
+      security: [{ adminToken: [] }]
+      responses:
+        '200':
+          description: Operation succeeded; API key plaintext is returned only on create or rotate.
+          content:
+            application/json:
+              schema: {}
+        '401':
+          description: Missing or invalid administrative token.
+        '400':
+          description: Invalid configuration or request.
+        '404':
+          description: Resource or identity not found.
+        '501':
+          description: The configured implementation does not support this operation.
+  /admin/snapshot/load:
+    post:
+      summary: "Restore token usage snapshot"
+      tags: [admin]
+      security: [{ adminToken: [] }]
+      responses:
+        '200':
+          description: Operation succeeded; API key plaintext is returned only on create or rotate.
+          content:
+            application/json:
+              schema: {}
+        '401':
+          description: Missing or invalid administrative token.
+        '400':
+          description: Invalid configuration or request.
+        '404':
+          description: Resource or identity not found.
+        '501':
+          description: The configured implementation does not support this operation.
+  /admin/routes:
+    get:
+      summary: "List routes with credentials redacted"
+      tags: [admin]
+      security: [{ adminToken: [] }]
+      responses:
+        '200':
+          description: Operation succeeded; API key plaintext is returned only on create or rotate.
+          content:
+            application/json:
+              schema: {}
+        '401':
+          description: Missing or invalid administrative token.
+        '400':
+          description: Invalid configuration or request.
+        '404':
+          description: Resource or identity not found.
+        '501':
+          description: The configured implementation does not support this operation.
+  /admin/routes/reload:
+    post:
+      summary: "Atomically replace routing configuration"
+      tags: [admin]
+      security: [{ adminToken: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { type: array, items: { type: object } }
+      responses:
+        '200':
+          description: Operation succeeded; API key plaintext is returned only on create or rotate.
+          content:
+            application/json:
+              schema: {}
+        '401':
+          description: Missing or invalid administrative token.
+        '400':
+          description: Invalid configuration or request.
+        '404':
+          description: Resource or identity not found.
+        '501':
+          description: The configured implementation does not support this operation.
+  /admin/keys:
+    get:
+      summary: "List API key metadata"
+      tags: [admin]
+      security: [{ adminToken: [] }]
+      responses:
+        '200':
+          description: Operation succeeded; API key plaintext is returned only on create or rotate.
+          content:
+            application/json:
+              schema: {}
+        '401':
+          description: Missing or invalid administrative token.
+        '400':
+          description: Invalid configuration or request.
+        '404':
+          description: Resource or identity not found.
+        '501':
+          description: The configured implementation does not support this operation.
+    post:
+      summary: "Create a runtime API key"
+      tags: [admin]
+      security: [{ adminToken: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { type: object }
+      responses:
+        '200':
+          description: Operation succeeded; API key plaintext is returned only on create or rotate.
+          content:
+            application/json:
+              schema: {}
+        '401':
+          description: Missing or invalid administrative token.
+        '400':
+          description: Invalid configuration or request.
+        '404':
+          description: Resource or identity not found.
+        '501':
+          description: The configured implementation does not support this operation.
+  /admin/keys/{id}:
+    delete:
+      summary: "Revoke a runtime identity and all rotated tokens"
+      tags: [admin]
+      security: [{ adminToken: [] }]
       parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
       responses:
         '200':
-          description: "Batch status object"
+          description: Operation succeeded; API key plaintext is returned only on create or rotate.
           content:
             application/json:
-              schema: { type: object }
+              schema: {}
+        '401':
+          description: Missing or invalid administrative token.
+        '400':
+          description: Invalid configuration or request.
+        '404':
+          description: Resource or identity not found.
+        '501':
+          description: The configured implementation does not support this operation.
+  /admin/keys/{id}/rotate:
+    post:
+      summary: "Rotate a runtime API key"
+      tags: [admin]
+      security: [{ adminToken: [] }]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema: { type: object }
+      responses:
+        '200':
+          description: Operation succeeded; API key plaintext is returned only on create or rotate.
+          content:
+            application/json:
+              schema: {}
+        '401':
+          description: Missing or invalid administrative token.
+        '400':
+          description: Invalid configuration or request.
+        '404':
+          description: Resource or identity not found.
+        '501':
+          description: The configured implementation does not support this operation.
+  /admin/verify:
+    get:
+      summary: "Run configured upstream connectivity checks"
+      tags: [admin]
+      security: [{ adminToken: [] }]
+      responses:
+        '200':
+          description: Operation succeeded; API key plaintext is returned only on create or rotate.
+          content:
+            application/json:
+              schema: {}
+        '401':
+          description: Missing or invalid administrative token.
+        '400':
+          description: Invalid configuration or request.
+        '404':
+          description: Resource or identity not found.
+        '501':
+          description: The configured implementation does not support this operation.
+  /admin/requests:
+    get:
+      summary: "Read recent request logs"
+      tags: [admin]
+      security: [{ adminToken: [] }]
+      parameters: [{ name: limit, in: query, schema: { type: integer, default: 100, minimum: 1, maximum: 1000 } }]
+      responses:
+        '200':
+          description: Operation succeeded; API key plaintext is returned only on create or rotate.
+          content:
+            application/json:
+              schema: {}
+        '401':
+          description: Missing or invalid administrative token.
+        '400':
+          description: Invalid configuration or request.
+        '404':
+          description: Resource or identity not found.
+        '501':
+          description: The configured implementation does not support this operation.
+  /admin/audit/export:
+    get:
+      summary: "Export audit events"
+      description: Accepts a full admin token or an audit read token. Only a demo with both tokens unset allows anonymous access. A read-only configuration never enables other administrative operations.
+      tags: [admin]
+      security: [{ adminToken: [] }, { adminReadToken: [] }]
+      responses:
+        '200':
+          description: Operation succeeded; API key plaintext is returned only on create or rotate.
+          content:
+            application/json:
+              schema: {}
+        '401':
+          description: Missing or invalid administrative token.
+        '400':
+          description: Invalid configuration or request.
+        '404':
+          description: Resource or identity not found.
+        '501':
+          description: The configured implementation does not support this operation.
+  /admin/cache:
+    delete:
+      summary: "Invalidate response cache"
+      tags: [admin]
+      security: [{ adminToken: [] }]
+      responses:
+        '200':
+          description: Operation succeeded; API key plaintext is returned only on create or rotate.
+          content:
+            application/json:
+              schema: {}
+        '401':
+          description: Missing or invalid administrative token.
+        '400':
+          description: Invalid configuration or request.
+        '404':
+          description: Resource or identity not found.
+        '501':
+          description: The configured implementation does not support this operation.
+  /admin/governance:
+    post:
+      summary: "Update governance settings"
+      tags: [admin]
+      security: [{ adminToken: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { type: object }
+      responses:
+        '200':
+          description: Operation succeeded; API key plaintext is returned only on create or rotate.
+          content:
+            application/json:
+              schema: {}
+        '401':
+          description: Missing or invalid administrative token.
+        '400':
+          description: Invalid configuration or request.
+        '404':
+          description: Resource or identity not found.
+        '501':
+          description: The configured implementation does not support this operation.
+  /admin/metrics:
+    get:
+      summary: "Read gateway metric aggregates"
+      tags: [admin]
+      security: [{ adminToken: [] }]
+      responses:
+        '200':
+          description: Operation succeeded; API key plaintext is returned only on create or rotate.
+          content:
+            application/json:
+              schema: {}
+        '401':
+          description: Missing or invalid administrative token.
+        '400':
+          description: Invalid configuration or request.
+        '404':
+          description: Resource or identity not found.
+        '501':
+          description: The configured implementation does not support this operation.
+  /admin/console:
+    get:
+      summary: Static management console; data requests require administrative credentials.
+      tags: [admin]
+      security: []
+      responses:
+        '200':
+          description: Console HTML.
+          content:
+            text/html:
+              schema: { type: string }
 
 components:
   securitySchemes:
+    adminToken:
+      type: apiKey
+      in: header
+      name: X-Admin-Token
+      description: Required for administrative data and mutations in production.
+    adminReadToken:
+      type: apiKey
+      in: header
+      name: X-Admin-Read-Token
+      description: Read token accepted by audit export.
     bearerAuth:
       type: http
       scheme: bearer
-      description: One of the gateway API keys (default demo key `sk-demo`).
+      description: Gateway API key (default demo key `sk-demo`) or an HS256 JWT when gateway.auth.jwt-secret is configured. Configured issuer/audience and provided time claims are validated.
   schemas:
     VideoTask:
       type: object
@@ -581,6 +915,7 @@ components:
           schema:
             $ref: '#/components/schemas/GatewayError'
 tags:
+  - name: admin
   - name: chat
   - name: responses
   - name: messages

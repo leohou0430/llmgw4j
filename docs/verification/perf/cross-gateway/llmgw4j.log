@@ -1,0 +1,17 @@
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.1.2)
+
+2026-11-09T02:41:16.672+08:00  INFO 2496 --- [llmgw] [           main] i.g.l.llmgw.app.LlmGatewayApplication    : Starting LlmGatewayApplication v0.1.0-SNAPSHOT using Java 25 with PID 2496 (/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/llmgw-app-0.1.0-SNAPSHOT.jar started by leo in /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway)
+2026-11-09T02:41:16.676+08:00  INFO 2496 --- [llmgw] [           main] i.g.l.llmgw.app.LlmGatewayApplication    : The following 1 profile is active: "webflux"
+2026-11-09T02:41:18.731+08:00  INFO 2496 --- [llmgw] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 4 endpoints beneath base path '/actuator'
+2026-11-09T02:41:19.678+08:00  INFO 2496 --- [llmgw] [           main] o.s.boot.reactor.netty.NettyWebServer    : Netty started on port 8080 (http)
+2026-11-09T02:41:19.685+08:00  INFO 2496 --- [llmgw] [           main] i.g.l.llmgw.app.LlmGatewayApplication    : Started LlmGatewayApplication in 3.556 seconds (process running for 4.357)
+2026-11-09T02:43:45.602+08:00  INFO 2496 --- [llmgw] [ionShutdownHook] o.s.boot.reactor.netty.GracefulShutdown  : Commencing graceful shutdown. Waiting for active requests to complete
+2026-11-09T02:43:45.604+08:00  INFO 2496 --- [llmgw] [ netty-shutdown] o.s.boot.reactor.netty.GracefulShutdown  : Graceful shutdown complete

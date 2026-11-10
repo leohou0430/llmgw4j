@@ -1,0 +1,150 @@
+[
+  {
+    "engine": "webflux",
+    "unauth_admin_routes_status": 200,
+    "semantic": {
+      "A_status": 200,
+      "B_status": 200,
+      "identical_body": true,
+      "B_requested_model": "n",
+      "B_returned_object": "chat.completion",
+      "metrics": {
+        "available": true,
+        "counters": [
+          {
+            "name": "llmgw.cache",
+            "tags": "result=similar_hit",
+            "value": 1.0
+          },
+          {
+            "name": "llmgw.cache",
+            "tags": "result=miss",
+            "value": 1.0
+          },
+          {
+            "name": "llmgw.cache",
+            "tags": "result=hit",
+            "value": 1.0
+          },
+          {
+            "name": "llmgw.requests",
+            "tags": "engine=webflux,protocol=chat,route=mock",
+            "value": 1.0
+          },
+          {
+            "name": "llmgw.requests",
+            "tags": "engine=webflux,protocol=responses,route=mock",
+            "value": 1.0
+          }
+        ],
+        "timers": [
+          {
+            "tags": "engine=webflux,mode=json,route=mock",
+            "p50ms": 8.9,
+            "count": 1,
+            "p99ms": 8.9,
+            "maxMs": 9.2,
+            "name": "llmgw.upstream"
+          },
+          {
+            "tags": "",
+            "p50ms": 0.0,
+            "count": 2,
+            "p99ms": 0.0,
+            "maxMs": 178.0,
+            "name": "llmgw.latency"
+          },
+          {
+            "tags": "engine=webflux",
+            "p50ms": 5.5,
+            "count": 2,
+            "p99ms": 175.9,
+            "maxMs": 169.6,
+            "name": "llmgw.overhead"
+          }
+        ]
+      },
+      "B_headers": {}
+    },
+    "cross_tenant_batch_cancel": {
+      "A_create_status": 200,
+      "id": "batch-1",
+      "B_cancel_status": 200,
+      "B_body": "{\"id\":\"batch-1\",\"object\":\"batch\",\"status\":\"cancelled\"}"
+    }
+  },
+  {
+    "engine": "vt",
+    "unauth_admin_routes_status": 200,
+    "semantic": {
+      "A_status": 200,
+      "B_status": 200,
+      "identical_body": true,
+      "B_requested_model": "n",
+      "B_returned_object": "chat.completion",
+      "metrics": {
+        "available": true,
+        "counters": [
+          {
+            "tags": "result=similar_hit",
+            "value": 1.0,
+            "name": "llmgw.cache"
+          },
+          {
+            "tags": "result=miss",
+            "value": 1.0,
+            "name": "llmgw.cache"
+          },
+          {
+            "tags": "engine=vt,protocol=responses,route=mock",
+            "value": 1.0,
+            "name": "llmgw.requests"
+          },
+          {
+            "tags": "result=hit",
+            "value": 1.0,
+            "name": "llmgw.cache"
+          },
+          {
+            "tags": "engine=vt,protocol=chat,route=mock",
+            "value": 1.0,
+            "name": "llmgw.requests"
+          }
+        ],
+        "timers": [
+          {
+            "maxMs": 5.2,
+            "name": "llmgw.upstream",
+            "tags": "engine=vt,mode=json,route=mock",
+            "p50ms": 5.0,
+            "count": 1,
+            "p99ms": 5.0
+          },
+          {
+            "maxMs": 130.4,
+            "name": "llmgw.overhead",
+            "tags": "engine=vt",
+            "p50ms": 3.3,
+            "count": 2,
+            "p99ms": 134.1
+          },
+          {
+            "maxMs": 135.0,
+            "name": "llmgw.latency",
+            "tags": "",
+            "p50ms": 0.0,
+            "count": 2,
+            "p99ms": 0.0
+          }
+        ]
+      },
+      "B_headers": {}
+    },
+    "cross_tenant_batch_cancel": {
+      "A_create_status": 200,
+      "id": "batch-1",
+      "B_cancel_status": 200,
+      "B_body": "{\"id\":\"batch-1\",\"object\":\"batch\",\"status\":\"cancelled\"}"
+    }
+  }
+]

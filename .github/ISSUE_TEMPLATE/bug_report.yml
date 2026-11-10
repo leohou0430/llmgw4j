@@ -50,7 +50,7 @@ body:
       description: 启动命令 + curl 请求 + 配置文件片段；请删掉密钥
       placeholder: |
         ./bin/build.sh
-        java -jar llmgw-app/target/llmgw-app-0.1.0-SNAPSHOT.jar --spring.profiles.active=webflux
+        java -jar llmgw-app/target/llmgw-app-0.2.0.jar --spring.profiles.active=webflux
         curl -N -X POST http://127.0.0.1:8080/v1/chat/completions ...
       render: shell
     validations:

@@ -1,0 +1,45 @@
+time="2026-11-10T08:49:55+08:00" level=warning msg="failed status=200 error= body=data: {\"id\":\"chatcmpl-mock\",\"object\":\"chat.completion.chunk\",\"created\":0,\"model\":\"qwen-plus\",\"choices\":[{\"index\":0,\"delta\":{\"content\":\"tok0\"},\"finish_reason\":null}]}\n\ndata: {\"id\":\"chatcmpl-mock\",\"object\":\"chat.completion.chunk\",\"created\":0,\"model\":\"qwen-plus\",\"choices\":[{\"index\":0,\"delta\":{\"content\":\"tok1\"},\"finish_reason\":null}]}\n\ndata: {\"id\":\"chatcmpl-mock\",\"object\":\"chat.completion.chunk\",\"created\":0,\"model\":\"qwen-plus\",\"choices\":[{\"index\":0,\"delta\":{\"content\":\"tok2\"},\"finish_reason\":null}]}\n\nevent: error\ndata: {\"error\":{\"message\":\"upstream: upstream closed SSE stream without [DONE]\",\"type\":\"gateway_error\"}}\n\ndata: [DONE]\n\n" source=console
+
+
+  █ THRESHOLDS 
+
+    gateway_failure_rate
+    ✓ 'rate<0.01' rate=0.00%
+
+
+  █ TOTAL RESULTS 
+
+    checks_total.......: 266076 17729.274152/s
+    checks_succeeded...: 99.99% 266074 out of 266076
+    checks_failed......: 0.00%  2 out of 266076
+
+    ✓ status is 200
+    ✓ stream completed
+    ✗ all mock chunks arrived
+      ↳  99% — ✓ 66518 / ✗ 1
+    ✗ no in-band error
+      ↳  99% — ✓ 66518 / ✗ 1
+
+    CUSTOM
+    gateway_failure_rate...........: 0.00%  1 out of 66519
+    gateway_latency_ms.............: avg=10.99ms p(50)=8.55ms p(95)=23.75ms p(99)=31.88ms max=224.57ms
+    gateway_requests...............: 66519  4432.318538/s
+
+    HTTP
+    http_req_duration..............: avg=10.99ms p(50)=8.55ms p(95)=23.75ms p(99)=31.88ms max=224.57ms
+      { expected_response:true }...: avg=10.99ms p(50)=8.55ms p(95)=23.75ms p(99)=31.88ms max=224.57ms
+    http_req_failed................: 0.00%  0 out of 66519
+    http_reqs......................: 66519  4432.318538/s
+
+    EXECUTION
+    iteration_duration.............: avg=11.26ms p(50)=8.83ms p(95)=24.02ms p(99)=32.19ms max=224.83ms
+    iterations.....................: 66519  4432.318538/s
+    vus............................: 50     min=50         max=50
+    vus_max........................: 50     min=50         max=50
+
+    NETWORK
+    data_received..................: 119 MB 7.9 MB/s
+    data_sent......................: 21 MB  1.4 MB/s
+
+
+

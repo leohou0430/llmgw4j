@@ -1,0 +1,54 @@
+########## webflux ##########
+-- normal paths (default mock upstream) --
+  [PASS] non-stream 200 + JSON body -- 200 application/json {"id":"mock","object":"chat.completion","choices":[{"index":
+  [PASS] SSE 200 + chunks + [DONE], no error event -- 200 text/event-stream data_lines=10 done=1 err_event=0
+  [PASS] missing key -> 401 -- 401 {"error":{"message":"invalid api key","type":"gateway_error"
+  [PASS] invalid json -> 400 -- 400 {"error":{"message":"invalid json: Unrecognized token 'not':
+-- upstream unreachable, NO fallback --
+  [PASS] non-stream upstream failure -> 502 JSON -- 502 application/json {"error":{"message":"upstream: ClosedChannelException","type":"gateway
+  [PASS] SSE failure before first chunk -> 502 JSON (no fake 200) -- 502 application/json {"error":{"message":"upstream: ClosedChannelException","type":"gateway
+-- upstream unreachable, WITH fallback --
+  [PASS] non-stream fallback -> 200 -- 200 {"id":"mock","object":"chat.completion","choices":
+  [PASS] SSE fallback -> 200 + [DONE] -- 200 done=1
+-- failure AFTER the first chunk --
+  [PASS] mid-stream failure -> in-band error event + [DONE] -- 200 text/event-stream err_event=1 done=1
+  [PASS] no fallback splicing after first chunk -- 200 tok0=1 err_event=1
+-- silent truncation: clean EOF, no [DONE], no exception thrown --
+  [PASS] zero-frame EOF -> 502 JSON (not fabricated success) -- 502 application/json {"error":{"message":"upstream: upstream closed SSE stream without [DONE]","type"
+  [PASS] mid-stream EOF -> in-band error + single [DONE] -- 200 text/event-stream err_event=1 done=1 tok0=1 reason=1
+  [PASS] EOF truncation never triggers fallback splicing -- 200 tok0=1 err_event=1
+  [PASS] admin snapshot 200 + usage (native AOT hints) -- 200 {"governanceEnabled":true,"usage":{"demo":{"requests":3,"pro
+  [PASS] truncated streams billed as failures -- errors=2 (expect >=2)
+-- v5: non-2xx upstream never becomes SSE data --
+  [PASS] 429 upstream -> 502 JSON with status detail -- 502 application/json {"error":{"message":"upstream: upstream status 429: {\"error\":{\"message\":\"injected ups
+  [PASS] 500 upstream on SSE -> 502 JSON, no error body leaked as data -- 502 application/json {"error":{"message":"upstream: upstream status 500: {\"error\":{\"message\":\"injected ups
+-- v5: [DONE] followed by disconnect is still a success --
+  [PASS] late disconnect after [DONE] -> no spurious error event -- 200 done=1 err_event=0
+  [PASS] completed stream billed as success -- errors=0 (expect 0)
+-- v5: cache key covers the whole request --
+  [PASS] different temperature never hits the other request's cache -- A=echo-bfb9652e2da6 B=echo-4c1c83ccc63b
+  [PASS] cache actually populated (so the miss was real) -- cacheSize=2
+-- v5: exact completion-token metering --
+  [PASS] usage chunk replaces delta estimate (1 + 8 = 9) -- completionTokens=9 requests=2 errors=0
+-- v5: admin surface (token gate + no upstream key leak) --
+  [PASS] admin token gates /admin/routes and key is redacted -- no_token=401 with_token=200 [{"id":"mock-primary","protocol":"","model":"*","targetModel":"","targetUrl":"http://127.0
+-- v5: request body cap + idempotent snapshot restore --
+  [PASS] oversized request -> 413 -- 413 application/json
+  [PASS] repeated snapshot/load replaces instead of doubling -- requests=1 (expect 1)
+-- v5: client disconnect still settles the ledger --
+  [PASS] aborted stream is billed as a failed request -- requests=1 errors=1
+-- v5: concurrent SSE must not cancel sibling upstream requests --
+  [PASS] 40-way concurrent SSE: zero 502 / zero Request cancelled -- non200=0 cancelled=0
+-- v6: correlation id echoes, generates, and reaches audit --
+  [PASS] incoming X-Request-Id echoed in response -- got=smoke-req-42
+  [PASS] absent X-Request-Id gets a generated gw- id -- got=gw-653980405af3eeac
+  [PASS] request id reaches audit events -- matches=1
+-- v6: circuit breaker opens and falls back without network I/O --
+  [PASS] 2 failures open the circuit; 3rd request served via fallback -- s1=200 s2=200 s3=200 open_events=1
+  [PASS] CircuitOpenException never leaks to the client -- leak=0
+-- v6: weighted random routing follows configured weights --
+  [PASS] weighted routing distributes ~1:3 (tolerance +/-12pp) -- w-light=51(0.255) w-heavy=149(0.745)
+########## static check: single JSON parse on hot path ##########
+  [PASS] controllers reuse decision.parsed() -- ProtocolCodec.parse occurrences in controllers=0
+==========================================
+PASS=34 FAIL=0

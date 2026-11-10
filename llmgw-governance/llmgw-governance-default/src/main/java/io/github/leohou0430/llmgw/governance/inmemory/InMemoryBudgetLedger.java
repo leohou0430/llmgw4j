@@ -5,7 +5,6 @@ import io.github.leohou0430.llmgw.governance.QuotaMath;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * In-memory $ ledger mirroring the token ledger's semantics: an atomic
@@ -16,8 +15,8 @@ import java.util.concurrent.atomic.AtomicLong;
 public class InMemoryBudgetLedger implements BudgetLedger {
 
     private static final class Spend {
-        final AtomicLong committedMicroUsd = new AtomicLong();
-        final AtomicLong reservedMicroUsd = new AtomicLong();
+        long committedMicroUsd;
+        long reservedMicroUsd;
     }
 
     private final Map<String, Spend> byKey = new ConcurrentHashMap<>();
@@ -33,15 +32,12 @@ public class InMemoryBudgetLedger implements BudgetLedger {
         }
         long want = QuotaMath.normalize(estimatedMicroUsd);
         Spend spend = spend(keyId);
-        for (;;) {
-            long committed = spend.committedMicroUsd.get();
-            long reserved = spend.reservedMicroUsd.get();
-            if (!QuotaMath.admits(committed, reserved, want, budgetMicroUsd)) {
+        synchronized (spend) {
+            if (!QuotaMath.admits(spend.committedMicroUsd, spend.reservedMicroUsd, want, budgetMicroUsd)) {
                 return false;
             }
-            if (spend.reservedMicroUsd.compareAndSet(reserved, reserved + want)) {
-                return true;
-            }
+            spend.reservedMicroUsd += want;
+            return true;
         }
     }
 
@@ -49,19 +45,23 @@ public class InMemoryBudgetLedger implements BudgetLedger {
     public void settle(String keyId, long reservedMicroUsd, long actualMicroUsd) {
         Spend spend = spend(keyId);
         long released = QuotaMath.released(reservedMicroUsd);
-        if (released > 0) {
-            spend.reservedMicroUsd.addAndGet(-released);
-        }
         long billable = QuotaMath.normalize(actualMicroUsd);
-        if (billable > 0) {
-            spend.committedMicroUsd.addAndGet(billable);
+        synchronized (spend) {
+            if (released > spend.reservedMicroUsd) {
+                throw new IllegalArgumentException("settlement exceeds held reservation");
+            }
+            long committed = Math.addExact(spend.committedMicroUsd, billable);
+            spend.reservedMicroUsd -= released;
+            spend.committedMicroUsd = committed;
         }
     }
 
     @Override
     public Map<String, Long> spendMicroUsd() {
         Map<String, Long> out = new java.util.LinkedHashMap<>();
-        byKey.forEach((key, spend) -> out.put(key, spend.committedMicroUsd.get()));
+        byKey.forEach((key, spend) -> {
+            synchronized (spend) { out.put(key, spend.committedMicroUsd); }
+        });
         return out;
     }
 }

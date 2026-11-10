@@ -1,7 +1,13 @@
 # llmgw4j 配置说明
 
-> **适用版本**：`0.1.0-SNAPSHOT`（Unreleased，包名 `io.github.leohou0430.llmgw`）
-> **文档日期**：2026-11-08，逐项核对 `GatewayProperties.java`、`application*.yml`、`bin/*.sh`、`bench/*` 实读结果
+审查修复补充：`gateway.production=true`（或 `LLMGW_PRODUCTION=true`）启用生产启动校验。
+`gateway.max-response-bytes` 默认 `4194304`，独立限制上游非流式响应；
+`gateway.max-concurrent-requests` 默认 `64`，达到上限返回 `503`，请求结束或取消后释放容量。
+当前金额预算仅为演示估算账本，生产启用会被拒绝；未知模型价格不能当作免费。
+未知资源返回 `404`，文件和批任务列表暂不支持并返回 `501`。
+
+> **适用版本**：`0.2.0`（包名 `io.github.leohou0430.llmgw`）
+> **文档日期**：2026-11-10，逐项核对 `GatewayProperties.java`、`application*.yml`、`bin/*.sh`、`bench/*` 实读结果
 > **配套**：[使用手册](USER_GUIDE.md) · [项目 README](../README.md) · [压测口径](../bench/README.md)
 
 ---
@@ -41,7 +47,7 @@
 
 想加本地覆盖配置，两条路：**命令行 `--key=value`**，或新建 `application-local.yml`（需自己激活 `local` profile）——后者已被 `.gitignore` 忽略，适合放密钥以外的本地差异。
 
-> 所有配置项**都不是必填**，Java 层均有默认值。下表「必填」列全为「否」，指的是「不配也能启动」；生产可用性是另一回事，见 [第 11 节](#11-安全配置与忽略规则)。
+> 演示模式下配置项**可使用默认值**，Java 层均有默认值。下表「必填」列全为「否」，指的是「不配也能启动」；启用 `gateway.production=true` 后，生产校验会要求管理凭据、非演示 key、关闭 mock 等安全条件；生产可用性还需独立验收，见 [第 11 节](#11-安全配置与忽略规则)。
 
 ---
 
@@ -73,7 +79,7 @@
 | 配置项 | 类型 | 代码默认 | 发布值 | 说明与约束 |
 | --- | --- | --- | --- | --- |
 | `gateway.governance-enabled` | boolean | `true` | `true` | `false` = 关闭整套治理（鉴权/配额/限流/缓存/熔断/计量/审计），纯透传对照用 |
-| `gateway.admin-token` | String | `""` | `${LLMGW_ADMIN_TOKEN:}` | 空 = 所有 `/admin/*` **不鉴权**；非空则必须带 `X-Admin-Token` 头，常数时间比较 |
+| `gateway.admin-token` | String | `""` | `${LLMGW_ADMIN_TOKEN:}` | 两种管理 token 都为空才不鉴权；写接口及非审计数据接口需完整 `X-Admin-Token` |
 | `gateway.max-request-bytes` | long | `4194304`（4MB） | `4194304` | 请求体硬上限，两个数据面共用；超限返回 413 `request body too large` |
 | `gateway.routes` | List\<RouteDef\> | 空列表 | 1 条 `mock-primary` | 为空时自动生成一条默认路由 |
 | `gateway.api-keys` | List\<ApiKeyDef\> | 空列表 | 1 条 `sk-demo` | 为空时自动注册字面量 `sk-demo` |
@@ -83,10 +89,10 @@
 | 配置项 | 类型 | 代码默认 | 发布值 | 说明与约束 |
 | --- | --- | --- | --- | --- |
 | `gateway.upstream.type` | String | `mock` | `mock` | 注释标注可选 `mock` / `openai-compatible`；也用于生成 `JdkHttpUpstream.id()` = `jdk-http-<type>` |
-| `gateway.upstream.base-url` | String | `http://127.0.0.1:9090/mock/v1` | 同左 | 上游基址。`targetUri()` 会**自动追加 `/chat/completions`**，所以填到 `/v1` 这一级即可，别把路径写全 |
+| `gateway.upstream.base-url` | String | `http://127.0.0.1:9090/mock/v1` | 同左 | 上游基址。`targetUri()` 按协议追加端点后缀；已以该后缀结尾的完整 URL 会复用。建议配置供应商基址，确认协议和路径匹配 |
 | `gateway.upstream.api-key` | String | `${DASHSCOPE_API_KEY:}` | `${DASHSCOPE_API_KEY:}` | 上游厂商密钥。值为空或以 `${` 开头时**不发送** `Authorization` 头 |
 | `gateway.upstream.timeout-ms` | int | `60000` | `60000` | 传给 `HttpRequest.timeout()` 的**整体**超时。不是 connect / 首字节 / 空闲读三级超时；半开上游要等满 60s |
-| `gateway.upstream.executor-threads` | int | `32` | **—（yml 未配）** | `>0` 用固定平台线程池跑 `HttpClient.sendAsync`；`0` 回退 JDK 默认 executor。8/16/32/64 线程扫描拐点在 32（16 掉约 8% JSON RPS，64 无增益），JDK 默认 executor 实测 SSE 吞吐 −30% |
+| `gateway.upstream.executor-threads` | int | `32` | **—（yml 未配）** | `>0` 用固定平台线程池跑 `HttpClient.sendAsync`；`0` 回退 JDK 默认 executor。历史单机扫描选取 32，并非所有 CPU 配额下的最优值；应按实际 JSON/SSE 负载重测。2026-11-10 的 4 CPU 实验中 4 线程 JSON 更快，但 SSE 出现截断，因此默认仍保留 32（见性能审查报告） |
 
 `real` profile 会把 `type` 改为 `openai-compatible`、`base-url` 改为 `https://dashscope.aliyuncs.com/compatible-mode/v1`。
 
@@ -180,7 +186,7 @@ api-keys:
 | `spring.data.redis.port` | int | Spring Boot 默认 `6379` | 实验脚本用 `6399` |
 | （常量）Redis key 前缀 | String | `llmgw:` | `GovernancePacks.DEFAULT_REDIS_KEY_PREFIX`，代码常量，不可配 |
 
-只覆盖 `TokenLimiter` / `UsageLedger` / `CircuitBreaker` 三个 SPI；`ApiKeyRegistry` / `SemanticCache` / `SnapshotStore` 仍是本地实现。每请求 2–4 次 Redis 往返，无流水线合并。
+覆盖 `TokenLimiter` / `UsageLedger` / `CircuitBreaker` / `ApiKeyRegistry` / `SemanticCache` / `TaskRouteSticky`；`BudgetLedger` / `RequestLogSink` / `SnapshotStore` 仍是本地实现。每请求 2–4 次 Redis 往返，无流水线合并。
 
 ---
 
@@ -223,35 +229,47 @@ api-keys:
 ### 内容治理（gateway.guardrails.*）
 
 `deny-patterns[]`（正则 vs 提取的 prompt，命中 400）与 `http-url`（外接审核引擎，
-POST `{model,prompt}` → `{action,reason}`，不可达时 fail-open）。
+POST `{model,prompt}` → `{action,reason}`，不可达或无效响应时返回 503）。
 
 ### 语义缓存键（gateway.cache.semantic-*）
 
-`semantic-url` 指向 OpenAI 兼容 `/embeddings`；缓存键从精确哈希升级为分桶向量
-签名（`semantic-bucket-scale` = 相似度粒度）。embedder 失败自动降级精确键。
+`semantic-url` 指向 OpenAI 兼容 `/embeddings`。响应缓存保持租户/协议隔离的请求指纹精确键；
+精确未命中时，可在保留模型和非文本参数的分区内做余弦相似度检索。只有受支持的
+单条纯文本用户输入允许语义变化。embedder 故障时仅使用精确缓存。
+`semantic-bucket-scale` 为兼容保留参数，当前默认治理链不使用分桶签名作响应键。
 
 ### 认证与密钥（gateway.auth.*，B1/B5）
 
 | 键 | 默认 | 说明 |
 |---|---|---|
 | `jwt-secret` | `""` | HS256 JWT 校验密钥；空 = 关闭（仅静态 key） |
-| `jwt-issuer` | `""` | 期望的 `iss`（空 = 不校验） |
+| `jwt-issuer` | `""` | 期望的 `iss`（空 = 不限制发行者；提供时必须为字符串） |
+| `jwt-audience` | `""` | 期望的 `aud`；配置后必须存在且以字符串或字符串数组精确匹配（区分大小写） |
 | `jwt-quota-tokens` | `1000000` | JWT 虚拟 key 的配额 |
 | `rotate-overlap-seconds` | `300` | 轮换后旧 token 的宽限窗口 |
 | `hash-keys-at-rest` | `true` | key 存储落 SHA-256（明文不落盘） |
-| `admin-read-token` | `""` | 只读 admin token（可观测 GET 放行，变更拒绝） |
+| `admin-read-token` | `""` | 审计导出只读 token（仅 `/admin/audit/export` 接受，其他管理接口仍需完整 token） |
+
+`exp` / `nbf` 可以不提供；提供时必须为 NumericDate 数值（支持小数秒），不能用字符串、null 或其他类型绕过校验。到达 `exp` 即过期；到达 `nbf` 才可用。当前不提供时钟偏移宽限。提供的 `iss` / `sub` 必须为字符串；为兼容现有配置，缺失或空白 `sub` 仍映射到 `jwt:anonymous`。
+
+`gateway.auth.jwt-audience` 默认空，保留未启用 audience 校验的部署；面向多个服务共用签发方的部署应显式设置接收方。此选项只补充 HS256 JWT 声明约束，不包含 OIDC discovery、JWKS、公钥轮换或企业 SSO。
+
+`admin-read-token` 的完整配置路径为 `gateway.admin-read-token`。只配置它时仅允许带
+`X-Admin-Read-Token` 的审计导出，其他管理数据及写接口返回 401。两种 token 都为空
+才进入开放演示模式；生产要求完整管理 token 非空，且与只读 token 不同。
 
 ### 限流与预算扩展（B4）
 
 `gateway.model-limits[]`：`{model, tokens-per-second, burst}`，模型匹配 exact > 前缀 > `*`，
 每个模型独立 token 桶（429 `model rate limit exceeded`）。
-`gateway.group-budgets[]`：`{group, budget-micro-usd}`，组级 $ 硬预算
+`gateway.group-budgets[]`：`{group, budget-micro-usd}`，组级金额估算预算（演示功能，生产禁用）
 （429 `group spend budget exceeded`）。
 
 ### 语义缓存相似度（B2）
 
 `gateway.cache.semantic-threshold`（0..1，0 = 关闭）开启余弦相似度检索；
-`semantic-vector-capacity`（默认 5000）为向量库容量。分桶键仍作 fallback。
+`semantic-vector-capacity`（默认 5000）为进程内向量库容量。Redis 包共享响应缓存，
+不共享这个向量索引，也不提供分布式 ANN；跨副本精确命中与语义命中不是同一能力。
 
 ### 治理参数热更新
 
@@ -317,7 +335,7 @@ POST `{model,prompt}` → `{action,reason}`，不可达时 fail-open）。
 
 | 变量 | 引用位置 | 用途 | 未设置时 |
 | --- | --- | --- | --- |
-| `LLMGW_ADMIN_TOKEN` | `application.yml:16` → `gateway.admin-token: ${LLMGW_ADMIN_TOKEN:}` | 管理面令牌 | 空字符串 → `/admin/*` 全部开放 |
+| `LLMGW_ADMIN_TOKEN` | `application.yml:16` → `gateway.admin-token: ${LLMGW_ADMIN_TOKEN:}` | 管理面令牌 | 完整及只读管理 token 都为空 → 管理数据接口开放 |
 | `DASHSCOPE_API_KEY` | `application.yml:21`、`application-real.yml:9`、`GatewayProperties.java:40` | 阿里百炼 / OpenAI 兼容上游密钥 | 空 → 不发 `Authorization` 头 |
 
 `CONTRIBUTING.md` 明确要求：密钥通过 `DASHSCOPE_API_KEY` 注入，**永远不要写进文件**。仓库内无真实凭据。
@@ -428,7 +446,7 @@ gateway:
 
 ```bash
 export DASHSCOPE_API_KEY='<密钥>'
-java -jar llmgw-app/target/llmgw-app-0.1.0-SNAPSHOT.jar \
+java -jar llmgw-app/target/llmgw-app-0.2.0.jar \
   --spring.profiles.active=webflux,real \
   --gateway.upstream.base-url=http://127.0.0.1:8000/v1 \
   --gateway.routes[0].target-url=http://127.0.0.1:8000/v1 \
@@ -586,7 +604,7 @@ server:
 
 gateway:
   governance-enabled: true        # false = 纯透传对照
-  admin-token: ${LLMGW_ADMIN_TOKEN:}   # 空 = /admin 不鉴权（仅限本地）
+  admin-token: ${LLMGW_ADMIN_TOKEN:}   # 两种管理 token 都为空才不鉴权（仅限本地）
   max-request-bytes: 4194304      # 4MB，超限 413
   upstream:
     type: mock                    # mock | openai-compatible

@@ -20,7 +20,7 @@ public class InMemoryApiKeyRegistry implements ApiKeyRegistry {
 
     public InMemoryApiKeyRegistry(GatewayProperties properties) {
         this.hashLookup = properties.getAuth().isHashKeysAtRest();
-        if (properties.getApiKeys().isEmpty()) {
+        if (properties.getApiKeys().isEmpty() && !properties.isProduction()) {
             byToken.put(lookupKey("sk-demo"), new ApiKey("demo", "demo",
                     GovernanceLimits.from(properties).defaultQuotaTokens(), Set.of()));
         } else {

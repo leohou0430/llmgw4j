@@ -1,0 +1,75 @@
+{
+  "rankings": [],
+  "excluded": [
+    {
+      "profile": "wire",
+      "mode": "json",
+      "arm": "direct",
+      "reason": "incomplete rounds"
+    },
+    {
+      "profile": "wire",
+      "mode": "json",
+      "arm": "llmgw-webflux-proxy",
+      "reason": "incomplete rounds"
+    },
+    {
+      "profile": "wire",
+      "mode": "json",
+      "arm": "llmgw-vt-proxy",
+      "reason": "incomplete rounds"
+    },
+    {
+      "arm": "bifrost",
+      "profile": "wire",
+      "mode": "json",
+      "reason": "warmup failed",
+      "measurement": {
+        "requests": 14123,
+        "rps": 4697.338784459235,
+        "error_rate": 0.0004248389152446364,
+        "p50_ms": 8.911,
+        "p95_ms": 22.940999999999995,
+        "p99_ms": 32.75410000000003,
+        "arm": "bifrost",
+        "profile": "wire",
+        "mode": "json",
+        "round": 0,
+        "exit_code": 0,
+        "upstream_requests": 14117,
+        "loadavg": [
+          4.26806640625,
+          3.8681640625,
+          5.66162109375
+        ],
+        "invalid_reason": "upstream count differs: caching/retry/loss must be investigated"
+      }
+    },
+    {
+      "arm": "llmgw-webflux-before",
+      "profile": "wire",
+      "mode": "json",
+      "reason": "warmup failed",
+      "measurement": {
+        "requests": 1822,
+        "rps": 591.810729703929,
+        "error_rate": 0.0005488474204171241,
+        "p50_ms": 92.041,
+        "p95_ms": 113.86069999999998,
+        "p99_ms": 189.48259999999996,
+        "arm": "llmgw-webflux-before",
+        "profile": "wire",
+        "mode": "json",
+        "round": 0,
+        "exit_code": 0,
+        "upstream_requests": 1821,
+        "loadavg": [
+          5.0947265625,
+          4.05419921875,
+          5.70654296875
+        ],
+        "invalid_reason": "upstream count differs: caching/retry/loss must be investigated"
+      }
+    }
+  ]
+}

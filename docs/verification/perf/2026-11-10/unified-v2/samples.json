@@ -1,0 +1,60 @@
+[
+  {
+    "requests": 135776,
+    "rps": 13553.716995282612,
+    "error_rate": 2.2095215649304736e-05,
+    "p50_ms": 2.058,
+    "p95_ms": 4.342,
+    "p99_ms": 6.589,
+    "arm": "direct",
+    "profile": "wire",
+    "mode": "json",
+    "round": 1,
+    "exit_code": 0,
+    "upstream_requests": 135773,
+    "loadavg": [
+      8.7919921875,
+      4.88916015625,
+      5.98388671875
+    ],
+    "invalid_reason": "upstream count differs: caching/retry/loss must be investigated"
+  },
+  {
+    "requests": 18006,
+    "rps": 1771.6864317707873,
+    "error_rate": 0,
+    "p50_ms": 12.005500000000001,
+    "p95_ms": 77.6005,
+    "p99_ms": 86.4377,
+    "arm": "llmgw-webflux-proxy",
+    "profile": "wire",
+    "mode": "json",
+    "round": 1,
+    "exit_code": 0,
+    "upstream_requests": 18006,
+    "loadavg": [
+      13.15087890625,
+      5.93359375,
+      6.3408203125
+    ]
+  },
+  {
+    "requests": 32959,
+    "rps": 3293.6346380959176,
+    "error_rate": 0,
+    "p50_ms": 8.407,
+    "p95_ms": 51.87629999999999,
+    "p99_ms": 61.125779999999985,
+    "arm": "llmgw-vt-proxy",
+    "profile": "wire",
+    "mode": "json",
+    "round": 1,
+    "exit_code": 0,
+    "upstream_requests": 32959,
+    "loadavg": [
+      11.35595703125,
+      5.787109375,
+      6.28369140625
+    ]
+  }
+]

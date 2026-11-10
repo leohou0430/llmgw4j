@@ -2,6 +2,10 @@ target/
 bin/native/
 data/
 .git/
+.codegraph/
+.idea/
+tools/
+**/__pycache__/
 .github/
 docs/
 bench/

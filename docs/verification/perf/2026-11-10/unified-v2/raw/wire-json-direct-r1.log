@@ -1,0 +1,45 @@
+time="2026-11-10T00:41:58+08:00" level=warning msg="failed status=502 error= body=<html>\r\n<head><title>502 Bad Gateway</title></head>\r\n<body>\r\n<center><h1>502 Bad Gateway</h1></center>\r\n<hr><center>nginx/1.30.6</center>\r\n</body>\r\n</html>\r\n" source=console
+time="2026-11-10T00:42:01+08:00" level=warning msg="failed status=502 error= body=<html>\r\n<head><title>502 Bad Gateway</title></head>\r\n<body>\r\n<center><h1>502 Bad Gateway</h1></center>\r\n<hr><center>nginx/1.30.6</center>\r\n</body>\r\n</html>\r\n" source=console
+time="2026-11-10T00:42:07+08:00" level=warning msg="failed status=502 error= body=<html>\r\n<head><title>502 Bad Gateway</title></head>\r\n<body>\r\n<center><h1>502 Bad Gateway</h1></center>\r\n<hr><center>nginx/1.30.6</center>\r\n</body>\r\n</html>\r\n" source=console
+
+
+  █ THRESHOLDS 
+
+    gateway_failure_rate
+    ✓ 'rate<0.01' rate=0.00%
+
+
+  █ TOTAL RESULTS 
+
+    checks_total.......: 271552 27107.433991/s
+    checks_succeeded...: 99.99% 271546 out of 271552
+    checks_failed......: 0.00%  6 out of 271552
+
+    ✗ status is 200
+      ↳  99% — ✓ 135773 / ✗ 3
+    ✗ completion is intact
+      ↳  99% — ✓ 135773 / ✗ 3
+
+    CUSTOM
+    gateway_failure_rate...........: 0.00%  3 out of 135776
+    gateway_latency_ms.............: avg=3.48ms p(50)=2.05ms p(95)=4.34ms p(99)=6.58ms max=227.48ms
+    gateway_requests...............: 135776 13553.716995/s
+
+    HTTP
+    http_req_duration..............: avg=3.48ms p(50)=2.05ms p(95)=4.34ms p(99)=6.58ms max=227.48ms
+      { expected_response:true }...: avg=3.48ms p(50)=2.05ms p(95)=4.34ms p(99)=6.58ms max=227.48ms
+    http_req_failed................: 0.00%  3 out of 135776
+    http_reqs......................: 135776 13553.716995/s
+
+    EXECUTION
+    iteration_duration.............: avg=3.67ms p(50)=2.24ms p(95)=4.58ms p(99)=6.85ms max=227.71ms
+    iterations.....................: 135776 13553.716995/s
+    vus............................: 50     min=50          max=50
+    vus_max........................: 50     min=50          max=50
+
+    NETWORK
+    data_received..................: 54 MB  5.4 MB/s
+    data_sent......................: 43 MB  4.3 MB/s
+
+
+

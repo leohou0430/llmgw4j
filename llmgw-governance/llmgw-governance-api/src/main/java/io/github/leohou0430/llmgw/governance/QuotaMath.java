@@ -25,7 +25,9 @@ public final class QuotaMath {
 
     /** The single admission rule: committed + in-flight + want must fit. */
     public static boolean admits(long committed, long reserved, long want, long quota) {
-        return committed + reserved + want <= quota;
+        return committed >= 0 && reserved >= 0 && want >= 0 && quota >= 0
+                && committed <= quota && reserved <= quota - committed
+                && want <= quota - committed - reserved;
     }
 
     /** A failed request produced nothing billable (no charge for an outage). */

@@ -8,7 +8,44 @@ import java.util.List;
 import java.util.Map;
 
 @ConfigurationProperties(prefix = "gateway")
-public class GatewayProperties {
+public class GatewayProperties implements org.springframework.beans.factory.InitializingBean {
+
+    private boolean production;
+
+    public boolean isProduction() { return production; }
+    public void setProduction(boolean value) { this.production = value; }
+
+    @Override
+    public void afterPropertiesSet() {
+        if (!production) {
+            return;
+        }
+        if (adminToken == null || adminToken.isBlank()) {
+            throw new IllegalStateException("production requires gateway.admin-token");
+        }
+        if (adminToken.equals(adminReadToken)) {
+            throw new IllegalStateException("production requires distinct full and read-only admin credentials");
+        }
+        if (!governanceEnabled) {
+            throw new IllegalStateException("production requires governance-enabled=true");
+        }
+        if (apiKeys.isEmpty() && auth.getJwtSecret().isBlank()) {
+            throw new IllegalStateException("production requires API keys or JWT authentication");
+        }
+        var ids = new java.util.HashSet<String>();
+        var tokens = new java.util.HashSet<String>();
+        for (ApiKeyDef key : apiKeys) {
+            if (key.getId() == null || key.getId().isBlank() || !ids.add(key.getId())
+                    || key.getToken() == null || key.getToken().isBlank()
+                    || "sk-demo".equals(key.getToken()) || !tokens.add(key.getToken())) {
+                throw new IllegalStateException("production requires unique non-demo API credentials and ids");
+            }
+        }
+        if (apiKeys.stream().anyMatch(key -> key.getBudgetMicroUsd() > 0)
+                || groupBudgets.stream().anyMatch(group -> group.getBudgetMicroUsd() > 0)) {
+            throw new IllegalStateException("production monetary budgets require a durable, recoverable ledger and cost bounds; unavailable in this implementation");
+        }
+    }
 
     private final Upstream upstream = new Upstream();
     private final Governance governance = new Governance();
@@ -28,10 +65,12 @@ public class GatewayProperties {
     private boolean governanceEnabled = true;
     /** Hard cap for a request body, protects both data planes from OOM. */
     private long maxRequestBytes = 4 * 1024 * 1024;
+    /** Separate cap for buffered upstream responses (JSON and binary). */
+    private long maxResponseBytes = 4 * 1024 * 1024;
+    private int maxConcurrentRequests = 64;
     /** Empty = admin endpoints open (local demo). Set it in any shared environment. */
     private String adminToken = "";
-    /** B5: read-only admin token — grants GET access to observability endpoints
-     *  (snapshot/requests/metrics/audit export) but no mutating calls. */
+    /** Read-only token accepted by audit export; other admin calls require the full token. */
     private String adminReadToken = "";
     private final Auth auth = new Auth();
     /**
@@ -45,6 +84,8 @@ public class GatewayProperties {
         /** Blank = JWT validation off (static registry keys only). */
         private String jwtSecret = "";
         private String jwtIssuer = "";
+        /** Expected JWT recipient; blank preserves deployments without audience validation. */
+        private String jwtAudience = "";
         /** Quota given to JWT-authenticated callers (no registry key exists). */
         private long jwtQuotaTokens = 1_000_000;
         /** Overlap window (seconds) during which a rotated-out token still works. */
@@ -56,6 +97,8 @@ public class GatewayProperties {
         public void setJwtSecret(String v) { this.jwtSecret = v == null ? "" : v; }
         public String getJwtIssuer() { return jwtIssuer; }
         public void setJwtIssuer(String v) { this.jwtIssuer = v == null ? "" : v; }
+        public String getJwtAudience() { return jwtAudience; }
+        public void setJwtAudience(String v) { this.jwtAudience = v == null ? "" : v; }
         public long getJwtQuotaTokens() { return jwtQuotaTokens; }
         public void setJwtQuotaTokens(long v) { this.jwtQuotaTokens = Math.max(0, v); }
         public int getRotateOverlapSeconds() { return rotateOverlapSeconds; }
@@ -82,6 +125,10 @@ public class GatewayProperties {
     public boolean isGovernanceEnabled() { return governanceEnabled; }
     public void setGovernanceEnabled(boolean governanceEnabled) { this.governanceEnabled = governanceEnabled; }
     public long getMaxRequestBytes() { return maxRequestBytes; }
+    public long getMaxResponseBytes() { return maxResponseBytes; }
+    public void setMaxResponseBytes(long value) { this.maxResponseBytes = Math.max(1, value); }
+    public int getMaxConcurrentRequests() { return maxConcurrentRequests; }
+    public void setMaxConcurrentRequests(int value) { this.maxConcurrentRequests = Math.max(1, value); }
     public void setMaxRequestBytes(long v) { this.maxRequestBytes = v; }
     public String getAdminToken() { return adminToken; }
     public void setAdminToken(String v) { this.adminToken = v; }
@@ -289,7 +336,7 @@ public class GatewayProperties {
      * W4.1 guardrails: in-process deny patterns (regex vs the extracted prompt,
      * case-insensitive) and/or an external moderation engine (POST
      * {model,prompt} -> {"action":"ALLOW"|"DENY","reason"}). Both empty/off by
-     * default; the HTTP engine fails open when unreachable.
+     * default; a configured HTTP engine fails closed when unavailable.
      */
     public static class Guardrails {
         private List<String> denyPatterns = new ArrayList<>();

@@ -1,0 +1,610 @@
+[
+  {
+    "requests": 55181,
+    "rps": 3677.6599469834737,
+    "error_rate": 0,
+    "p50_ms": 7.546,
+    "p95_ms": 51.711,
+    "p99_ms": 58.74959999999995,
+    "arm": "llmgw-webflux-proxy",
+    "profile": "wire",
+    "mode": "json",
+    "round": 1,
+    "exit_code": 0,
+    "upstream_requests": 55181,
+    "loadavg": [
+      17.27734375,
+      15.78564453125,
+      13.34130859375
+    ]
+  },
+  {
+    "requests": 82552,
+    "rps": 5480.5975943979365,
+    "error_rate": 0,
+    "p50_ms": 6.293,
+    "p95_ms": 12.260449999999997,
+    "p99_ms": 38.81588000000059,
+    "arm": "llmgw-vt-proxy",
+    "profile": "wire",
+    "mode": "json",
+    "round": 1,
+    "exit_code": 0,
+    "upstream_requests": 82552,
+    "loadavg": [
+      20.5986328125,
+      16.54296875,
+      13.650390625
+    ]
+  },
+  {
+    "requests": 72071,
+    "rps": 4768.961669779099,
+    "error_rate": 0,
+    "p50_ms": 7.403,
+    "p95_ms": 14.9875,
+    "p99_ms": 46.61440000000017,
+    "arm": "llmgw-vt-before",
+    "profile": "wire",
+    "mode": "json",
+    "round": 1,
+    "exit_code": 0,
+    "upstream_requests": 72071,
+    "loadavg": [
+      19.44482421875,
+      16.49658203125,
+      13.6845703125
+    ]
+  },
+  {
+    "requests": 46176,
+    "rps": 3076.9899180868715,
+    "error_rate": 0,
+    "p50_ms": 9.2015,
+    "p95_ms": 55.735,
+    "p99_ms": 65.216,
+    "arm": "llmgw-webflux-before",
+    "profile": "wire",
+    "mode": "json",
+    "round": 1,
+    "exit_code": 0,
+    "upstream_requests": 46176,
+    "loadavg": [
+      17.12548828125,
+      16.115234375,
+      13.5966796875
+    ]
+  },
+  {
+    "requests": 72367,
+    "rps": 4806.9881373334465,
+    "error_rate": 0,
+    "p50_ms": 7.62,
+    "p95_ms": 14.016,
+    "p99_ms": 48.62039999999996,
+    "arm": "llmgw-vt-proxy",
+    "profile": "wire",
+    "mode": "json",
+    "round": 2,
+    "exit_code": 0,
+    "upstream_requests": 72367,
+    "loadavg": [
+      17.7900390625,
+      16.39794921875,
+      13.759765625
+    ]
+  },
+  {
+    "requests": 70677,
+    "rps": 4669.453967159555,
+    "error_rate": 0,
+    "p50_ms": 7.642,
+    "p95_ms": 14.25,
+    "p99_ms": 95.1254400000003,
+    "arm": "llmgw-vt-before",
+    "profile": "wire",
+    "mode": "json",
+    "round": 2,
+    "exit_code": 0,
+    "upstream_requests": 70677,
+    "loadavg": [
+      19.79443359375,
+      16.9150390625,
+      13.990234375
+    ]
+  },
+  {
+    "requests": 72163,
+    "rps": 4779.190510575275,
+    "error_rate": 0,
+    "p50_ms": 7.799,
+    "p95_ms": 14.037,
+    "p99_ms": 60.39516000000085,
+    "arm": "llmgw-webflux-before",
+    "profile": "wire",
+    "mode": "json",
+    "round": 2,
+    "exit_code": 0,
+    "upstream_requests": 72163,
+    "loadavg": [
+      20.22021484375,
+      17.16015625,
+      14.12939453125
+    ]
+  },
+  {
+    "requests": 58446,
+    "rps": 3786.5450086455103,
+    "error_rate": 0,
+    "p50_ms": 8.8565,
+    "p95_ms": 16.706,
+    "p99_ms": 208.58480000000006,
+    "arm": "llmgw-webflux-proxy",
+    "profile": "wire",
+    "mode": "json",
+    "round": 2,
+    "exit_code": 0,
+    "upstream_requests": 58446,
+    "loadavg": [
+      19.51953125,
+      17.23681640625,
+      14.22900390625
+    ]
+  },
+  {
+    "requests": 74288,
+    "rps": 4920.797470182304,
+    "error_rate": 0,
+    "p50_ms": 7.302,
+    "p95_ms": 13.412649999999994,
+    "p99_ms": 204.03178000000003,
+    "arm": "llmgw-vt-before",
+    "profile": "wire",
+    "mode": "json",
+    "round": 3,
+    "exit_code": 0,
+    "upstream_requests": 74288,
+    "loadavg": [
+      18.39453125,
+      17.107421875,
+      14.2353515625
+    ]
+  },
+  {
+    "requests": 70601,
+    "rps": 4656.380783665701,
+    "error_rate": 0,
+    "p50_ms": 8.186,
+    "p95_ms": 14.546,
+    "p99_ms": 23.726,
+    "arm": "llmgw-webflux-before",
+    "profile": "wire",
+    "mode": "json",
+    "round": 3,
+    "exit_code": 0,
+    "upstream_requests": 70601,
+    "loadavg": [
+      17.5478515625,
+      16.9736328125,
+      14.23681640625
+    ]
+  },
+  {
+    "requests": 69418,
+    "rps": 4586.438892959527,
+    "error_rate": 0,
+    "p50_ms": 8.462,
+    "p95_ms": 14.876299999999988,
+    "p99_ms": 24.657820000000097,
+    "arm": "llmgw-webflux-proxy",
+    "profile": "wire",
+    "mode": "json",
+    "round": 3,
+    "exit_code": 0,
+    "upstream_requests": 69418,
+    "loadavg": [
+      21.90576171875,
+      18.0078125,
+      14.65625
+    ]
+  },
+  {
+    "requests": 67805,
+    "rps": 4475.649049971623,
+    "error_rate": 0,
+    "p50_ms": 8.125,
+    "p95_ms": 15.057,
+    "p99_ms": 204.34712000000016,
+    "arm": "llmgw-vt-proxy",
+    "profile": "wire",
+    "mode": "json",
+    "round": 3,
+    "exit_code": 0,
+    "upstream_requests": 67805,
+    "loadavg": [
+      19.37451171875,
+      17.6953125,
+      14.62255859375
+    ]
+  },
+  {
+    "requests": 69431,
+    "rps": 4585.895262778317,
+    "error_rate": 0,
+    "p50_ms": 8.533,
+    "p95_ms": 15.3125,
+    "p99_ms": 22.787299999999973,
+    "arm": "llmgw-webflux-before",
+    "profile": "wire",
+    "mode": "json",
+    "round": 4,
+    "exit_code": 0,
+    "upstream_requests": 69431,
+    "loadavg": [
+      18.80517578125,
+      17.65869140625,
+      14.6630859375
+    ]
+  },
+  {
+    "requests": 72333,
+    "rps": 4820.24683598206,
+    "error_rate": 0,
+    "p50_ms": 7.616,
+    "p95_ms": 14.100399999999995,
+    "p99_ms": 37.01311999999784,
+    "arm": "llmgw-webflux-proxy",
+    "profile": "wire",
+    "mode": "json",
+    "round": 4,
+    "exit_code": 0,
+    "upstream_requests": 72333,
+    "loadavg": [
+      18.25634765625,
+      17.5927734375,
+      14.69140625
+    ]
+  },
+  {
+    "requests": 69616,
+    "rps": 4619.3443538209685,
+    "error_rate": 0,
+    "p50_ms": 7.882,
+    "p95_ms": 14.68025,
+    "p99_ms": 26.176950000000275,
+    "arm": "llmgw-vt-proxy",
+    "profile": "wire",
+    "mode": "json",
+    "round": 4,
+    "exit_code": 0,
+    "upstream_requests": 69616,
+    "loadavg": [
+      18.65478515625,
+      17.697265625,
+      14.77783203125
+    ]
+  },
+  {
+    "requests": 68467,
+    "rps": 4548.121022918366,
+    "error_rate": 0,
+    "p50_ms": 8.067,
+    "p95_ms": 14.802,
+    "p99_ms": 203.85267999999982,
+    "arm": "llmgw-vt-before",
+    "profile": "wire",
+    "mode": "json",
+    "round": 4,
+    "exit_code": 0,
+    "upstream_requests": 68467,
+    "loadavg": [
+      22.685546875,
+      18.607421875,
+      15.16748046875
+    ]
+  },
+  {
+    "requests": 42407,
+    "rps": 2823.1111527702765,
+    "error_rate": 0,
+    "p50_ms": 13.131,
+    "p95_ms": 29.320199999999982,
+    "p99_ms": 209.36758,
+    "arm": "llmgw-webflux-proxy",
+    "profile": "wire",
+    "mode": "sse",
+    "round": 1,
+    "exit_code": 0,
+    "upstream_requests": 42407,
+    "loadavg": [
+      19.091796875,
+      18.7763671875,
+      15.72900390625
+    ]
+  },
+  {
+    "requests": 45776,
+    "rps": 3046.9634136746727,
+    "error_rate": 0,
+    "p50_ms": 13.702,
+    "p95_ms": 25.52675,
+    "p99_ms": 37.989000000000004,
+    "arm": "llmgw-vt-proxy",
+    "profile": "wire",
+    "mode": "sse",
+    "round": 1,
+    "exit_code": 0,
+    "upstream_requests": 45776,
+    "loadavg": [
+      18.44140625,
+      18.64111328125,
+      15.7333984375
+    ]
+  },
+  {
+    "requests": 44508,
+    "rps": 2964.1836467210965,
+    "error_rate": 0,
+    "p50_ms": 14.265,
+    "p95_ms": 26.191250000000007,
+    "p99_ms": 37.973430000000015,
+    "arm": "llmgw-vt-before",
+    "profile": "wire",
+    "mode": "sse",
+    "round": 1,
+    "exit_code": 0,
+    "upstream_requests": 44508,
+    "loadavg": [
+      16.92529296875,
+      18.29833984375,
+      15.66162109375
+    ]
+  },
+  {
+    "requests": 41073,
+    "rps": 2734.387534606749,
+    "error_rate": 0,
+    "p50_ms": 14.594,
+    "p95_ms": 31.739600000000006,
+    "p99_ms": 53.10791999999993,
+    "arm": "llmgw-webflux-before",
+    "profile": "wire",
+    "mode": "sse",
+    "round": 1,
+    "exit_code": 0,
+    "upstream_requests": 41073,
+    "loadavg": [
+      15.857421875,
+      18.0029296875,
+      15.60302734375
+    ]
+  },
+  {
+    "requests": 46718,
+    "rps": 3112.278798571648,
+    "error_rate": 0,
+    "p50_ms": 13.452,
+    "p95_ms": 25.093750000000007,
+    "p99_ms": 39.70026000000004,
+    "arm": "llmgw-vt-proxy",
+    "profile": "wire",
+    "mode": "sse",
+    "round": 2,
+    "exit_code": 0,
+    "upstream_requests": 46718,
+    "loadavg": [
+      15.55419921875,
+      17.765625,
+      15.5712890625
+    ]
+  },
+  {
+    "requests": 42537,
+    "rps": 2798.783108027685,
+    "error_rate": 0,
+    "p50_ms": 14.584,
+    "p95_ms": 27.574599999999993,
+    "p99_ms": 70.32363999999849,
+    "arm": "llmgw-vt-before",
+    "profile": "wire",
+    "mode": "sse",
+    "round": 2,
+    "exit_code": 0,
+    "upstream_requests": 42537,
+    "loadavg": [
+      16.30859375,
+      17.8115234375,
+      15.625
+    ]
+  },
+  {
+    "requests": 42898,
+    "rps": 2857.5404382472375,
+    "error_rate": 0,
+    "p50_ms": 14.115,
+    "p95_ms": 29.83915,
+    "p99_ms": 42.104569999999974,
+    "arm": "llmgw-webflux-before",
+    "profile": "wire",
+    "mode": "sse",
+    "round": 2,
+    "exit_code": 0,
+    "upstream_requests": 42898,
+    "loadavg": [
+      17.90380859375,
+      18.0830078125,
+      15.75927734375
+    ]
+  },
+  {
+    "requests": 44092,
+    "rps": 2936.730612645885,
+    "error_rate": 0,
+    "p50_ms": 13.709,
+    "p95_ms": 31.58734999999999,
+    "p99_ms": 45.39823999999987,
+    "arm": "llmgw-webflux-proxy",
+    "profile": "wire",
+    "mode": "sse",
+    "round": 2,
+    "exit_code": 0,
+    "upstream_requests": 44092,
+    "loadavg": [
+      18.384765625,
+      18.17724609375,
+      15.83251953125
+    ]
+  },
+  {
+    "requests": 49718,
+    "rps": 3312.261122203502,
+    "error_rate": 0,
+    "p50_ms": 12.709,
+    "p95_ms": 23.517149999999994,
+    "p99_ms": 33.72666,
+    "arm": "llmgw-vt-before",
+    "profile": "wire",
+    "mode": "sse",
+    "round": 3,
+    "exit_code": 0,
+    "upstream_requests": 49718,
+    "loadavg": [
+      18.39697265625,
+      18.17236328125,
+      15.87060546875
+    ]
+  },
+  {
+    "requests": 41882,
+    "rps": 2790.335613108994,
+    "error_rate": 0,
+    "p50_ms": 13.568,
+    "p95_ms": 31.251299999999958,
+    "p99_ms": 208.66399000000004,
+    "arm": "llmgw-webflux-before",
+    "profile": "wire",
+    "mode": "sse",
+    "round": 3,
+    "exit_code": 0,
+    "upstream_requests": 41882,
+    "loadavg": [
+      20.5400390625,
+      18.65380859375,
+      16.08203125
+    ]
+  },
+  {
+    "requests": 43806,
+    "rps": 2894.693194636168,
+    "error_rate": 0,
+    "p50_ms": 13.209,
+    "p95_ms": 30.1425,
+    "p99_ms": 52.86304999999884,
+    "arm": "llmgw-webflux-proxy",
+    "profile": "wire",
+    "mode": "sse",
+    "round": 3,
+    "exit_code": 0,
+    "upstream_requests": 43806,
+    "loadavg": [
+      20.5673828125,
+      18.7646484375,
+      16.1669921875
+    ]
+  },
+  {
+    "requests": 48161,
+    "rps": 3062.7706777085227,
+    "error_rate": 0,
+    "p50_ms": 12.751,
+    "p95_ms": 25.675,
+    "p99_ms": 36.35340000000002,
+    "arm": "llmgw-vt-proxy",
+    "profile": "wire",
+    "mode": "sse",
+    "round": 3,
+    "exit_code": 0,
+    "upstream_requests": 48161,
+    "loadavg": [
+      20.9013671875,
+      19.03466796875,
+      16.32763671875
+    ]
+  },
+  {
+    "requests": 40554,
+    "rps": 2695.124910207362,
+    "error_rate": 0,
+    "p50_ms": 13.584,
+    "p95_ms": 32.178349999999995,
+    "p99_ms": 210.40875000000003,
+    "arm": "llmgw-webflux-before",
+    "profile": "wire",
+    "mode": "sse",
+    "round": 4,
+    "exit_code": 0,
+    "upstream_requests": 40554,
+    "loadavg": [
+      24.0888671875,
+      19.83203125,
+      16.65966796875
+    ]
+  },
+  {
+    "requests": 43850,
+    "rps": 2919.936473902027,
+    "error_rate": 0,
+    "p50_ms": 13.936,
+    "p95_ms": 31.205,
+    "p99_ms": 43.29236000000007,
+    "arm": "llmgw-webflux-proxy",
+    "profile": "wire",
+    "mode": "sse",
+    "round": 4,
+    "exit_code": 0,
+    "upstream_requests": 43850,
+    "loadavg": [
+      24.44970703125,
+      20.11767578125,
+      16.81640625
+    ]
+  },
+  {
+    "requests": 48624,
+    "rps": 3239.1835690574835,
+    "error_rate": 0,
+    "p50_ms": 13.0045,
+    "p95_ms": 25.051549999999995,
+    "p99_ms": 36.677309999999984,
+    "arm": "llmgw-vt-proxy",
+    "profile": "wire",
+    "mode": "sse",
+    "round": 4,
+    "exit_code": 0,
+    "upstream_requests": 48624,
+    "loadavg": [
+      23.00927734375,
+      20.01220703125,
+      16.83642578125
+    ]
+  },
+  {
+    "requests": 49477,
+    "rps": 3296.447263073308,
+    "error_rate": 0,
+    "p50_ms": 12.59,
+    "p95_ms": 24.25399999999997,
+    "p99_ms": 34.503879999999924,
+    "arm": "llmgw-vt-before",
+    "profile": "wire",
+    "mode": "sse",
+    "round": 4,
+    "exit_code": 0,
+    "upstream_requests": 49477,
+    "loadavg": [
+      23.04931640625,
+      20.1728515625,
+      16.94873046875
+    ]
+  }
+]

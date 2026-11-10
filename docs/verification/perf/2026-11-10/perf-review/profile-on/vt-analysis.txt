@@ -1,0 +1,108 @@
+
+CPU inclusive total=6290
+  76.93%	4839	java.lang.Thread.runWith
+  64.23%	4040	org.apache.catalina.core.ApplicationFilterChain.doFilter
+  62.89%	3956	org.springframework.web.filter.OncePerRequestFilter.doFilter
+  61.88%	3892	org.apache.coyote.http11.Http11Processor.service
+  60.94%	3833	org.apache.catalina.connector.CoyoteAdapter.service
+  60.91%	3831	org.apache.coyote.AbstractProcessorLight.process
+  60.13%	3782	org.apache.coyote.AbstractProtocol$ConnectionHandler.process
+  60.02%	3775	org.apache.catalina.authenticator.AuthenticatorBase.invoke
+  59.94%	3770	org.apache.catalina.core.StandardHostValve.invoke
+  59.68%	3754	org.apache.catalina.core.StandardWrapperValve.invoke
+  59.67%	3753	org.apache.catalina.core.StandardContextValve.invoke
+  59.41%	3737	org.apache.catalina.valves.ErrorReportValve.invoke
+  59.27%	3728	org.springframework.web.filter.ServerHttpObservationFilter.doFilterInternal
+  59.21%	3724	org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal
+  59.17%	3722	org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun
+  59.06%	3715	org.apache.catalina.core.StandardEngineValve.invoke
+  58.82%	3700	java.lang.VirtualThread.run
+  58.09%	3654	java.lang.VirtualThread$VThreadContinuation$1.run
+  57.73%	3631	org.apache.tomcat.util.net.SocketProcessorBase.run
+  55.90%	3516	jdk.internal.vm.Continuation.enter0
+  53.31%	3353	jdk.internal.vm.Continuation.enter
+  52.59%	3308	org.springframework.web.filter.RequestContextFilter.doFilterInternal
+  52.54%	3305	org.springframework.web.filter.FormContentFilter.doFilterInternal
+  52.43%	3298	org.springframework.web.servlet.FrameworkServlet.processRequest
+  52.42%	3297	org.springframework.web.servlet.FrameworkServlet.service
+
+CPU first application frame total=6290
+  53.62%	3373	<framework-only stack>
+   8.12%	511	io.github.leohou0430.llmgw.app.JdkHttpUpstream.streamRawBlocking
+   7.55%	475	io.github.leohou0430.llmgw.app.JdkHttpUpstream.completeRaw
+   4.32%	272	io.github.leohou0430.llmgw.engine.vt.VirtualThreadGatewayController.handleKindWithinCapacity
+   3.13%	197	io.github.leohou0430.llmgw.engine.vt.VirtualThreadGatewayController$StreamSink.write
+   2.93%	184	io.github.leohou0430.llmgw.app.JdkHttpUpstream.build
+   1.78%	112	io.github.leohou0430.llmgw.core.protocol.ChunkParser.chat
+   1.73%	109	io.github.leohou0430.llmgw.core.protocol.ProtocolCodec.tryParse
+   1.48%	93	io.github.leohou0430.llmgw.governance.inmemory.GovernanceMetrics.latencyNanos
+   1.38%	87	io.github.leohou0430.llmgw.core.protocol.ProtocolCodec.parse
+   1.03%	65	io.github.leohou0430.llmgw.governance.inmemory.InMemoryApiKeyRegistry.lookupKey
+   1.03%	65	io.github.leohou0430.llmgw.core.protocol.ProtocolCodec.fingerprint
+   0.99%	62	io.github.leohou0430.llmgw.engine.vt.VirtualThreadGatewayController.firstValues
+   0.84%	53	io.github.leohou0430.llmgw.governance.inmemory.GovernanceMetrics.count
+   0.79%	50	io.github.leohou0430.llmgw.core.protocol.ProtocolKind.wireName
+   0.79%	50	io.github.leohou0430.llmgw.governance.inmemory.DefaultGovernanceChain.lambda$finish$0
+   0.64%	40	io.github.leohou0430.llmgw.core.protocol.ProtocolCodec.lambda$static$0
+   0.51%	32	io.github.leohou0430.llmgw.core.protocol.ChunkParser.readDeltaContent
+   0.49%	31	io.github.leohou0430.llmgw.governance.inmemory.AllowListHeaderPolicy.toUpstream
+   0.45%	28	io.github.leohou0430.llmgw.core.protocol.ProtocolCodec.collectPrompt
+   0.38%	24	io.github.leohou0430.llmgw.governance.inmemory.DefaultGovernanceChain.cache
+   0.33%	21	io.github.leohou0430.llmgw.governance.inmemory.CaffeineSemanticCache.put
+   0.30%	19	io.github.leohou0430.llmgw.governance.inmemory.AllowListHeaderPolicy.toClient
+   0.30%	19	io.github.leohou0430.llmgw.engine.vt.VirtualThreadGatewayController.handleStream
+   0.24%	15	io.github.leohou0430.llmgw.governance.inmemory.AllowListHeaderPolicy$AllowPattern.matches
+
+Allocation sampled bytes by class total=24412929664
+  36.79%	8981728848	[B
+   8.38%	2045405072	[C
+   7.08%	1729296488	jdk.internal.vm.StackChunk
+   2.96%	722603792	java.lang.String
+   2.95%	720178896	[Ljava.lang.Object;
+   2.35%	572552976	tools.jackson.core.json.JsonReadContext
+   1.87%	456758760	jdk.internal.net.http.common.MinimalFuture
+   1.39%	338861352	java.nio.HeapByteBuffer
+   1.27%	310058776	java.util.ArrayList
+   1.26%	307123056	java.util.stream.ReferencePipeline$Head
+   1.13%	275858864	java.util.TreeMap$Entry
+   1.12%	273935576	java.util.LinkedHashMap
+   1.01%	246515904	tools.jackson.core.sym.CharsToNameCanonicalizer
+   0.99%	240729640	java.util.concurrent.ConcurrentHashMap$Node
+   0.91%	221344880	java.util.TreeMap
+   0.91%	221041568	java.util.LinkedHashMap$Entry
+   0.89%	217591272	tools.jackson.core.json.ReaderBasedJsonParser
+   0.84%	204876688	java.util.Collections$UnmodifiableMap
+   0.82%	199313728	java.util.ImmutableCollections$List12
+   0.79%	193500088	tools.jackson.core.io.IOContext
+   0.73%	179238440	[Ljava.util.HashMap$Node;
+   0.63%	154938016	java.nio.HeapByteBufferR
+   0.63%	153902544	[Ljava.lang.String;
+   0.45%	109461672	tools.jackson.core.util.ReadConstrainedTextBuffer
+   0.44%	108000912	java.util.concurrent.ConcurrentHashMap
+
+Allocation sampled bytes by site total=24412929664
+  17.39%	4245467448	io.github.leohou0430.llmgw.engine.vt.VirtualThreadGatewayController.handleKindWithinCapacity :: java.io.InputStream.readNBytes <- jakarta.servlet.ServletInputStream.readNBytes <- io.github.leohou0430.llmgw.engine.vt.VirtualThreadGatewayController.handleKindWithinCapacity <- io.github.leohou0430.llmgw.engine.vt.VirtualThreadGatewayController.handleKind <- io.github.leohou0430.llmgw.engine.vt.VirtualThreadGatewayController.handleChat
+   8.05%	1965539144	<framework-only stack> :: java.io.BufferedReader.<init> <- java.io.BufferedReader.<init> <- jdk.internal.net.http.ResponseSubscribers.lambda$createLineStream$0 <- jdk.internal.net.http.ResponseSubscribers$$Lambda.0x000000007d768cb0.apply <- java.util.concurrent.CompletableFuture.uniApplyNow
+   4.21%	1028476376	<framework-only stack> :: java.nio.HeapByteBuffer.<init> <- java.nio.ByteBuffer.allocate <- sun.nio.cs.StreamDecoder.<init> <- sun.nio.cs.StreamDecoder.<init> <- sun.nio.cs.StreamDecoder.forInputStreamReader
+   2.65%	647280720	io.github.leohou0430.llmgw.app.JdkHttpUpstream.completeRaw :: jdk.internal.vm.Continuation.doYield <- jdk.internal.vm.Continuation.yield0 <- jdk.internal.vm.Continuation.yield <- java.lang.VirtualThread.yieldContinuation <- java.lang.VirtualThread.park
+   2.40%	586946136	io.github.leohou0430.llmgw.app.JdkHttpUpstream.streamRawBlocking :: jdk.internal.vm.Continuation.doYield <- jdk.internal.vm.Continuation.yield0 <- jdk.internal.vm.Continuation.yield <- java.lang.VirtualThread.yieldContinuation <- java.lang.VirtualThread.park
+   1.10%	268781624	io.github.leohou0430.llmgw.app.JdkHttpUpstream.completeRaw :: jdk.internal.net.http.HttpClientImpl.sendAsync <- jdk.internal.net.http.HttpClientImpl.send <- jdk.internal.net.http.HttpClientFacade.send <- io.github.leohou0430.llmgw.app.JdkHttpUpstream.completeRaw <- io.github.leohou0430.llmgw.engine.vt.VirtualThreadGatewayController.completeWithPlan
+   1.08%	262865240	io.github.leohou0430.llmgw.core.protocol.ChunkParser.chat :: java.util.Arrays.copyOfRange <- java.lang.StringLatin1.newString <- java.lang.StringLatin1.trim <- java.lang.String.trim <- io.github.leohou0430.llmgw.core.protocol.ChunkParser.chat
+   1.03%	251055368	<framework-only stack> :: java.nio.HeapByteBuffer.<init> <- java.nio.ByteBuffer.allocate <- jdk.internal.net.http.common.Utils.getBuffer <- jdk.internal.net.http.PlainHttpConnection$$Lambda.0x000000007d7536c8.get <- jdk.internal.net.http.SocketTube$SliceBufferSource.getBuffer
+   0.91%	221842896	io.github.leohou0430.llmgw.app.JdkHttpUpstream.lambda$streamRawBlocking$3 :: jdk.internal.misc.Unsafe.allocateUninitializedArray <- java.lang.StringConcatHelper.newArray <- java.lang.StringConcatHelper.doConcat <- java.lang.StringConcatHelper.simpleConcat <- java.lang.invoke.DirectMethodHandle$Holder.invokeStatic
+   0.87%	211810000	io.github.leohou0430.llmgw.app.JdkHttpUpstream.streamRawBlocking :: jdk.internal.net.http.HttpClientImpl.sendAsync <- jdk.internal.net.http.HttpClientImpl.send <- jdk.internal.net.http.HttpClientFacade.send <- io.github.leohou0430.llmgw.app.JdkHttpUpstream.streamRawBlocking <- io.github.leohou0430.llmgw.engine.vt.VirtualThreadGatewayController.streamWithPlan
+   0.82%	200809208	io.github.leohou0430.llmgw.core.protocol.ChunkParser.chat :: tools.jackson.core.sym.CharsToNameCanonicalizer.makeChild <- tools.jackson.core.json.JsonFactory._createParser <- tools.jackson.core.base.TextualTSFactory.createParser <- tools.jackson.core.TokenStreamFactory.createParser <- io.github.leohou0430.llmgw.core.protocol.ChunkParser.chat
+   0.81%	196854232	io.github.leohou0430.llmgw.core.protocol.ChunkParser.chat :: tools.jackson.core.json.JsonReadContext.createChildObjectContext <- tools.jackson.core.json.JsonParserBase.createChildObjectContext <- tools.jackson.core.json.ReaderBasedJsonParser.nextToken <- io.github.leohou0430.llmgw.core.protocol.ChunkParser.chat <- io.github.leohou0430.llmgw.core.protocol.ChunkParser.parse
+   0.79%	192688664	io.github.leohou0430.llmgw.engine.vt.VirtualThreadGatewayController$StreamSink.write :: java.nio.HeapByteBuffer.slice <- org.apache.catalina.connector.OutputBuffer.flushByteBuffer <- org.apache.catalina.connector.OutputBuffer.doFlush <- org.apache.catalina.connector.OutputBuffer.flush <- org.apache.catalina.connector.CoyoteOutputStream.flush
+   0.75%	183885992	io.github.leohou0430.llmgw.engine.vt.VirtualThreadGatewayController$StreamSink.write :: java.lang.String.encodeUTF8 <- java.lang.String.encode <- java.lang.String.getBytes <- io.github.leohou0430.llmgw.engine.vt.VirtualThreadGatewayController$StreamSink.write <- io.github.leohou0430.llmgw.engine.vt.VirtualThreadGatewayController$StreamSink.onChunk
+   0.71%	172327504	io.github.leohou0430.llmgw.core.protocol.ChunkParser.chat :: tools.jackson.core.TokenStreamFactory._createContext <- tools.jackson.core.TokenStreamFactory._createContext <- tools.jackson.core.base.TextualTSFactory.createParser <- tools.jackson.core.TokenStreamFactory.createParser <- io.github.leohou0430.llmgw.core.protocol.ChunkParser.chat
+   0.70%	170522472	io.github.leohou0430.llmgw.app.JdkHttpUpstream.streamRawBlocking :: java.util.Arrays.copyOf <- java.lang.AbstractStringBuilder.ensureCapacityNewCoder <- java.lang.AbstractStringBuilder.append <- java.lang.StringBuilder.append <- jdk.internal.net.http.Http1Request.collectHeaders1
+   0.69%	169495360	io.github.leohou0430.llmgw.core.protocol.ChunkParser.chat :: java.util.Arrays.copyOfRange <- java.lang.StringLatin1.newString <- java.lang.String.substring <- java.lang.String.substring <- io.github.leohou0430.llmgw.core.protocol.ChunkParser.chat
+   0.66%	160545944	io.github.leohou0430.llmgw.app.JdkHttpUpstream.streamRawBlocking :: java.lang.StringUTF16.compress <- java.lang.String.<init> <- java.lang.String.<init> <- java.io.BufferedReader.readLine <- java.io.BufferedReader.readLine
+   0.59%	143625352	io.github.leohou0430.llmgw.core.protocol.ChunkParser.chat :: tools.jackson.core.json.JsonFactory._createParser <- tools.jackson.core.base.TextualTSFactory.createParser <- tools.jackson.core.TokenStreamFactory.createParser <- io.github.leohou0430.llmgw.core.protocol.ChunkParser.chat <- io.github.leohou0430.llmgw.core.protocol.ChunkParser.parse
+   0.57%	137947776	io.github.leohou0430.llmgw.governance.inmemory.DefaultGovernanceChain.lambda$finish$0 :: java.util.LinkedHashMap.newNode <- java.util.HashMap.putVal <- java.util.HashMap.put <- io.github.leohou0430.llmgw.governance.inmemory.DefaultGovernanceChain.lambda$finish$0 <- io.github.leohou0430.llmgw.governance.inmemory.DefaultGovernanceChain$$Lambda.0x000000007d784ab8.run
+   0.53%	129004168	<framework-only stack> :: java.nio.HeapByteBufferR.duplicate <- java.nio.HeapByteBufferR.asReadOnlyBuffer <- jdk.internal.net.http.ResponseContent$ChunkedBodyParser.tryReadOneHunk <- jdk.internal.net.http.ResponseContent$ChunkedBodyParser.tryPushOneHunk <- jdk.internal.net.http.ResponseContent$ChunkedBodyParser.accept
+   0.49%	119999752	io.github.leohou0430.llmgw.core.protocol.ChunkParser.readDeltaContent :: tools.jackson.core.json.JsonReadContext.createChildObjectContext <- tools.jackson.core.json.JsonParserBase.createChildObjectContext <- tools.jackson.core.json.ReaderBasedJsonParser._nextAfterName <- tools.jackson.core.json.ReaderBasedJsonParser.nextToken <- io.github.leohou0430.llmgw.core.protocol.ChunkParser.readDeltaContent
+   0.46%	112362936	<framework-only stack> :: java.util.concurrent.CopyOnWriteArrayList.toArray <- org.apache.catalina.core.StandardContext.getApplicationEventListeners <- org.apache.catalina.connector.Request.notifyAttributeAssigned <- org.apache.catalina.connector.Request.setAttribute <- org.apache.catalina.connector.RequestFacade.setAttribute
+   0.46%	112077944	io.github.leohou0430.llmgw.governance.inmemory.GovernanceMetrics.latencyNanos :: jdk.internal.misc.Unsafe.allocateUninitializedArray <- java.lang.StringConcatHelper.newArray <- java.lang.StringConcatHelper.doConcat <- java.lang.StringConcatHelper.simpleConcat <- java.lang.invoke.DirectMethodHandle$Holder.invokeStatic
+   0.45%	110462536	io.github.leohou0430.llmgw.core.protocol.ChunkParser.chat :: tools.jackson.core.json.JsonReadContext.createRootContext <- tools.jackson.core.json.JsonParserBase.<init> <- tools.jackson.core.json.ReaderBasedJsonParser.<init> <- tools.jackson.core.json.JsonFactory._createParser <- tools.jackson.core.base.TextualTSFactory.createParser

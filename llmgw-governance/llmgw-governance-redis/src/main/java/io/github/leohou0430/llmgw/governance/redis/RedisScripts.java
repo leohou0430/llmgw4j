@@ -27,13 +27,13 @@ public final class RedisScripts {
               tokens = tokens - want
               allowed = 1
             end
-            redis.call('HMSET', KEYS[1], 'tokens', tokens, 'ts', now)
+            redis.call('HMSET', KEYS[1], 'tokens', tokens, 'ts', now, 'capacity', capacity)
             redis.call('EXPIRE', KEYS[1], 3600)
             return allowed
             """);
 
     public final DefaultRedisScript<Long> refund = script("""
-            local capacity = tonumber(ARGV[1])
+            local capacity = tonumber(redis.call('HGET', KEYS[1], 'capacity')) or tonumber(ARGV[1])
             local back = tonumber(ARGV[2])
             local tokens = tonumber(redis.call('HGET', KEYS[1], 'tokens'))
             if tokens == nil then tokens = capacity end

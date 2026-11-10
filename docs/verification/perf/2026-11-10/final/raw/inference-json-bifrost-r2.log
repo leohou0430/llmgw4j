@@ -1,0 +1,40 @@
+
+
+  █ THRESHOLDS 
+
+    gateway_failure_rate
+    ✓ 'rate<0.01' rate=0.00%
+
+
+  █ TOTAL RESULTS 
+
+    checks_total.......: 42610   4252.203891/s
+    checks_succeeded...: 100.00% 42610 out of 42610
+    checks_failed......: 0.00%   0 out of 42610
+
+    ✓ status is 200
+    ✓ completion is intact
+
+    CUSTOM
+    gateway_failure_rate...........: 0.00%  0 out of 21305
+    gateway_latency_ms.............: avg=23.29ms p(50)=22.69ms p(95)=27.29ms p(99)=31.18ms max=40.8ms 
+    gateway_requests...............: 21305  2126.101946/s
+
+    HTTP
+    http_req_duration..............: avg=23.29ms p(50)=22.69ms p(95)=27.29ms p(99)=31.18ms max=40.8ms 
+      { expected_response:true }...: avg=23.29ms p(50)=22.69ms p(95)=27.29ms p(99)=31.18ms max=40.8ms 
+    http_req_failed................: 0.00%  0 out of 21305
+    http_reqs......................: 21305  2126.101946/s
+
+    EXECUTION
+    iteration_duration.............: avg=23.48ms p(50)=22.89ms p(95)=27.54ms p(99)=31.39ms max=41.08ms
+    iterations.....................: 21305  2126.101946/s
+    vus............................: 50     min=50         max=50
+    vus_max........................: 50     min=50         max=50
+
+    NETWORK
+    data_received..................: 67 MB  6.7 MB/s
+    data_sent......................: 6.8 MB 677 kB/s
+
+
+

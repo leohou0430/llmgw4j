@@ -1,0 +1,27 @@
+# Merge with docker-compose.yml; compiles AND activates the Redis governance pack.
+services:
+  gateway:
+    build:
+      context: .
+      args:
+        MAVEN_PROFILES: -Predis
+    image: llmgw4j:redis
+    environment:
+      GATEWAY_REDIS_ENABLED: "true"
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: "6379"
+    depends_on:
+      redis:
+        condition: service_healthy
+  redis:
+    image: redis:7-alpine
+    command: [redis-server, --appendonly, "yes"]
+    volumes:
+      - llmgw-redis:/data
+    healthcheck:
+      test: [CMD, redis-cli, ping]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+volumes:
+  llmgw-redis:

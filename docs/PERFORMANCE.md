@@ -1,140 +1,37 @@
-# llmgw4j 性能优化全记录（v12 基线 → v13）
+# llmgw4j 性能说明（v0.2.0）
 
-> 口径声明（务必先读）：本文所有数字来自三类**不同口径**的测量，图表内不混用：
-> ① **k6-A/B 口径**：同 worktree 基线（v12 @f7e30a7）vs v13 工作区，同一内嵌 mock
->   上游、同一 `bench/k6-*.js`、50 VU / 30s——用于回归检测；
-> ② **microbench 口径**：网络无关的单进程解析/缓冲微基准——用于热路径回归检测；
-> ③ **跨网关对标口径**：独立 standalone mock 上游（20ms 首延迟）+ Docker 竞品，
->   同一脚本——用于横向排行，不与 ①② 逐点相减。
-> 单机 directional 数据遵循 `bench/README.md` 数据质量红线。
+更新：2026-11-10。当前结论是减少请求热路径分配；没有证据支持所有场景稳定提速。发布构建只变更版本元数据，下面 A/B 对应冻结的审查 JAR，SHA256 均在证据中，不冒充最终发布 JAR 的新测量。
 
-## 一、性能迭代时间线与折线
+## 本轮改动与局部结果
 
-### 1. k6-A/B 口径：v12 基线 → v13 回归 → 优化后
+| 热路径 | before B/op | after B/op | 分配变化 |
+|---|---:|---:|---:|
+| SSE 64 字符 payload | 1332.55 | 1036.87 | −22.2% |
+| SSE 4096 字符 payload | 17460.55 | 9100.87 | −47.9% |
+| WebFlux 13 个请求头复制 | 8008 | 5464 | −31.8% |
 
-```mermaid
-xychart-beta
-    title "JSON 吞吐（req/s，50VU，k6-A/B 口径，越高越好）"
-    x-axis ["v12 基线", "v13 未优化(回归)", "v13 优化后"]
-    y-axis "req/s" 0 --> 7000
-    line [3734, 1937, 6107]
-```
+SSE 用索引扫描边界后仅截取一次，保持三种流协议的原始字节、终止和计量语义；WebFlux 直接读取 header 第一值，避免构造多值集合。4KB SSE 的 12000 B/op 预算在 before 失败、after 通过；局部 CPU 与分配不是整个网关收益。
 
-```mermaid
-xychart-beta
-    title "JSON p95 延迟（ms，越低越好）"
-    x-axis ["v12 基线", "v13 未优化(回归)", "v13 优化后"]
-    y-axis "ms" 0 --> 60
-    line [22.03, 56.08, 13.80]
-```
+## 端到端 A/B
 
-```mermaid
-xychart-beta
-    title "SSE 吞吐（req/s，50VU，k6-A/B 口径）"
-    x-axis ["v12 基线", "v13 未优化", "v13 优化后"]
-    y-axis "req/s" 0 --> 500
-    line [457, 438, 460]
-```
+同一批使用相同的 4 CPU / 2 GB、32 上游线程和 JVM 堆；50 VU、本地 wire mock、无 TLS/付费上游，每配置预热 30s、四轮各 15s、四配置平衡顺序。JSON/SSE 和本地治理 on/off 分开测。
 
-### 2. microbench 口径：解析热路径（ns/op，越低越好）
+64 个正式样本、4,217,770 请求全部零错误，上游计数一致。WebFlux SSE 吞吐中位数在治理 on/off 分别 +7.3% / +5.2%，但范围重叠；WebFlux JSON 分别 +10.3% / −9.4%，部分 p99 退化，VT JSON 参照路径也有波动。不能宣称全面或稳定提速，也不能用先后两批推算治理成本。
 
-```mermaid
-xychart-beta
-    title "解析微基准 @16.5KB 请求体（ns/op，v12 vs v13）"
-    x-axis ["v12 基线", "v13"]
-    y-axis "ns/op" 0 --> 80000
-    line [70277, 61204]
-```
+完整表、范围、p50/p95/p99、JFR、失败实验和源码/产物校验见 [性能审查报告](verification/perf/2026-11-10/perf-review/README.md)。
 
-### 3. 跨网关对标口径：同 mock 同 k6（JSON req/s，llmgw4j vs LiteLLM）
+## 性能审查发现与调优边界
 
-```mermaid
-xychart-beta
-    title "跨网关 JSON 吞吐（50VU，standalone mock 口径）"
-    x-axis ["LiteLLM(latest)", "llmgw4j v13"]
-    y-axis "req/s" 0 --> 2500
-    line [90, 1949]
-```
+- JDK HttpClient、Reactor 与 Netty 之间的异步桥接和逐行处理仍是热点，尚未重写桥接。
+- 4 CPU 容器出现 CPU 配额节流。32→4 线程虽改善 JSON，但 SSE 曾出现一次截断，该配置判失败；默认仍为 32。按实际 CPU 配额、流长度与治理依赖延迟测量，不能照抄历史单机“最优值”。
+- `JdkHttpUpstream.targetUris` 尚无容量上限，动态路径高基数可能造成长期堆增长，本轮未修。
+- 并发默认 64、非流式响应默认 4 MiB、上传/下载仍整包缓冲。此次没有放宽保护来换吞吐。
+- 没有覆盖公网 TLS、远程审核/embedding、Redis 治理延迟或生产长流容量。Native 的发布契约检查不等于 native 性能复测。
 
-交互式版本（可缩放）：**[performance-charts.html](performance-charts.html)**
+## 跨网关历史对照与复现
 
-## 二、v13 性能优化明细（本次迭代）
+[统一容器对照](verification/perf/2026-11-10/final/README.md)是 72 样本的旧固定产物批次，不含其后 JWT 与本次 SSE/header 修改，不能作为 v0.2.0 最新排名。[差距报告](gap-analysis.md)分别说明产品能力和测量范围。
 
-### 背景：A/B 发现真实回归
+执行入口为 [统一容器基准](../bench/cross-gateway/README.md)，方法约束见 [bench/README.md](../bench/README.md)。正式 A/B 不开 JFR，保留所有失败轮次和上游计数，不将闭环 mock RPS 推广为生产最大容量或 SLO。
 
-v13 能力补齐后，用 v12 worktree（@f7e30a7）同口径 A/B 发现 JSON 热路径回归：
-
-| 指标（50VU JSON） | v12 基线 | v13 未优化 | Δ |
-|---|---|---|---|
-| 吞吐 | 3734/s | 1937/s | **-48%** |
-| avg | 13.16ms | 25.53ms | +94% |
-| p95 | 22.03ms | 56.08ms | +155% |
-| 故障率 | 0% | 0% | — |
-| SSE 吞吐 | 457/s | 438/s | -4%（被 mock chunk 节奏掩蔽） |
-
-### 修复：4 项优化（全部保持默认行为不变）
-
-| # | 优化 | 位置 | 问题 |
-|---|---|---|---|
-| 1 | mock 探针 join 门控 | `MockUpstreamServer.decorate` | `x-echo-received` 对**每个响应**执行全量 header 名 join——对齐 mock 上游，基准的公共路径被 v13 探针代码拖慢。改为 `x-llmgw-probe` 请求头显式开启 |
-| 2 | HeaderPolicy 预编译 | `AllowListHeaderPolicy` | 每请求对每个 header 做 O(deny-list) 字符串 equals + 重复 toLowerCase；预编译为 exact HashSet + 前缀表，deny 用 O(1) Set，惰性建 map |
-| 3 | ForwardingPolicy 单路由快路径 | `ForwardingPolicy.plan` | 默认配置（单路由/无重试）仍构建 ArrayList + fallback 解析；改为返回单元素不可变列表 |
-| 4 | RetryConfig 构造期缓存 | 两个 Controller | 每请求新建 RetryConfig record；配置启动期冻结，缓存为 final 字段 |
-
-### 优化后（同口径复测）
-
-| 指标（50VU） | v12 基线 | v13 优化后 | Δ vs 基线 |
-|---|---|---|---|
-| JSON 吞吐 | 3734/s | **6107/s** | +64% |
-| JSON avg / p95 | 13.16 / 22.03ms | **7.98 / 13.80ms** | -39% / -37% |
-| SSE 吞吐 | 457/s | **460/s** | +0.7%（持平） |
-| SSE avg | 108.92ms | 108.40ms | 持平 |
-| 故障率 | 0% | 0% | — |
-
-证据：`docs/verification/perf/k6-ab-v12-vs-v13.txt`；未优化回归数据
-`docs/verification/w1-regression.log` 时代 + `perf/` 目录。
-
-### 跨网关对标口径（独立 mock，注意与上表不可比）
-
-| 指标（50VU，standalone mock） | llmgw4j v13 | LiteLLM latest |
-|---|---|---|
-| JSON 吞吐 | 1949/s | 90/s |
-| JSON avg / p95 | 25.5 / 30.1ms | 554.9 / 574.1ms |
-| SSE 吞吐 | 452/s | 43/s |
-| 故障率 | 0% | 0% |
-
-详见 [gap-analysis.md 第三节](gap-analysis.md)；原始输出
-`docs/verification/perf/cross-gateway/results-final.txt`。
-
-## 三、microbench 口径：v12 → v13 逐尺寸对比
-
-| payload | 指标 | v12 基线 | v13 | Δ |
-|---|---|---|---|---|
-| 158B | tree ns/op | 2847.1 | 2260.4 | -21% |
-| 158B | stream ns/op | 1763.2 | 1661.8 | -6% |
-| 1182B | tree ns/op | 5891.1 | 5274.1 | -10% |
-| 1182B | stream ns/op | 5626.3 | 5020.2 | -11% |
-| 4254B | tree ns/op | 19133.5 | 16521.9 | -14% |
-| 4254B | stream ns/op | 18663.2 | 16166.6 | -13% |
-| 16542B | tree ns/op | 70421.2 | 61132.4 | -13% |
-| 16542B | stream ns/op | 70277.7 | 61204.5 | -13% |
-| — | 缓冲 wrap/direct | 持平 | 持平 | 噪声内 |
-
-证据：`docs/verification/baseline/microbench.log`（v12）vs
-`docs/verification/perf/microbench-v13-clean.txt`（v13，单机独占跑）。
-结论：解析热路径**全尺寸无回归**（本次 run 普遍更快，属机器状态噪声范围内的正向波动）。
-
-## 四、v1 → v12 历史性能演进（摘要）
-
-逐版本的完整基准记录（v1 boundedElastic 基线 → v2 全异步 → v3/v4 流式契约 →
-v7 热路径三臂 A/B → v8 微基准 → v9 I/O 探路 → v12 多协议）已归档：
-**[archive/README-history-v1-to-v12.md](archive/README-history-v1-to-v12.md)**（原 README §五）。
-要点：v2 消除 native 尾延迟退化（p99 122ms→36ms）；v7 executor 池扫描定容 32 线程
-（SSE +30%）；v8 流式 payload 解析提速 2.3-3.5×；v9 两项候选被数据否决。
-
-## 五、方法论
-
-1. **先建基线再动代码**：v13 动工前先跑全量基线冒烟 + microbench + v12 worktree A/B。
-2. **回归即修复**：A/B 发现 -48% 立即定位（对照 mock 公共路径 + 每请求分配），4 项修复全部保持默认行为等价。
-3. **口径隔离**：三类口径不混用；跨口径数字绝不逐点相减。
-4. **证据落库**：每次测量 tee 到 `docs/verification/`，本文引用的每个数字可溯源。
+v12/v13 记录和被撤回的异环境对照仅保留于 [历史文档](archive/performance-v12-v13.md)与[历史图表](archive/performance-charts-v12-v13.html)。

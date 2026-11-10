@@ -1,0 +1,34 @@
+{
+  "date": "2026-11-10",
+  "junit": {
+    "latest_reports": 114,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "execution": "default clean verify executed 112 and skipped 2 Redis tests; those 2 separately executed against temporary real Redis"
+  },
+  "jwt_tests": 16,
+  "http": {
+    "engines": [
+      "webflux",
+      "vt"
+    ],
+    "requests_per_engine": 24,
+    "all_passed": true
+  },
+  "microbenchmark": {
+    "before": {
+      "thread_cpu_ns_median": 9903.2,
+      "thread_bytes_median": 50648.59
+    },
+    "after": {
+      "thread_cpu_ns_median": 4084.4,
+      "thread_bytes_median": 4514.75
+    }
+  },
+  "jar_sha256": "e1ee5a29ce6b6f6030d6a9c709a38fe66a40a27541e9c09f95dff14a43c8a0f6",
+  "full_gateway_performance_retested": false,
+  "native_retested": false,
+  "oidc_jwks_implemented": false,
+  "published": false
+}

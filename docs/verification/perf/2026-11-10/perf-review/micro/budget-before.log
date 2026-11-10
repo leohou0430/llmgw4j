@@ -1,0 +1,7 @@
+4096,1,6722.27,17460.55
+4096,2,10441.90,17460.55
+4096,3,6434.83,17460.56
+4096,4,6506.00,17460.55
+4096,5,8398.27,17422.26
+Exception in thread "main" java.lang.AssertionError: SSE allocation budget exceeded: 17422.263466666667
+	at SsePayloadMicrobench.main(SsePayloadMicrobench.java:22)

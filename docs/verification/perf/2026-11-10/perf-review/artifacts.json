@@ -1,0 +1,8 @@
+{
+  "before_jar_sha256": "e1ee5a29ce6b6f6030d6a9c709a38fe66a40a27541e9c09f95dff14a43c8a0f6",
+  "after_jar_sha256": "8722dfadafb59fce12f90a64d88f52262d6bc26042a61d58e95080cee1dbba19",
+  "production_changes": {
+    "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/protocol/ChunkParser.java": "f6c9d144ba5e4103ae40e667857a5e7e3a6e567acded93ca7167545e1073a031",
+    "llmgw-engine/llmgw-engine-webflux/src/main/java/io/github/leohou0430/llmgw/engine/webflux/WebfluxGatewayController.java": "25b85b2eb46294d837c574ebd5a736abc134e8f8875ba04f1ddf6428a6231cc1"
+  }
+}

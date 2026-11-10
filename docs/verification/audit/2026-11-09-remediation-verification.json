@@ -1,0 +1,36 @@
+{
+  "date": "2026-11-09",
+  "junit": {
+    "tests": 89,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "default_verify": "PASS",
+  "redis_profile_tests": "PASS",
+  "module_layout": {
+    "pass": 27,
+    "fail": 0
+  },
+  "contracts": {
+    "stream": 67,
+    "extensions": 54,
+    "hardening": 46,
+    "failures": 0
+  },
+  "tenant_both_engines": "PASS",
+  "docker_redis_build": "PASS",
+  "redis_cross_replica": {
+    "redis_container": "PASS",
+    "webflux_to_vt_owned_file": "PASS",
+    "foreign_file_and_reference": "404",
+    "runtime_key_admin": "501",
+    "shared_token_usage": "PASS"
+  },
+  "yaml_openapi": "PASS",
+  "compose_merged_config": "PASS",
+  "native_build": "NOT_RUN",
+  "remote_publish": "NOT_RUN",
+  "real_paid_upstream": "NOT_RUN",
+  "performance_matrix": "NOT_RUN"
+}

@@ -1,0 +1,21 @@
+Picked up JAVA_TOOL_OPTIONS: -Dgateway.mock.enabled=false -Dgateway.governance-enabled=true -Dgateway.api-keys[0].id=benchmark -Dgateway.api-keys[0].token=benchmark-upstream -Dgateway.api-keys[0].quota-tokens=1000000000000 -Dgateway.governance.rate-limit-tokens-per-second=2000000000 -Dgateway.governance.rate-limit-burst=2000000000 -Dgateway.routes[0].target-url=http://mock:9099/v1 -Dgateway.routes[0].api-key=benchmark-upstream
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.1.2)
+
+2026-11-10T00:56:12.919Z  INFO 1 --- [llmgw] [           main] i.g.l.llmgw.app.LlmGatewayApplication    : Starting LlmGatewayApplication v0.1.0-SNAPSHOT using Java 25.0.5 with PID 1 (/app/llmgw.jar started by root in /app)
+2026-11-10T00:56:12.924Z  INFO 1 --- [llmgw] [           main] i.g.l.llmgw.app.LlmGatewayApplication    : The following 1 profile is active: "webflux"
+2026-11-10T00:56:14.774Z  INFO 1 --- [llmgw] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 4 endpoints beneath base path '/actuator'
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::loadLibrary has been called by io.netty.util.internal.NativeLibraryUtil in an unnamed module (jar:nested:/app/llmgw.jar/!BOOT-INF/lib/netty-common-4.2.19.Final.jar!/)
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+2026-11-10T00:56:15.531Z  INFO 1 --- [llmgw] [           main] o.s.boot.reactor.netty.NettyWebServer    : Netty started on port 8080 (http)
+2026-11-10T00:56:15.540Z  INFO 1 --- [llmgw] [           main] i.g.l.llmgw.app.LlmGatewayApplication    : Started LlmGatewayApplication in 3.212 seconds (process running for 3.806)

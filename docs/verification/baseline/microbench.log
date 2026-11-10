@@ -1,0 +1,20 @@
+=== parse-microbench ===
+注: /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/micro/ParseMicrobench.java使用或覆盖了已过时的 API。
+注: 有关详细信息, 请使用 -Xlint:deprecation 重新编译。
+payload_bytes,tree_ns_op,stream_ns_op,speedup,tree_bytes_op,stream_bytes_op,alloc_reduction
+158,2847.1,1763.2,1.61x,2603,1416,45.6%
+1182,5891.1,5626.3,1.05x,6632,5512,16.9%
+4254,19133.5,18663.2,1.03x,18920,17800,5.9%
+# breakdown @4254B (ns/op): tree_only=6853 full_v8_parse=19943 sha256_fresh=13265 sha256_threadlocal=13270 utf8_encode=522 token_loop=109
+16542,70421.2,70277.7,1.00x,68072,66952,1.6%
+# breakdown @16542B (ns/op): tree_only=20472 full_v8_parse=75005 sha256_fresh=56437 sha256_threadlocal=56667 utf8_encode=2125 token_loop=122
+# url_ns_op: v7.2_regex_plus_URI=5494 v8_cached_URI=103 speedup=53.3x
+# streaming payload: v7.2 always hashes, v8 skips it
+stream_payload_bytes,v72_ns_op,v8_ns_op,speedup
+157,2864.3,1213.0,2.36x
+4253,23767.6,7108.4,3.34x
+16541,77699.2,21933.5,3.54x
+=== buffer-microbench ===
+payload_bytes,wrap_ns,direct_ns,speedup,wrap_alloc_bytes,direct_alloc_bytes,alloc_reduction_pct
+104,505.4,510.1,0.99x,292,304,-4.1%
+238,243.3,397.8,0.61x,353,362,-2.7%

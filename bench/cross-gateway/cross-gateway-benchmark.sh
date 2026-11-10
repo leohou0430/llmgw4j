@@ -55,7 +55,7 @@ run_k6() { # name base key engine-tag
 
 ## llmgw4j
 echo "== llmgw4j :8080 =="
-java -jar "$ROOT/llmgw-app/target/llmgw-app-0.1.0-SNAPSHOT.jar" \
+java -jar "$ROOT/llmgw-app/target/llmgw-app-0.2.0.jar" \
   --spring.profiles.active=webflux --server.port=8080 \
   '--gateway.routes[0].target-url=http://127.0.0.1:9099/v1' \
   --gateway.upstream.type=mock \

@@ -1,0 +1,49 @@
+{
+  "rankings": [
+    {
+      "profile": "wire",
+      "mode": "json",
+      "arm": "llmgw-vt-proxy",
+      "rps_median": 5703.314783254731,
+      "p50_ms_median": 5.243,
+      "p95_ms_median": 18.728,
+      "p99_ms_median": 52.7348,
+      "rps_min": 5703.314783254731,
+      "rps_max": 5703.314783254731
+    },
+    {
+      "profile": "wire",
+      "mode": "json",
+      "arm": "llmgw-webflux-proxy",
+      "rps_median": 2369.496426329984,
+      "p50_ms_median": 9.326,
+      "p95_ms_median": 69.25819999999999,
+      "p99_ms_median": 74.59204000000001,
+      "rps_min": 2369.496426329984,
+      "rps_max": 2369.496426329984
+    },
+    {
+      "profile": "wire",
+      "mode": "sse",
+      "arm": "llmgw-vt-proxy",
+      "rps_median": 5015.1699634723245,
+      "p50_ms_median": 8.065,
+      "p95_ms_median": 16.786949999999997,
+      "p99_ms_median": 26.192990000000005,
+      "rps_min": 5015.1699634723245,
+      "rps_max": 5015.1699634723245
+    },
+    {
+      "profile": "wire",
+      "mode": "sse",
+      "arm": "llmgw-webflux-proxy",
+      "rps_median": 4178.451090113827,
+      "p50_ms_median": 8.307,
+      "p95_ms_median": 31.40419999999998,
+      "p99_ms_median": 53.25752000000002,
+      "rps_min": 4178.451090113827,
+      "rps_max": 4178.451090113827
+    }
+  ],
+  "excluded": []
+}

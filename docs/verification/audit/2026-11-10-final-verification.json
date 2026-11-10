@@ -1,0 +1,63 @@
+{
+  "date": "2026-11-10",
+  "goal_scope": "Source-backed product comparison, implemented corrections/performance work, reproducible configuration-level ranking",
+  "jar_sha256": "c10b9edae6940058cdd8734fde4820521013ff265b955f06ae83fb3ad33e38be",
+  "production_source_sha256": "4c352ea16e438960f9797ead1a9e6f7487b16264dedc516ae5ee10c14c55e9c0",
+  "junit": {
+    "tests": 105,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "real_redis": true
+  },
+  "performance": {
+    "path": "docs/verification/perf/2026-11-10/final",
+    "samples": 72,
+    "rounds": 3,
+    "warmup": "15s",
+    "duration": "10s",
+    "errors": 0,
+    "upstream_counts_match": true,
+    "all_preflight_passed": true,
+    "excluded": []
+  },
+  "native": {
+    "engine": "webflux",
+    "production_source_sha256": "4c352ea16e438960f9797ead1a9e6f7487b16264dedc516ae5ee10c14c55e9c0",
+    "binary_sha256": "5f1d88b9dc870076f70dd60de2df9cea3db690c8c991754a8ab092ab46d9d7a4",
+    "binary_path": "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bin/native/llmgw-webflux-20261110-5f1d88b9",
+    "contract_passes": 34,
+    "contract_failures": 0
+  },
+  "admin_http": {
+    "engines": [
+      "webflux",
+      "vt"
+    ],
+    "configurations": [
+      "protected",
+      "read-only",
+      "demo"
+    ],
+    "passed": 6,
+    "failed": 0
+  },
+  "claims": {
+    "full_rbac": false,
+    "production_money_budget": false,
+    "global_market_ranking": false,
+    "full_governance_performance": false
+  },
+  "published": false,
+  "python_tests": {
+    "passed": 6,
+    "failed": 0
+  },
+  "module_layout": {
+    "passed": 27,
+    "failed": 0
+  },
+  "yaml_openapi": "passed",
+  "diff_whitespace": "passed",
+  "task_redis_container_removed": true
+}

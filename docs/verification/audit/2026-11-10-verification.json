@@ -1,0 +1,46 @@
+{
+  "date": "2026-11-10",
+  "maven_redis": {
+    "tests": 97,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "maven_default": {
+    "discovered": 97,
+    "passed": 95,
+    "skipped_redis": 2
+  },
+  "python_tests": 6,
+  "contracts": {
+    "stream": 67,
+    "extensions": 54,
+    "hardening": 46,
+    "tenant_engines": [
+      "webflux",
+      "vt"
+    ]
+  },
+  "performance": {
+    "path": "docs/verification/perf/2026-11-10/unified-v3",
+    "samples": 84,
+    "errors": 0,
+    "upstream_counts_match": true,
+    "jar_sha256": "5f180f7cb742099f149f99f9bb9093f920996cb502c8caa9680fb60cfe003c4d",
+    "source_snapshot": "compare-used.py"
+  },
+  "native": {
+    "engine": "webflux",
+    "contract_passes": 34,
+    "scope": "preceding safety-fix snapshot; excludes latest model accounting and ownership fast path"
+  },
+  "controlled_ab": {
+    "path": "docs/verification/perf/2026-11-10/webflux-ab",
+    "samples": 8,
+    "errors": 0,
+    "median_gain_percent": 6.43,
+    "overlapping_ranges": true,
+    "stable_gain_proven": false
+  },
+  "external_publish": false
+}

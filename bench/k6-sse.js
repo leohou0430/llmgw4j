@@ -52,8 +52,10 @@ export default function () {
   const ok = check(res, {
     'status is 200': (r) => r.status === 200,
     'stream completed': (r) => typeof r.body === 'string' && r.body.includes('data: [DONE]'),
+    'all mock chunks arrived': (r) => typeof r.body === 'string' && Array.from({length: 8}, (_, i) => `tok${i}`).every(t => r.body.includes(t)),
     'no in-band error': (r) => typeof r.body === 'string' && !r.body.includes('event: error'),
   });
+  if (!ok) console.warn(`failed status=${res.status} error=${res.error || ''} body=${String(res.body).slice(0, 1000)}`);
   latency.add(res.timings.duration);
   requests.add(1);
   failures.add(ok ? 0 : 1);

@@ -1,0 +1,42 @@
+
+
+  █ THRESHOLDS 
+
+    gateway_failure_rate
+    ✓ 'rate<0.01' rate=0.00%
+
+
+  █ TOTAL RESULTS 
+
+    checks_total.......: 5600    1819.271609/s
+    checks_succeeded...: 100.00% 5600 out of 5600
+    checks_failed......: 0.00%   0 out of 5600
+
+    ✓ status is 200
+    ✓ stream completed
+    ✓ all mock chunks arrived
+    ✓ no in-band error
+
+    CUSTOM
+    gateway_failure_rate...........: 0.00%  0 out of 1400
+    gateway_latency_ms.............: avg=109.4ms  p(50)=109.03ms p(95)=114.26ms p(99)=116.18ms max=118.13ms
+    gateway_requests...............: 1400   454.817902/s
+
+    HTTP
+    http_req_duration..............: avg=109.4ms  p(50)=109.03ms p(95)=114.26ms p(99)=116.18ms max=118.13ms
+      { expected_response:true }...: avg=109.4ms  p(50)=109.03ms p(95)=114.26ms p(99)=116.18ms max=118.13ms
+    http_req_failed................: 0.00%  0 out of 1400
+    http_reqs......................: 1400   454.817902/s
+
+    EXECUTION
+    iteration_duration.............: avg=109.79ms p(50)=109.47ms p(95)=114.71ms p(99)=116.56ms max=118.39ms
+    iterations.....................: 1400   454.817902/s
+    vus............................: 50     min=50        max=50
+    vus_max........................: 50     min=50        max=50
+
+    NETWORK
+    data_received..................: 2.6 MB 842 kB/s
+    data_sent......................: 442 kB 144 kB/s
+
+
+

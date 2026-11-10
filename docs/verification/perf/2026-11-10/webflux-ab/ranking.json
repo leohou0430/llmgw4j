@@ -1,0 +1,27 @@
+{
+  "rankings": [
+    {
+      "profile": "wire",
+      "mode": "sse",
+      "arm": "llmgw-webflux-proxy",
+      "rps_median": 3834.5992019518367,
+      "p50_ms_median": 9.801,
+      "p95_ms_median": 24.215875,
+      "p99_ms_median": 44.78160000000007,
+      "rps_min": 3682.7345655547892,
+      "rps_max": 3921.4885031198814
+    },
+    {
+      "profile": "wire",
+      "mode": "sse",
+      "arm": "llmgw-webflux-before",
+      "rps_median": 3602.772022144669,
+      "p50_ms_median": 10.192,
+      "p95_ms_median": 28.710674999999988,
+      "p99_ms_median": 46.83154500000002,
+      "rps_min": 3044.2392185526483,
+      "rps_max": 3750.079139577029
+    }
+  ],
+  "excluded": []
+}

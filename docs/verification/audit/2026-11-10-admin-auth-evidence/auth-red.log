@@ -1,0 +1,299 @@
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] llmgw4j                                                            [pom]
+[INFO] llmgw-core                                                         [jar]
+[INFO] llmgw-governance                                                   [pom]
+[INFO] llmgw-governance-api                                               [jar]
+[INFO] llmgw-governance-default                                           [jar]
+[INFO] llmgw-engine                                                       [pom]
+[INFO] llmgw-engine-api                                                   [jar]
+[INFO] llmgw-engine-webflux                                               [jar]
+[INFO] llmgw-engine-vt                                                    [jar]
+[INFO] llmgw-provider-openai                                              [jar]
+[INFO] llmgw-provider-anthropic                                           [jar]
+[INFO] llmgw-app                                                          [jar]
+[INFO] 
+[INFO] -----------------< io.github.leohou0430:llmgw-parent >------------------
+[INFO] Building llmgw4j 0.1.0-SNAPSHOT                                   [1/12]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] ------------------< io.github.leohou0430:llmgw-core >-------------------
+[INFO] Building llmgw-core 0.1.0-SNAPSHOT                                [2/12]
+[INFO]   from llmgw-core/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ llmgw-core ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-core/src/main/resources
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-core/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ llmgw-core ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ llmgw-core ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-core/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ llmgw-core ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ llmgw-core ---
+[INFO] 
+[INFO] ---------------< io.github.leohou0430:llmgw-governance >----------------
+[INFO] Building llmgw-governance 0.1.0-SNAPSHOT                          [3/12]
+[INFO]   from llmgw-governance/pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] -------------< io.github.leohou0430:llmgw-governance-api >--------------
+[INFO] Building llmgw-governance-api 0.1.0-SNAPSHOT                      [4/12]
+[INFO]   from llmgw-governance/llmgw-governance-api/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ llmgw-governance-api ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-governance/llmgw-governance-api/src/main/resources
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-governance/llmgw-governance-api/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ llmgw-governance-api ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ llmgw-governance-api ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-governance/llmgw-governance-api/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ llmgw-governance-api ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ llmgw-governance-api ---
+[INFO] 
+[INFO] -----------< io.github.leohou0430:llmgw-governance-default >------------
+[INFO] Building llmgw-governance-default 0.1.0-SNAPSHOT                  [5/12]
+[INFO]   from llmgw-governance/llmgw-governance-default/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ llmgw-governance-default ---
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ llmgw-governance-default ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ llmgw-governance-default ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-governance/llmgw-governance-default/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ llmgw-governance-default ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ llmgw-governance-default ---
+[INFO] 
+[INFO] -----------------< io.github.leohou0430:llmgw-engine >------------------
+[INFO] Building llmgw-engine 0.1.0-SNAPSHOT                              [6/12]
+[INFO]   from llmgw-engine/pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] ---------------< io.github.leohou0430:llmgw-engine-api >----------------
+[INFO] Building llmgw-engine-api 0.1.0-SNAPSHOT                          [7/12]
+[INFO]   from llmgw-engine/llmgw-engine-api/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ llmgw-engine-api ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-api/src/main/resources
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-api/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ llmgw-engine-api ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ llmgw-engine-api ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-api/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ llmgw-engine-api ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ llmgw-engine-api ---
+[INFO] 
+[INFO] -------------< io.github.leohou0430:llmgw-engine-webflux >--------------
+[INFO] Building llmgw-engine-webflux 0.1.0-SNAPSHOT                      [8/12]
+[INFO]   from llmgw-engine/llmgw-engine-webflux/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ llmgw-engine-webflux ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-webflux/src/main/resources
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-webflux/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ llmgw-engine-webflux ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ llmgw-engine-webflux ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-webflux/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ llmgw-engine-webflux ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ llmgw-engine-webflux ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] ----------------< io.github.leohou0430:llmgw-engine-vt >----------------
+[INFO] Building llmgw-engine-vt 0.1.0-SNAPSHOT                           [9/12]
+[INFO]   from llmgw-engine/llmgw-engine-vt/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ llmgw-engine-vt ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-vt/src/main/resources
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-vt/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ llmgw-engine-vt ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ llmgw-engine-vt ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-vt/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ llmgw-engine-vt ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ llmgw-engine-vt ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] -------------< io.github.leohou0430:llmgw-provider-openai >-------------
+[INFO] Building llmgw-provider-openai 0.1.0-SNAPSHOT                    [10/12]
+[INFO]   from llmgw-provider-openai/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ llmgw-provider-openai ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-provider-openai/src/main/resources
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-provider-openai/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ llmgw-provider-openai ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ llmgw-provider-openai ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-provider-openai/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ llmgw-provider-openai ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ llmgw-provider-openai ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] -----------< io.github.leohou0430:llmgw-provider-anthropic >------------
+[INFO] Building llmgw-provider-anthropic 0.1.0-SNAPSHOT                 [11/12]
+[INFO]   from llmgw-provider-anthropic/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ llmgw-provider-anthropic ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-provider-anthropic/src/main/resources
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-provider-anthropic/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ llmgw-provider-anthropic ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ llmgw-provider-anthropic ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-provider-anthropic/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ llmgw-provider-anthropic ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ llmgw-provider-anthropic ---
+[INFO] 
+[INFO] -------------------< io.github.leohou0430:llmgw-app >-------------------
+[INFO] Building llmgw-app 0.1.0-SNAPSHOT                                [12/12]
+[INFO]   from llmgw-app/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ llmgw-app ---
+[INFO] Copying 4 resources from src/main/resources to target/classes
+[INFO] Copying 2 resources from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ llmgw-app ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ llmgw-app ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ llmgw-app ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 2 source files with javac [debug parameters release 25] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ llmgw-app ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running io.github.leohou0430.llmgw.app.AdminAuthorizationTest
+[ERROR] Tests run: 6, Failures: 3, Errors: 0, Skipped: 0, Time elapsed: 0.271 s <<< FAILURE! -- in io.github.leohou0430.llmgw.app.AdminAuthorizationTest
+[ERROR] io.github.leohou0430.llmgw.app.AdminAuthorizationTest.readOnlyConfigurationDoesNotEnableAnonymousAudit -- Time elapsed: 0.012 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: Expected org.springframework.web.server.ResponseStatusException to be thrown, but nothing was thrown.
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:159)
+	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:74)
+	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:35)
+	at org.junit.jupiter.api.Assertions.assertThrows(Assertions.java:3223)
+	at io.github.leohou0430.llmgw.app.AdminAuthorizationTest.unauthorized(AdminAuthorizationTest.java:38)
+	at io.github.leohou0430.llmgw.app.AdminAuthorizationTest.readOnlyConfigurationDoesNotEnableAnonymousAudit(AdminAuthorizationTest.java:58)
+
+[ERROR] io.github.leohou0430.llmgw.app.AdminAuthorizationTest.auditRejectsMissingBlankAndInvalidCredentialsWith401 -- Time elapsed: 0.005 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: Unexpected exception type thrown, expected: <org.springframework.web.server.ResponseStatusException> but was: <java.lang.NullPointerException>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:158)
+	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:68)
+	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:35)
+	at org.junit.jupiter.api.Assertions.assertThrows(Assertions.java:3223)
+	at io.github.leohou0430.llmgw.app.AdminAuthorizationTest.unauthorized(AdminAuthorizationTest.java:38)
+	at io.github.leohou0430.llmgw.app.AdminAuthorizationTest.auditRejectsMissingBlankAndInvalidCredentialsWith401(AdminAuthorizationTest.java:45)
+Caused by: java.lang.NullPointerException: Cannot invoke "String.getBytes(java.nio.charset.Charset)" because "token" is null
+	at io.github.leohou0430.llmgw.app.AdminController.isReadAuthorized(AdminController.java:109)
+	at io.github.leohou0430.llmgw.app.AdminController.exportAudit(AdminController.java:403)
+	at io.github.leohou0430.llmgw.app.AdminAuthorizationTest.lambda$auditRejectsMissingBlankAndInvalidCredentialsWith401$0(AdminAuthorizationTest.java:45)
+	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:54)
+	... 4 more
+
+[ERROR] io.github.leohou0430.llmgw.app.AdminAuthorizationTest.allOtherAdminEndpointsRejectAnonymousInvalidAndReadOnlyTokens -- Time elapsed: 0.020 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: load ==> Expected java.lang.reflect.InvocationTargetException to be thrown, but nothing was thrown.
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:159)
+	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:74)
+	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:40)
+	at org.junit.jupiter.api.Assertions.assertThrows(Assertions.java:3249)
+	at io.github.leohou0430.llmgw.app.AdminAuthorizationTest.allOtherAdminEndpointsRejectAnonymousInvalidAndReadOnlyTokens(AdminAuthorizationTest.java:77)
+
+[INFO] 
+[INFO] Results:
+[INFO] 
+[ERROR] Failures: 
+[ERROR]   AdminAuthorizationTest.allOtherAdminEndpointsRejectAnonymousInvalidAndReadOnlyTokens:77 load ==> Expected java.lang.reflect.InvocationTargetException to be thrown, but nothing was thrown.
+[ERROR]   AdminAuthorizationTest.auditRejectsMissingBlankAndInvalidCredentialsWith401:45->unauthorized:38 Unexpected exception type thrown, expected: <org.springframework.web.server.ResponseStatusException> but was: <java.lang.NullPointerException>
+[ERROR]   AdminAuthorizationTest.readOnlyConfigurationDoesNotEnableAnonymousAudit:58->unauthorized:38 Expected org.springframework.web.server.ResponseStatusException to be thrown, but nothing was thrown.
+[INFO] 
+[ERROR] Tests run: 6, Failures: 3, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for llmgw4j 0.1.0-SNAPSHOT:
+[INFO] 
+[INFO] llmgw4j ............................................ SUCCESS [  0.002 s]
+[INFO] llmgw-core ......................................... SUCCESS [  0.590 s]
+[INFO] llmgw-governance ................................... SUCCESS [  0.000 s]
+[INFO] llmgw-governance-api ............................... SUCCESS [  0.063 s]
+[INFO] llmgw-governance-default ........................... SUCCESS [  0.076 s]
+[INFO] llmgw-engine ....................................... SUCCESS [  0.001 s]
+[INFO] llmgw-engine-api ................................... SUCCESS [  0.057 s]
+[INFO] llmgw-engine-webflux ............................... SUCCESS [  0.165 s]
+[INFO] llmgw-engine-vt .................................... SUCCESS [  0.044 s]
+[INFO] llmgw-provider-openai .............................. SUCCESS [  0.074 s]
+[INFO] llmgw-provider-anthropic ........................... SUCCESS [  0.037 s]
+[INFO] llmgw-app .......................................... FAILURE [  2.249 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  3.781 s
+[INFO] Finished at: 2026-11-10T01:22:42+08:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.5.6:test (default-test) on project llmgw-app: There are test failures.
+[ERROR] 
+[ERROR] See /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/surefire-reports for the individual test results.
+[ERROR] See dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+[ERROR] 
+[ERROR] After correcting the problems, you can resume the build with the command
+[ERROR]   mvn <args> -rf :llmgw-app

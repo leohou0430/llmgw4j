@@ -89,6 +89,7 @@ public class VirtualThreadGatewayController {
     private final GatewayProperties properties;
     /** W3.6: sticky store is an injectable SPI (in-memory default, Redis pack). */
     private final TaskRouteSticky taskRoutes;
+    private final java.util.concurrent.Semaphore requestSlots;
     private final HeaderPolicy headerPolicy;
     private final ForwardingPolicy.RetryConfig retryConfig;
 
@@ -101,6 +102,7 @@ public class VirtualThreadGatewayController {
         this.provider = provider;
         this.breaker = breaker;
         this.properties = properties;
+        this.requestSlots = new java.util.concurrent.Semaphore(properties.getMaxConcurrentRequests());
         this.taskRoutes = taskRoutes;
         this.headerPolicy = headerPolicy;
         GatewayProperties.Upstream.Retry retry = properties.getUpstream().getRetry();
@@ -155,6 +157,19 @@ public class VirtualThreadGatewayController {
      * pass-through. The bytes never round-trip a String.
      */
     private void handleBinaryKind(ProtocolKind kind, String contentType,
+                                  HttpServletRequest request, HttpServletResponse response) throws IOException {
+        if (!requestSlots.tryAcquire()) {
+            writeError(response, GatewayDecision.deny(503, "gateway request capacity exceeded"));
+            return;
+        }
+        try {
+            handleBinaryKindWithinCapacity(kind, contentType, request, response);
+        } finally {
+            requestSlots.release();
+        }
+    }
+
+    private void handleBinaryKindWithinCapacity(ProtocolKind kind, String contentType,
                                   HttpServletRequest request, HttpServletResponse response) throws IOException {
         long arrived = System.nanoTime();
         long max = Math.max(1, properties.getMaxRequestBytes());
@@ -292,6 +307,19 @@ public class VirtualThreadGatewayController {
 
     private void handleKind(ProtocolKind kind, HttpServletRequest request,
                             HttpServletResponse response) throws IOException {
+        if (!requestSlots.tryAcquire()) {
+            writeError(response, GatewayDecision.deny(503, "gateway request capacity exceeded"));
+            return;
+        }
+        try {
+            handleKindWithinCapacity(kind, request, response);
+        } finally {
+            requestSlots.release();
+        }
+    }
+
+    private void handleKindWithinCapacity(ProtocolKind kind, HttpServletRequest request,
+                            HttpServletResponse response) throws IOException {
         long arrived = System.nanoTime();
         long max = Math.max(1, properties.getMaxRequestBytes());
         int cap = (int) Math.min(max, Integer.MAX_VALUE - 1) + 1;
@@ -315,6 +343,11 @@ public class VirtualThreadGatewayController {
         }
         ParsedRequest parsed = decision.parsed();
         GatewayContext context = GatewayPipeline.context(decision, requestId, arrived);
+        if (!EngineRoutes.ownsReferencedFiles(parsed, decision.keyId(), decision.route(), taskRoutes)) {
+            GatewayPipeline.finish(chain, context, false);
+            writeError(response, GatewayDecision.deny(404, "referenced file not found on this route"));
+            return;
+        }
         Route route = decision.route();
         int timeout = properties.getUpstream().getTimeoutMs();
         ForwardingPolicy.RetryConfig retry = retryConfig;
@@ -336,7 +369,7 @@ public class VirtualThreadGatewayController {
                     body = cached.get();
                 } else {
                     Completed completed = completeWithPlan(
-                            ForwardingPolicy.plan(router, route, retry), 0,
+                            EngineRoutes.forwardPlan(router, route, retry, parsed), 0,
                             rawJson, parsed, timeout, context, pass, egress, 0);
                     body = completed.body();
                     winning = completed.route();
@@ -356,7 +389,7 @@ public class VirtualThreadGatewayController {
                 // actually served the create call.
                 String taskId = cached.isEmpty() ? Protocols.of(kind).taskId(root) : "";
                 if (!taskId.isEmpty()) {
-                    taskRoutes.bind(taskId, winning.id());
+                    taskRoutes.bind(decision.keyId(), kind.wireName(), taskId, winning.id());
                 }
                 String upstream = EngineTimings.upstreamOrNull(context);
                 if (upstream != null) {
@@ -386,6 +419,19 @@ public class VirtualThreadGatewayController {
      * (with its boundary) rides the policy pass-through untouched.
      */
     private void handleUpload(ProtocolKind kind, HttpServletRequest request,
+                              HttpServletResponse response) throws IOException {
+        if (!requestSlots.tryAcquire()) {
+            writeError(response, GatewayDecision.deny(503, "gateway request capacity exceeded"));
+            return;
+        }
+        try {
+            handleUploadWithinCapacity(kind, request, response);
+        } finally {
+            requestSlots.release();
+        }
+    }
+
+    private void handleUploadWithinCapacity(ProtocolKind kind, HttpServletRequest request,
                               HttpServletResponse response) throws IOException {
         long arrived = System.nanoTime();
         long max = Math.max(1, properties.getMaxRequestBytes());
@@ -424,6 +470,13 @@ public class VirtualThreadGatewayController {
                     decision.route(), properties.getUpstream().getTimeoutMs(), pass));
             breaker.recordSuccess(decision.route());
             context.markUpstreamEnd();
+            if (kind == ProtocolKind.FILES) {
+                String resourceId = ProtocolCodec.tryParse(new String(upstreamBody, StandardCharsets.UTF_8))
+                        .path("id").asText("");
+                if (!resourceId.isBlank()) {
+                    taskRoutes.bind(decision.keyId(), kind.wireName(), resourceId, decision.route().id());
+                }
+            }
             response.setHeader(EngineHeaders.OVERHEAD_MS, EngineTimings.total(context));
             response.setStatus(200);
             response.setContentType(EngineHeaders.APPLICATION_JSON);
@@ -450,18 +503,42 @@ public class VirtualThreadGatewayController {
     private void handleStickyFetch(ProtocolKind kind, String upstreamPath, String contentType,
                                    String taskId, UpstreamMethod method,
                                    HttpServletRequest request, HttpServletResponse response) throws IOException {
+        if (!requestSlots.tryAcquire()) {
+            writeError(response, GatewayDecision.deny(503, "gateway request capacity exceeded"));
+            return;
+        }
+        try {
+            handleStickyFetchWithinCapacity(kind, upstreamPath, contentType, taskId, method, request, response);
+        } finally {
+            requestSlots.release();
+        }
+    }
+
+    private void handleStickyFetchWithinCapacity(ProtocolKind kind, String upstreamPath, String contentType,
+                                   String taskId, UpstreamMethod method,
+                                   HttpServletRequest request, HttpServletResponse response) throws IOException {
         long arrived = System.nanoTime();
         String requestId = GatewayPipeline.requestId(request.getHeader(EngineHeaders.REQUEST_ID));
         response.setHeader(EngineHeaders.REQUEST_ID, requestId);
         ParsedRequest parsed = ParsedRequest.bodyless(kind);
-        Route pinned = taskId == null ? null : router.byId(taskRoutes.resolve(taskId));
-        boolean isPinned = pinned != null;
-        Route route = isPinned ? pinned : router.resolve(kind, "*");
-        GatewayDecision decision = chain.enter(request.getHeader("Authorization"), parsed, route);
+        GatewayDecision decision = chain.enter(request.getHeader("Authorization"), parsed,
+                router.resolve(kind, "*"));
         if (!decision.allowed()) {
             writeError(response, decision);
             return;
         }
+        Route pinned = taskId == null ? null
+                : router.byId(taskRoutes.resolve(decision.keyId(), kind.wireName(), taskId));
+        if ((taskId != null && pinned == null)
+                || (taskId == null && (kind == ProtocolKind.FILES || kind == ProtocolKind.BATCHES))) {
+            GatewayPipeline.finish(chain, GatewayPipeline.context(decision, requestId, arrived), false);
+            writeError(response, GatewayDecision.deny(taskId == null ? 501 : 404,
+                    taskId == null ? "tenant-scoped resource listing is unavailable" : "resource not found"));
+            return;
+        }
+        boolean isPinned = pinned != null;
+        Route route = isPinned ? pinned : decision.route();
+        decision = decision.withRoute(route);
         GatewayContext context = GatewayPipeline.context(decision, requestId, arrived);
         boolean success = false;
         boolean fetched = false;
@@ -519,7 +596,7 @@ public class VirtualThreadGatewayController {
 
         StreamSink sink = new StreamSink(response, context, headerPolicy);
         try {
-            streamWithPlan(ForwardingPolicy.plan(router, route, retryConfig), 0,
+            streamWithPlan(EngineRoutes.forwardPlan(router, route, retryConfig, parsed), 0,
                     rawJson, parsed, timeout, sink, context, pass, 0);
             // A clean EOF is NOT proof of completion. Only an explicit upstream
             // terminator frame is. Do not fabricate one here.

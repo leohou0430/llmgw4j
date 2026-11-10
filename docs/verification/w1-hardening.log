@@ -1,0 +1,63 @@
+======== v13 hardening: retry / timeouts / heartbeat / headers / breaker ========
+--- engine=webflux -- retry + header passthrough (defaults otherwise) ---
+[PASS] webflux non-stream same-route retry recovers from 5xx
+[PASS] webflux SSE same-route retry recovers from 5xx
+[PASS] webflux 4xx is not retried
+[PASS] webflux ingress allowlist forwards anthropic-version upstream
+[FAIL] webflux Authorization never forwarded upstream (unexpected: echoAuthorization)
+[PASS] webflux SSE ingress forwards anthropic-version upstream
+[FAIL] webflux SSE ingress strips Authorization upstream (unexpected: Authorization=)
+[PASS] webflux SSE ingress strips non-allowlisted headers upstream
+[FAIL] webflux egress allowlist forwards x-ratelimit-* to client (missing: x-ratelimit-remaining: 424242; got: HTTP/1.1 200 OK
+X-Request-Id: gw-b0ff3bb601ec01c0
+X-LLMGW-Overhead-Ms: 0.8
+Content-Type: application/json
+content-length: 261
+)
+[PASS] webflux non-allowlisted upstream header never reaches client
+--- engine=webflux -- three-tier timeouts ---
+[PASS] webflux first-byte watchdog fails a hung upstream as 502
+[PASS] webflux idle-read stall reports in-band error
+[PASS] webflux idle-read reason is precise
+[PASS] webflux idle-read abort never fabricates a terminator
+--- engine=webflux -- SSE heartbeat ---
+[PASS] webflux heartbeat injects comment frames (22)
+[PASS] webflux heartbeat coexists with protocol data
+[PASS] webflux heartbeat does not break the terminator
+--- engine=webflux -- video sticky-miss circuit breaker ---
+[PASS] webflux unknown-task video poll fails 502
+[PASS] webflux sticky-miss circuit breaker trips
+--- engine=vt -- retry + header passthrough (defaults otherwise) ---
+[PASS] vt non-stream same-route retry recovers from 5xx
+[PASS] vt SSE same-route retry recovers from 5xx
+[PASS] vt 4xx is not retried
+[PASS] vt ingress allowlist forwards anthropic-version upstream
+[FAIL] vt Authorization never forwarded upstream (unexpected: echoAuthorization)
+[PASS] vt SSE ingress forwards anthropic-version upstream
+[FAIL] vt SSE ingress strips Authorization upstream (unexpected: Authorization=)
+[PASS] vt SSE ingress strips non-allowlisted headers upstream
+[FAIL] vt egress allowlist forwards x-ratelimit-* to client (missing: x-ratelimit-remaining: 424242; got: HTTP/1.1 200 
+X-Request-Id: gw-739ac0daf5b6c29f
+X-LLMGW-Overhead-Ms: 0.7
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Sun, 08 Nov 2026 16:38:20 GMT
+)
+[PASS] vt non-allowlisted upstream header never reaches client
+--- engine=vt -- three-tier timeouts ---
+[PASS] vt first-byte watchdog fails a hung upstream as 502
+[PASS] vt idle-read stall reports in-band error
+[FAIL] vt idle-read reason is precise (missing: upstream idle read timeout; got: data: {"id":"mock","object":"chat.completion.chunk","choices":[{"index":0,"delta":{"content":"tok0"}}]}
+
+event: error
+data: {"error":{"message":"upstream: InterruptedException","type":"gateway_error"})
+[PASS] vt idle-read abort never fabricates a terminator
+--- engine=vt -- SSE heartbeat ---
+[PASS] vt heartbeat injects comment frames (21)
+[PASS] vt heartbeat coexists with protocol data
+[PASS] vt heartbeat does not break the terminator
+--- engine=vt -- video sticky-miss circuit breaker ---
+[PASS] vt unknown-task video poll fails 502
+[PASS] vt sticky-miss circuit breaker trips
+=================================================
+PASS=31 FAIL=7

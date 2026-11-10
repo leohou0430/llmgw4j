@@ -17,7 +17,7 @@ import io.github.leohou0430.llmgw.core.protocol.ParsedRequest;
  */
 public interface Guardrail {
 
-    enum Action { ALLOW, DENY }
+    enum Action { ALLOW, DENY, UNAVAILABLE }
 
     record Verdict(Action action, String reason, String mutatedJson) {
 
@@ -27,6 +27,10 @@ public interface Guardrail {
 
         public static Verdict deny(String reason) {
             return new Verdict(Action.DENY, reason, null);
+        }
+
+        public static Verdict unavailable(String reason) {
+            return new Verdict(Action.UNAVAILABLE, reason, null);
         }
 
         public static Verdict mutate(String mutatedJson) {

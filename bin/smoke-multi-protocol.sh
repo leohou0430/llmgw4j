@@ -6,7 +6,7 @@
 set -uo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-JAR="$ROOT/llmgw-app/target/llmgw-app-0.1.0-SNAPSHOT.jar"
+JAR="$ROOT/llmgw-app/target/llmgw-app-0.2.0.jar"
 PORT="${PORT:-8080}"
 MOCK_PORT="${MOCK_PORT:-9090}"
 MOCK_PORT_2=9091

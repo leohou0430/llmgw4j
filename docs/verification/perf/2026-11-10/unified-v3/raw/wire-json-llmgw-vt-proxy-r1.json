@@ -1,0 +1,144 @@
+{
+    "root_group": {
+        "groups": {},
+        "checks": {
+                "status is 200": {
+                    "name": "status is 200",
+                    "path": "::status is 200",
+                    "id": "6210a8cd14cd70477eba5c5e4cb3fb5f",
+                    "passes": 31436,
+                    "fails": 0
+                },
+                "completion is intact": {
+                    "name": "completion is intact",
+                    "path": "::completion is intact",
+                    "id": "29be2906ab3a4f7b8e3e9794f584d32f",
+                    "passes": 31436,
+                    "fails": 0
+                }
+            },
+        "name": "",
+        "path": "",
+        "id": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "metrics": {
+        "http_reqs": {
+            "count": 31436,
+            "rate": 3140.202614791058
+        },
+        "iterations": {
+            "rate": 3140.202614791058,
+            "count": 31436
+        },
+        "vus_max": {
+            "value": 50,
+            "min": 50,
+            "max": 50
+        },
+        "http_req_blocked": {
+            "max": 1.933,
+            "avg": 0.006597754167192523,
+            "p(50)": 0.004,
+            "p(95)": 0.006,
+            "p(99)": 0.028
+        },
+        "http_req_failed": {
+            "passes": 0,
+            "fails": 31436,
+            "value": 0
+        },
+        "data_sent": {
+            "count": 10016845,
+            "rate": 1000601.9487516456
+        },
+        "data_received": {
+            "rate": 1567461.2636588474,
+            "count": 15691571
+        },
+        "vus": {
+            "value": 50,
+            "min": 50,
+            "max": 50
+        },
+        "gateway_failure_rate": {
+            "passes": 0,
+            "fails": 31436,
+            "thresholds": {
+                "rate<0.01": false
+            },
+            "value": 0
+        },
+        "http_req_connecting": {
+            "avg": 0.001596386308690673,
+            "p(50)": 0,
+            "p(95)": 0,
+            "p(99)": 0,
+            "max": 1.44
+        },
+        "http_req_sending": {
+            "avg": 0.019871039572463126,
+            "p(50)": 0.013,
+            "p(95)": 0.037,
+            "p(99)": 0.099,
+            "max": 3.863
+        },
+        "http_req_receiving": {
+            "p(50)": 0.049,
+            "p(95)": 0.832,
+            "p(99)": 2.062600000000006,
+            "max": 47.377,
+            "avg": 0.2517298320396968
+        },
+        "checks": {
+            "fails": 0,
+            "passes": 62872,
+            "value": 1
+        },
+        "gateway_latency_ms": {
+            "max": 215.049,
+            "avg": 15.68216474742339,
+            "p(50)": 9.317499999999999,
+            "p(95)": 51.30775,
+            "p(99)": 60.230800000000016
+        },
+        "iteration_duration": {
+            "avg": 15.903787434597273,
+            "p(50)": 9.548830500000001,
+            "p(95)": 51.5187805,
+            "p(99)": 60.441329900000014,
+            "max": 215.195282
+        },
+        "http_req_duration": {
+            "avg": 15.68216474742339,
+            "p(50)": 9.317499999999999,
+            "p(95)": 51.30775,
+            "p(99)": 60.230800000000016,
+            "max": 215.049
+        },
+        "http_req_duration{expected_response:true}": {
+            "avg": 15.68216474742339,
+            "p(50)": 9.317499999999999,
+            "p(95)": 51.30775,
+            "p(99)": 60.230800000000016,
+            "max": 215.049
+        },
+        "http_req_tls_handshaking": {
+            "max": 0,
+            "avg": 0,
+            "p(50)": 0,
+            "p(95)": 0,
+            "p(99)": 0
+        },
+        "http_req_waiting": {
+            "avg": 15.410563875811185,
+            "p(50)": 9.12,
+            "p(95)": 51.02525,
+            "p(99)": 59.897500000000015,
+            "max": 215.005
+        },
+        "gateway_requests": {
+            "count": 31436,
+            "rate": 3140.202614791058
+        }
+    }
+}

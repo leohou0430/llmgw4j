@@ -1,0 +1,25 @@
+2026/11/09 16:27:16 maxprocs: Updating GOMAXPROCS=4: determined from CPU quota
+
+╔═══════════════════════════════════════════════════════════╗
+║                                                           ║
+║   ██████╗ ██╗███████╗██████╗  ██████╗ ███████╗████████╗   ║
+║   ██╔══██╗██║██╔════╝██╔══██╗██╔═══██╗██╔════╝╚══██╔══╝   ║
+║   ██████╔╝██║█████╗  ██████╔╝██║   ██║███████╗   ██║      ║
+║   ██╔══██╗██║██╔══╝  ██╔══██╗██║   ██║╚════██║   ██║      ║
+║   ██████╔╝██║██║     ██║  ██║╚██████╔╝███████║   ██║      ║
+║   ╚═════╝ ╚═╝╚═╝     ╚═╝  ╚═╝ ╚═════╝ ╚══════╝   ╚═╝      ║
+║                                                           ║
+║═══════════════════════════════════════════════════════════║
+║                          v2.5.0                           ║
+║═══════════════════════════════════════════════════════════║
+║                 The Fastest LLM Gateway                   ║
+║═══════════════════════════════════════════════════════════║
+║             https://github.com/maximhq/bifrost            ║
+╚═══════════════════════════════════════════════════════════╝
+
+[33m╔══════════════════════════════════════════════════════════════════════════════════════════════════╗[0m
+[33m║ config file /app/data/config.json does not include a "$schema" location. Set it to               ║[0m
+[33m║ "https://www.getbifrost.ai/schema" or your mirrored schema location to enable IDE validation.    ║[0m
+[33m╚══════════════════════════════════════════════════════════════════════════════════════════════════╝[0m
+
+{"level":"fatal","time":"2026-11-09T16:27:23Z","message":"failed to initialize pricing manager: failed to load pricing data into memory: failed to load pricing data from URL: pricing URL validation failed: failed to resolve hostname: lookup getbifrost.ai on 127.0.0.11:53: server misbehaving"}

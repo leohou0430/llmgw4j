@@ -59,14 +59,10 @@ public final class ChunkParser {
         if (kind == ProtocolKind.CHAT) {
             return chat(rawLine);
         }
-        if (rawLine == null || rawLine.isBlank()) {
+        String payload = dataPayload(rawLine);
+        if (payload == null) {
             return SseChunk.passthrough(rawLine == null ? "" : rawLine);
         }
-        String line = rawLine.trim();
-        if (!line.startsWith("data:")) {
-            return SseChunk.passthrough(rawLine);
-        }
-        String payload = line.substring(5).trim();
         if ("[DONE]".equals(payload)) {
             // Defensive: a [DONE] on a responses/messages stream is still a
             // terminator, whatever the upstream chose to send.
@@ -192,15 +188,23 @@ public final class ChunkParser {
         return found;
     }
 
+    /** Preserve String.trim's ASCII boundary rules while copying the payload only once. */
+    private static String dataPayload(String raw) {
+        if (raw == null) return null;
+        int start = 0, end = raw.length();
+        while (start < end && raw.charAt(start) <= ' ') start++;
+        while (end > start && raw.charAt(end - 1) <= ' ') end--;
+        if (end - start < 5 || !raw.startsWith("data:", start)) return null;
+        start += 5;
+        while (start < end && raw.charAt(start) <= ' ') start++;
+        return raw.substring(start, end);
+    }
+
     private static SseChunk chat(String rawLine) {
-        if (rawLine == null || rawLine.isBlank()) {
+        String payload = dataPayload(rawLine);
+        if (payload == null) {
             return SseChunk.passthrough(rawLine == null ? "" : rawLine);
         }
-        String line = rawLine.trim();
-        if (!line.startsWith("data:")) {
-            return SseChunk.passthrough(rawLine);
-        }
-        String payload = line.substring(5).trim();
         if ("[DONE]".equals(payload)) {
             return new SseChunk(rawLine, "", true, 0, false);
         }

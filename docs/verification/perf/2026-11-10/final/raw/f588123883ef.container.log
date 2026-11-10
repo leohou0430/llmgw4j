@@ -1,0 +1,26 @@
+2026/11/09 17:30:10 maxprocs: Updating GOMAXPROCS=4: determined from CPU quota
+
+╔═══════════════════════════════════════════════════════════╗
+║                                                           ║
+║   ██████╗ ██╗███████╗██████╗  ██████╗ ███████╗████████╗   ║
+║   ██╔══██╗██║██╔════╝██╔══██╗██╔═══██╗██╔════╝╚══██╔══╝   ║
+║   ██████╔╝██║█████╗  ██████╔╝██║   ██║███████╗   ██║      ║
+║   ██╔══██╗██║██╔══╝  ██╔══██╗██║   ██║╚════██║   ██║      ║
+║   ██████╔╝██║██║     ██║  ██║╚██████╔╝███████║   ██║      ║
+║   ╚═════╝ ╚═╝╚═╝     ╚═╝  ╚═╝ ╚═════╝ ╚══════╝   ╚═╝      ║
+║                                                           ║
+║═══════════════════════════════════════════════════════════║
+║                          v2.5.0                           ║
+║═══════════════════════════════════════════════════════════║
+║                 The Fastest LLM Gateway                   ║
+║═══════════════════════════════════════════════════════════║
+║             https://github.com/maximhq/bifrost            ║
+╚═══════════════════════════════════════════════════════════╝
+
+[33m╔══════════════════════════════════════════════════════════════════════════════════════════════════╗[0m
+[33m║ config file /app/data/config.json does not include a "$schema" location. Set it to               ║[0m
+[33m║ "https://www.getbifrost.ai/schema" or your mirrored schema location to enable IDE validation.    ║[0m
+[33m╚══════════════════════════════════════════════════════════════════════════════════════════════════╝[0m
+
+{"level":"error","time":"2026-11-09T17:30:10Z","message":"failed to initialize governance plugin: failed to initialize governance store: failed to load governance data from config memory: governance config is nil"}
+{"level":"error","time":"2026-11-09T17:30:10Z","message":"auth middleware requires config store, skipping auth middleware initialization"}

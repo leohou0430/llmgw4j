@@ -1,0 +1,43 @@
+time="2026-11-10T00:41:55+08:00" level=warning msg="failed status=502 error= body={\"error\":{\"message\":\"upstream: EOF reached while reading\",\"type\":\"gateway_error\"}}" source=console
+
+
+  █ THRESHOLDS 
+
+    gateway_failure_rate
+    ✓ 'rate<0.01' rate=0.05%
+
+
+  █ TOTAL RESULTS 
+
+    checks_total.......: 3644   1183.621459/s
+    checks_succeeded...: 99.94% 3642 out of 3644
+    checks_failed......: 0.05%  2 out of 3644
+
+    ✗ status is 200
+      ↳  99% — ✓ 1821 / ✗ 1
+    ✗ completion is intact
+      ↳  99% — ✓ 1821 / ✗ 1
+
+    CUSTOM
+    gateway_failure_rate...........: 0.05%  1 out of 1822
+    gateway_latency_ms.............: avg=82.91ms p(50)=92.04ms p(95)=113.86ms p(99)=189.48ms max=476.05ms
+    gateway_requests...............: 1822   591.81073/s
+
+    HTTP
+    http_req_duration..............: avg=82.91ms p(50)=92.04ms p(95)=113.86ms p(99)=189.48ms max=476.05ms
+      { expected_response:true }...: avg=82.9ms  p(50)=92.04ms p(95)=113.76ms p(99)=189.48ms max=476.05ms
+    http_req_failed................: 0.05%  1 out of 1822
+    http_reqs......................: 1822   591.81073/s
+
+    EXECUTION
+    iteration_duration.............: avg=83.21ms p(50)=92.31ms p(95)=114.16ms p(99)=190.72ms max=477.46ms
+    iterations.....................: 1822   591.81073/s
+    vus............................: 50     min=50        max=50
+    vus_max........................: 50     min=50        max=50
+
+    NETWORK
+    data_received..................: 881 kB 286 kB/s
+    data_sent......................: 579 kB 188 kB/s
+
+
+

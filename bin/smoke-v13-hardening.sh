@@ -6,7 +6,7 @@
 set -uo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-JAR="$ROOT/llmgw-app/target/llmgw-app-0.1.0-SNAPSHOT.jar"
+JAR="$ROOT/llmgw-app/target/llmgw-app-0.2.0.jar"
 PORT="${PORT:-8080}"
 MOCK_PORT="${MOCK_PORT:-9090}"
 ENGINES="${1:-webflux vt}"
@@ -59,7 +59,15 @@ stop() {
 start() {
   local engine="$1"; shift
   stop
-  java -jar "$JAR" --spring.profiles.active="$engine" --server.port="$PORT" \
+  local -a defaults=("--gateway.mock.port=$MOCK_PORT"
+    "--gateway.upstream.base-url=http://127.0.0.1:$MOCK_PORT/mock/v1")
+  local target="http://127.0.0.1:$MOCK_PORT/mock/v1"
+  local arg
+  for arg in "$@"; do
+    [[ "$arg" == '--gateway.routes[0].target-url='* ]] && target=""
+  done
+  [[ -z "$target" ]] || defaults+=("--gateway.routes[0].target-url=$target")
+  java -jar "$JAR" --spring.profiles.active="$engine" --server.port="$PORT" "${defaults[@]}" \
     --gateway.governance.default-quota-tokens=2000000000 \
     --gateway.governance.rate-limit-tokens-per-second=2000000000 \
     --gateway.governance.rate-limit-burst=2000000000 \
@@ -97,13 +105,13 @@ for engine in $ENGINES; do
     --gateway.upstream.retry.backoff-max-ms=200 \
     '--gateway.routes[0].api-key=route-secret-key'
 
-  # 5xx on the first attempt is retried on the SAME route and recovers.
+  # A 5xx may follow acceptance: stop instead of replaying a paid request.
   body=$(chat x '{"model":"m","messages":[{"content":"retry-probe mock-fail-once-status-500"}]}')
-  assert_contains "$body" '"object":"chat.completion"' \
-    "$engine non-stream same-route retry recovers from 5xx"
+  assert_contains "$body" 'upstream status 500' \
+    "$engine ambiguous 5xx is not automatically retried"
 
-  body=$(chat x '{"model":"m","stream":true,"messages":[{"content":"retry-sse-probe mock-fail-once-status-500"}]}')
-  assert_contains "$body" 'data: [DONE]' "$engine SSE same-route retry recovers from 5xx"
+  body=$(chat x '{"model":"m","stream":true,"messages":[{"content":"retry-sse-probe mock-fail-once-status-503"}]}')
+  assert_contains "$body" 'upstream status 503' "$engine SSE ambiguous 5xx is not retried"
 
   # 4xx is never retried: even though a second attempt would succeed.
   body=$(chat x '{"model":"m","messages":[{"content":"no-retry-4xx mock-fail-once-status-400"}]}')
@@ -219,16 +227,16 @@ for engine in $ENGINES; do
     --gateway.routes[0].protocol=videos \
     --gateway.routes[0].target-url=http://127.0.0.1:19999/mock/v1
 
-  # Sticky miss + dead wildcard route: first poll fails (circuit opens)...
+  # Unknown ownership is rejected before contacting even a dead upstream.
   code=$(curl -s --noproxy '*' -o /dev/null -w '%{http_code}' \
     -H 'Authorization: Bearer sk-demo' \
     "http://127.0.0.1:$PORT/v1/videos/unknown-task")
-  [[ "$code" == "502" ]] && ok "$engine unknown-task video poll fails 502" \
-    || bad "$engine unknown-task video poll expected 502, got $code"
-  # ...the next poll must be refused locally, without touching the network.
+  [[ "$code" == "404" ]] && ok "$engine unknown-task video poll returns 404" \
+    || bad "$engine unknown-task video poll expected 404, got $code"
+  # Repeated unknown ids remain local resource misses.
   body=$(curl -s --noproxy '*' -H 'Authorization: Bearer sk-demo' \
     "http://127.0.0.1:$PORT/v1/videos/unknown-task-2")
-  assert_contains "$body" 'circuit open' "$engine sticky-miss circuit breaker trips"
+  assert_contains "$body" 'resource not found' "$engine unknown resource never falls through to shared upstream"
   stop
 done
 

@@ -6,7 +6,7 @@
 set -uo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-DEFAULT_JAR="$ROOT/llmgw-app/target/llmgw-app-0.1.0-SNAPSHOT.jar"
+DEFAULT_JAR="$ROOT/llmgw-app/target/llmgw-app-0.2.0.jar"
 REDIS_JAR="$ROOT/bench/results/v10-redis.jar"
 REDIS_PORT="${REDIS_PORT:-6399}"
 P1="${P1:-8080}"

@@ -1,0 +1,18 @@
+[
+  {
+    "check": "stream-errors",
+    "exit_code": 0
+  },
+  {
+    "check": "extensions",
+    "exit_code": 0
+  },
+  {
+    "check": "hardening",
+    "exit_code": 0
+  },
+  {
+    "check": "tenant-isolation",
+    "exit_code": 0
+  }
+]

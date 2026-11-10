@@ -237,6 +237,14 @@ public class DefaultGovernanceChain implements GovernanceChain {
             logDeny(request, "", "invalid api key", 401);
             return GatewayDecision.deny(401, "invalid api key");
         }
+        boolean monetaryBudget = key.budgetMicroUsd() > 0
+                || groupBudgets.getOrDefault(key.group(), 0L) > 0;
+        if (monetaryBudget && (properties.isProduction() || budgets == null)) {
+            return GatewayDecision.deny(503, "production monetary budgets are unavailable without durable accounting and cost bounds");
+        }
+        if (monetaryBudget && (catalog == null || catalog.find(request.model()).isEmpty())) {
+            return GatewayDecision.deny(503, "model price is unknown for budgeted request");
+        }
         // Task polling and content downloads carry no model selection; the
         // allow-list applies to what the caller asked the model to do.
         if (!key.allowedModels().isEmpty() && !request.model().isBlank()
@@ -249,11 +257,12 @@ public class DefaultGovernanceChain implements GovernanceChain {
         // and before any metering -- blocked content never spends quota.
         if (guardrail != null) {
             Guardrail.Verdict verdict = guardrail.inspectRequest(request);
-            if (verdict.action() == Guardrail.Action.DENY) {
+            if (verdict.action() != Guardrail.Action.ALLOW) {
+                int status = verdict.action() == Guardrail.Action.UNAVAILABLE ? 503 : 400;
                 metrics.count("llmgw.denied", "reason", "guardrail");
                 metrics.count("llmgw.guardrail", "guardrail", guardrail.name());
-                logDeny(request, key.id(), verdict.reason(), 400);
-                return GatewayDecision.deny(400, verdict.reason());
+                logDeny(request, key.id(), verdict.reason(), status);
+                return GatewayDecision.deny(status, verdict.reason());
             }
         }
         int reserved = Math.max(1, request.estimatedTokens());
@@ -364,7 +373,7 @@ public class DefaultGovernanceChain implements GovernanceChain {
             if (vector.length > 0) {
                 double threshold = properties.getCache().getSemanticThreshold();
                 if (threshold > 0) {
-                    String similar = vectorStore.findSimilar(vector, threshold);
+                    String similar = vectorStore.findSimilar(semanticPartition(keyId, request), vector, threshold);
                     if (similar != null) {
                         hit = cache.get(similar);
                         if (hit.isPresent()) {
@@ -390,7 +399,7 @@ public class DefaultGovernanceChain implements GovernanceChain {
         }
         String key = cacheKey(keyId, request);
         if (vector.length > 0) {
-            vectorStore.put(key, vector);
+            vectorStore.put(semanticPartition(keyId, request), key, vector);
         }
         sideCar.submit(() -> cache.put(key, response));
     }
@@ -412,7 +421,7 @@ public class DefaultGovernanceChain implements GovernanceChain {
         }
         String key = cacheKey(keyId, request);
         if (vector.length > 0) {
-            vectorStore.put(key, vector);
+            vectorStore.put(semanticPartition(keyId, request), key, vector);
         }
         sideCar.submit(() -> cache.put(key, response));
     }
@@ -440,12 +449,29 @@ public class DefaultGovernanceChain implements GovernanceChain {
                     limiter.refund(context.keyId(), -delta);
                 }
             }
+            GatewayProperties.ModelLimit modelLimit = modelLimitFor(context.model());
+            if (modelLimit != null && modelLimit.getTokensPerSecond() > 0) {
+                String modelBucket = "model:" + context.model();
+                if (!success || context.cached()) {
+                    limiter.refund(modelBucket, reserved);
+                } else {
+                    int delta = prompt + completion - reserved;
+                    if (delta > 0) {
+                        limiter.tryAcquire(modelBucket, delta, modelLimit.getTokensPerSecond(),
+                                modelLimit.getBurst() > 0 ? modelLimit.getBurst() : modelLimit.getTokensPerSecond());
+                    } else if (delta < 0) {
+                        limiter.refund(modelBucket, -delta);
+                    }
+                }
+            }
             ledger.record(new UsageLedger.UsageRecord(context.keyId(), context.model(),
                     prompt, completion,
                     context.latencyMs(), success, Instant.now(), reserved));
             // v13 $ settlement: failures and cache hits book nothing; a served
             // request books its real token cost at catalog prices.
-            if (budgets != null && context.groupBudgetReservedMicroUsd() > 0) {
+            // A submitted request may have cost money even when delivery failed.
+            boolean canSettle = success || context.cached() || context.upstreamNanos() < 0;
+            if (canSettle && budgets != null && context.groupBudgetReservedMicroUsd() > 0) {
                 var groupPrice = catalog == null ? null
                         : catalog.find(context.model()).orElse(null);
                 long groupActual = success && !context.cached()
@@ -455,7 +481,7 @@ public class DefaultGovernanceChain implements GovernanceChain {
                 budgets.settle("group:" + context.group(), context.groupBudgetReservedMicroUsd(),
                         groupActual);
             }
-            if (budgets != null && context.budgetReservedMicroUsd() > 0) {
+            if (canSettle && budgets != null && context.budgetReservedMicroUsd() > 0) {
                 var price = catalog == null ? null
                         : catalog.find(context.model()).orElse(null);
                 long actual = success && !context.cached()
@@ -567,7 +593,33 @@ public class DefaultGovernanceChain implements GovernanceChain {
         if (fingerprint == null || fingerprint.isBlank()) {
             fingerprint = ProtocolCodec.fingerprint(request.rawJson());
         }
-        return keyId + ":" + fingerprint;
+        return ProtocolCodec.fingerprint(keyId) + ":" + request.kind().wireName() + ":" + fingerprint;
+    }
+
+    /** Only a single plain user input may vary; preserve every other request field. */
+    private String semanticPartition(String keyId, ParsedRequest request) {
+        var root = ProtocolCodec.tryParse(request.rawJson());
+        if (root instanceof tools.jackson.databind.node.ObjectNode object) {
+            var input = object.get("input");
+            var messages = object.get("messages");
+            if (request.kind() == io.github.leohou0430.llmgw.core.protocol.ProtocolKind.RESPONSES
+                    && input != null && input.isTextual()) {
+                object.put("input", "");
+            } else if ((request.kind() == io.github.leohou0430.llmgw.core.protocol.ProtocolKind.CHAT
+                    || request.kind() == io.github.leohou0430.llmgw.core.protocol.ProtocolKind.MESSAGES)
+                    && messages != null && messages.isArray() && messages.size() == 1
+                    && messages.get(0) instanceof tools.jackson.databind.node.ObjectNode message
+                    && (message.path("role").asText("").isEmpty()
+                        || "user".equals(message.path("role").asText("")))
+                    && message.path("content").isTextual()) {
+                message.put("content", "");
+            } else {
+                return cacheKey(keyId, request);
+            }
+            return ProtocolCodec.fingerprint(keyId) + ":" + request.kind().wireName()
+                    + ":" + ProtocolCodec.fingerprint(ProtocolCodec.toJson(object));
+        }
+        return cacheKey(keyId, request);
     }
 
     /** v13 request-log entry for an admission denial (hot path: one record). */

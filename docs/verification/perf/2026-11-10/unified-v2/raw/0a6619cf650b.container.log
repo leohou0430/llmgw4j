@@ -1,0 +1,32 @@
+2026/11/09 16:41:26 maxprocs: Updating GOMAXPROCS=4: determined from CPU quota
+
+╔═══════════════════════════════════════════════════════════╗
+║                                                           ║
+║   ██████╗ ██╗███████╗██████╗  ██████╗ ███████╗████████╗   ║
+║   ██╔══██╗██║██╔════╝██╔══██╗██╔═══██╗██╔════╝╚══██╔══╝   ║
+║   ██████╔╝██║█████╗  ██████╔╝██║   ██║███████╗   ██║      ║
+║   ██╔══██╗██║██╔══╝  ██╔══██╗██║   ██║╚════██║   ██║      ║
+║   ██████╔╝██║██║     ██║  ██║╚██████╔╝███████║   ██║      ║
+║   ╚═════╝ ╚═╝╚═╝     ╚═╝  ╚═╝ ╚═════╝ ╚══════╝   ╚═╝      ║
+║                                                           ║
+║═══════════════════════════════════════════════════════════║
+║                          v2.5.0                           ║
+║═══════════════════════════════════════════════════════════║
+║                 The Fastest LLM Gateway                   ║
+║═══════════════════════════════════════════════════════════║
+║             https://github.com/maximhq/bifrost            ║
+╚═══════════════════════════════════════════════════════════╝
+
+[33m╔══════════════════════════════════════════════════════════════════════════════════════════════════╗[0m
+[33m║ config file /app/data/config.json does not include a "$schema" location. Set it to               ║[0m
+[33m║ "https://www.getbifrost.ai/schema" or your mirrored schema location to enable IDE validation.    ║[0m
+[33m╚══════════════════════════════════════════════════════════════════════════════════════════════════╝[0m
+
+{"level":"error","time":"2026-11-09T16:41:26Z","message":"failed to initialize governance plugin: failed to initialize governance store: failed to load governance data from config memory: governance config is nil"}
+{"level":"error","time":"2026-11-09T16:41:26Z","message":"auth middleware requires config store, skipping auth middleware initialization"}
+{"level":"error","http.method":"POST","http.target":"/openai/v1/chat/completions","http.status_code":502,"http.request_duration_ms":5,"http.remote_addr":"192.168.107.12:36580","http.user_agent":"Grafana k6/2.3.0","trace_id":"f714b9caa31e4cf48b15883fe9c71546","request_id":"38f7640d-1b8c-48f8-975c-4f44bb5dc72c","time":"2026-11-09T16:41:48Z","message":"request completed"}
+{"level":"error","http.method":"POST","http.target":"/openai/v1/chat/completions","http.status_code":502,"http.request_duration_ms":0,"http.remote_addr":"192.168.107.12:36588","http.user_agent":"Grafana k6/2.3.0","trace_id":"569bffd3f02f40bfb2578d9d84028e5b","request_id":"a8243a66-33c6-4e9a-bea9-71887f22b3c7","time":"2026-11-09T16:41:49Z","message":"request completed"}
+{"level":"error","http.method":"POST","http.target":"/openai/v1/chat/completions","http.status_code":502,"http.request_duration_ms":0,"http.remote_addr":"192.168.107.12:36492","http.user_agent":"Grafana k6/2.3.0","trace_id":"66face2c65b94e2b9d72f26219c06849","request_id":"6bdacf72-ad33-4680-9ae7-0413b697c3a1","time":"2026-11-09T16:41:49Z","message":"request completed"}
+{"level":"error","http.method":"POST","http.target":"/openai/v1/chat/completions","http.status_code":502,"http.request_duration_ms":0,"http.remote_addr":"192.168.107.12:36566","http.user_agent":"Grafana k6/2.3.0","trace_id":"36b85851eca54870a5cc46d979de1f8a","request_id":"f4524ceb-e141-4cab-8eca-150487c60221","time":"2026-11-09T16:41:49Z","message":"request completed"}
+{"level":"error","http.method":"POST","http.target":"/openai/v1/chat/completions","http.status_code":502,"http.request_duration_ms":0,"http.remote_addr":"192.168.107.12:36598","http.user_agent":"Grafana k6/2.3.0","trace_id":"79e8f841e77a46f39c253a7d87c1b6fa","request_id":"93f7150b-4bcc-473f-87fc-ab2d5fed756e","time":"2026-11-09T16:41:50Z","message":"request completed"}
+{"level":"error","http.method":"POST","http.target":"/openai/v1/chat/completions","http.status_code":502,"http.request_duration_ms":1,"http.remote_addr":"192.168.107.12:36356","http.user_agent":"Grafana k6/2.3.0","trace_id":"764f014745e9474e9f9beb097126508a","request_id":"deb5c0a6-98cc-4b3a-ab96-0131f40036df","time":"2026-11-09T16:41:50Z","message":"request completed"}

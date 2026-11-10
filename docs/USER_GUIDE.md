@@ -1,7 +1,7 @@
 # llmgw4j 使用手册
 
-> **适用版本**：`0.1.0-SNAPSHOT`（Unreleased，包名 `io.github.leohou0430.llmgw`）
-> **文档日期**：2026-11-08，依据本仓库源码与配置文件实读整理
+> **适用版本**：`0.2.0`（包名 `io.github.leohou0430.llmgw`）
+> **文档日期**：2026-11-10，依据本仓库源码与配置文件实读整理
 > **配套**：[配置说明](CONFIGURATION.md) · [项目 README](../README.md) · [压测口径](../bench/README.md) · [贡献指南](../CONTRIBUTING.md) · [安全策略](../SECURITY.md)
 
 ---
@@ -20,7 +20,7 @@
 | 默认全内存、零外部依赖、自带 mock 上游（9090），无需任何真实 API Key | 重启状态归零、多实例不共享、无内建 TLS/mTLS/WAF |
 | Apache-2.0 开源 | 没有自动化测试套件（全库无 `src/test/`），验证靠 smoke 脚本 |
 
-一句话：**本地能跑通全部功能，生产必须自己补安全和持久化**。
+一句话：**本地可验证已支持的功能路径，生产需要显式安全配置并补齐持久化能力**。
 
 ---
 
@@ -46,7 +46,7 @@
 ```bash
 cd /path/to/llm-gateway
 chmod +x bin/*.sh bench/*.sh        # 首次使用必做
-./bin/build.sh                      # 产出 llmgw-app/target/llmgw-app-0.1.0-SNAPSHOT.jar
+./bin/build.sh                      # 产出 llmgw-app/target/llmgw-app-0.2.0.jar
 ./bin/run-webflux.sh                # 或 ./bin/run-vt.sh
 ```
 
@@ -79,8 +79,8 @@ curl -sS http://127.0.0.1:8080/admin/routes
 **直接等价形式**（不用脚本）：
 
 ```bash
-java -jar llmgw-app/target/llmgw-app-0.1.0-SNAPSHOT.jar --spring.profiles.active=webflux
-java -jar llmgw-app/target/llmgw-app-0.1.0-SNAPSHOT.jar --spring.profiles.active=vt
+java -jar llmgw-app/target/llmgw-app-0.2.0.jar --spring.profiles.active=webflux
+java -jar llmgw-app/target/llmgw-app-0.2.0.jar --spring.profiles.active=vt
 ```
 
 ### 2.1 端口一览
@@ -215,7 +215,7 @@ String 往返。粘性路由的跨副本共享见 `-Predis` 的 `TaskRouteSticky
 
 ## 5. 管理接口 `/admin/*`
 
-**鉴权**：所有端点先走 `requireAdmin()`。`gateway.admin-token` 为空（默认）时全部放行——这只在本地演示可接受；非空时必须带 `X-Admin-Token` 头，用常数时间比较，不符返回 `401 admin token required`。
+**鉴权**：仅当 `gateway.admin-token` 和 `gateway.admin-read-token` 都为空时，管理数据接口进入本地演示开放模式。其他管理数据与写接口需完整的 `X-Admin-Token`；审计导出还接受 `X-Admin-Read-Token`。只配置只读 token 不会开放写接口；缺失、空白或错误凭据均返回 401。生产读写凭据必须不同。静态控制台页面可匿名加载，其数据请求仍受鉴权。
 
 | 方法 | 路径 | 说明 |
 | --- | --- | --- |
@@ -314,7 +314,7 @@ curl -sS http://127.0.0.1:8080/admin/keys        # -> 401
 
 ```bash
 export DASHSCOPE_API_KEY='<你的密钥>'      # 永远不要写进配置文件
-java -jar llmgw-app/target/llmgw-app-0.1.0-SNAPSHOT.jar \
+java -jar llmgw-app/target/llmgw-app-0.2.0.jar \
   --spring.profiles.active=webflux,real
 curl -sS http://127.0.0.1:8080/admin/verify
 ```
@@ -389,7 +389,7 @@ java -jar <jar> --spring.profiles.active=webflux \
 ./bin/smoke-redis-cluster.sh             # 双实例共享配额验证
 ```
 
-只覆盖 `TokenLimiter` / `UsageLedger` / `CircuitBreaker` 三个 SPI；`ApiKeyRegistry` / `SemanticCache` / `SnapshotStore` 仍是本地实现。代价是每请求 2–4 次 Redis 往返，无流水线合并。
+覆盖 `TokenLimiter` / `UsageLedger` / `CircuitBreaker` / `ApiKeyRegistry` / `SemanticCache` / `TaskRouteSticky`；`BudgetLedger` / `RequestLogSink` / `SnapshotStore` 仍是本地实现。代价是每请求 2–4 次 Redis 往返，无流水线合并。
 
 ### 8.8 快照保存与恢复
 
@@ -518,7 +518,7 @@ CI（`.github/workflows/ci.yml`）只跑结构校验 + 双引擎启动 + 一条�
 | --- | --- |
 | 流式上游失败却返回 200 | 已修复：首 chunk 前不 `flushBuffer()`，返回真 502 |
 | 高并发 SSE 失败率约 16% | 已修复：取消钩子误挂 `onDispose` 拆掉共享 keep-alive 连接，改为只挂 `onCancel` |
-| 指标里 `engine=unknown` | 既有缺陷，Unreleased 已通过 `EngineKindEnvironmentPostProcessor` 修复；CI 有断言 |
+| 指标里 `engine=unknown` | 历史缺陷，当前版本已通过 `EngineKindEnvironmentPostProcessor` 修复；CI 有断言 |
 | 配额用超了 | 准入按估算 token 预留、结算按实际 `usage`，并发下 `used` 可能略超 `quota`（实测 72/60）；要财务级硬上限请替换 `UsageLedger` |
 | 请求头/响应头丢了 | `JdkHttpUpstream.build()` 只设 `Content-Type` / `Accept` / `Authorization`，`OpenAI-Beta`、`OpenAI-Organization`、`anthropic-version`、`x-request-id` 不透传，`x-ratelimit-*` 不回写 |
 

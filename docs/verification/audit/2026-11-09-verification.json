@@ -1,0 +1,33 @@
+{
+  "baseline": "9048f6172d703078de758f80d53af0aff08e988a",
+  "maven_verify": {
+    "exit_code": 0,
+    "tests": 57,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "module_layout": {
+    "pass": 27,
+    "fail": 0
+  },
+  "stream_errors_both_engines": {
+    "exit_code": 0,
+    "pass": 67,
+    "fail": 0
+  },
+  "key_probe": {
+    "restart_id_collision": true,
+    "revoked_old_token_still_valid": true,
+    "rotated_old_token_before_restart": false,
+    "rotated_old_token_after_restart": true
+  },
+  "openapi_strict_parse": {
+    "valid": false,
+    "reason": "duplicate key get",
+    "lines": [
+      502,
+      514
+    ]
+  }
+}

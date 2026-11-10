@@ -17,12 +17,15 @@ server:
   port: 8080
 
 gateway:
+  production: ${LLMGW_PRODUCTION:false}
   governance-enabled: true
   # Empty = /admin open (local demo). Set LLMGW_ADMIN_TOKEN in any shared env.
   admin-token: ${LLMGW_ADMIN_TOKEN:}
   # B5: read-only admin token (observability GETs; no mutations).
   admin-read-token: ${LLMGW_ADMIN_READ_TOKEN:}
   max-request-bytes: 4194304
+  max-response-bytes: 4194304
+  max-concurrent-requests: 64
   # v13: runtime-created API keys (POST /admin/keys) persist here across
   # restarts; blank disables the store.
   keys-store-path: ./data/llmgw-keys.json

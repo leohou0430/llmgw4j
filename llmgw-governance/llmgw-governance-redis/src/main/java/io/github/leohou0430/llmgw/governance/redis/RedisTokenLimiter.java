@@ -43,8 +43,18 @@ public final class RedisTokenLimiter implements TokenLimiter {
 
     @Override
     public boolean tryAcquire(String keyId, int tokens) {
+        return acquire(keyId, tokens, capacity, ratePerSecond);
+    }
+
+    @Override
+    public boolean tryAcquire(String keyId, int tokens, long tokensPerSecond, long burst) {
+        return acquire(keyId, tokens, Math.max(1, burst > 0 ? burst : tokensPerSecond),
+                Math.max(0, tokensPerSecond));
+    }
+
+    private boolean acquire(String keyId, int tokens, long bucketCapacity, double bucketRate) {
         Long allowed = redis.execute(scripts.acquire, List.of(key(keyId)),
-                Long.toString(capacity), Double.toString(ratePerSecond),
+                Long.toString(bucketCapacity), Double.toString(bucketRate),
                 Long.toString(System.currentTimeMillis()),
                 Integer.toString(Math.max(1, tokens)));
         return allowed != null && allowed == 1L;

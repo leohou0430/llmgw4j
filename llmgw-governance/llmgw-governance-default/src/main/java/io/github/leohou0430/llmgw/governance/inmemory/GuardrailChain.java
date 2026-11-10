@@ -27,7 +27,7 @@ public class GuardrailChain implements Guardrail {
     public Verdict inspectRequest(ParsedRequest request) {
         for (Guardrail guardrail : chain) {
             Verdict verdict = guardrail.inspectRequest(request);
-            if (verdict.action() == Action.DENY) {
+            if (verdict.action() != Action.ALLOW) {
                 return verdict;
             }
         }

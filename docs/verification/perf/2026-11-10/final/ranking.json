@@ -1,0 +1,269 @@
+{
+  "rankings": [
+    {
+      "profile": "inference",
+      "mode": "json",
+      "arm": "direct",
+      "rps_median": 2124.66470665665,
+      "p50_ms_median": 22.744,
+      "p95_ms_median": 25.926,
+      "p99_ms_median": 27.36727,
+      "rps_min": 2117.113574559302,
+      "rps_max": 2137.2226881469905
+    },
+    {
+      "profile": "inference",
+      "mode": "json",
+      "arm": "bifrost",
+      "rps_median": 2107.991703704413,
+      "p50_ms_median": 22.698,
+      "p95_ms_median": 27.804000000000002,
+      "p99_ms_median": 31.942700000000002,
+      "rps_min": 2107.3361558860042,
+      "rps_max": 2126.101945515507
+    },
+    {
+      "profile": "inference",
+      "mode": "json",
+      "arm": "llmgw-vt-proxy",
+      "rps_median": 2019.4301550874063,
+      "p50_ms_median": 23.914,
+      "p95_ms_median": 28.038,
+      "p99_ms_median": 29.97088000000002,
+      "rps_min": 2010.1143898603227,
+      "rps_max": 2029.0835306053432
+    },
+    {
+      "profile": "inference",
+      "mode": "json",
+      "arm": "llmgw-webflux-proxy",
+      "rps_median": 1995.5971140871895,
+      "p50_ms_median": 24.512,
+      "p95_ms_median": 28.133,
+      "p99_ms_median": 30.33101,
+      "rps_min": 1954.331587124072,
+      "rps_max": 2009.9279663333864
+    },
+    {
+      "profile": "inference",
+      "mode": "json",
+      "arm": "portkey",
+      "rps_median": 671.4346991678889,
+      "p50_ms_median": 67.196,
+      "p95_ms_median": 102.24725,
+      "p99_ms_median": 126.25574999999996,
+      "rps_min": 644.5622838386995,
+      "rps_max": 683.3998065094429
+    },
+    {
+      "profile": "inference",
+      "mode": "json",
+      "arm": "litellm",
+      "rps_median": 404.1132924726589,
+      "p50_ms_median": 117.941,
+      "p95_ms_median": 163.8936,
+      "p99_ms_median": 185.7642399999999,
+      "rps_min": 360.3455985069611,
+      "rps_max": 415.6483579214014
+    },
+    {
+      "profile": "inference",
+      "mode": "sse",
+      "arm": "bifrost",
+      "rps_median": 452.3836404082743,
+      "p50_ms_median": 109.559,
+      "p95_ms_median": 115.51245,
+      "p99_ms_median": 120.94257999999999,
+      "rps_min": 446.7963805918801,
+      "rps_max": 460.4316888693758
+    },
+    {
+      "profile": "inference",
+      "mode": "sse",
+      "arm": "llmgw-webflux-proxy",
+      "rps_median": 435.6535006364757,
+      "p50_ms_median": 113.049,
+      "p95_ms_median": 119.9405,
+      "p99_ms_median": 123.29798,
+      "rps_min": 434.3132907409885,
+      "rps_max": 435.926868837199
+    },
+    {
+      "profile": "inference",
+      "mode": "sse",
+      "arm": "direct",
+      "rps_median": 435.50524021878977,
+      "p50_ms_median": 113.7475,
+      "p95_ms_median": 119.1579,
+      "p99_ms_median": 121.96213,
+      "rps_min": 434.05787431729607,
+      "rps_max": 438.30620948406977
+    },
+    {
+      "profile": "inference",
+      "mode": "sse",
+      "arm": "llmgw-vt-proxy",
+      "rps_median": 434.473916721795,
+      "p50_ms_median": 113.7875,
+      "p95_ms_median": 120.23440000000001,
+      "p99_ms_median": 122.94553,
+      "rps_min": 433.73479560123116,
+      "rps_max": 437.6690621090198
+    },
+    {
+      "profile": "inference",
+      "mode": "sse",
+      "arm": "portkey",
+      "rps_median": 380.0296919840053,
+      "p50_ms_median": 125.648,
+      "p95_ms_median": 159.182,
+      "p99_ms_median": 183.5748,
+      "rps_min": 378.9567014533034,
+      "rps_max": 385.0783952711463
+    },
+    {
+      "profile": "inference",
+      "mode": "sse",
+      "arm": "litellm",
+      "rps_median": 185.272462687228,
+      "p50_ms_median": 269.709,
+      "p95_ms_median": 319.07919999999996,
+      "p99_ms_median": 344.04875999999996,
+      "rps_min": 184.6932632173881,
+      "rps_max": 186.66909129840602
+    },
+    {
+      "profile": "wire",
+      "mode": "json",
+      "arm": "direct",
+      "rps_median": 10021.426927418794,
+      "p50_ms_median": 2.356,
+      "p95_ms_median": 5.19,
+      "p99_ms_median": 9.630819999999993,
+      "rps_min": 8420.187449906969,
+      "rps_max": 10964.607485853729
+    },
+    {
+      "profile": "wire",
+      "mode": "json",
+      "arm": "llmgw-vt-proxy",
+      "rps_median": 5844.789439818636,
+      "p50_ms_median": 5.854,
+      "p95_ms_median": 11.05,
+      "p99_ms_median": 42.54897999997901,
+      "rps_min": 4021.970364617829,
+      "rps_max": 5988.209500570053
+    },
+    {
+      "profile": "wire",
+      "mode": "json",
+      "arm": "bifrost",
+      "rps_median": 4009.884133591667,
+      "p50_ms_median": 10.718,
+      "p95_ms_median": 26.265,
+      "p99_ms_median": 35.27101999999999,
+      "rps_min": 3698.2966717028207,
+      "rps_max": 4113.049545430534
+    },
+    {
+      "profile": "wire",
+      "mode": "json",
+      "arm": "llmgw-webflux-proxy",
+      "rps_median": 2452.669865867778,
+      "p50_ms_median": 10.249,
+      "p95_ms_median": 62.364599999999975,
+      "p99_ms_median": 66.78641999999999,
+      "rps_min": 1898.2051634337959,
+      "rps_max": 5347.268904728533
+    },
+    {
+      "profile": "wire",
+      "mode": "json",
+      "arm": "portkey",
+      "rps_median": 490.10604013272854,
+      "p50_ms_median": 84.382,
+      "p95_ms_median": 144.9183,
+      "p99_ms_median": 172.1598,
+      "rps_min": 450.50072446191155,
+      "rps_max": 542.7240687524801
+    },
+    {
+      "profile": "wire",
+      "mode": "json",
+      "arm": "litellm",
+      "rps_median": 312.9922384858228,
+      "p50_ms_median": 156.789,
+      "p95_ms_median": 190.53005,
+      "p99_ms_median": 219.69779000000003,
+      "rps_min": 295.1098709894519,
+      "rps_max": 327.5339469506035
+    },
+    {
+      "profile": "wire",
+      "mode": "sse",
+      "arm": "direct",
+      "rps_median": 9993.288627008913,
+      "p50_ms_median": 2.717,
+      "p95_ms_median": 5.723,
+      "p99_ms_median": 9.810220000000015,
+      "rps_min": 9965.984799740581,
+      "rps_max": 10084.375347707371
+    },
+    {
+      "profile": "wire",
+      "mode": "sse",
+      "arm": "llmgw-vt-proxy",
+      "rps_median": 4609.0039756712185,
+      "p50_ms_median": 8.525,
+      "p95_ms_median": 16.962549999999997,
+      "p99_ms_median": 26.261909999999997,
+      "rps_min": 4578.339882907052,
+      "rps_max": 4748.207744649706
+    },
+    {
+      "profile": "wire",
+      "mode": "sse",
+      "arm": "llmgw-webflux-proxy",
+      "rps_median": 4291.062319928813,
+      "p50_ms_median": 8.308,
+      "p95_ms_median": 20.44479999999999,
+      "p99_ms_median": 32.27661999999994,
+      "rps_min": 4275.114236613586,
+      "rps_max": 4575.823497505467
+    },
+    {
+      "profile": "wire",
+      "mode": "sse",
+      "arm": "bifrost",
+      "rps_median": 2680.0181265953825,
+      "p50_ms_median": 16.7365,
+      "p95_ms_median": 34.6142,
+      "p99_ms_median": 43.52022999999994,
+      "rps_min": 2483.8554882557064,
+      "rps_max": 2801.623167701795
+    },
+    {
+      "profile": "wire",
+      "mode": "sse",
+      "arm": "portkey",
+      "rps_median": 525.6497266432375,
+      "p50_ms_median": 82.844,
+      "p95_ms_median": 147.36579999999992,
+      "p99_ms_median": 195.0585800000003,
+      "rps_min": 487.6300603283363,
+      "rps_max": 528.1713414071125
+    },
+    {
+      "profile": "wire",
+      "mode": "sse",
+      "arm": "litellm",
+      "rps_median": 156.20268625529962,
+      "p50_ms_median": 314.928,
+      "p95_ms_median": 376.33384999999976,
+      "p99_ms_median": 446.83429999999964,
+      "rps_min": 154.366796930233,
+      "rps_max": 161.95583037067885
+    }
+  ],
+  "excluded": []
+}

@@ -5,7 +5,7 @@
 set -uo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-JAR="$ROOT/llmgw-app/target/llmgw-app-0.1.0-SNAPSHOT.jar"
+JAR="$ROOT/llmgw-app/target/llmgw-app-0.2.0.jar"
 PORT="${PORT:-8080}"
 MOCK_PORT="${MOCK_PORT:-9090}"
 ENGINES="${1:-webflux vt}"
@@ -58,7 +58,15 @@ stop() {
 start() {
   local engine="$1"; shift
   stop
-  java -jar "$JAR" --spring.profiles.active="$engine" --server.port="$PORT" \
+  local -a defaults=("--gateway.mock.port=$MOCK_PORT"
+    "--gateway.upstream.base-url=http://127.0.0.1:$MOCK_PORT/mock/v1")
+  local target="http://127.0.0.1:$MOCK_PORT/mock/v1"
+  local arg
+  for arg in "$@"; do
+    [[ "$arg" == '--gateway.routes[0].target-url='* ]] && target=""
+  done
+  [[ -z "$target" ]] || defaults+=("--gateway.routes[0].target-url=$target")
+  java -jar "$JAR" --spring.profiles.active="$engine" --server.port="$PORT" "${defaults[@]}" \
     --gateway.governance.default-quota-tokens=2000000000 \
     --gateway.governance.rate-limit-tokens-per-second=2000000000 \
     --gateway.governance.rate-limit-burst=2000000000 \
@@ -84,21 +92,25 @@ for engine in $ENGINES; do
   start "$engine" \
     --gateway.governance.cache-max-size=100 \
     --gateway.governance.cache-ttl-seconds=300 \
-    '--gateway.cache.semantic-url=http://127.0.0.1:9090/mock/v1/embeddings' \
+    "--gateway.cache.semantic-url=http://127.0.0.1:$MOCK_PORT/mock/v1/embeddings" \
     '--gateway.cache.semantic-threshold=0.85'
 
-  # Two DIFFERENT bodies (same words, different order + different sampling)
-  # share one bucketed-embedding key: one cache entry, one upstream body.
+  # Reordered text may share a semantic entry only with identical sampling parameters.
   a=$(post "/v1/chat/completions" '{"model":"m","temperature":0.1,"messages":[{"content":"the quick brown fox jumps over the lazy dog"}]}')
   assert_contains "$a" '"object":"chat.completion"' "$engine semantic: request A served"
-  b=$(post "/v1/chat/completions" '{"model":"m","temperature":0.9,"messages":[{"content":"dog lazy the over jumps fox brown quick the"}]}')
+  sleep 0.1
+  b=$(post "/v1/chat/completions" '{"model":"m","temperature":0.1,"messages":[{"content":"dog lazy the over jumps fox brown quick the"}]}')
   assert_contains "$b" '"object":"chat.completion"' "$engine semantic: reordered request B served"
   snap=$(curl -s --noproxy '*' "http://127.0.0.1:$PORT/admin/snapshot")
   assert_contains "$snap" '"cacheSize":1' "$engine semantic: both bodies share ONE cache entry"
+  different=$(post "/v1/chat/completions" '{"model":"m","temperature":0.9,"messages":[{"content":"dog lazy the over jumps fox brown quick the"}]}')
+  sleep 0.1
+  snap=$(curl -s --noproxy '*' "http://127.0.0.1:$PORT/admin/snapshot")
+  assert_contains "$snap" '"cacheSize":2' "$engine different sampling has its own cache entry"
   # A genuinely different question must NOT share the entry.
   c=$(post "/v1/chat/completions" '{"model":"m","messages":[{"content":"zebra unicorn gallops through neon rainbows"}]}')
   snap=$(curl -s --noproxy '*' "http://127.0.0.1:$PORT/admin/snapshot")
-  assert_contains "$snap" '"cacheSize":2' "$engine semantic: a different question gets its own entry"
+  assert_contains "$snap" '"cacheSize":3' "$engine semantic: a different question gets its own entry"
   stop
 
   echo "--- engine=$engine -- W4.3 new protocols ---"
@@ -143,14 +155,18 @@ for engine in $ENGINES; do
   body=$(curl -s --noproxy '*' "http://127.0.0.1:$PORT/v1/models" -H 'Authorization: Bearer sk-demo')
   assert_contains "$body" '"id":"qwen-plus"' "$engine GET /v1/models catalog pass-through"
 
-  batch=$(post "/v1/batches" '{"model":"m","input_file_id":"file-c"}')
+  echo 'test-owned-file' > "$TMP/owned.txt"
+  uploaded=$(curl -s --noproxy '*' -X POST "http://127.0.0.1:$PORT/v1/files" \
+    -H 'Authorization: Bearer sk-demo' -F purpose=batch -F file=@"$TMP/owned.txt")
+  ownedId=$(printf '%s' "$uploaded" | python3 -c 'import json,sys; print(json.load(sys.stdin)["id"])')
+  batch=$(post "/v1/batches" "{\"model\":\"m\",\"input_file_id\":\"$ownedId\"}")
   batchId=$(printf '%s' "$batch" | grep -o '"id":"batch-[0-9]*"' | head -1 | cut -d'"' -f4)
   body=$(curl -s --noproxy '*' -X POST "http://127.0.0.1:$PORT/v1/batches/$batchId/cancel" \
     -H 'Authorization: Bearer sk-demo')
   assert_contains "$body" '"status":"cancelled"' "$engine batch cancel pass-through (sticky)"
 
   code=$(curl -s --noproxy '*' -o "$TMP/file-content.bin" -w '%{http_code}' \
-    "http://127.0.0.1:$PORT/v1/files/file-9/content" -H 'Authorization: Bearer sk-demo')
+    "http://127.0.0.1:$PORT/v1/files/$ownedId/content" -H 'Authorization: Bearer sk-demo')
   bytes=$(wc -c < "$TMP/file-content.bin" | tr -d ' ')
   [[ "$code" == "200" && "$bytes" -gt 100 ]] && ok "$engine file content pass-through ($bytes bytes)" \
     || bad "$engine file content expected 200 + bytes, got $code / $bytes"
@@ -191,7 +207,7 @@ for engine in $ENGINES; do
     -H 'Authorization: Bearer sk-demo')
   assert_contains "$body" '"deleted":true' "$engine file DELETE pass-through served"
 
-  body=$(post "/v1/batches" '{"model":"m","input_file_id":"file-x"}')
+  body=$(post "/v1/batches" "{\"model\":\"m\",\"input_file_id\":\"$ownedId\"}")
   assert_contains "$body" '"object":"batch"' "$engine batch create served"
   batchId=$(printf '%s' "$body" | grep -o '"id":"batch-[0-9]*"' | head -1 | cut -d'"' -f4)
   body=$(curl -s --noproxy '*' "http://127.0.0.1:$PORT/v1/batches/$batchId" \
@@ -199,8 +215,8 @@ for engine in $ENGINES; do
   assert_contains "$body" "\"id\":\"$batchId\"" "$engine batch poll is sticky-routed to the creating upstream"
   code=$(curl -s --noproxy '*' -o /dev/null -w '%{http_code}' \
     -H 'Authorization: Bearer sk-demo' "http://127.0.0.1:$PORT/v1/batches/batch-unknown")
-  [[ "$code" == "502" ]] && ok "$engine unknown batch id -> sticky miss 502 (wildcard upstream)" \
-    || bad "$engine unknown batch id expected 502, got $code"
+  [[ "$code" == "404" ]] && ok "$engine unknown batch id -> 404 without upstream access" \
+    || bad "$engine unknown batch id expected 404, got $code"
   stop
 done
 

@@ -14,7 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public final class InMemoryVectorStore {
 
-    private record Entry(double[] vector, String cacheKey) {
+    private record Entry(String partition, double[] vector, String cacheKey) {
     }
 
     private final Map<String, Entry> byCacheKey = new ConcurrentHashMap<>();
@@ -26,6 +26,10 @@ public final class InMemoryVectorStore {
     }
 
     public void put(String cacheKey, double[] vector) {
+        put("", cacheKey, vector);
+    }
+
+    public synchronized void put(String partition, String cacheKey, double[] vector) {
         if (vector == null || vector.length == 0) {
             return;
         }
@@ -36,7 +40,7 @@ public final class InMemoryVectorStore {
                 }
             }
         }
-        byCacheKey.put(cacheKey, new Entry(vector.clone(), cacheKey));
+        byCacheKey.put(cacheKey, new Entry(partition, vector.clone(), cacheKey));
         synchronized (insertionOrder) {
             insertionOrder.remove(cacheKey);
             insertionOrder.add(cacheKey);
@@ -48,12 +52,19 @@ public final class InMemoryVectorStore {
      * above the threshold, or null.
      */
     public String findSimilar(double[] vector, double threshold) {
+        return findSimilar("", vector, threshold);
+    }
+
+    public String findSimilar(String partition, double[] vector, double threshold) {
         if (vector == null || vector.length == 0) {
             return null;
         }
         String best = null;
         double bestScore = threshold;
         for (Map.Entry<String, Entry> e : byCacheKey.entrySet()) {
+            if (!partition.equals(e.getValue().partition())) {
+                continue;
+            }
             double score = cosine(vector, e.getValue().vector());
             if (score > bestScore) {
                 bestScore = score;

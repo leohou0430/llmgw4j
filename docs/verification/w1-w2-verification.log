@@ -1,0 +1,288 @@
+=== HARDENING ===
+======== v13 hardening: retry / timeouts / heartbeat / headers / breaker ========
+--- engine=webflux -- retry + header passthrough (defaults otherwise) ---
+[PASS] webflux non-stream same-route retry recovers from 5xx
+[PASS] webflux SSE same-route retry recovers from 5xx
+[PASS] webflux 4xx is not retried
+[PASS] webflux ingress allowlist forwards anthropic-version upstream
+[PASS] webflux route credentials become the upstream Authorization
+[PASS] webflux caller token never forwarded upstream
+[PASS] webflux SSE ingress forwards anthropic-version upstream
+[PASS] webflux SSE upstream Authorization is the route key
+[PASS] webflux SSE caller token never forwarded upstream
+[PASS] webflux SSE ingress strips non-allowlisted headers upstream
+[PASS] webflux egress allowlist forwards x-ratelimit-* to client
+[PASS] webflux non-allowlisted upstream header never reaches client
+--- engine=webflux -- three-tier timeouts ---
+[PASS] webflux first-byte watchdog fails a hung upstream as 502
+[PASS] webflux idle-read stall reports in-band error
+[PASS] webflux idle-read reason is precise
+[PASS] webflux idle-read abort never fabricates a terminator
+--- engine=webflux -- SSE heartbeat ---
+[PASS] webflux heartbeat injects comment frames (22)
+[PASS] webflux heartbeat coexists with protocol data
+[PASS] webflux heartbeat does not break the terminator
+--- engine=webflux -- video sticky-miss circuit breaker ---
+[PASS] webflux unknown-task video poll fails 502
+[PASS] webflux sticky-miss circuit breaker trips
+--- engine=vt -- retry + header passthrough (defaults otherwise) ---
+[PASS] vt non-stream same-route retry recovers from 5xx
+[PASS] vt SSE same-route retry recovers from 5xx
+[PASS] vt 4xx is not retried
+[PASS] vt ingress allowlist forwards anthropic-version upstream
+[PASS] vt route credentials become the upstream Authorization
+[PASS] vt caller token never forwarded upstream
+[PASS] vt SSE ingress forwards anthropic-version upstream
+[PASS] vt SSE upstream Authorization is the route key
+[PASS] vt SSE caller token never forwarded upstream
+[PASS] vt SSE ingress strips non-allowlisted headers upstream
+[PASS] vt egress allowlist forwards x-ratelimit-* to client
+[PASS] vt non-allowlisted upstream header never reaches client
+--- engine=vt -- three-tier timeouts ---
+[PASS] vt first-byte watchdog fails a hung upstream as 502
+[PASS] vt idle-read stall reports in-band error
+[PASS] vt idle-read reason is precise
+[PASS] vt idle-read abort never fabricates a terminator
+--- engine=vt -- SSE heartbeat ---
+[PASS] vt heartbeat injects comment frames (21)
+[PASS] vt heartbeat coexists with protocol data
+[PASS] vt heartbeat does not break the terminator
+--- engine=vt -- video sticky-miss circuit breaker ---
+[PASS] vt unknown-task video poll fails 502
+[PASS] vt sticky-miss circuit breaker trips
+=================================================
+PASS=42 FAIL=0
+=== MULTI-PROTOCOL ===
+########## webflux ##########
+-- responses + messages: happy paths --
+  [PASS] responses non-stream 200 -- 200 application/json {"id":"resp_mock","object":"response","status":"completed","
+  [PASS] responses SSE: deltas + response.completed, NO [DONE] -- 200 text/event-stream deltas=8 completed=1 done=0
+  [PASS] messages non-stream 200 -- 200 application/json {"id":"msg_mock","type":"message","role":"assistant","conten
+  [PASS] messages SSE: deltas + message_stop, NO [DONE] -- 200 text/event-stream deltas=8 stop=1 done=0
+-- governance covers every endpoint --
+  [PASS] responses without key -> 401 -- 401 {"error":{"message":"invalid api key","type":"gateway_error"
+  [PASS] messages invalid json -> 400 -- 400 {"error":{"message":"invalid json: Unrecognized token 'not':
+-- images: n units, never cached --
+  [PASS] images n=3 -> 3 b64 entries -- 200 application/json entries=3
+  [PASS] images n=99 capped at 10 -- 200 entries=10
+  [PASS] images never enter the semantic cache -- cacheSize=0
+-- videos: create -> poll -> content --
+  [PASS] video create 200 + task id -- 200 id=video-1
+  [PASS] video poll reaches completed -- status=completed id=video-1
+  [PASS] video content 200 video/mp4 -- 200 video/mp4 bytes=432
+  [PASS] video create/poll never cached -- cacheSize=0
+-- per-protocol metering (1+8+1+8+0 = 18 completion tokens) --
+  [PASS] usage frames from every protocol counted exactly -- completionTokens=18 requests=5 errors=0 (expect 18/5/0)
+-- protocol routing: each kind lands on its own route --
+  [PASS] five protocols resolved to five protocol-specific routes -- chat=1 responses=1 messages=1 images=1 videos=1
+-- responses truncation contract (no [DONE] ever) --
+  [PASS] responses mid-stream crash -> in-band error, NO fabricated terminators -- 200 err_event=1 done=0 completed=0
+  [PASS] responses zero-frame EOF -> 502 naming its own terminator -- 502 application/json {"error":{"message":"upstream: upstream closed SSE stream without response.compl
+  [PASS] responses mid-stream EOF -> in-band error only -- 200 err_event=1 done=0 completed=0
+  [PASS] responses disconnect after response.completed stays a success -- 200 completed=1 err_event=0
+  [PASS] responses upstream 429 -> gateway 502 -- 502 {"error":{"message":"upstream: upstream status 429: {\"error\":{\"message\":\"in
+-- messages truncation contract (no [DONE] ever) --
+  [PASS] messages mid-stream crash -> in-band error, NO fabricated terminators -- 200 err_event=1 done=0 stop=0
+  [PASS] messages zero-frame EOF -> 502 naming its own terminator -- 502 application/json {"error":{"message":"upstream: upstream closed SSE stream without message_stop",
+  [PASS] messages disconnect after message_stop stays a success -- 200 stop=1 err_event=0
+-- images/videos failure injection --
+  [PASS] images upstream 500 -> gateway 502 -- 502 {"error":{"message":"upstream: upstream status 500: {\"error\":{\"message\":\"in
+  [PASS] video create upstream 503 -> gateway 502 -- 502 {"error":{"message":"upstream: upstream status 503: {\"error\":{\"message\":\"in
+-- sticky video routing: a task exists only on its creating upstream --
+  [PASS] GW1: create + poll its own task -- status=completed id=video-1
+  [PASS] GW2 cannot poll GW1's task (sticky pinning holds) -- code=502 id=video-1 on gw2
+  [PASS] GW2 create + poll its own task via wildcard fallback -- status=completed id=video-1
+########## vt ##########
+-- responses + messages: happy paths --
+  [PASS] responses non-stream 200 -- 200 application/json {"id":"resp_mock","object":"response","status":"completed","
+  [PASS] responses SSE: deltas + response.completed, NO [DONE] -- 200 text/event-stream;charset=UTF-8 deltas=8 completed=1 done=0
+  [PASS] messages non-stream 200 -- 200 application/json {"id":"msg_mock","type":"message","role":"assistant","conten
+  [PASS] messages SSE: deltas + message_stop, NO [DONE] -- 200 text/event-stream;charset=UTF-8 deltas=8 stop=1 done=0
+-- governance covers every endpoint --
+  [PASS] responses without key -> 401 -- 401 {"error":{"message":"invalid api key","type":"gateway_error"
+  [PASS] messages invalid json -> 400 -- 400 {"error":{"message":"invalid json: Unrecognized token 'not':
+-- images: n units, never cached --
+  [PASS] images n=3 -> 3 b64 entries -- 200 application/json entries=3
+  [PASS] images n=99 capped at 10 -- 200 entries=10
+  [PASS] images never enter the semantic cache -- cacheSize=0
+-- videos: create -> poll -> content --
+  [PASS] video create 200 + task id -- 200 id=video-1
+  [PASS] video poll reaches completed -- status=completed id=video-1
+  [PASS] video content 200 video/mp4 -- 200 video/mp4 bytes=432
+  [PASS] video create/poll never cached -- cacheSize=0
+-- per-protocol metering (1+8+1+8+0 = 18 completion tokens) --
+  [PASS] usage frames from every protocol counted exactly -- completionTokens=18 requests=5 errors=0 (expect 18/5/0)
+-- protocol routing: each kind lands on its own route --
+  [PASS] five protocols resolved to five protocol-specific routes -- chat=1 responses=1 messages=1 images=1 videos=1
+-- responses truncation contract (no [DONE] ever) --
+  [PASS] responses mid-stream crash -> in-band error, NO fabricated terminators -- 200 err_event=1 done=0 completed=0
+  [PASS] responses zero-frame EOF -> 502 naming its own terminator -- 502 application/json;charset=UTF-8 {"error":{"message":"upstream: upstream closed SSE stream without response.compl
+  [PASS] responses mid-stream EOF -> in-band error only -- 200 err_event=1 done=0 completed=0
+  [PASS] responses disconnect after response.completed stays a success -- 200 completed=1 err_event=0
+  [PASS] responses upstream 429 -> gateway 502 -- 502 {"error":{"message":"upstream: upstream status 429: {\"error\":{\"message\":\"in
+-- messages truncation contract (no [DONE] ever) --
+  [PASS] messages mid-stream crash -> in-band error, NO fabricated terminators -- 200 err_event=1 done=0 stop=0
+  [PASS] messages zero-frame EOF -> 502 naming its own terminator -- 502 application/json;charset=UTF-8 {"error":{"message":"upstream: upstream closed SSE stream without message_stop",
+  [PASS] messages disconnect after message_stop stays a success -- 200 stop=1 err_event=0
+-- images/videos failure injection --
+  [PASS] images upstream 500 -> gateway 502 -- 502 {"error":{"message":"upstream: upstream status 500: {\"error\":{\"message\":\"in
+  [PASS] video create upstream 503 -> gateway 502 -- 502 {"error":{"message":"upstream: upstream status 503: {\"error\":{\"message\":\"in
+-- sticky video routing: a task exists only on its creating upstream --
+  [PASS] GW1: create + poll its own task -- status=completed id=video-1
+  [PASS] GW2 cannot poll GW1's task (sticky pinning holds) -- code=502 id=video-1 on gw2
+  [PASS] GW2 create + poll its own task via wildcard fallback -- status=completed id=video-1
+==========================================
+PASS=56 FAIL=0
+=== STREAM-ERRORS ===
+########## webflux ##########
+-- normal paths (default mock upstream) --
+  [PASS] non-stream 200 + JSON body -- 200 application/json {"id":"mock","object":"chat.completion","choices":[{"index":
+  [PASS] SSE 200 + chunks + [DONE], no error event -- 200 text/event-stream data_lines=10 done=1 err_event=0
+  [PASS] missing key -> 401 -- 401 {"error":{"message":"invalid api key","type":"gateway_error"
+  [PASS] invalid json -> 400 -- 400 {"error":{"message":"invalid json: Unrecognized token 'not':
+-- upstream unreachable, NO fallback --
+  [PASS] non-stream upstream failure -> 502 JSON -- 502 application/json {"error":{"message":"upstream: ClosedChannelException","type":"gateway
+  [PASS] SSE failure before first chunk -> 502 JSON (no fake 200) -- 502 application/json {"error":{"message":"upstream: ClosedChannelException","type":"gateway
+-- upstream unreachable, WITH fallback --
+  [PASS] non-stream fallback -> 200 -- 200 {"id":"mock","object":"chat.completion","choices":
+  [PASS] SSE fallback -> 200 + [DONE] -- 200 done=1
+-- failure AFTER the first chunk --
+  [PASS] mid-stream failure -> in-band error event + [DONE] -- 200 text/event-stream err_event=1 done=1
+  [PASS] no fallback splicing after first chunk -- 200 tok0=1 err_event=1
+-- silent truncation: clean EOF, no [DONE], no exception thrown --
+  [PASS] zero-frame EOF -> 502 JSON (not fabricated success) -- 502 application/json {"error":{"message":"upstream: upstream closed SSE stream without [DONE]","type"
+  [PASS] mid-stream EOF -> in-band error + single [DONE] -- 200 text/event-stream err_event=1 done=1 tok0=1 reason=1
+  [PASS] EOF truncation never triggers fallback splicing -- 200 tok0=1 err_event=1
+  [PASS] admin snapshot 200 + usage (native AOT hints) -- 200 {"governanceEnabled":true,"usage":{"demo":{"requests":3,"pro
+  [PASS] truncated streams billed as failures -- errors=2 (expect >=2)
+-- v5: non-2xx upstream never becomes SSE data --
+  [PASS] 429 upstream -> 502 JSON with status detail -- 502 application/json {"error":{"message":"upstream: upstream status 429: {\"error\":{\"message\":\"injected ups
+  [PASS] 500 upstream on SSE -> 502 JSON, no error body leaked as data -- 502 application/json {"error":{"message":"upstream: upstream status 500: {\"error\":{\"message\":\"injected ups
+-- v5: [DONE] followed by disconnect is still a success --
+  [PASS] late disconnect after [DONE] -> no spurious error event -- 200 done=1 err_event=0
+  [PASS] completed stream billed as success -- errors=0 (expect 0)
+-- v5: cache key covers the whole request --
+  [PASS] different temperature never hits the other request's cache -- A=echo-bfb9652e2da6 B=echo-4c1c83ccc63b
+  [PASS] cache actually populated (so the miss was real) -- cacheSize=2
+-- v5: exact completion-token metering --
+  [PASS] usage chunk replaces delta estimate (1 + 8 = 9) -- completionTokens=9 requests=2 errors=0
+-- v5: admin surface (token gate + no upstream key leak) --
+  [PASS] admin token gates /admin/routes and key is redacted -- no_token=401 with_token=200 [{"id":"mock-primary","protocol":"","model":"*","targetModel":"","targetUrl":"http://127.0
+-- v5: request body cap + idempotent snapshot restore --
+  [PASS] oversized request -> 413 -- 413 application/json
+  [PASS] repeated snapshot/load replaces instead of doubling -- requests=1 (expect 1)
+-- v5: client disconnect still settles the ledger --
+  [PASS] aborted stream is billed as a failed request -- requests=1 errors=1
+-- v5: concurrent SSE must not cancel sibling upstream requests --
+  [PASS] 40-way concurrent SSE: zero 502 / zero Request cancelled -- non200=0 cancelled=0
+-- v6: correlation id echoes, generates, and reaches audit --
+  [PASS] incoming X-Request-Id echoed in response -- got=smoke-req-42
+  [PASS] absent X-Request-Id gets a generated gw- id -- got=gw-cf9085285ee27788
+  [PASS] request id reaches audit events -- matches=1
+-- v6: circuit breaker opens and falls back without network I/O --
+  [PASS] 2 failures open the circuit; 3rd request served via fallback -- s1=200 s2=200 s3=200 open_events=1
+  [PASS] CircuitOpenException never leaks to the client -- leak=0
+-- v6: weighted random routing follows configured weights --
+  [PASS] weighted routing distributes ~1:3 (tolerance +/-12pp) -- w-light=51(0.255) w-heavy=149(0.745)
+########## vt ##########
+-- normal paths (default mock upstream) --
+  [PASS] non-stream 200 + JSON body -- 200 application/json {"id":"mock","object":"chat.completion","choices":[{"index":
+  [PASS] SSE 200 + chunks + [DONE], no error event -- 200 text/event-stream;charset=UTF-8 data_lines=10 done=1 err_event=0
+  [PASS] missing key -> 401 -- 401 {"error":{"message":"invalid api key","type":"gateway_error"
+  [PASS] invalid json -> 400 -- 400 {"error":{"message":"invalid json: Unrecognized token 'not':
+-- upstream unreachable, NO fallback --
+  [PASS] non-stream upstream failure -> 502 JSON -- 502 application/json {"error":{"message":"upstream: ClosedChannelException","type":"gateway
+  [PASS] SSE failure before first chunk -> 502 JSON (no fake 200) -- 502 application/json;charset=UTF-8 {"error":{"message":"upstream: ClosedChannelException","type":"gateway
+-- upstream unreachable, WITH fallback --
+  [PASS] non-stream fallback -> 200 -- 200 {"id":"mock","object":"chat.completion","choices":
+  [PASS] SSE fallback -> 200 + [DONE] -- 200 done=1
+-- failure AFTER the first chunk --
+  [PASS] mid-stream failure -> in-band error event + [DONE] -- 200 text/event-stream;charset=UTF-8 err_event=1 done=1
+  [PASS] no fallback splicing after first chunk -- 200 tok0=1 err_event=1
+-- silent truncation: clean EOF, no [DONE], no exception thrown --
+  [PASS] zero-frame EOF -> 502 JSON (not fabricated success) -- 502 application/json;charset=UTF-8 {"error":{"message":"upstream: upstream closed SSE stream without [DONE]","type"
+  [PASS] mid-stream EOF -> in-band error + single [DONE] -- 200 text/event-stream;charset=UTF-8 err_event=1 done=1 tok0=1 reason=1
+  [PASS] EOF truncation never triggers fallback splicing -- 200 tok0=1 err_event=1
+  [PASS] admin snapshot 200 + usage (native AOT hints) -- 200 {"governanceEnabled":true,"usage":{"demo":{"requests":3,"pro
+  [PASS] truncated streams billed as failures -- errors=2 (expect >=2)
+-- v5: non-2xx upstream never becomes SSE data --
+  [PASS] 429 upstream -> 502 JSON with status detail -- 502 application/json {"error":{"message":"upstream: upstream status 429: {\"error\":{\"message\":\"injected ups
+  [PASS] 500 upstream on SSE -> 502 JSON, no error body leaked as data -- 502 application/json;charset=UTF-8 {"error":{"message":"upstream: upstream status 500: {\"error\":{\"message\":\"injected ups
+-- v5: [DONE] followed by disconnect is still a success --
+  [PASS] late disconnect after [DONE] -> no spurious error event -- 200 done=1 err_event=0
+  [PASS] completed stream billed as success -- errors=0 (expect 0)
+-- v5: cache key covers the whole request --
+  [PASS] different temperature never hits the other request's cache -- A=echo-bfb9652e2da6 B=echo-4c1c83ccc63b
+  [PASS] cache actually populated (so the miss was real) -- cacheSize=2
+-- v5: exact completion-token metering --
+  [PASS] usage chunk replaces delta estimate (1 + 8 = 9) -- completionTokens=9 requests=2 errors=0
+-- v5: admin surface (token gate + no upstream key leak) --
+  [PASS] admin token gates /admin/routes and key is redacted -- no_token=401 with_token=200 [{"id":"mock-primary","protocol":"","model":"*","targetModel":"","targetUrl":"http://127.0
+-- v5: request body cap + idempotent snapshot restore --
+  [PASS] oversized request -> 413 -- 413 application/json
+  [PASS] repeated snapshot/load replaces instead of doubling -- requests=1 (expect 1)
+-- v5: client disconnect still settles the ledger --
+  [PASS] aborted stream is billed as a failed request -- requests=1 errors=1
+-- v5: concurrent SSE must not cancel sibling upstream requests --
+  [PASS] 40-way concurrent SSE: zero 502 / zero Request cancelled -- non200=0 cancelled=0
+-- v6: correlation id echoes, generates, and reaches audit --
+  [PASS] incoming X-Request-Id echoed in response -- got=smoke-req-42
+  [PASS] absent X-Request-Id gets a generated gw- id -- got=gw-471723abe88a703f
+  [PASS] request id reaches audit events -- matches=1
+-- v6: circuit breaker opens and falls back without network I/O --
+  [PASS] 2 failures open the circuit; 3rd request served via fallback -- s1=200 s2=200 s3=200 open_events=1
+  [PASS] CircuitOpenException never leaks to the client -- leak=0
+-- v6: weighted random routing follows configured weights --
+  [PASS] weighted routing distributes ~1:3 (tolerance +/-12pp) -- w-light=47(0.235) w-heavy=153(0.765)
+########## static check: single JSON parse on hot path ##########
+  [PASS] controllers reuse decision.parsed() -- ProtocolCodec.parse occurrences in controllers=0
+==========================================
+PASS=67 FAIL=0
+=== OBSERVABILITY ===
+=== engine=webflux ===
+  [PASS] json overhead header -- X-LLMGW-Overhead-Ms: 60.3
+  [PASS] json upstream header -- X-LLMGW-Upstream-Ms: 89.6
+  [PASS] correlation id echoed -- X-Request-Id: obs-correlation-1
+  [PASS] sse preflight overhead header -- X-LLMGW-Overhead-Ms: 0.8
+  [PASS] sse omits post-commit upstream header -- no upstream header (timing lives in meters)
+  [PASS] sse still completes -- data: [DONE] present
+  [PASS] ttft timer registered -- llmgw.ttft
+  [PASS] upstream timer registered -- llmgw.upstream
+  [PASS] gateway overhead timer registered -- llmgw.overhead
+  [PASS] engine metric tag = webflux -- engine tags: engine=webflux,
+  [PASS] no unresolved engine tag -- engine tags: engine=webflux,
+  [PASS] metrics json has no NaN -- finite values only
+  [PASS] audit carries ttftMs -- ttftMs
+  [PASS] audit carries gatewayOverheadMs -- gatewayOverheadMs
+  [PASS] audit carries upstreamMs -- upstreamMs
+=== engine=vt ===
+  [PASS] json overhead header -- X-LLMGW-Overhead-Ms: 39.4
+  [PASS] json upstream header -- X-LLMGW-Upstream-Ms: 120.3
+  [PASS] correlation id echoed -- X-Request-Id: obs-correlation-1
+  [PASS] sse preflight overhead header -- X-LLMGW-Overhead-Ms: 0.6
+  [PASS] sse omits post-commit upstream header -- no upstream header (timing lives in meters)
+  [PASS] sse still completes -- data: [DONE] present
+  [PASS] ttft timer registered -- llmgw.ttft
+  [PASS] upstream timer registered -- llmgw.upstream
+  [PASS] gateway overhead timer registered -- llmgw.overhead
+  [PASS] engine metric tag = vt -- engine tags: engine=vt,
+  [PASS] no unresolved engine tag -- engine tags: engine=vt,
+  [PASS] metrics json has no NaN -- finite values only
+  [PASS] audit carries ttftMs -- ttftMs
+  [PASS] audit carries gatewayOverheadMs -- gatewayOverheadMs
+  [PASS] audit carries upstreamMs -- upstreamMs
+PASS=30 FAIL=0
+=== HOT-RELOAD ===
+=== engine=webflux streams=40 ===
+  [PASS] initial config version is 0 -- version=0
+  [PASS] first reload applied atomically -- status=200 version=1
+  [PASS] reload response never echoes provider key -- only apiKeyConfigured exposed
+  [PASS] new requests use 1:3 weights -- r-a share=0.245 (expected ~0.25)
+  [PASS] in-flight SSE streams survive reload -- complete=40 bad=0 streams=40
+  [PASS] reload landed while streams were active -- status=200 version=2
+  [PASS] config version header advances -- version=2
+  [PASS] new requests use 3:1 weights -- r-a share=0.725 (expected ~0.75)
+  [PASS] invalid configs rejected without changing table -- version=2 all400=1
+  [PASS] admin token gates reload -- status=401
+PASS=10 FAIL=0
+=== UNIT ===

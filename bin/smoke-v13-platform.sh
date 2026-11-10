@@ -5,7 +5,7 @@
 set -uo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-JAR="$ROOT/llmgw-app/target/llmgw-app-0.1.0-SNAPSHOT.jar"
+JAR="$ROOT/llmgw-app/target/llmgw-app-0.2.0.jar"
 PORT="${PORT:-8080}"
 MOCK_PORT="${MOCK_PORT:-9090}"
 ENGINES="${1:-webflux vt}"
@@ -104,7 +104,7 @@ for engine in $ENGINES; do
   # ceil(400/4)=100 tokens. Admission reserves cost(100,100)=200 micro-USD;
   # settle books cost(100 prompt, 1 completion)=101. Budget 250 -> request 1
   # fits (200<=250), request 2 denies (101+200=301>250). Deterministic.
-  local longPrompt
+  longPrompt=""
   longPrompt=$(printf 'B%.0s' $(seq 1 400))
   body=$(chat "{\"model\":\"m\",\"messages\":[{\"content\":\"$longPrompt\"}]}")
   assert_contains "$body" '"object":"chat.completion"' "$engine first request inside budget succeeds"

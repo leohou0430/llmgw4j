@@ -1,0 +1,23 @@
+Picked up JAVA_TOOL_OPTIONS: -Dgateway.mock.enabled=false -Dgateway.governance-enabled=false -Dgateway.api-keys[0].id=benchmark -Dgateway.api-keys[0].token=benchmark-upstream -Dgateway.api-keys[0].quota-tokens=1000000000000 -Dgateway.governance.rate-limit-tokens-per-second=2000000000 -Dgateway.governance.rate-limit-burst=2000000000 -Dgateway.routes[0].target-url=http://mock:9099/v1 -Dgateway.routes[0].api-key=benchmark-upstream
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.1.2)
+
+2026-11-10T01:09:17.437Z  INFO 1 --- [llmgw] [           main] i.g.l.llmgw.app.LlmGatewayApplication    : Starting LlmGatewayApplication v0.1.0-SNAPSHOT using Java 25.0.5 with PID 1 (/app/llmgw.jar started by root in /app)
+2026-11-10T01:09:17.442Z  INFO 1 --- [llmgw] [           main] i.g.l.llmgw.app.LlmGatewayApplication    : The following 1 profile is active: "vt"
+2026-11-10T01:09:19.813Z  INFO 1 --- [llmgw] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-11-10T01:09:19.832Z  INFO 1 --- [llmgw] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-11-10T01:09:19.832Z  INFO 1 --- [llmgw] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.27]
+2026-11-10T01:09:19.865Z  INFO 1 --- [llmgw] [           main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 2351 ms
+2026-11-10T01:09:21.710Z  INFO 1 --- [llmgw] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 4 endpoints beneath base path '/actuator'
+2026-11-10T01:09:21.804Z  INFO 1 --- [llmgw] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+2026-11-10T01:09:21.814Z  INFO 1 --- [llmgw] [           main] i.g.l.llmgw.app.LlmGatewayApplication    : Started LlmGatewayApplication in 5.147 seconds (process running for 5.828)
+2026-11-10T01:09:22.142Z  INFO 1 --- [llmgw] [omcat-handler-0] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-11-10T01:09:22.143Z  INFO 1 --- [llmgw] [omcat-handler-0] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-11-10T01:09:22.145Z  INFO 1 --- [llmgw] [omcat-handler-0] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms

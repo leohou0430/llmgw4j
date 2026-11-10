@@ -1,0 +1,28 @@
+2026/11/09 16:33:05 maxprocs: Updating GOMAXPROCS=4: determined from CPU quota
+
+╔═══════════════════════════════════════════════════════════╗
+║                                                           ║
+║   ██████╗ ██╗███████╗██████╗  ██████╗ ███████╗████████╗   ║
+║   ██╔══██╗██║██╔════╝██╔══██╗██╔═══██╗██╔════╝╚══██╔══╝   ║
+║   ██████╔╝██║█████╗  ██████╔╝██║   ██║███████╗   ██║      ║
+║   ██╔══██╗██║██╔══╝  ██╔══██╗██║   ██║╚════██║   ██║      ║
+║   ██████╔╝██║██║     ██║  ██║╚██████╔╝███████║   ██║      ║
+║   ╚═════╝ ╚═╝╚═╝     ╚═╝  ╚═╝ ╚═════╝ ╚══════╝   ╚═╝      ║
+║                                                           ║
+║═══════════════════════════════════════════════════════════║
+║                          v2.5.0                           ║
+║═══════════════════════════════════════════════════════════║
+║                 The Fastest LLM Gateway                   ║
+║═══════════════════════════════════════════════════════════║
+║             https://github.com/maximhq/bifrost            ║
+╚═══════════════════════════════════════════════════════════╝
+
+[33m╔══════════════════════════════════════════════════════════════════════════════════════════════════╗[0m
+[33m║ config file /app/data/config.json does not include a "$schema" location. Set it to               ║[0m
+[33m║ "https://www.getbifrost.ai/schema" or your mirrored schema location to enable IDE validation.    ║[0m
+[33m╚══════════════════════════════════════════════════════════════════════════════════════════════════╝[0m
+
+{"level":"error","time":"2026-11-09T16:33:05Z","message":"failed to initialize governance plugin: failed to initialize governance store: failed to load governance data from config memory: governance config is nil"}
+{"level":"error","time":"2026-11-09T16:33:05Z","message":"auth middleware requires config store, skipping auth middleware initialization"}
+{"level":"error","http.method":"POST","http.target":"/openai/v1/chat/completions","http.status_code":502,"http.request_duration_ms":3,"http.remote_addr":"192.168.107.12:53186","http.user_agent":"Grafana k6/2.3.0","trace_id":"2f401f6530e9453eb9a61b52216db972","request_id":"9776180a-91e2-41cb-bf89-0343a054b39c","time":"2026-11-09T16:33:28Z","message":"request completed"}
+{"level":"error","http.method":"POST","http.target":"/openai/v1/chat/completions","http.status_code":502,"http.request_duration_ms":0,"http.remote_addr":"192.168.107.12:53122","http.user_agent":"Grafana k6/2.3.0","trace_id":"9501e514331b4563b02971a00147244a","request_id":"4e6bdabd-68d3-4145-99b3-24b9a1f7cb3a","time":"2026-11-09T16:33:29Z","message":"request completed"}

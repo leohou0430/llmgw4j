@@ -18,10 +18,8 @@ import java.util.Set;
  * W3.6: cross-replica API key registry. Keys live in ONE Redis hash
  * ({@code llmgw:keys}, token -> JSON), so a key created on replica A
  * authenticates on replica B immediately. Config keys (and the demo key) seed
- * the hash at startup; runtime key WRITES stay per-instance via the
- * KeyAdminService + JSON store -- point every replica at the same store file,
- * or manage keys through one admin instance, and the Redis read path keeps
- * them consistent everywhere.
+ * the hash at startup. This registry does not implement KeyAdminService;
+ * runtime create/rotate/revoke are unavailable (501) with this pack.
  */
 public final class RedisApiKeyRegistry implements ApiKeyRegistry {
 
@@ -29,6 +27,7 @@ public final class RedisApiKeyRegistry implements ApiKeyRegistry {
 
     private final StringRedisTemplate redis;
     private final String hashKey;
+    private final boolean production;
 
     public RedisApiKeyRegistry(StringRedisTemplate redis, GatewayProperties properties) {
         this(redis, properties, GovernancePacks.DEFAULT_REDIS_KEY_PREFIX);
@@ -37,6 +36,7 @@ public final class RedisApiKeyRegistry implements ApiKeyRegistry {
     public RedisApiKeyRegistry(StringRedisTemplate redis, GatewayProperties properties,
                                String prefix) {
         this.redis = redis;
+        this.production = properties.isProduction();
         this.hashKey = prefix + "keys";
         seedFromConfig(properties);
     }
@@ -44,6 +44,9 @@ public final class RedisApiKeyRegistry implements ApiKeyRegistry {
     /** Config keys are the static source: (re)write them into the hash. */
     private void seedFromConfig(GatewayProperties properties) {
         if (properties.getApiKeys().isEmpty()) {
+            if (properties.isProduction()) {
+                return;
+            }
             upsert("sk-demo", new ApiKey("demo", "demo",
                     io.github.leohou0430.llmgw.governance.GovernanceLimits
                             .from(properties).defaultQuotaTokens(),
@@ -72,7 +75,7 @@ public final class RedisApiKeyRegistry implements ApiKeyRegistry {
 
     @Override
     public Optional<ApiKey> find(String token) {
-        if (token == null || token.isBlank()) {
+        if (token == null || token.isBlank() || (production && "sk-demo".equals(token))) {
             return Optional.empty();
         }
         Object json = redis.<String, String>opsForHash().get(hashKey, token);

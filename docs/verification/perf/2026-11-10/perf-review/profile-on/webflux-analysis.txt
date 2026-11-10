@@ -1,0 +1,108 @@
+
+CPU inclusive total=7376
+  56.47%	4165	java.lang.Thread.runWith
+  42.25%	3116	java.lang.Thread.run
+  33.15%	2445	reactor.core.publisher.MonoFlatMap$FlatMapMain.onNext
+  32.61%	2405	reactor.core.publisher.MonoIgnoreThen$ThenIgnoreMain.subscribeNext
+  30.88%	2278	jdk.internal.net.http.common.SequentialScheduler$SchedulableTask.run
+  30.59%	2256	reactor.core.publisher.InternalMonoOperator.subscribe
+  30.30%	2235	jdk.internal.net.http.common.SequentialScheduler$CompleteRestartableTask.run
+  30.29%	2234	jdk.internal.net.http.common.SequentialScheduler$LockingRestartableTask.run
+  28.99%	2138	reactor.core.publisher.FluxOnErrorResume$ResumeSubscriber.onNext
+  24.82%	1831	reactor.core.publisher.Mono.subscribe
+  24.72%	1823	reactor.core.publisher.MonoIgnoreThen$ThenIgnoreMain.onComplete
+  22.41%	1653	reactor.core.publisher.Operators$MultiSubscriptionSubscriber.request
+  22.13%	1632	io.netty.channel.SingleThreadIoEventLoop.run
+  22.03%	1625	io.netty.util.concurrent.SingleThreadEventExecutor$5.run
+  21.69%	1600	io.netty.util.internal.ThreadExecutorMap$2.run
+  21.56%	1590	io.netty.util.concurrent.FastThreadLocalRunnable.run
+  21.03%	1551	jdk.internal.net.http.common.SequentialScheduler.runOrSchedule
+  21.01%	1550	java.util.concurrent.ThreadPoolExecutor.runWorker
+  20.96%	1546	java.util.concurrent.ThreadPoolExecutor$Worker.run
+  20.63%	1522	reactor.core.publisher.MonoDefer.subscribe
+  19.37%	1429	reactor.core.publisher.MonoIgnoreThen.subscribe
+  19.02%	1403	reactor.core.publisher.MonoFlatMap$FlatMapMain.secondComplete
+  18.18%	1341	jdk.internal.net.http.LineSubscriberAdapter$LineSubscription$$Lambda.0x000000001c81e468.run
+  18.13%	1337	jdk.internal.net.http.LineSubscriberAdapter$LineSubscription.loop
+  17.67%	1303	reactor.core.publisher.MonoPeekTerminal$MonoTerminalPeekSubscriber.onNext
+
+CPU first application frame total=7376
+  63.56%	4688	<framework-only stack>
+   8.36%	617	io.github.leohou0430.llmgw.app.JdkHttpUpstream$1.onNext
+   3.31%	244	io.github.leohou0430.llmgw.core.protocol.ChunkParser.chat
+   2.70%	199	io.github.leohou0430.llmgw.app.JdkHttpUpstream$DemandBridge.request
+   2.56%	189	io.github.leohou0430.llmgw.engine.webflux.WebfluxGatewayController.firstValues
+   1.59%	117	io.github.leohou0430.llmgw.app.JdkHttpUpstream.build
+   1.41%	104	io.github.leohou0430.llmgw.app.JdkHttpUpstream.lambda$completeRawAsync$0
+   1.33%	98	io.github.leohou0430.llmgw.app.JdkHttpUpstream.lambda$streamRaw$1
+   1.17%	86	io.github.leohou0430.llmgw.app.JdkHttpUpstream$1.onComplete
+   0.92%	68	io.github.leohou0430.llmgw.core.protocol.ChunkParser.readDeltaContent
+   0.91%	67	io.github.leohou0430.llmgw.core.protocol.ProtocolCodec.tryParse
+   0.68%	50	io.github.leohou0430.llmgw.governance.inmemory.GovernanceMetrics.latencyNanos
+   0.66%	49	io.github.leohou0430.llmgw.engine.webflux.WebfluxGatewayController.dispatch
+   0.62%	46	io.github.leohou0430.llmgw.governance.inmemory.DefaultGovernanceChain.lambda$finish$0
+   0.56%	41	io.github.leohou0430.llmgw.core.protocol.ProtocolCodec.parse
+   0.56%	41	io.github.leohou0430.llmgw.core.protocol.ProtocolCodec.lambda$static$0
+   0.49%	36	io.github.leohou0430.llmgw.governance.inmemory.DefaultGovernanceChain.finish
+   0.49%	36	io.github.leohou0430.llmgw.governance.inmemory.InMemoryApiKeyRegistry.lookupKey
+   0.47%	35	io.github.leohou0430.llmgw.engine.webflux.WebfluxGatewayController.handleKindWithinCapacity
+   0.43%	32	io.github.leohou0430.llmgw.engine.webflux.WebfluxGatewayController.lambda$handleKindWithinCapacity$0
+   0.41%	30	io.github.leohou0430.llmgw.core.protocol.ProtocolCodec.fingerprint
+   0.38%	28	io.github.leohou0430.llmgw.governance.inmemory.AllowListHeaderPolicy.toUpstream
+   0.37%	27	io.github.leohou0430.llmgw.engine.webflux.WebfluxGatewayController.lambda$dispatch$8
+   0.26%	19	io.github.leohou0430.llmgw.core.protocol.ProtocolCodec.collectPrompt
+   0.24%	18	io.github.leohou0430.llmgw.engine.webflux.WebfluxGatewayController.writeJson
+
+Allocation sampled bytes by class total=12282210728
+  18.59%	2283474424	[B
+   4.69%	576616840	java.lang.String
+   4.35%	534063472	[Ljava.lang.Object;
+   3.20%	393211960	[Ljava.util.concurrent.ConcurrentHashMap$Node;
+   2.55%	313135312	tools.jackson.core.json.JsonReadContext
+   2.13%	261492336	tools.jackson.core.json.ReaderBasedJsonParser
+   2.03%	249326672	java.util.LinkedHashMap$Entry
+   1.95%	239329352	jdk.internal.net.http.common.MinimalFuture
+   1.85%	227557560	io.netty.channel.DefaultChannelPromise
+   1.73%	212641656	[C
+   1.31%	160901304	java.util.TreeMap$Entry
+   1.19%	145713960	java.nio.DirectByteBuffer
+   1.12%	137416216	java.util.ArrayList
+   1.11%	135884072	tools.jackson.core.io.IOContext
+   1.04%	127961904	java.util.concurrent.ConcurrentHashMap$Node
+   1.04%	127774304	io.netty.util.concurrent.PromiseCombiner
+   1.01%	124055784	java.util.stream.ReferencePipeline$Head
+   0.92%	113154584	io.netty.buffer.UnpooledHeapByteBuf
+   0.83%	101696576	reactor.core.publisher.MonoPeekTerminal
+   0.83%	101623400	java.nio.HeapByteBufferR
+   0.78%	95792712	java.util.TreeMap
+   0.73%	89102128	java.util.concurrent.ConcurrentLinkedDeque$Node
+   0.70%	86056376	reactor.core.publisher.MonoPeekTerminal$MonoTerminalPeekSubscriber
+   0.69%	84626872	io.netty.handler.codec.DefaultHeaders$HeaderEntry
+   0.69%	84238872	org.springframework.core.io.buffer.NettyDataBuffer
+
+Allocation sampled bytes by site total=12282210728
+   2.60%	319311280	<framework-only stack> :: java.util.concurrent.ConcurrentHashMap.initTable <- java.util.concurrent.ConcurrentHashMap.putVal <- java.util.concurrent.ConcurrentHashMap.put <- org.springframework.web.reactive.result.method.HandlerMethodArgumentResolverComposite.getArgumentResolver <- org.springframework.web.reactive.result.method.HandlerMethodArgumentResolverComposite.supportsParameter
+   2.43%	297941432	io.github.leohou0430.llmgw.core.protocol.ChunkParser.chat :: java.util.Arrays.copyOfRange <- java.lang.StringLatin1.newString <- java.lang.StringLatin1.trim <- java.lang.String.trim <- io.github.leohou0430.llmgw.core.protocol.ChunkParser.chat
+   1.84%	226178552	io.github.leohou0430.llmgw.engine.webflux.WebfluxGatewayController.lambda$dispatch$8 :: java.lang.String.encodeUTF8 <- java.lang.String.encode <- java.lang.String.getBytes <- io.github.leohou0430.llmgw.engine.webflux.WebfluxGatewayController.lambda$dispatch$8 <- io.github.leohou0430.llmgw.engine.webflux.WebfluxGatewayController$$Lambda.0x000000001c80f048.apply
+   1.82%	223558848	io.github.leohou0430.llmgw.core.protocol.ChunkParser.chat :: tools.jackson.core.json.JsonFactory._createParser <- tools.jackson.core.base.TextualTSFactory.createParser <- tools.jackson.core.TokenStreamFactory.createParser <- io.github.leohou0430.llmgw.core.protocol.ChunkParser.chat <- io.github.leohou0430.llmgw.core.protocol.ChunkParser.parse
+   1.63%	199780936	io.github.leohou0430.llmgw.app.JdkHttpUpstream$1.onNext :: io.netty.channel.AbstractChannelHandlerContext.newPromise <- io.netty.channel.AbstractChannelHandlerContext.write <- io.netty.channel.CombinedChannelDuplexHandler$DelegatingChannelHandlerContext.write <- io.netty.handler.codec.http.HttpObjectEncoder.writePromiseCombiner <- io.netty.handler.codec.http.HttpObjectEncoder.writeOutList
+   1.56%	191798200	<framework-only stack> :: jdk.internal.net.http.LineSubscriberAdapter$LineSubscription.<init> <- jdk.internal.net.http.LineSubscriberAdapter$LineSubscription.create <- jdk.internal.net.http.LineSubscriberAdapter.onSubscribe <- jdk.internal.net.http.ResponseSubscribers$MappingSubscriber.onSubscribe <- jdk.internal.net.http.common.HttpBodySubscriberWrapper.onSubscribe
+   1.54%	188838232	io.github.leohou0430.llmgw.app.JdkHttpUpstream$1.onNext :: jdk.internal.misc.Unsafe.allocateUninitializedArray <- java.lang.StringConcatHelper.newArray <- java.lang.StringConcatHelper.doConcat <- java.lang.StringConcatHelper.simpleConcat <- java.lang.invoke.DirectMethodHandle$Holder.invokeStatic
+   1.50%	184560960	io.github.leohou0430.llmgw.core.protocol.ChunkParser.chat :: java.util.Arrays.copyOfRange <- java.lang.StringLatin1.newString <- java.lang.String.substring <- java.lang.String.substring <- io.github.leohou0430.llmgw.core.protocol.ChunkParser.chat
+   1.34%	164913168	<framework-only stack> :: java.nio.HeapByteBuffer.<init> <- java.nio.ByteBuffer.allocate <- jdk.internal.net.http.common.Utils.getBuffer <- jdk.internal.net.http.PlainHttpConnection$$Lambda.0x000000001c7dedb8.get <- jdk.internal.net.http.SocketTube$SliceBufferSource.getBuffer
+   1.15%	141669304	io.github.leohou0430.llmgw.app.JdkHttpUpstream$1.onNext :: java.nio.DirectByteBuffer.slice <- java.nio.DirectByteBuffer.slice <- java.lang.invoke.LambdaForm$DMH.0x000000001c825800.invokeVirtual <- java.lang.invoke.LambdaForm$MH.0x000000001c804400.invokeExact_MT <- io.netty.util.internal.PlatformDependent0.offsetSlice
+   1.14%	139622648	io.github.leohou0430.llmgw.app.JdkHttpUpstream$1.onNext :: java.lang.Throwable.fillInStackTrace <- java.lang.Throwable.fillInStackTrace <- java.lang.Throwable.<init> <- io.netty.util.ResourceLeakDetector$TraceRecord.<init> <- io.netty.util.ResourceLeakDetector$DefaultResourceLeak.<init>
+   1.08%	132572760	io.github.leohou0430.llmgw.app.JdkHttpUpstream$DemandBridge.request :: java.util.Arrays.copyOfRange <- java.lang.StringLatin1.newString <- java.lang.AbstractStringBuilder.substring <- java.lang.StringBuilder.substring <- jdk.internal.net.http.LineSubscriberAdapter$LineSubscription.take
+   1.01%	124096960	io.github.leohou0430.llmgw.app.JdkHttpUpstream$1.onNext :: io.netty.handler.codec.http.HttpObjectEncoder.writePromiseCombiner <- io.netty.handler.codec.http.HttpObjectEncoder.writeOutList <- io.netty.handler.codec.http.HttpObjectEncoder.write <- io.netty.handler.codec.http.HttpServerCodec$HttpServerResponseEncoder.write <- io.netty.channel.CombinedChannelDuplexHandler.write
+   0.99%	121291872	io.github.leohou0430.llmgw.core.protocol.ChunkParser.chat :: tools.jackson.core.TokenStreamFactory._createContext <- tools.jackson.core.TokenStreamFactory._createContext <- tools.jackson.core.base.TextualTSFactory.createParser <- tools.jackson.core.TokenStreamFactory.createParser <- io.github.leohou0430.llmgw.core.protocol.ChunkParser.chat
+   0.98%	120341560	<framework-only stack> :: java.util.concurrent.atomic.AtomicReferenceArray.<init> <- reactor.util.concurrent.SpscLinkedArrayQueue.<init> <- reactor.util.concurrent.Queues.lambda$static$4 <- reactor.util.concurrent.Queues$$Lambda.0x000000001c3f9918.get <- reactor.core.publisher.FluxCreate$BufferAsyncSink.<init>
+   0.91%	112275496	io.github.leohou0430.llmgw.engine.webflux.WebfluxGatewayController.lambda$dispatch$8 :: io.netty.buffer.Unpooled.wrappedBuffer <- org.springframework.core.io.buffer.NettyDataBufferFactory.wrap <- io.github.leohou0430.llmgw.engine.webflux.WebfluxGatewayController.lambda$dispatch$8 <- io.github.leohou0430.llmgw.engine.webflux.WebfluxGatewayController$$Lambda.0x000000001c80f048.apply <- reactor.core.publisher.FluxMap$MapSubscriber.onNext
+   0.87%	107318160	io.github.leohou0430.llmgw.core.protocol.ChunkParser.chat :: java.lang.StringLatin1.newString <- java.lang.StringLatin1.trim <- java.lang.String.trim <- io.github.leohou0430.llmgw.core.protocol.ChunkParser.chat <- io.github.leohou0430.llmgw.core.protocol.ChunkParser.parse
+   0.69%	85003104	<framework-only stack> :: java.nio.HeapByteBufferR.duplicate <- java.nio.HeapByteBufferR.asReadOnlyBuffer <- jdk.internal.net.http.ResponseContent$ChunkedBodyParser.tryReadOneHunk <- jdk.internal.net.http.ResponseContent$ChunkedBodyParser.tryPushOneHunk <- jdk.internal.net.http.ResponseContent$ChunkedBodyParser.accept
+   0.67%	82123392	io.github.leohou0430.llmgw.core.protocol.ChunkParser.chat :: tools.jackson.core.json.JsonReadContext.createChildObjectContext <- tools.jackson.core.json.JsonParserBase.createChildObjectContext <- tools.jackson.core.json.ReaderBasedJsonParser.nextToken <- io.github.leohou0430.llmgw.core.protocol.ChunkParser.chat <- io.github.leohou0430.llmgw.core.protocol.ChunkParser.parse
+   0.64%	78719952	io.github.leohou0430.llmgw.engine.webflux.WebfluxGatewayController.firstValues :: java.util.LinkedHashMap.newNode <- java.util.HashMap.putVal <- java.util.HashMap.put <- java.util.HashSet.add <- io.netty.handler.codec.DefaultHeaders.names
+   0.62%	75623848	io.github.leohou0430.llmgw.governance.inmemory.DefaultGovernanceChain.lambda$finish$0 :: java.util.LinkedHashMap.newNode <- java.util.HashMap.putVal <- java.util.HashMap.put <- io.github.leohou0430.llmgw.governance.inmemory.DefaultGovernanceChain.lambda$finish$0 <- io.github.leohou0430.llmgw.governance.inmemory.DefaultGovernanceChain$$Lambda.0x000000001c7fdd98.run
+   0.61%	75535296	io.github.leohou0430.llmgw.engine.webflux.WebfluxGatewayController.lambda$dispatch$8 :: org.springframework.core.io.buffer.NettyDataBufferFactory.wrap <- io.github.leohou0430.llmgw.engine.webflux.WebfluxGatewayController.lambda$dispatch$8 <- io.github.leohou0430.llmgw.engine.webflux.WebfluxGatewayController$$Lambda.0x000000001c80f048.apply <- reactor.core.publisher.FluxMap$MapSubscriber.onNext <- reactor.core.publisher.FluxDoFinally$DoFinallySubscriber.onNext
+   0.60%	74284960	<framework-only stack> :: io.netty.handler.codec.DefaultHeaders.<init> <- io.netty.handler.codec.DefaultHeadersImpl.<init> <- io.netty.handler.codec.http.DefaultHttpHeaders.<init> <- io.netty.handler.codec.http.DefaultHttpHeaders.<init> <- io.netty.handler.codec.http.DefaultHttpHeadersFactory.newHeaders
+   0.52%	63754688	io.github.leohou0430.llmgw.core.protocol.ChunkParser.chat :: tools.jackson.core.json.JsonReadContext.createChildArrayContext <- tools.jackson.core.json.JsonParserBase.createChildArrayContext <- tools.jackson.core.json.ReaderBasedJsonParser._nextAfterName <- tools.jackson.core.json.ReaderBasedJsonParser.nextToken <- io.github.leohou0430.llmgw.core.protocol.ChunkParser.chat
+   0.52%	63373392	<framework-only stack> :: java.util.Arrays.copyOf <- java.lang.AbstractStringBuilder.ensureCapacityNewCoder <- java.lang.AbstractStringBuilder.append <- java.lang.StringBuilder.append <- jdk.internal.net.http.Http1Request.collectHeaders1

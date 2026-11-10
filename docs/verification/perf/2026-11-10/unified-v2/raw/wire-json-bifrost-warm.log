@@ -1,0 +1,48 @@
+time="2026-11-10T00:41:48+08:00" level=warning msg="failed status=502 error= body={\"is_bifrost_error\":false,\"status_code\":502,\"error\":{\"error\":\"fasthttp: the server closed connection before returning the first response byte. make sure the server returns 'connection: close' response header before closing the connection\",\"type\":\"provider_connection_failed\",\"message\":\"failed to execute HTTP request to provider API\"},\"extra_fields\":{\"routing_info\":{\"provider\":\"openai\",\"model\":\"qwen-plus\",\"key\":\"mock\",\"requested_model\":\"qwen-plus\"},\"provider\":\"openai\",\"original_model_requested\":\"qwen-plus\",\"resolved_model_used\":\"qwen-plus\",\"request_type\":\"chat_completion\"}}" source=console
+time="2026-11-10T00:41:49+08:00" level=warning msg="failed status=502 error= body={\"is_bifrost_error\":false,\"status_code\":502,\"error\":{\"error\":\"fasthttp: the server closed connection before returning the first response byte. make sure the server returns 'connection: close' response header before closing the connection\",\"type\":\"provider_connection_failed\",\"message\":\"failed to execute HTTP request to provider API\"},\"extra_fields\":{\"routing_info\":{\"provider\":\"openai\",\"model\":\"qwen-plus\",\"key\":\"mock\",\"requested_model\":\"qwen-plus\"},\"provider\":\"openai\",\"original_model_requested\":\"qwen-plus\",\"resolved_model_used\":\"qwen-plus\",\"request_type\":\"chat_completion\"}}" source=console
+time="2026-11-10T00:41:49+08:00" level=warning msg="failed status=502 error= body={\"is_bifrost_error\":false,\"status_code\":502,\"error\":{\"error\":\"fasthttp: the server closed connection before returning the first response byte. make sure the server returns 'connection: close' response header before closing the connection\",\"type\":\"provider_connection_failed\",\"message\":\"failed to execute HTTP request to provider API\"},\"extra_fields\":{\"routing_info\":{\"provider\":\"openai\",\"model\":\"qwen-plus\",\"key\":\"mock\",\"requested_model\":\"qwen-plus\"},\"provider\":\"openai\",\"original_model_requested\":\"qwen-plus\",\"resolved_model_used\":\"qwen-plus\",\"request_type\":\"chat_completion\"}}" source=console
+time="2026-11-10T00:41:49+08:00" level=warning msg="failed status=502 error= body={\"is_bifrost_error\":false,\"status_code\":502,\"error\":{\"error\":\"fasthttp: the server closed connection before returning the first response byte. make sure the server returns 'connection: close' response header before closing the connection\",\"type\":\"provider_connection_failed\",\"message\":\"failed to execute HTTP request to provider API\"},\"extra_fields\":{\"routing_info\":{\"provider\":\"openai\",\"model\":\"qwen-plus\",\"key\":\"mock\",\"requested_model\":\"qwen-plus\"},\"provider\":\"openai\",\"original_model_requested\":\"qwen-plus\",\"resolved_model_used\":\"qwen-plus\",\"request_type\":\"chat_completion\"}}" source=console
+time="2026-11-10T00:41:50+08:00" level=warning msg="failed status=502 error= body={\"is_bifrost_error\":false,\"status_code\":502,\"error\":{\"error\":\"fasthttp: the server closed connection before returning the first response byte. make sure the server returns 'connection: close' response header before closing the connection\",\"type\":\"provider_connection_failed\",\"message\":\"failed to execute HTTP request to provider API\"},\"extra_fields\":{\"routing_info\":{\"provider\":\"openai\",\"model\":\"qwen-plus\",\"key\":\"mock\",\"requested_model\":\"qwen-plus\"},\"provider\":\"openai\",\"original_model_requested\":\"qwen-plus\",\"resolved_model_used\":\"qwen-plus\",\"request_type\":\"chat_completion\"}}" source=console
+time="2026-11-10T00:41:50+08:00" level=warning msg="failed status=502 error= body={\"is_bifrost_error\":false,\"status_code\":502,\"error\":{\"error\":\"fasthttp: the server closed connection before returning the first response byte. make sure the server returns 'connection: close' response header before closing the connection\",\"type\":\"provider_connection_failed\",\"message\":\"failed to execute HTTP request to provider API\"},\"extra_fields\":{\"routing_info\":{\"provider\":\"openai\",\"model\":\"qwen-plus\",\"key\":\"mock\",\"requested_model\":\"qwen-plus\"},\"provider\":\"openai\",\"original_model_requested\":\"qwen-plus\",\"resolved_model_used\":\"qwen-plus\",\"request_type\":\"chat_completion\"}}" source=console
+
+
+  █ THRESHOLDS 
+
+    gateway_failure_rate
+    ✓ 'rate<0.01' rate=0.04%
+
+
+  █ TOTAL RESULTS 
+
+    checks_total.......: 28246  9394.677569/s
+    checks_succeeded...: 99.95% 28234 out of 28246
+    checks_failed......: 0.04%  12 out of 28246
+
+    ✗ status is 200
+      ↳  99% — ✓ 14117 / ✗ 6
+    ✗ completion is intact
+      ↳  99% — ✓ 14117 / ✗ 6
+
+    CUSTOM
+    gateway_failure_rate...........: 0.04%  6 out of 14123
+    gateway_latency_ms.............: avg=10.42ms p(50)=8.91ms p(95)=22.94ms p(99)=32.75ms max=64.38ms
+    gateway_requests...............: 14123  4697.338784/s
+
+    HTTP
+    http_req_duration..............: avg=10.42ms p(50)=8.91ms p(95)=22.94ms p(99)=32.75ms max=64.38ms
+      { expected_response:true }...: avg=10.42ms p(50)=8.91ms p(95)=22.94ms p(99)=32.75ms max=64.38ms
+    http_req_failed................: 0.04%  6 out of 14123
+    http_reqs......................: 14123  4697.338784/s
+
+    EXECUTION
+    iteration_duration.............: avg=10.61ms p(50)=9.09ms p(95)=23.11ms p(99)=33ms    max=64.55ms
+    iterations.....................: 14123  4697.338784/s
+    vus............................: 50     min=50         max=50
+    vus_max........................: 50     min=50         max=50
+
+    NETWORK
+    data_received..................: 45 MB  15 MB/s
+    data_sent......................: 4.5 MB 1.5 MB/s
+
+
+
