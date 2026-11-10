@@ -1,0 +1,21 @@
+docs/EXTENSIONS.md
+  s_6d30f4d467a543::t_c60dccf1d68d0c 54
+docs/verification/architecture/native-extension-mechanism/README.md
+  s_6d30f4d467a543::t_8214819b1778c3 40-41
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "3e280212c8ecf95e40724e60cc1ca7172586512c",
+  "prompts": {},
+  "sessions": {
+    "s_6d30f4d467a543": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1c09a-e2db-7762-a873-2372a7cb9970",
+        "model": "gpt-6.1-sol"
+      },
+      "human_author": "leohou0430 <leohou0430@users.noreply.github.com>"
+    }
+  }
+}
