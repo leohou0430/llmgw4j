@@ -6,7 +6,7 @@
 set -uo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-JAR="$ROOT/llmgw-app/target/llmgw-app-0.2.0.jar"
+JAR="${LLMGW_TEST_JAR:-$ROOT/llmgw-app/target/llmgw-app-0.3.0.jar}"
 PORT="${PORT:-8080}"
 MOCK_PORT="${MOCK_PORT:-9090}"
 ENGINES="${1:-webflux vt}"

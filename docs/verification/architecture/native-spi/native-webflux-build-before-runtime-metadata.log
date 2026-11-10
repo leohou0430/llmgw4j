@@ -1,0 +1,1115 @@
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] llmgw4j                                                            [pom]
+[INFO] llmgw-core                                                         [jar]
+[INFO] llmgw-governance                                                   [pom]
+[INFO] llmgw-governance-api                                               [jar]
+[INFO] llmgw-tokenizer                                                    [pom]
+[INFO] llmgw-tokenizer-api                                                [jar]
+[INFO] llmgw-tokenizer-heuristic                                          [jar]
+[INFO] llmgw-governance-default                                           [jar]
+[INFO] llmgw-governance-redis                                             [jar]
+[INFO] llmgw-engine                                                       [pom]
+[INFO] llmgw-engine-api                                                   [jar]
+[INFO] llmgw-provider                                                     [pom]
+[INFO] llmgw-provider-api                                                 [jar]
+[INFO] llmgw-engine-webflux                                               [jar]
+[INFO] llmgw-engine-vt                                                    [jar]
+[INFO] llmgw-provider-http-jdk                                            [jar]
+[INFO] llmgw-provider-openai                                              [jar]
+[INFO] llmgw-provider-openai-sdk                                          [jar]
+[INFO] llmgw-provider-anthropic                                           [jar]
+[INFO] llmgw-tokenizer-jtokkit                                            [jar]
+[INFO] llmgw-app                                                          [jar]
+[INFO] 
+[INFO] -----------------< io.github.leohou0430:llmgw-parent >------------------
+[INFO] Building llmgw4j 0.3.0                                            [1/21]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ llmgw-parent ---
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-parent ---
+[INFO] Skipping Rule Enforcement.
+[INFO] 
+[INFO] ------------------< io.github.leohou0430:llmgw-core >-------------------
+[INFO] Building llmgw-core 0.3.0                                         [2/21]
+[INFO]   from llmgw-core/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ llmgw-core ---
+[INFO] Deleting /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-core/target
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-core ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ llmgw-core ---
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ llmgw-core ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 51 source files with javac [debug parameters release 25] to target/classes
+[INFO] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/protocol/ChunkParser.java: 某些输入文件使用或覆盖了已过时的 API。
+[INFO] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/protocol/ChunkParser.java: 有关详细信息, 请使用 -Xlint:deprecation 重新编译。
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ llmgw-core ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-core/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ llmgw-core ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 7 source files with javac [debug parameters release 25] to target/test-classes
+[INFO] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/protocol/ProtocolDiscoveryTest.java: /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/protocol/ProtocolDiscoveryTest.java使用或覆盖了已过时的 API。
+[INFO] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/protocol/ProtocolDiscoveryTest.java: 有关详细信息, 请使用 -Xlint:deprecation 重新编译。
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ llmgw-core ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.1:jar (default-jar) @ llmgw-core ---
+[INFO] Building jar: /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-core/target/llmgw-core-0.3.0.jar
+[INFO] 
+[INFO] ---------------< io.github.leohou0430:llmgw-governance >----------------
+[INFO] Building llmgw-governance 0.3.0                                   [3/21]
+[INFO]   from llmgw-governance/pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ llmgw-governance ---
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-governance ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] -------------< io.github.leohou0430:llmgw-governance-api >--------------
+[INFO] Building llmgw-governance-api 0.3.0                               [4/21]
+[INFO]   from llmgw-governance/llmgw-governance-api/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ llmgw-governance-api ---
+[INFO] Deleting /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-governance/llmgw-governance-api/target
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-governance-api ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ llmgw-governance-api ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-governance/llmgw-governance-api/src/main/resources
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-governance/llmgw-governance-api/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ llmgw-governance-api ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 4 source files with javac [debug parameters release 25] to target/classes
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ llmgw-governance-api ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-governance/llmgw-governance-api/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ llmgw-governance-api ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 1 source file with javac [debug parameters release 25] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ llmgw-governance-api ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.1:jar (default-jar) @ llmgw-governance-api ---
+[INFO] Building jar: /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-governance/llmgw-governance-api/target/llmgw-governance-api-0.3.0.jar
+[INFO] 
+[INFO] ----------------< io.github.leohou0430:llmgw-tokenizer >----------------
+[INFO] Building llmgw-tokenizer 0.3.0                                    [5/21]
+[INFO]   from llmgw-tokenizer/pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ llmgw-tokenizer ---
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-tokenizer ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --------------< io.github.leohou0430:llmgw-tokenizer-api >--------------
+[INFO] Building llmgw-tokenizer-api 0.3.0                                [6/21]
+[INFO]   from llmgw-tokenizer/llmgw-tokenizer-api/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ llmgw-tokenizer-api ---
+[INFO] Deleting /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-tokenizer/llmgw-tokenizer-api/target
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-tokenizer-api ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ llmgw-tokenizer-api ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-tokenizer/llmgw-tokenizer-api/src/main/resources
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-tokenizer/llmgw-tokenizer-api/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ llmgw-tokenizer-api ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 1 source file with javac [debug parameters release 25] to target/classes
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ llmgw-tokenizer-api ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-tokenizer/llmgw-tokenizer-api/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ llmgw-tokenizer-api ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ llmgw-tokenizer-api ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.1:jar (default-jar) @ llmgw-tokenizer-api ---
+[INFO] Building jar: /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-tokenizer/llmgw-tokenizer-api/target/llmgw-tokenizer-api-0.3.0.jar
+[INFO] 
+[INFO] -----------< io.github.leohou0430:llmgw-tokenizer-heuristic >-----------
+[INFO] Building llmgw-tokenizer-heuristic 0.3.0                          [7/21]
+[INFO]   from llmgw-tokenizer/llmgw-tokenizer-heuristic/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ llmgw-tokenizer-heuristic ---
+[INFO] Deleting /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-tokenizer/llmgw-tokenizer-heuristic/target
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-tokenizer-heuristic ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ llmgw-tokenizer-heuristic ---
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ llmgw-tokenizer-heuristic ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 1 source file with javac [debug parameters release 25] to target/classes
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ llmgw-tokenizer-heuristic ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-tokenizer/llmgw-tokenizer-heuristic/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ llmgw-tokenizer-heuristic ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ llmgw-tokenizer-heuristic ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.1:jar (default-jar) @ llmgw-tokenizer-heuristic ---
+[INFO] Building jar: /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-tokenizer/llmgw-tokenizer-heuristic/target/llmgw-tokenizer-heuristic-0.3.0.jar
+[INFO] 
+[INFO] -----------< io.github.leohou0430:llmgw-governance-default >------------
+[INFO] Building llmgw-governance-default 0.3.0                           [8/21]
+[INFO]   from llmgw-governance/llmgw-governance-default/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ llmgw-governance-default ---
+[INFO] Deleting /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-governance/llmgw-governance-default/target
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-governance-default ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ llmgw-governance-default ---
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ llmgw-governance-default ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 23 source files with javac [debug parameters release 25] to target/classes
+[INFO] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/DefaultGovernanceChain.java: 某些输入文件使用或覆盖了已过时的 API。
+[INFO] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/DefaultGovernanceChain.java: 有关详细信息, 请使用 -Xlint:deprecation 重新编译。
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ llmgw-governance-default ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-governance/llmgw-governance-default/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ llmgw-governance-default ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 9 source files with javac [debug parameters release 25] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ llmgw-governance-default ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.1:jar (default-jar) @ llmgw-governance-default ---
+[INFO] Building jar: /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-governance/llmgw-governance-default/target/llmgw-governance-default-0.3.0.jar
+[INFO] 
+[INFO] ------------< io.github.leohou0430:llmgw-governance-redis >-------------
+[INFO] Building llmgw-governance-redis 0.3.0                             [9/21]
+[INFO]   from llmgw-governance/llmgw-governance-redis/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ llmgw-governance-redis ---
+[INFO] Deleting /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-governance/llmgw-governance-redis/target
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-governance-redis ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ llmgw-governance-redis ---
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ llmgw-governance-redis ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 8 source files with javac [debug parameters release 25] to target/classes
+[INFO] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-governance/llmgw-governance-redis/src/main/java/io/github/leohou0430/llmgw/governance/redis/RedisApiKeyRegistry.java: /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-governance/llmgw-governance-redis/src/main/java/io/github/leohou0430/llmgw/governance/redis/RedisApiKeyRegistry.java使用或覆盖了已过时的 API。
+[INFO] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-governance/llmgw-governance-redis/src/main/java/io/github/leohou0430/llmgw/governance/redis/RedisApiKeyRegistry.java: 有关详细信息, 请使用 -Xlint:deprecation 重新编译。
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ llmgw-governance-redis ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-governance/llmgw-governance-redis/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ llmgw-governance-redis ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 1 source file with javac [debug parameters release 25] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ llmgw-governance-redis ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.1:jar (default-jar) @ llmgw-governance-redis ---
+[INFO] Building jar: /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-governance/llmgw-governance-redis/target/llmgw-governance-redis-0.3.0.jar
+[INFO] 
+[INFO] -----------------< io.github.leohou0430:llmgw-engine >------------------
+[INFO] Building llmgw-engine 0.3.0                                      [10/21]
+[INFO]   from llmgw-engine/pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ llmgw-engine ---
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-engine ---
+[INFO] Skipping Rule Enforcement.
+[INFO] 
+[INFO] ---------------< io.github.leohou0430:llmgw-engine-api >----------------
+[INFO] Building llmgw-engine-api 0.3.0                                  [11/21]
+[INFO]   from llmgw-engine/llmgw-engine-api/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ llmgw-engine-api ---
+[INFO] Deleting /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-api/target
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-engine-api ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ llmgw-engine-api ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-api/src/main/resources
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-api/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ llmgw-engine-api ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 9 source files with javac [debug parameters release 25] to target/classes
+[INFO] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-api/src/main/java/io/github/leohou0430/llmgw/engine/EngineRoutes.java: /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-api/src/main/java/io/github/leohou0430/llmgw/engine/EngineRoutes.java使用或覆盖了已过时的 API。
+[INFO] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-api/src/main/java/io/github/leohou0430/llmgw/engine/EngineRoutes.java: 有关详细信息, 请使用 -Xlint:deprecation 重新编译。
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ llmgw-engine-api ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-api/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ llmgw-engine-api ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 2 source files with javac [debug parameters release 25] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ llmgw-engine-api ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.1:jar (default-jar) @ llmgw-engine-api ---
+[INFO] Building jar: /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-api/target/llmgw-engine-api-0.3.0.jar
+[INFO] 
+[INFO] ----------------< io.github.leohou0430:llmgw-provider >-----------------
+[INFO] Building llmgw-provider 0.3.0                                    [12/21]
+[INFO]   from llmgw-provider/pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ llmgw-provider ---
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-provider ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --------------< io.github.leohou0430:llmgw-provider-api >---------------
+[INFO] Building llmgw-provider-api 0.3.0                                [13/21]
+[INFO]   from llmgw-provider/llmgw-provider-api/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ llmgw-provider-api ---
+[INFO] Deleting /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-provider/llmgw-provider-api/target
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-provider-api ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ llmgw-provider-api ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-provider/llmgw-provider-api/src/main/resources
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-provider/llmgw-provider-api/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ llmgw-provider-api ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 3 source files with javac [debug parameters release 25] to target/classes
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ llmgw-provider-api ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-provider/llmgw-provider-api/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ llmgw-provider-api ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ llmgw-provider-api ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.1:jar (default-jar) @ llmgw-provider-api ---
+[INFO] Building jar: /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-provider/llmgw-provider-api/target/llmgw-provider-api-0.3.0.jar
+[INFO] 
+[INFO] -------------< io.github.leohou0430:llmgw-engine-webflux >--------------
+[INFO] Building llmgw-engine-webflux 0.3.0                              [14/21]
+[INFO]   from llmgw-engine/llmgw-engine-webflux/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ llmgw-engine-webflux ---
+[INFO] Deleting /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-webflux/target
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-engine-webflux ---
+[INFO] Skipping Rule Enforcement.
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ llmgw-engine-webflux ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-webflux/src/main/resources
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-webflux/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ llmgw-engine-webflux ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 2 source files with javac [debug parameters release 25] to target/classes
+[INFO] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-webflux/src/main/java/io/github/leohou0430/llmgw/engine/webflux/WebfluxGatewayController.java: /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-webflux/src/main/java/io/github/leohou0430/llmgw/engine/webflux/WebfluxGatewayController.java使用或覆盖了已过时的 API。
+[INFO] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-webflux/src/main/java/io/github/leohou0430/llmgw/engine/webflux/WebfluxGatewayController.java: 有关详细信息, 请使用 -Xlint:deprecation 重新编译。
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ llmgw-engine-webflux ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-webflux/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ llmgw-engine-webflux ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ llmgw-engine-webflux ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.1:jar (default-jar) @ llmgw-engine-webflux ---
+[INFO] Building jar: /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-webflux/target/llmgw-engine-webflux-0.3.0.jar
+[INFO] 
+[INFO] ----------------< io.github.leohou0430:llmgw-engine-vt >----------------
+[INFO] Building llmgw-engine-vt 0.3.0                                   [15/21]
+[INFO]   from llmgw-engine/llmgw-engine-vt/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ llmgw-engine-vt ---
+[INFO] Deleting /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-vt/target
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-engine-vt ---
+[INFO] Skipping Rule Enforcement.
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ llmgw-engine-vt ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-vt/src/main/resources
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-vt/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ llmgw-engine-vt ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 2 source files with javac [debug parameters release 25] to target/classes
+[INFO] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-vt/src/main/java/io/github/leohou0430/llmgw/engine/vt/VirtualThreadGatewayController.java: /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-vt/src/main/java/io/github/leohou0430/llmgw/engine/vt/VirtualThreadGatewayController.java使用或覆盖了已过时的 API。
+[INFO] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-vt/src/main/java/io/github/leohou0430/llmgw/engine/vt/VirtualThreadGatewayController.java: 有关详细信息, 请使用 -Xlint:deprecation 重新编译。
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ llmgw-engine-vt ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-vt/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ llmgw-engine-vt ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ llmgw-engine-vt ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.1:jar (default-jar) @ llmgw-engine-vt ---
+[INFO] Building jar: /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-vt/target/llmgw-engine-vt-0.3.0.jar
+[INFO] 
+[INFO] ------------< io.github.leohou0430:llmgw-provider-http-jdk >------------
+[INFO] Building llmgw-provider-http-jdk 0.3.0                           [16/21]
+[INFO]   from llmgw-provider/llmgw-provider-http-jdk/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ llmgw-provider-http-jdk ---
+[INFO] Deleting /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-provider/llmgw-provider-http-jdk/target
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-provider-http-jdk ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ llmgw-provider-http-jdk ---
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ llmgw-provider-http-jdk ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 2 source files with javac [debug parameters release 25] to target/classes
+[INFO] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-provider/llmgw-provider-http-jdk/src/main/java/io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream.java: /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-provider/llmgw-provider-http-jdk/src/main/java/io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream.java使用或覆盖了已过时的 API。
+[INFO] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-provider/llmgw-provider-http-jdk/src/main/java/io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream.java: 有关详细信息, 请使用 -Xlint:deprecation 重新编译。
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ llmgw-provider-http-jdk ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-provider/llmgw-provider-http-jdk/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ llmgw-provider-http-jdk ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 3 source files with javac [debug parameters release 25] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ llmgw-provider-http-jdk ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.1:jar (default-jar) @ llmgw-provider-http-jdk ---
+[INFO] Building jar: /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-provider/llmgw-provider-http-jdk/target/llmgw-provider-http-jdk-0.3.0.jar
+[INFO] 
+[INFO] -------------< io.github.leohou0430:llmgw-provider-openai >-------------
+[INFO] Building llmgw-provider-openai 0.3.0                             [17/21]
+[INFO]   from llmgw-provider/llmgw-provider-openai/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ llmgw-provider-openai ---
+[INFO] Deleting /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-provider/llmgw-provider-openai/target
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-provider-openai ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ llmgw-provider-openai ---
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ llmgw-provider-openai ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 1 source file with javac [debug parameters release 25] to target/classes
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ llmgw-provider-openai ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-provider/llmgw-provider-openai/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ llmgw-provider-openai ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ llmgw-provider-openai ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.1:jar (default-jar) @ llmgw-provider-openai ---
+[INFO] Building jar: /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-provider/llmgw-provider-openai/target/llmgw-provider-openai-0.3.0.jar
+[INFO] 
+[INFO] -----------< io.github.leohou0430:llmgw-provider-openai-sdk >-----------
+[INFO] Building llmgw-provider-openai-sdk 0.3.0                         [18/21]
+[INFO]   from llmgw-provider/llmgw-provider-openai-sdk/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ llmgw-provider-openai-sdk ---
+[INFO] Deleting /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-provider/llmgw-provider-openai-sdk/target
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-provider-openai-sdk ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ llmgw-provider-openai-sdk ---
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ llmgw-provider-openai-sdk ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 1 source file with javac [debug parameters release 25] to target/classes
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ llmgw-provider-openai-sdk ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-provider/llmgw-provider-openai-sdk/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ llmgw-provider-openai-sdk ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 1 source file with javac [debug parameters release 25] to target/test-classes
+[INFO] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-provider/llmgw-provider-openai-sdk/src/test/java/io/github/leohou0430/llmgw/provider/openai/sdk/OpenAiVerifierDiscoveryTest.java: /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-provider/llmgw-provider-openai-sdk/src/test/java/io/github/leohou0430/llmgw/provider/openai/sdk/OpenAiVerifierDiscoveryTest.java使用或覆盖了已过时的 API。
+[INFO] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-provider/llmgw-provider-openai-sdk/src/test/java/io/github/leohou0430/llmgw/provider/openai/sdk/OpenAiVerifierDiscoveryTest.java: 有关详细信息, 请使用 -Xlint:deprecation 重新编译。
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ llmgw-provider-openai-sdk ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.1:jar (default-jar) @ llmgw-provider-openai-sdk ---
+[INFO] Building jar: /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-provider/llmgw-provider-openai-sdk/target/llmgw-provider-openai-sdk-0.3.0.jar
+[INFO] 
+[INFO] -----------< io.github.leohou0430:llmgw-provider-anthropic >------------
+[INFO] Building llmgw-provider-anthropic 0.3.0                          [19/21]
+[INFO]   from llmgw-provider/llmgw-provider-anthropic/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ llmgw-provider-anthropic ---
+[INFO] Deleting /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-provider/llmgw-provider-anthropic/target
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-provider-anthropic ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ llmgw-provider-anthropic ---
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ llmgw-provider-anthropic ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 1 source file with javac [debug parameters release 25] to target/classes
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ llmgw-provider-anthropic ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-provider/llmgw-provider-anthropic/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ llmgw-provider-anthropic ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 1 source file with javac [debug parameters release 25] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ llmgw-provider-anthropic ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.1:jar (default-jar) @ llmgw-provider-anthropic ---
+[INFO] Building jar: /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-provider/llmgw-provider-anthropic/target/llmgw-provider-anthropic-0.3.0.jar
+[INFO] 
+[INFO] ------------< io.github.leohou0430:llmgw-tokenizer-jtokkit >------------
+[INFO] Building llmgw-tokenizer-jtokkit 0.3.0                           [20/21]
+[INFO]   from llmgw-tokenizer/llmgw-tokenizer-jtokkit/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ llmgw-tokenizer-jtokkit ---
+[INFO] Deleting /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-tokenizer/llmgw-tokenizer-jtokkit/target
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-tokenizer-jtokkit ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ llmgw-tokenizer-jtokkit ---
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ llmgw-tokenizer-jtokkit ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 1 source file with javac [debug parameters release 25] to target/classes
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ llmgw-tokenizer-jtokkit ---
+[INFO] skip non existing resourceDirectory /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-tokenizer/llmgw-tokenizer-jtokkit/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ llmgw-tokenizer-jtokkit ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 1 source file with javac [debug parameters release 25] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ llmgw-tokenizer-jtokkit ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.1:jar (default-jar) @ llmgw-tokenizer-jtokkit ---
+[INFO] Building jar: /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-tokenizer/llmgw-tokenizer-jtokkit/target/llmgw-tokenizer-jtokkit-0.3.0.jar
+[INFO] 
+[INFO] -------------------< io.github.leohou0430:llmgw-app >-------------------
+[INFO] Building llmgw-app 0.3.0                                         [21/21]
+[INFO]   from llmgw-app/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ llmgw-app ---
+[INFO] Deleting /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-app ---
+[INFO] Skipping Rule Enforcement.
+[INFO] 
+[INFO] --- native:1.1.18:add-reachability-metadata (add-reachability-metadata) @ llmgw-app ---
+[INFO] Downloaded GraalVM reachability metadata repository from file:/Users/leo/.m2/repository/org/graalvm/buildtools/graalvm-reachability-metadata/1.1.18/graalvm-reachability-metadata-1.1.18-repository.zip
+[INFO] Using GraalVM reachability metadata repository version 1.0.21
+[INFO] [graalvm reachability metadata repository for com.fasterxml.jackson.core:jackson-core:2.21.7]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for com.fasterxml.jackson.core:jackson-core:2.21.7]: Configuration directory is com.fasterxml.jackson.core/jackson-core/2.6.0
+[INFO] [graalvm reachability metadata repository for com.fasterxml.jackson.core:jackson-databind:2.21.7]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for com.fasterxml.jackson.core:jackson-databind:2.21.7]: Configuration directory is com.fasterxml.jackson.core/jackson-databind/2.15.2
+[INFO] [graalvm reachability metadata repository for io.swagger.core.v3:swagger-annotations:2.2.31]: Configuration directory is io.swagger.core.v3/swagger-annotations/2.2.22
+[INFO] [graalvm reachability metadata repository for org.jetbrains.kotlin:kotlin-reflect:2.3.21]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.jetbrains.kotlin:kotlin-reflect:2.3.21]: Configuration directory is org.jetbrains.kotlin/kotlin-reflect/2.5.0-Beta1
+[INFO] [graalvm reachability metadata repository for com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.21.7]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.21.7]: Configuration directory is com.fasterxml.jackson.datatype/jackson-datatype-jdk8/2.13.5
+[INFO] [graalvm reachability metadata repository for com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.21.7]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.21.7]: Configuration directory is com.fasterxml.jackson.datatype/jackson-datatype-jsr310/2.22.0
+[INFO] [graalvm reachability metadata repository for com.fasterxml.jackson.module:jackson-module-kotlin:2.21.7]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for com.fasterxml.jackson.module:jackson-module-kotlin:2.21.7]: Configuration directory is com.fasterxml.jackson.module/jackson-module-kotlin/2.17.2
+[INFO] [graalvm reachability metadata repository for com.github.victools:jsonschema-generator:4.38.0]: Configuration directory is com.github.victools/jsonschema-generator/4.38.0
+[INFO] [graalvm reachability metadata repository for com.fasterxml:classmate:1.7.3]: Configuration directory is com.fasterxml/classmate/1.5.1
+[INFO] [graalvm reachability metadata repository for com.github.victools:jsonschema-module-jackson:4.38.0]: Configuration directory is com.github.victools/jsonschema-module-jackson/4.38.0
+[INFO] [graalvm reachability metadata repository for com.github.victools:jsonschema-module-swagger-2:4.38.0]: Configuration directory is com.github.victools/jsonschema-module-swagger-2/4.38.0
+[INFO] [graalvm reachability metadata repository for com.squareup.okhttp3:okhttp:4.12.0]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for com.squareup.okhttp3:okhttp:4.12.0]: Configuration directory is com.squareup.okhttp3/okhttp/3.9.0
+[INFO] [graalvm reachability metadata repository for com.squareup.okio:okio:3.6.0]: Configuration directory is com.squareup.okio/okio/1.17.2
+[INFO] [graalvm reachability metadata repository for com.squareup.okio:okio-jvm:3.6.0]: Configuration directory is com.squareup.okio/okio-jvm/3.6.0
+[INFO] [graalvm reachability metadata repository for org.jetbrains.kotlin:kotlin-stdlib-common:1.9.10]: Configuration directory is org.jetbrains.kotlin/kotlin-stdlib-common/1.5.31
+[INFO] [graalvm reachability metadata repository for org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.3.21]: Configuration directory is org.jetbrains.kotlin/kotlin-stdlib-jdk8/1.5.31
+[INFO] [graalvm reachability metadata repository for org.jetbrains.kotlin:kotlin-stdlib:2.3.21]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.jetbrains.kotlin:kotlin-stdlib:2.3.21]: Configuration directory is org.jetbrains.kotlin/kotlin-stdlib/2.5.0-Beta1
+[INFO] [graalvm reachability metadata repository for org.jetbrains:annotations:13.0]: Configuration directory is org.jetbrains/annotations/13.0
+[INFO] [graalvm reachability metadata repository for org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.3.21]: Configuration directory is org.jetbrains.kotlin/kotlin-stdlib-jdk7/1.5.31
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-configuration-processor:4.1.2]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-configuration-processor:4.1.2]: Configuration directory is org.springframework.boot/spring-boot-configuration-processor/2.7.18
+[INFO] [graalvm reachability metadata repository for commons-io:commons-io:2.19.0]: Configuration directory is commons-io/commons-io/2.17.0
+[INFO] [graalvm reachability metadata repository for javax.annotation:javax.annotation-api:1.3.2]: Configuration directory is javax.annotation/javax.annotation-api/1.2
+[INFO] [graalvm reachability metadata repository for tools.jackson.core:jackson-databind:3.1.7]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for tools.jackson.core:jackson-databind:3.1.7]: Configuration directory is tools.jackson.core/jackson-databind/3.0.0
+[INFO] [graalvm reachability metadata repository for com.fasterxml.jackson.core:jackson-annotations:2.21]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for com.fasterxml.jackson.core:jackson-annotations:2.21]: Configuration directory is com.fasterxml.jackson.core/jackson-annotations/2.8.0
+[INFO] [graalvm reachability metadata repository for tools.jackson.core:jackson-core:3.1.7]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for tools.jackson.core:jackson-core:3.1.7]: Configuration directory is tools.jackson.core/jackson-core/3.0.0
+[INFO] [graalvm reachability metadata repository for org.slf4j:slf4j-api:2.0.20]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.slf4j:slf4j-api:2.0.20]: Configuration directory is org.slf4j/slf4j-api/1.7.36
+[INFO] [graalvm reachability metadata repository for com.github.ben-manes.caffeine:caffeine:3.3.1]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for com.github.ben-manes.caffeine:caffeine:3.3.1]: Configuration directory is com.github.ben-manes.caffeine/caffeine/3.1.8
+[INFO] [graalvm reachability metadata repository for com.google.errorprone:error_prone_annotations:2.50.0]: Configuration directory is com.google.errorprone/error_prone_annotations/2.46.0
+[INFO] [graalvm reachability metadata repository for io.micrometer:micrometer-commons:1.17.2]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for io.micrometer:micrometer-commons:1.17.2]: Configuration directory is io.micrometer/micrometer-commons/1.16.0
+[INFO] [graalvm reachability metadata repository for org.hdrhistogram:HdrHistogram:2.2.2]: Configuration directory is org.hdrhistogram/HdrHistogram/2.1.12
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-starter-webflux:4.1.2]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-starter-webflux:4.1.2]: Latest version not found!
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-starter-webflux:4.1.2]: missing.
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-starter:4.1.2]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-starter:4.1.2]: Latest version not found!
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-starter:4.1.2]: missing.
+[INFO] [graalvm reachability metadata repository for ch.qos.logback:logback-classic:1.5.38]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for ch.qos.logback:logback-classic:1.5.38]: Configuration directory is ch.qos.logback/logback-classic/1.6.2
+[INFO] [graalvm reachability metadata repository for ch.qos.logback:logback-core:1.5.38]: Configuration directory is ch.qos.logback/logback-core/1.5.33
+[INFO] [graalvm reachability metadata repository for org.slf4j:jul-to-slf4j:2.0.20]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.slf4j:jul-to-slf4j:2.0.20]: Configuration directory is org.slf4j/jul-to-slf4j/1.7.30
+[INFO] [graalvm reachability metadata repository for jakarta.annotation:jakarta.annotation-api:3.0.0]: Configuration directory is jakarta.annotation/jakarta.annotation-api/3.0.0
+[INFO] [graalvm reachability metadata repository for org.yaml:snakeyaml:2.6]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.yaml:snakeyaml:2.6]: Configuration directory is org.yaml/snakeyaml/2.1
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-starter-jackson:4.1.2]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-starter-jackson:4.1.2]: Latest version not found!
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-starter-jackson:4.1.2]: missing.
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-starter-reactor-netty:4.1.2]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-starter-reactor-netty:4.1.2]: Latest version not found!
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-starter-reactor-netty:4.1.2]: missing.
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-reactor-netty:4.1.2]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-reactor-netty:4.1.2]: Configuration directory is org.springframework.boot/spring-boot-reactor-netty/4.2.0-M1
+[INFO] [graalvm reachability metadata repository for io.projectreactor.netty:reactor-netty-http:1.3.8]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for io.projectreactor.netty:reactor-netty-http:1.3.8]: Configuration directory is io.projectreactor.netty/reactor-netty-http/1.3.0
+[INFO] [graalvm reachability metadata repository for io.netty:netty-codec-http:4.2.19.Final]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for io.netty:netty-codec-http:4.2.19.Final]: Configuration directory is io.netty/netty-codec-http/4.1.80.Final
+[INFO] [graalvm reachability metadata repository for io.netty:netty-buffer:4.2.19.Final]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for io.netty:netty-buffer:4.2.19.Final]: Configuration directory is io.netty/netty-buffer/4.1.80.Final
+[INFO] [graalvm reachability metadata repository for io.netty:netty-transport:4.2.19.Final]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for io.netty:netty-transport:4.2.19.Final]: Configuration directory is io.netty/netty-transport/5.0.0.Alpha2
+[INFO] [graalvm reachability metadata repository for io.netty:netty-handler:4.2.19.Final]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for io.netty:netty-handler:4.2.19.Final]: Configuration directory is io.netty/netty-handler/4.1.80.Final
+[INFO] [graalvm reachability metadata repository for io.netty:netty-codec-http2:4.2.19.Final]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for io.netty:netty-codec-http2:4.2.19.Final]: Configuration directory is io.netty/netty-codec-http2/4.1.80.Final
+[INFO] [graalvm reachability metadata repository for io.netty:netty-resolver-dns:4.2.19.Final]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for io.netty:netty-resolver-dns:4.2.19.Final]: Configuration directory is io.netty/netty-resolver-dns/4.1.80.Final
+[INFO] [graalvm reachability metadata repository for io.netty:netty-resolver:4.2.19.Final]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for io.netty:netty-resolver:4.2.19.Final]: Configuration directory is io.netty/netty-resolver/5.0.0.Alpha2
+[INFO] [graalvm reachability metadata repository for io.netty:netty-codec-dns:4.2.19.Final]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for io.netty:netty-codec-dns:4.2.19.Final]: Configuration directory is io.netty/netty-codec-dns/4.1.79.Final
+[INFO] [graalvm reachability metadata repository for io.netty:netty-resolver-dns-native-macos:4.2.19.Final]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for io.netty:netty-resolver-dns-native-macos:4.2.19.Final]: Latest version not found!
+[INFO] [graalvm reachability metadata repository for io.netty:netty-resolver-dns-native-macos:4.2.19.Final]: missing.
+[INFO] [graalvm reachability metadata repository for io.netty:netty-resolver-dns-classes-macos:4.2.19.Final]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for io.netty:netty-resolver-dns-classes-macos:4.2.19.Final]: Configuration directory is io.netty/netty-resolver-dns-classes-macos/4.1.74.Final
+[INFO] [graalvm reachability metadata repository for io.netty:netty-transport-native-epoll:4.2.19.Final]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for io.netty:netty-transport-native-epoll:4.2.19.Final]: Configuration directory is io.netty/netty-transport-native-epoll/4.1.42.Final
+[INFO] [graalvm reachability metadata repository for io.netty:netty-transport-native-unix-common:4.2.19.Final]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for io.netty:netty-transport-native-unix-common:4.2.19.Final]: Configuration directory is io.netty/netty-transport-native-unix-common/4.1.79.Final
+[INFO] [graalvm reachability metadata repository for io.netty:netty-transport-classes-epoll:4.2.19.Final]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for io.netty:netty-transport-classes-epoll:4.2.19.Final]: Configuration directory is io.netty/netty-transport-classes-epoll/4.1.99.Final
+[INFO] [graalvm reachability metadata repository for io.projectreactor.netty:reactor-netty-core:1.3.8]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for io.projectreactor.netty:reactor-netty-core:1.3.8]: Configuration directory is io.projectreactor.netty/reactor-netty-core/1.1.0
+[INFO] [graalvm reachability metadata repository for io.netty:netty-handler-proxy:4.2.19.Final]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for io.netty:netty-handler-proxy:4.2.19.Final]: Configuration directory is io.netty/netty-handler-proxy/4.2.1.Final
+[INFO] [graalvm reachability metadata repository for io.netty:netty-codec-socks:4.2.19.Final]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for io.netty:netty-codec-socks:4.2.19.Final]: Configuration directory is io.netty/netty-codec-socks/4.2.1.Final
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-netty:4.1.2]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-netty:4.1.2]: Configuration directory is org.springframework.boot/spring-boot-netty/4.0.2
+[INFO] [graalvm reachability metadata repository for io.netty:netty-common:4.2.19.Final]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for io.netty:netty-common:4.2.19.Final]: Configuration directory is io.netty/netty-common/5.0.0.Alpha2
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-reactor:4.1.2]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-reactor:4.1.2]: Configuration directory is org.springframework.boot/spring-boot-reactor/4.0.2
+[INFO] [graalvm reachability metadata repository for org.springframework:spring-core:7.0.10]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.springframework:spring-core:7.0.10]: Configuration directory is org.springframework/spring-core/5.3.15
+[INFO] [graalvm reachability metadata repository for commons-logging:commons-logging:1.3.6]: Configuration directory is commons-logging/commons-logging/1.2
+[INFO] [graalvm reachability metadata repository for org.springframework:spring-context:7.0.10]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.springframework:spring-context:7.0.10]: Configuration directory is org.springframework/spring-context/6.0.2
+[INFO] [graalvm reachability metadata repository for io.projectreactor:reactor-core:3.8.8]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for io.projectreactor:reactor-core:3.8.8]: Configuration directory is io.projectreactor/reactor-core/3.5.1
+[INFO] [graalvm reachability metadata repository for org.reactivestreams:reactive-streams:1.0.4]: Configuration directory is org.reactivestreams/reactive-streams/1.0.3
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-webflux:4.1.2]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-webflux:4.1.2]: Configuration directory is org.springframework.boot/spring-boot-webflux/4.0.2
+[INFO] [graalvm reachability metadata repository for org.springframework:spring-webflux:7.0.10]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.springframework:spring-webflux:7.0.10]: Configuration directory is org.springframework/spring-webflux/6.1.0
+[INFO] [graalvm reachability metadata repository for org.springframework:spring-beans:7.0.10]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.springframework:spring-beans:7.0.10]: Configuration directory is org.springframework/spring-beans/5.3.15
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-web-server:4.1.2]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-web-server:4.1.2]: Configuration directory is org.springframework.boot/spring-boot-web-server/4.0.2
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-starter-web:4.1.2]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-starter-web:4.1.2]: Latest version not found!
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-starter-web:4.1.2]: missing.
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-starter-tomcat:4.1.2]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-starter-tomcat:4.1.2]: Latest version not found!
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-starter-tomcat:4.1.2]: missing.
+[INFO] [graalvm reachability metadata repository for org.apache.tomcat.embed:tomcat-embed-core:11.0.27]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.apache.tomcat.embed:tomcat-embed-core:11.0.27]: Configuration directory is org.apache.tomcat.embed/tomcat-embed-core/11.0.23
+[INFO] [graalvm reachability metadata repository for org.apache.tomcat.embed:tomcat-embed-el:11.0.27]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.apache.tomcat.embed:tomcat-embed-el:11.0.27]: Configuration directory is org.apache.tomcat.embed/tomcat-embed-el/10.1.0
+[INFO] [graalvm reachability metadata repository for org.apache.tomcat.embed:tomcat-embed-websocket:11.0.27]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.apache.tomcat.embed:tomcat-embed-websocket:11.0.27]: Configuration directory is org.apache.tomcat.embed/tomcat-embed-websocket/10.1.8
+[INFO] [graalvm reachability metadata repository for org.springframework:spring-web:7.0.10]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.springframework:spring-web:7.0.10]: Configuration directory is org.springframework/spring-web/6.0.0
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-servlet:4.1.2]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-servlet:4.1.2]: Configuration directory is org.springframework.boot/spring-boot-servlet/4.0.6
+[INFO] [graalvm reachability metadata repository for org.springframework:spring-aop:7.0.10]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.springframework:spring-aop:7.0.10]: Configuration directory is org.springframework/spring-aop/6.1.7
+[INFO] [graalvm reachability metadata repository for org.springframework:spring-expression:7.0.10]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.springframework:spring-expression:7.0.10]: Configuration directory is org.springframework/spring-expression/6.2.7
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-starter-actuator:4.1.2]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-starter-actuator:4.1.2]: Latest version not found!
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-starter-actuator:4.1.2]: missing.
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-starter-micrometer-metrics:4.1.2]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-starter-micrometer-metrics:4.1.2]: Latest version not found!
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-starter-micrometer-metrics:4.1.2]: missing.
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-micrometer-metrics:4.1.2]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-micrometer-metrics:4.1.2]: Configuration directory is org.springframework.boot/spring-boot-micrometer-metrics/4.0.6
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-actuator-autoconfigure:4.1.2]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-actuator-autoconfigure:4.1.2]: Configuration directory is org.springframework.boot/spring-boot-actuator-autoconfigure/4.0.0
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-actuator:4.1.2]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-actuator:4.1.2]: Configuration directory is org.springframework.boot/spring-boot-actuator/2.6.3
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-health:4.1.2]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-health:4.1.2]: Configuration directory is org.springframework.boot/spring-boot-health/4.2.0-M2
+[INFO] [graalvm reachability metadata repository for io.micrometer:micrometer-observation:1.17.2]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for io.micrometer:micrometer-observation:1.17.2]: Configuration directory is io.micrometer/micrometer-observation/1.18.0-M1
+[INFO] [graalvm reachability metadata repository for io.micrometer:micrometer-jakarta9:1.17.2]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for io.micrometer:micrometer-jakarta9:1.17.2]: Configuration directory is io.micrometer/micrometer-jakarta9/1.16.5
+[INFO] [graalvm reachability metadata repository for io.micrometer:micrometer-registry-prometheus:1.17.2]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for io.micrometer:micrometer-registry-prometheus:1.17.2]: Configuration directory is io.micrometer/micrometer-registry-prometheus/1.16.5
+[INFO] [graalvm reachability metadata repository for org.jspecify:jspecify:1.0.1]: Configuration directory is org.jspecify/jspecify/1.0.0
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ llmgw-app ---
+[INFO] Copying 4 resources from src/main/resources to target/classes
+[INFO] Copying 3 resources from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ llmgw-app ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 8 source files with javac [debug parameters release 25] to target/classes
+[WARNING] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/GatewayRuntimeHints.java:[84,43] org.springframework.aot.hint.MemberCategory 中的 INTROSPECT_PUBLIC_METHODS 已过时, 且标记为待删除
+[INFO] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/AdminController.java: 某些输入文件使用或覆盖了已过时的 API。
+[INFO] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/AdminController.java: 有关详细信息, 请使用 -Xlint:deprecation 重新编译。
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ llmgw-app ---
+[INFO] Copying 1 resource from src/test/resources to target/test-classes
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ llmgw-app ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 7 source files with javac [debug parameters release 25] to target/test-classes
+[INFO] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/ProviderDiscoveryTest.java: 某些输入文件使用或覆盖了已过时的 API。
+[INFO] /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/ProviderDiscoveryTest.java: 有关详细信息, 请使用 -Xlint:deprecation 重新编译。
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ llmgw-app ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- spring-boot:4.1.2:process-aot (process-aot) @ llmgw-app ---
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.1.2)
+
+2026-11-10T15:26:47.182+08:00  INFO 42930 --- [llmgw] [           main] i.g.l.llmgw.app.LlmGatewayApplication    : Starting LlmGatewayApplication using Java 25 with PID 42930 (/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/classes started by leo in /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app)
+2026-11-10T15:26:47.186+08:00  INFO 42930 --- [llmgw] [           main] i.g.l.llmgw.app.LlmGatewayApplication    : The following 1 profile is active: "webflux"
+[INFO] 
+[INFO] --- jar:3.5.1:jar (default-jar) @ llmgw-app ---
+[INFO] Building jar: /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/llmgw-app-0.3.0.jar
+[INFO] 
+[INFO] --- spring-boot:4.1.2:repackage (repackage) @ llmgw-app ---
+[INFO] Replacing main artifact /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/llmgw-app-0.3.0.jar with repackaged archive, adding nested dependencies in BOOT-INF/.
+[INFO] The original artifact has been renamed to /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/llmgw-app-0.3.0.jar.original
+[INFO] 
+[INFO] --- native:1.1.18:compile-no-fork (build-native) @ llmgw-app ---
+[INFO] Found GraalVM installation from JAVA_HOME variable.
+[INFO] Using GraalVM reachability metadata repository version 1.0.21
+[INFO] [graalvm reachability metadata repository for com.fasterxml.jackson.core:jackson-core:2.21.7]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for com.fasterxml.jackson.core:jackson-core:2.21.7]: Configuration directory is com.fasterxml.jackson.core/jackson-core/2.6.0
+[INFO] [graalvm reachability metadata repository for com.fasterxml.jackson.core:jackson-databind:2.21.7]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for com.fasterxml.jackson.core:jackson-databind:2.21.7]: Configuration directory is com.fasterxml.jackson.core/jackson-databind/2.15.2
+[INFO] [graalvm reachability metadata repository for io.swagger.core.v3:swagger-annotations:2.2.31]: Configuration directory is io.swagger.core.v3/swagger-annotations/2.2.22
+[INFO] [graalvm reachability metadata repository for org.jetbrains.kotlin:kotlin-reflect:2.3.21]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.jetbrains.kotlin:kotlin-reflect:2.3.21]: Configuration directory is org.jetbrains.kotlin/kotlin-reflect/2.5.0-Beta1
+[INFO] [graalvm reachability metadata repository for com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.21.7]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.21.7]: Configuration directory is com.fasterxml.jackson.datatype/jackson-datatype-jdk8/2.13.5
+[INFO] [graalvm reachability metadata repository for com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.21.7]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.21.7]: Configuration directory is com.fasterxml.jackson.datatype/jackson-datatype-jsr310/2.22.0
+[INFO] [graalvm reachability metadata repository for com.fasterxml.jackson.module:jackson-module-kotlin:2.21.7]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for com.fasterxml.jackson.module:jackson-module-kotlin:2.21.7]: Configuration directory is com.fasterxml.jackson.module/jackson-module-kotlin/2.17.2
+[INFO] [graalvm reachability metadata repository for com.github.victools:jsonschema-generator:4.38.0]: Configuration directory is com.github.victools/jsonschema-generator/4.38.0
+[INFO] [graalvm reachability metadata repository for com.fasterxml:classmate:1.7.3]: Configuration directory is com.fasterxml/classmate/1.5.1
+[INFO] [graalvm reachability metadata repository for com.github.victools:jsonschema-module-jackson:4.38.0]: Configuration directory is com.github.victools/jsonschema-module-jackson/4.38.0
+[INFO] [graalvm reachability metadata repository for com.github.victools:jsonschema-module-swagger-2:4.38.0]: Configuration directory is com.github.victools/jsonschema-module-swagger-2/4.38.0
+[INFO] [graalvm reachability metadata repository for com.squareup.okhttp3:okhttp:4.12.0]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for com.squareup.okhttp3:okhttp:4.12.0]: Configuration directory is com.squareup.okhttp3/okhttp/3.9.0
+[INFO] [graalvm reachability metadata repository for com.squareup.okio:okio:3.6.0]: Configuration directory is com.squareup.okio/okio/1.17.2
+[INFO] [graalvm reachability metadata repository for com.squareup.okio:okio-jvm:3.6.0]: Configuration directory is com.squareup.okio/okio-jvm/3.6.0
+[INFO] [graalvm reachability metadata repository for org.jetbrains.kotlin:kotlin-stdlib-common:1.9.10]: Configuration directory is org.jetbrains.kotlin/kotlin-stdlib-common/1.5.31
+[INFO] [graalvm reachability metadata repository for org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.3.21]: Configuration directory is org.jetbrains.kotlin/kotlin-stdlib-jdk8/1.5.31
+[INFO] [graalvm reachability metadata repository for org.jetbrains.kotlin:kotlin-stdlib:2.3.21]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.jetbrains.kotlin:kotlin-stdlib:2.3.21]: Configuration directory is org.jetbrains.kotlin/kotlin-stdlib/2.5.0-Beta1
+[INFO] [graalvm reachability metadata repository for org.jetbrains:annotations:13.0]: Configuration directory is org.jetbrains/annotations/13.0
+[INFO] [graalvm reachability metadata repository for org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.3.21]: Configuration directory is org.jetbrains.kotlin/kotlin-stdlib-jdk7/1.5.31
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-configuration-processor:4.1.2]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-configuration-processor:4.1.2]: Configuration directory is org.springframework.boot/spring-boot-configuration-processor/2.7.18
+[INFO] [graalvm reachability metadata repository for commons-io:commons-io:2.19.0]: Configuration directory is commons-io/commons-io/2.17.0
+[INFO] [graalvm reachability metadata repository for javax.annotation:javax.annotation-api:1.3.2]: Configuration directory is javax.annotation/javax.annotation-api/1.2
+[INFO] [graalvm reachability metadata repository for tools.jackson.core:jackson-databind:3.1.7]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for tools.jackson.core:jackson-databind:3.1.7]: Configuration directory is tools.jackson.core/jackson-databind/3.0.0
+[INFO] [graalvm reachability metadata repository for com.fasterxml.jackson.core:jackson-annotations:2.21]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for com.fasterxml.jackson.core:jackson-annotations:2.21]: Configuration directory is com.fasterxml.jackson.core/jackson-annotations/2.8.0
+[INFO] [graalvm reachability metadata repository for tools.jackson.core:jackson-core:3.1.7]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for tools.jackson.core:jackson-core:3.1.7]: Configuration directory is tools.jackson.core/jackson-core/3.0.0
+[INFO] [graalvm reachability metadata repository for org.slf4j:slf4j-api:2.0.20]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.slf4j:slf4j-api:2.0.20]: Configuration directory is org.slf4j/slf4j-api/1.7.36
+[INFO] [graalvm reachability metadata repository for com.github.ben-manes.caffeine:caffeine:3.3.1]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for com.github.ben-manes.caffeine:caffeine:3.3.1]: Configuration directory is com.github.ben-manes.caffeine/caffeine/3.1.8
+[INFO] [graalvm reachability metadata repository for com.google.errorprone:error_prone_annotations:2.50.0]: Configuration directory is com.google.errorprone/error_prone_annotations/2.46.0
+[INFO] [graalvm reachability metadata repository for io.micrometer:micrometer-commons:1.17.2]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for io.micrometer:micrometer-commons:1.17.2]: Configuration directory is io.micrometer/micrometer-commons/1.16.0
+[INFO] [graalvm reachability metadata repository for org.hdrhistogram:HdrHistogram:2.2.2]: Configuration directory is org.hdrhistogram/HdrHistogram/2.1.12
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-starter-webflux:4.1.2]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-starter-webflux:4.1.2]: Latest version not found!
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-starter-webflux:4.1.2]: missing.
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-starter:4.1.2]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-starter:4.1.2]: Latest version not found!
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-starter:4.1.2]: missing.
+[INFO] [graalvm reachability metadata repository for ch.qos.logback:logback-classic:1.5.38]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for ch.qos.logback:logback-classic:1.5.38]: Configuration directory is ch.qos.logback/logback-classic/1.6.2
+[INFO] [graalvm reachability metadata repository for ch.qos.logback:logback-core:1.5.38]: Configuration directory is ch.qos.logback/logback-core/1.5.33
+[INFO] [graalvm reachability metadata repository for org.slf4j:jul-to-slf4j:2.0.20]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.slf4j:jul-to-slf4j:2.0.20]: Configuration directory is org.slf4j/jul-to-slf4j/1.7.30
+[INFO] [graalvm reachability metadata repository for jakarta.annotation:jakarta.annotation-api:3.0.0]: Configuration directory is jakarta.annotation/jakarta.annotation-api/3.0.0
+[INFO] [graalvm reachability metadata repository for org.yaml:snakeyaml:2.6]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.yaml:snakeyaml:2.6]: Configuration directory is org.yaml/snakeyaml/2.1
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-starter-jackson:4.1.2]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-starter-jackson:4.1.2]: Latest version not found!
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-starter-jackson:4.1.2]: missing.
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-starter-reactor-netty:4.1.2]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-starter-reactor-netty:4.1.2]: Latest version not found!
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-starter-reactor-netty:4.1.2]: missing.
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-reactor-netty:4.1.2]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-reactor-netty:4.1.2]: Configuration directory is org.springframework.boot/spring-boot-reactor-netty/4.2.0-M1
+[INFO] [graalvm reachability metadata repository for io.projectreactor.netty:reactor-netty-http:1.3.8]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for io.projectreactor.netty:reactor-netty-http:1.3.8]: Configuration directory is io.projectreactor.netty/reactor-netty-http/1.3.0
+[INFO] [graalvm reachability metadata repository for io.netty:netty-codec-http:4.2.19.Final]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for io.netty:netty-codec-http:4.2.19.Final]: Configuration directory is io.netty/netty-codec-http/4.1.80.Final
+[INFO] [graalvm reachability metadata repository for io.netty:netty-buffer:4.2.19.Final]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for io.netty:netty-buffer:4.2.19.Final]: Configuration directory is io.netty/netty-buffer/4.1.80.Final
+[INFO] [graalvm reachability metadata repository for io.netty:netty-transport:4.2.19.Final]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for io.netty:netty-transport:4.2.19.Final]: Configuration directory is io.netty/netty-transport/5.0.0.Alpha2
+[INFO] [graalvm reachability metadata repository for io.netty:netty-handler:4.2.19.Final]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for io.netty:netty-handler:4.2.19.Final]: Configuration directory is io.netty/netty-handler/4.1.80.Final
+[INFO] [graalvm reachability metadata repository for io.netty:netty-codec-http2:4.2.19.Final]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for io.netty:netty-codec-http2:4.2.19.Final]: Configuration directory is io.netty/netty-codec-http2/4.1.80.Final
+[INFO] [graalvm reachability metadata repository for io.netty:netty-resolver-dns:4.2.19.Final]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for io.netty:netty-resolver-dns:4.2.19.Final]: Configuration directory is io.netty/netty-resolver-dns/4.1.80.Final
+[INFO] [graalvm reachability metadata repository for io.netty:netty-resolver:4.2.19.Final]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for io.netty:netty-resolver:4.2.19.Final]: Configuration directory is io.netty/netty-resolver/5.0.0.Alpha2
+[INFO] [graalvm reachability metadata repository for io.netty:netty-codec-dns:4.2.19.Final]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for io.netty:netty-codec-dns:4.2.19.Final]: Configuration directory is io.netty/netty-codec-dns/4.1.79.Final
+[INFO] [graalvm reachability metadata repository for io.netty:netty-resolver-dns-native-macos:4.2.19.Final]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for io.netty:netty-resolver-dns-native-macos:4.2.19.Final]: Latest version not found!
+[INFO] [graalvm reachability metadata repository for io.netty:netty-resolver-dns-native-macos:4.2.19.Final]: missing.
+[INFO] [graalvm reachability metadata repository for io.netty:netty-resolver-dns-classes-macos:4.2.19.Final]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for io.netty:netty-resolver-dns-classes-macos:4.2.19.Final]: Configuration directory is io.netty/netty-resolver-dns-classes-macos/4.1.74.Final
+[INFO] [graalvm reachability metadata repository for io.netty:netty-transport-native-epoll:4.2.19.Final]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for io.netty:netty-transport-native-epoll:4.2.19.Final]: Configuration directory is io.netty/netty-transport-native-epoll/4.1.42.Final
+[INFO] [graalvm reachability metadata repository for io.netty:netty-transport-native-unix-common:4.2.19.Final]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for io.netty:netty-transport-native-unix-common:4.2.19.Final]: Configuration directory is io.netty/netty-transport-native-unix-common/4.1.79.Final
+[INFO] [graalvm reachability metadata repository for io.netty:netty-transport-classes-epoll:4.2.19.Final]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for io.netty:netty-transport-classes-epoll:4.2.19.Final]: Configuration directory is io.netty/netty-transport-classes-epoll/4.1.99.Final
+[INFO] [graalvm reachability metadata repository for io.projectreactor.netty:reactor-netty-core:1.3.8]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for io.projectreactor.netty:reactor-netty-core:1.3.8]: Configuration directory is io.projectreactor.netty/reactor-netty-core/1.1.0
+[INFO] [graalvm reachability metadata repository for io.netty:netty-handler-proxy:4.2.19.Final]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for io.netty:netty-handler-proxy:4.2.19.Final]: Configuration directory is io.netty/netty-handler-proxy/4.2.1.Final
+[INFO] [graalvm reachability metadata repository for io.netty:netty-codec-socks:4.2.19.Final]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for io.netty:netty-codec-socks:4.2.19.Final]: Configuration directory is io.netty/netty-codec-socks/4.2.1.Final
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-netty:4.1.2]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-netty:4.1.2]: Configuration directory is org.springframework.boot/spring-boot-netty/4.0.2
+[INFO] [graalvm reachability metadata repository for io.netty:netty-common:4.2.19.Final]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for io.netty:netty-common:4.2.19.Final]: Configuration directory is io.netty/netty-common/5.0.0.Alpha2
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-reactor:4.1.2]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-reactor:4.1.2]: Configuration directory is org.springframework.boot/spring-boot-reactor/4.0.2
+[INFO] [graalvm reachability metadata repository for org.springframework:spring-core:7.0.10]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.springframework:spring-core:7.0.10]: Configuration directory is org.springframework/spring-core/5.3.15
+[INFO] [graalvm reachability metadata repository for commons-logging:commons-logging:1.3.6]: Configuration directory is commons-logging/commons-logging/1.2
+[INFO] [graalvm reachability metadata repository for org.springframework:spring-context:7.0.10]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.springframework:spring-context:7.0.10]: Configuration directory is org.springframework/spring-context/6.0.2
+[INFO] [graalvm reachability metadata repository for io.projectreactor:reactor-core:3.8.8]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for io.projectreactor:reactor-core:3.8.8]: Configuration directory is io.projectreactor/reactor-core/3.5.1
+[INFO] [graalvm reachability metadata repository for org.reactivestreams:reactive-streams:1.0.4]: Configuration directory is org.reactivestreams/reactive-streams/1.0.3
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-webflux:4.1.2]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-webflux:4.1.2]: Configuration directory is org.springframework.boot/spring-boot-webflux/4.0.2
+[INFO] [graalvm reachability metadata repository for org.springframework:spring-webflux:7.0.10]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.springframework:spring-webflux:7.0.10]: Configuration directory is org.springframework/spring-webflux/6.1.0
+[INFO] [graalvm reachability metadata repository for org.springframework:spring-beans:7.0.10]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.springframework:spring-beans:7.0.10]: Configuration directory is org.springframework/spring-beans/5.3.15
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-web-server:4.1.2]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-web-server:4.1.2]: Configuration directory is org.springframework.boot/spring-boot-web-server/4.0.2
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-starter-web:4.1.2]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-starter-web:4.1.2]: Latest version not found!
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-starter-web:4.1.2]: missing.
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-starter-tomcat:4.1.2]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-starter-tomcat:4.1.2]: Latest version not found!
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-starter-tomcat:4.1.2]: missing.
+[INFO] [graalvm reachability metadata repository for org.apache.tomcat.embed:tomcat-embed-core:11.0.27]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.apache.tomcat.embed:tomcat-embed-core:11.0.27]: Configuration directory is org.apache.tomcat.embed/tomcat-embed-core/11.0.23
+[INFO] [graalvm reachability metadata repository for org.apache.tomcat.embed:tomcat-embed-el:11.0.27]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.apache.tomcat.embed:tomcat-embed-el:11.0.27]: Configuration directory is org.apache.tomcat.embed/tomcat-embed-el/10.1.0
+[INFO] [graalvm reachability metadata repository for org.apache.tomcat.embed:tomcat-embed-websocket:11.0.27]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.apache.tomcat.embed:tomcat-embed-websocket:11.0.27]: Configuration directory is org.apache.tomcat.embed/tomcat-embed-websocket/10.1.8
+[INFO] [graalvm reachability metadata repository for org.springframework:spring-web:7.0.10]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.springframework:spring-web:7.0.10]: Configuration directory is org.springframework/spring-web/6.0.0
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-servlet:4.1.2]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-servlet:4.1.2]: Configuration directory is org.springframework.boot/spring-boot-servlet/4.0.6
+[INFO] [graalvm reachability metadata repository for org.springframework:spring-aop:7.0.10]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.springframework:spring-aop:7.0.10]: Configuration directory is org.springframework/spring-aop/6.1.7
+[INFO] [graalvm reachability metadata repository for org.springframework:spring-expression:7.0.10]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.springframework:spring-expression:7.0.10]: Configuration directory is org.springframework/spring-expression/6.2.7
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-starter-actuator:4.1.2]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-starter-actuator:4.1.2]: Latest version not found!
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-starter-actuator:4.1.2]: missing.
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-starter-micrometer-metrics:4.1.2]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-starter-micrometer-metrics:4.1.2]: Latest version not found!
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-starter-micrometer-metrics:4.1.2]: missing.
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-micrometer-metrics:4.1.2]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-micrometer-metrics:4.1.2]: Configuration directory is org.springframework.boot/spring-boot-micrometer-metrics/4.0.6
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-actuator-autoconfigure:4.1.2]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-actuator-autoconfigure:4.1.2]: Configuration directory is org.springframework.boot/spring-boot-actuator-autoconfigure/4.0.0
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-actuator:4.1.2]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-actuator:4.1.2]: Configuration directory is org.springframework.boot/spring-boot-actuator/2.6.3
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-health:4.1.2]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for org.springframework.boot:spring-boot-health:4.1.2]: Configuration directory is org.springframework.boot/spring-boot-health/4.2.0-M2
+[INFO] [graalvm reachability metadata repository for io.micrometer:micrometer-observation:1.17.2]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for io.micrometer:micrometer-observation:1.17.2]: Configuration directory is io.micrometer/micrometer-observation/1.18.0-M1
+[INFO] [graalvm reachability metadata repository for io.micrometer:micrometer-jakarta9:1.17.2]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for io.micrometer:micrometer-jakarta9:1.17.2]: Configuration directory is io.micrometer/micrometer-jakarta9/1.16.5
+[INFO] [graalvm reachability metadata repository for io.micrometer:micrometer-registry-prometheus:1.17.2]: Configuration directory not found. Trying latest version.
+[INFO] [graalvm reachability metadata repository for io.micrometer:micrometer-registry-prometheus:1.17.2]: Configuration directory is io.micrometer/micrometer-registry-prometheus/1.16.5
+[INFO] [graalvm reachability metadata repository for org.jspecify:jspecify:1.0.1]: Configuration directory is org.jspecify/jspecify/1.0.0
+[WARNING] No jdk toolchain configuration found
+[WARNING] No jdk toolchain configuration found
+[INFO] CycloneDX: Resolving Dependencies
+[INFO] CycloneDX: Creating BOM version 1.5 with 136 component(s)
+[INFO] CycloneDX: Writing and validating BOM (JSON): /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/base_sbom.json
+[INFO]            attaching as llmgw-app-0.3.0-cyclonedx.json
+[WARNING] No jdk toolchain configuration found
+[WARNING] No jdk toolchain configuration found
+[WARNING] No jdk toolchain configuration found
+[INFO] Executing: /Users/leo/Library/Java/JavaVirtualMachines/graalvm-jdk-25/Contents/Home/bin/native-image -cp /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/classes:/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-provider/llmgw-provider-openai-sdk/target/llmgw-provider-openai-sdk-0.3.0.jar:/Users/leo/.m2/repository/com/openai/openai-java/4.100.0/openai-java-4.100.0.jar:/Users/leo/.m2/repository/com/openai/openai-java-client-okhttp/4.100.0/openai-java-client-okhttp-4.100.0.jar:/Users/leo/.m2/repository/com/openai/openai-java-core/4.100.0/openai-java-core-4.100.0.jar:/Users/leo/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.21.7/jackson-core-2.21.7.jar:/Users/leo/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.21.7/jackson-databind-2.21.7.jar:/Users/leo/.m2/repository/io/swagger/core/v3/swagger-annotations/2.2.31/swagger-annotations-2.2.31.jar:/Users/leo/.m2/repository/org/jetbrains/kotlin/kotlin-reflect/2.3.21/kotlin-reflect-2.3.21.jar:/Users/leo/.m2/repository/com/fasterxml/jackson/datatype/jackson-datatype-jdk8/2.21.7/jackson-datatype-jdk8-2.21.7.jar:/Users/leo/.m2/repository/com/fasterxml/jackson/datatype/jackson-datatype-jsr310/2.21.7/jackson-datatype-jsr310-2.21.7.jar:/Users/leo/.m2/repository/com/fasterxml/jackson/module/jackson-module-kotlin/2.21.7/jackson-module-kotlin-2.21.7.jar:/Users/leo/.m2/repository/com/github/victools/jsonschema-generator/4.38.0/jsonschema-generator-4.38.0.jar:/Users/leo/.m2/repository/com/fasterxml/classmate/1.7.3/classmate-1.7.3.jar:/Users/leo/.m2/repository/com/github/victools/jsonschema-module-jackson/4.38.0/jsonschema-module-jackson-4.38.0.jar:/Users/leo/.m2/repository/com/github/victools/jsonschema-module-swagger-2/4.38.0/jsonschema-module-swagger-2-4.38.0.jar:/Users/leo/.m2/repository/com/squareup/okhttp3/okhttp/4.12.0/okhttp-4.12.0.jar:/Users/leo/.m2/repository/com/squareup/okio/okio/3.6.0/okio-3.6.0.jar:/Users/leo/.m2/repository/com/squareup/okio/okio-jvm/3.6.0/okio-jvm-3.6.0.jar:/Users/leo/.m2/repository/org/jetbrains/kotlin/kotlin-stdlib-common/1.9.10/kotlin-stdlib-common-1.9.10.jar:/Users/leo/.m2/repository/org/jetbrains/kotlin/kotlin-stdlib-jdk8/2.3.21/kotlin-stdlib-jdk8-2.3.21.jar:/Users/leo/.m2/repository/org/jetbrains/kotlin/kotlin-stdlib/2.3.21/kotlin-stdlib-2.3.21.jar:/Users/leo/.m2/repository/org/jetbrains/annotations/13.0/annotations-13.0.jar:/Users/leo/.m2/repository/org/jetbrains/kotlin/kotlin-stdlib-jdk7/2.3.21/kotlin-stdlib-jdk7-2.3.21.jar:/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-tokenizer/llmgw-tokenizer-heuristic/target/llmgw-tokenizer-heuristic-0.3.0.jar:/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-tokenizer/llmgw-tokenizer-api/target/llmgw-tokenizer-api-0.3.0.jar:/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-provider/llmgw-provider-http-jdk/target/llmgw-provider-http-jdk-0.3.0.jar:/Users/leo/.m2/repository/org/springframework/boot/spring-boot-configuration-processor/4.1.2/spring-boot-configuration-processor-4.1.2.jar:/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-provider/llmgw-provider-api/target/llmgw-provider-api-0.3.0.jar:/Users/leo/.m2/repository/org/apache/dubbo/dubbo-common/3.3.6/dubbo-common-3.3.6.jar:/Users/leo/.m2/repository/org/javassist/javassist/3.30.2-GA/javassist-3.30.2-GA.jar:/Users/leo/.m2/repository/com/alibaba/fastjson2/fastjson2/2.0.56/fastjson2-2.0.56.jar:/Users/leo/.m2/repository/commons-io/commons-io/2.19.0/commons-io-2.19.0.jar:/Users/leo/.m2/repository/javax/annotation/javax.annotation-api/1.3.2/javax.annotation-api-1.3.2.jar:/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-core/target/llmgw-core-0.3.0.jar:/Users/leo/.m2/repository/tools/jackson/core/jackson-databind/3.1.7/jackson-databind-3.1.7.jar:/Users/leo/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.21/jackson-annotations-2.21.jar:/Users/leo/.m2/repository/tools/jackson/core/jackson-core/3.1.7/jackson-core-3.1.7.jar:/Users/leo/.m2/repository/org/slf4j/slf4j-api/2.0.20/slf4j-api-2.0.20.jar:/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-governance/llmgw-governance-default/target/llmgw-governance-default-0.3.0.jar:/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-governance/llmgw-governance-api/target/llmgw-governance-api-0.3.0.jar:/Users/leo/.m2/repository/com/github/ben-manes/caffeine/caffeine/3.3.1/caffeine-3.3.1.jar:/Users/leo/.m2/repository/com/google/errorprone/error_prone_annotations/2.50.0/error_prone_annotations-2.50.0.jar:/Users/leo/.m2/repository/io/micrometer/micrometer-core/1.17.2/micrometer-core-1.17.2.jar:/Users/leo/.m2/repository/io/micrometer/micrometer-commons/1.17.2/micrometer-commons-1.17.2.jar:/Users/leo/.m2/repository/org/hdrhistogram/HdrHistogram/2.2.2/HdrHistogram-2.2.2.jar:/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-webflux/target/llmgw-engine-webflux-0.3.0.jar:/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-api/target/llmgw-engine-api-0.3.0.jar:/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-engine/llmgw-engine-vt/target/llmgw-engine-vt-0.3.0.jar:/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-provider/llmgw-provider-openai/target/llmgw-provider-openai-0.3.0.jar:/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-provider/llmgw-provider-anthropic/target/llmgw-provider-anthropic-0.3.0.jar:/Users/leo/.m2/repository/org/springframework/boot/spring-boot-starter-webflux/4.1.2/spring-boot-starter-webflux-4.1.2.jar:/Users/leo/.m2/repository/org/springframework/boot/spring-boot-starter/4.1.2/spring-boot-starter-4.1.2.jar:/Users/leo/.m2/repository/org/springframework/boot/spring-boot-starter-logging/4.1.2/spring-boot-starter-logging-4.1.2.jar:/Users/leo/.m2/repository/ch/qos/logback/logback-classic/1.5.38/logback-classic-1.5.38.jar:/Users/leo/.m2/repository/ch/qos/logback/logback-core/1.5.38/logback-core-1.5.38.jar:/Users/leo/.m2/repository/org/apache/logging/log4j/log4j-to-slf4j/2.25.5/log4j-to-slf4j-2.25.5.jar:/Users/leo/.m2/repository/org/apache/logging/log4j/log4j-api/2.25.5/log4j-api-2.25.5.jar:/Users/leo/.m2/repository/org/slf4j/jul-to-slf4j/2.0.20/jul-to-slf4j-2.0.20.jar:/Users/leo/.m2/repository/org/springframework/boot/spring-boot-autoconfigure/4.1.2/spring-boot-autoconfigure-4.1.2.jar:/Users/leo/.m2/repository/jakarta/annotation/jakarta.annotation-api/3.0.0/jakarta.annotation-api-3.0.0.jar:/Users/leo/.m2/repository/org/yaml/snakeyaml/2.6/snakeyaml-2.6.jar:/Users/leo/.m2/repository/org/springframework/boot/spring-boot-starter-jackson/4.1.2/spring-boot-starter-jackson-4.1.2.jar:/Users/leo/.m2/repository/org/springframework/boot/spring-boot-jackson/4.1.2/spring-boot-jackson-4.1.2.jar:/Users/leo/.m2/repository/org/springframework/boot/spring-boot-starter-reactor-netty/4.1.2/spring-boot-starter-reactor-netty-4.1.2.jar:/Users/leo/.m2/repository/org/springframework/boot/spring-boot-reactor-netty/4.1.2/spring-boot-reactor-netty-4.1.2.jar:/Users/leo/.m2/repository/io/projectreactor/netty/reactor-netty-http/1.3.8/reactor-netty-http-1.3.8.jar:/Users/leo/.m2/repository/io/netty/netty-codec-http/4.2.19.Final/netty-codec-http-4.2.19.Final.jar:/Users/leo/.m2/repository/io/netty/netty-buffer/4.2.19.Final/netty-buffer-4.2.19.Final.jar:/Users/leo/.m2/repository/io/netty/netty-transport/4.2.19.Final/netty-transport-4.2.19.Final.jar:/Users/leo/.m2/repository/io/netty/netty-codec-base/4.2.19.Final/netty-codec-base-4.2.19.Final.jar:/Users/leo/.m2/repository/io/netty/netty-codec-compression/4.2.19.Final/netty-codec-compression-4.2.19.Final.jar:/Users/leo/.m2/repository/io/netty/netty-handler/4.2.19.Final/netty-handler-4.2.19.Final.jar:/Users/leo/.m2/repository/io/netty/netty-codec-http2/4.2.19.Final/netty-codec-http2-4.2.19.Final.jar:/Users/leo/.m2/repository/io/netty/netty-codec-http3/4.2.19.Final/netty-codec-http3-4.2.19.Final.jar:/Users/leo/.m2/repository/io/netty/netty-codec-classes-quic/4.2.19.Final/netty-codec-classes-quic-4.2.19.Final.jar:/Users/leo/.m2/repository/io/netty/netty-codec-native-quic/4.2.19.Final/netty-codec-native-quic-4.2.19.Final-linux-x86_64.jar:/Users/leo/.m2/repository/io/netty/netty-codec-native-quic/4.2.19.Final/netty-codec-native-quic-4.2.19.Final-linux-aarch_64.jar:/Users/leo/.m2/repository/io/netty/netty-codec-native-quic/4.2.19.Final/netty-codec-native-quic-4.2.19.Final-osx-x86_64.jar:/Users/leo/.m2/repository/io/netty/netty-codec-native-quic/4.2.19.Final/netty-codec-native-quic-4.2.19.Final-osx-aarch_64.jar:/Users/leo/.m2/repository/io/netty/netty-codec-native-quic/4.2.19.Final/netty-codec-native-quic-4.2.19.Final-windows-x86_64.jar:/Users/leo/.m2/repository/io/netty/netty-resolver-dns/4.2.19.Final/netty-resolver-dns-4.2.19.Final.jar:/Users/leo/.m2/repository/io/netty/netty-resolver/4.2.19.Final/netty-resolver-4.2.19.Final.jar:/Users/leo/.m2/repository/io/netty/netty-codec-dns/4.2.19.Final/netty-codec-dns-4.2.19.Final.jar:/Users/leo/.m2/repository/io/netty/netty-resolver-dns-native-macos/4.2.19.Final/netty-resolver-dns-native-macos-4.2.19.Final-osx-x86_64.jar:/Users/leo/.m2/repository/io/netty/netty-resolver-dns-classes-macos/4.2.19.Final/netty-resolver-dns-classes-macos-4.2.19.Final.jar:/Users/leo/.m2/repository/io/netty/netty-transport-native-epoll/4.2.19.Final/netty-transport-native-epoll-4.2.19.Final-linux-x86_64.jar:/Users/leo/.m2/repository/io/netty/netty-transport-native-unix-common/4.2.19.Final/netty-transport-native-unix-common-4.2.19.Final.jar:/Users/leo/.m2/repository/io/netty/netty-transport-classes-epoll/4.2.19.Final/netty-transport-classes-epoll-4.2.19.Final.jar:/Users/leo/.m2/repository/io/projectreactor/netty/reactor-netty-core/1.3.8/reactor-netty-core-1.3.8.jar:/Users/leo/.m2/repository/io/netty/netty-handler-proxy/4.2.19.Final/netty-handler-proxy-4.2.19.Final.jar:/Users/leo/.m2/repository/io/netty/netty-codec-socks/4.2.19.Final/netty-codec-socks-4.2.19.Final.jar:/Users/leo/.m2/repository/org/springframework/boot/spring-boot-netty/4.1.2/spring-boot-netty-4.1.2.jar:/Users/leo/.m2/repository/io/netty/netty-common/4.2.19.Final/netty-common-4.2.19.Final.jar:/Users/leo/.m2/repository/org/springframework/boot/spring-boot-reactor/4.1.2/spring-boot-reactor-4.1.2.jar:/Users/leo/.m2/repository/org/springframework/boot/spring-boot/4.1.2/spring-boot-4.1.2.jar:/Users/leo/.m2/repository/org/springframework/spring-core/7.0.10/spring-core-7.0.10.jar:/Users/leo/.m2/repository/commons-logging/commons-logging/1.3.6/commons-logging-1.3.6.jar:/Users/leo/.m2/repository/org/springframework/spring-context/7.0.10/spring-context-7.0.10.jar:/Users/leo/.m2/repository/io/projectreactor/reactor-core/3.8.8/reactor-core-3.8.8.jar:/Users/leo/.m2/repository/org/reactivestreams/reactive-streams/1.0.4/reactive-streams-1.0.4.jar:/Users/leo/.m2/repository/org/springframework/boot/spring-boot-webflux/4.1.2/spring-boot-webflux-4.1.2.jar:/Users/leo/.m2/repository/org/springframework/boot/spring-boot-http-codec/4.1.2/spring-boot-http-codec-4.1.2.jar:/Users/leo/.m2/repository/org/springframework/spring-webflux/7.0.10/spring-webflux-7.0.10.jar:/Users/leo/.m2/repository/org/springframework/spring-beans/7.0.10/spring-beans-7.0.10.jar:/Users/leo/.m2/repository/org/springframework/boot/spring-boot-web-server/4.1.2/spring-boot-web-server-4.1.2.jar:/Users/leo/.m2/repository/org/springframework/boot/spring-boot-starter-web/4.1.2/spring-boot-starter-web-4.1.2.jar:/Users/leo/.m2/repository/org/springframework/boot/spring-boot-starter-tomcat/4.1.2/spring-boot-starter-tomcat-4.1.2.jar:/Users/leo/.m2/repository/org/springframework/boot/spring-boot-starter-tomcat-runtime/4.1.2/spring-boot-starter-tomcat-runtime-4.1.2.jar:/Users/leo/.m2/repository/org/apache/tomcat/embed/tomcat-embed-core/11.0.27/tomcat-embed-core-11.0.27.jar:/Users/leo/.m2/repository/org/apache/tomcat/embed/tomcat-embed-el/11.0.27/tomcat-embed-el-11.0.27.jar:/Users/leo/.m2/repository/org/apache/tomcat/embed/tomcat-embed-websocket/11.0.27/tomcat-embed-websocket-11.0.27.jar:/Users/leo/.m2/repository/org/springframework/boot/spring-boot-tomcat/4.1.2/spring-boot-tomcat-4.1.2.jar:/Users/leo/.m2/repository/org/springframework/boot/spring-boot-http-converter/4.1.2/spring-boot-http-converter-4.1.2.jar:/Users/leo/.m2/repository/org/springframework/spring-web/7.0.10/spring-web-7.0.10.jar:/Users/leo/.m2/repository/org/springframework/boot/spring-boot-webmvc/4.1.2/spring-boot-webmvc-4.1.2.jar:/Users/leo/.m2/repository/org/springframework/boot/spring-boot-servlet/4.1.2/spring-boot-servlet-4.1.2.jar:/Users/leo/.m2/repository/org/springframework/spring-webmvc/7.0.10/spring-webmvc-7.0.10.jar:/Users/leo/.m2/repository/org/springframework/spring-aop/7.0.10/spring-aop-7.0.10.jar:/Users/leo/.m2/repository/org/springframework/spring-expression/7.0.10/spring-expression-7.0.10.jar:/Users/leo/.m2/repository/org/springframework/boot/spring-boot-starter-actuator/4.1.2/spring-boot-starter-actuator-4.1.2.jar:/Users/leo/.m2/repository/org/springframework/boot/spring-boot-starter-micrometer-metrics/4.1.2/spring-boot-starter-micrometer-metrics-4.1.2.jar:/Users/leo/.m2/repository/org/springframework/boot/spring-boot-micrometer-metrics/4.1.2/spring-boot-micrometer-metrics-4.1.2.jar:/Users/leo/.m2/repository/org/springframework/boot/spring-boot-micrometer-observation/4.1.2/spring-boot-micrometer-observation-4.1.2.jar:/Users/leo/.m2/repository/org/springframework/boot/spring-boot-actuator-autoconfigure/4.1.2/spring-boot-actuator-autoconfigure-4.1.2.jar:/Users/leo/.m2/repository/org/springframework/boot/spring-boot-actuator/4.1.2/spring-boot-actuator-4.1.2.jar:/Users/leo/.m2/repository/org/springframework/boot/spring-boot-health/4.1.2/spring-boot-health-4.1.2.jar:/Users/leo/.m2/repository/io/micrometer/micrometer-observation/1.17.2/micrometer-observation-1.17.2.jar:/Users/leo/.m2/repository/io/micrometer/micrometer-jakarta9/1.17.2/micrometer-jakarta9-1.17.2.jar:/Users/leo/.m2/repository/io/micrometer/micrometer-registry-prometheus/1.17.2/micrometer-registry-prometheus-1.17.2.jar:/Users/leo/.m2/repository/org/jspecify/jspecify/1.0.1/jspecify-1.0.1.jar:/Users/leo/.m2/repository/io/prometheus/prometheus-metrics-core/1.7.0/prometheus-metrics-core-1.7.0.jar:/Users/leo/.m2/repository/io/prometheus/prometheus-metrics-model/1.7.0/prometheus-metrics-model-1.7.0.jar:/Users/leo/.m2/repository/io/prometheus/prometheus-metrics-config/1.7.0/prometheus-metrics-config-1.7.0.jar:/Users/leo/.m2/repository/io/prometheus/prometheus-metrics-tracer-common/1.7.0/prometheus-metrics-tracer-common-1.7.0.jar:/Users/leo/.m2/repository/io/prometheus/prometheus-metrics-exposition-formats/1.7.0/prometheus-metrics-exposition-formats-1.7.0.jar:/Users/leo/.m2/repository/io/prometheus/prometheus-metrics-exposition-textformats/1.7.0/prometheus-metrics-exposition-textformats-1.7.0.jar --color=never -o /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/llmgw-webflux-spi-review -H:ConfigurationFileDirectories=/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/ch.qos.logback/logback-core/1.5.33,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/io.netty/netty-codec-dns/4.1.79.Final,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/io.netty/netty-resolver-dns/4.1.80.Final,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/io.netty/netty-transport/5.0.0.Alpha2,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/io.projectreactor.netty/reactor-netty-http/1.3.0,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.springframework/spring-context/6.0.2,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.reactivestreams/reactive-streams/1.0.3,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.springframework.boot/spring-boot-actuator/2.6.3,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/io.netty/netty-resolver-dns-classes-macos/4.1.74.Final,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.jetbrains.kotlin/kotlin-stdlib/2.5.0-Beta1,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.springframework/spring-webflux/6.1.0,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.apache.tomcat.embed/tomcat-embed-core/11.0.23,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/io.netty/netty-transport-native-unix-common/4.1.79.Final,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/com.fasterxml.jackson.core/jackson-core/2.6.0,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.springframework/spring-expression/6.2.7,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.slf4j/jul-to-slf4j/1.7.30,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/com.fasterxml.jackson.core/jackson-annotations/2.8.0,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/tools.jackson.core/jackson-databind/3.0.0,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/commons-logging/commons-logging/1.2,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/com.google.errorprone/error_prone_annotations/2.46.0,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/io.netty/netty-codec-http2/4.1.80.Final,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.springframework/spring-beans/5.3.15,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.springframework.boot/spring-boot-micrometer-metrics/4.0.6,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/com.fasterxml/classmate/1.5.1,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.slf4j/slf4j-api/1.7.36,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.jetbrains.kotlin/kotlin-reflect/2.5.0-Beta1,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/com.fasterxml.jackson.module/jackson-module-kotlin/2.17.2,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/com.squareup.okhttp3/okhttp/3.9.0,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/io.swagger.core.v3/swagger-annotations/2.2.22,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.springframework.boot/spring-boot-servlet/4.0.6,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/io.netty/netty-handler-proxy/4.2.1.Final,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/io.projectreactor/reactor-core/3.5.1,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/ch.qos.logback/logback-classic/1.6.2,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/jakarta.annotation/jakarta.annotation-api/3.0.0,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.jetbrains.kotlin/kotlin-stdlib-common/1.5.31,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.springframework/spring-core/5.3.15,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.apache.tomcat.embed/tomcat-embed-el/10.1.0,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.springframework.boot/spring-boot-reactor/4.0.2,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/com.github.victools/jsonschema-generator/4.38.0,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.springframework/spring-aop/6.1.7,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/com.fasterxml.jackson.datatype/jackson-datatype-jdk8/2.13.5,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.springframework.boot/spring-boot-actuator-autoconfigure/4.0.0,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.apache.tomcat.embed/tomcat-embed-websocket/10.1.8,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/com.github.victools/jsonschema-module-jackson/4.38.0,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.yaml/snakeyaml/2.1,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/com.fasterxml.jackson.datatype/jackson-datatype-jsr310/2.22.0,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/com.squareup.okio/okio-jvm/3.6.0,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.springframework.boot/spring-boot-configuration-processor/2.7.18,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/io.netty/netty-handler/4.1.80.Final,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/io.netty/netty-transport-classes-epoll/4.1.99.Final,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/io.micrometer/micrometer-observation/1.18.0-M1,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/com.squareup.okio/okio/1.17.2,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/io.micrometer/micrometer-registry-prometheus/1.16.5,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.springframework.boot/spring-boot-reactor-netty/4.2.0-M1,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/com.github.ben-manes.caffeine/caffeine/3.1.8,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.hdrhistogram/HdrHistogram/2.1.12,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/io.micrometer/micrometer-commons/1.16.0,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/io.netty/netty-codec-socks/4.2.1.Final,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.springframework.boot/spring-boot-web-server/4.0.2,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.jetbrains.kotlin/kotlin-stdlib-jdk7/1.5.31,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.springframework.boot/spring-boot-health/4.2.0-M2,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/io.netty/netty-resolver/5.0.0.Alpha2,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/com.fasterxml.jackson.core/jackson-databind/2.15.2,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/io.netty/netty-codec-http/4.1.80.Final,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/io.netty/netty-transport-native-epoll/4.1.42.Final,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.springframework.boot/spring-boot-netty/4.0.2,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/javax.annotation/javax.annotation-api/1.2,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.jspecify/jspecify/1.0.0,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/io.netty/netty-buffer/4.1.80.Final,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/io.micrometer/micrometer-jakarta9/1.16.5,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.jetbrains/annotations/13.0,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.springframework/spring-web/6.0.0,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/com.github.victools/jsonschema-module-swagger-2/4.38.0,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/commons-io/commons-io/2.17.0,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.jetbrains.kotlin/kotlin-stdlib-jdk8/1.5.31,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.springframework.boot/spring-boot-webflux/4.0.2,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/tools.jackson.core/jackson-core/3.0.0,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/io.projectreactor.netty/reactor-netty-core/1.1.0,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/io.netty/netty-common/5.0.0.Alpha2,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/ch.qos.logback/logback-core/1.5.33,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/io.netty/netty-codec-dns/4.1.79.Final,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/io.netty/netty-resolver-dns/4.1.80.Final,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/io.netty/netty-transport/5.0.0.Alpha2,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/io.projectreactor.netty/reactor-netty-http/1.3.0,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.springframework/spring-context/6.0.2,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.reactivestreams/reactive-streams/1.0.3,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.springframework.boot/spring-boot-actuator/2.6.3,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/io.netty/netty-resolver-dns-classes-macos/4.1.74.Final,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.jetbrains.kotlin/kotlin-stdlib/2.5.0-Beta1,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.springframework/spring-webflux/6.1.0,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.apache.tomcat.embed/tomcat-embed-core/11.0.23,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/io.netty/netty-transport-native-unix-common/4.1.79.Final,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/com.fasterxml.jackson.core/jackson-core/2.6.0,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.springframework/spring-expression/6.2.7,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.slf4j/jul-to-slf4j/1.7.30,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/com.fasterxml.jackson.core/jackson-annotations/2.8.0,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/tools.jackson.core/jackson-databind/3.0.0,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/commons-logging/commons-logging/1.2,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/com.google.errorprone/error_prone_annotations/2.46.0,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/io.netty/netty-codec-http2/4.1.80.Final,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.springframework/spring-beans/5.3.15,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.springframework.boot/spring-boot-micrometer-metrics/4.0.6,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/com.fasterxml/classmate/1.5.1,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.slf4j/slf4j-api/1.7.36,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.jetbrains.kotlin/kotlin-reflect/2.5.0-Beta1,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/com.fasterxml.jackson.module/jackson-module-kotlin/2.17.2,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/com.squareup.okhttp3/okhttp/3.9.0,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/io.swagger.core.v3/swagger-annotations/2.2.22,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.springframework.boot/spring-boot-servlet/4.0.6,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/io.netty/netty-handler-proxy/4.2.1.Final,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/io.projectreactor/reactor-core/3.5.1,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/ch.qos.logback/logback-classic/1.6.2,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/jakarta.annotation/jakarta.annotation-api/3.0.0,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.jetbrains.kotlin/kotlin-stdlib-common/1.5.31,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.springframework/spring-core/5.3.15,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.apache.tomcat.embed/tomcat-embed-el/10.1.0,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.springframework.boot/spring-boot-reactor/4.0.2,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/com.github.victools/jsonschema-generator/4.38.0,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.springframework/spring-aop/6.1.7,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/com.fasterxml.jackson.datatype/jackson-datatype-jdk8/2.13.5,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.springframework.boot/spring-boot-actuator-autoconfigure/4.0.0,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.apache.tomcat.embed/tomcat-embed-websocket/10.1.8,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/com.github.victools/jsonschema-module-jackson/4.38.0,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.yaml/snakeyaml/2.1,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/com.fasterxml.jackson.datatype/jackson-datatype-jsr310/2.22.0,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/com.squareup.okio/okio-jvm/3.6.0,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.springframework.boot/spring-boot-configuration-processor/2.7.18,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/io.netty/netty-handler/4.1.80.Final,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/io.netty/netty-transport-classes-epoll/4.1.99.Final,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/io.micrometer/micrometer-observation/1.18.0-M1,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/com.squareup.okio/okio/1.17.2,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/io.micrometer/micrometer-registry-prometheus/1.16.5,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.springframework.boot/spring-boot-reactor-netty/4.2.0-M1,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/com.github.ben-manes.caffeine/caffeine/3.1.8,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.hdrhistogram/HdrHistogram/2.1.12,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/io.micrometer/micrometer-commons/1.16.0,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/io.netty/netty-codec-socks/4.2.1.Final,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.springframework.boot/spring-boot-web-server/4.0.2,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.jetbrains.kotlin/kotlin-stdlib-jdk7/1.5.31,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.springframework.boot/spring-boot-health/4.2.0-M2,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/io.netty/netty-resolver/5.0.0.Alpha2,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/com.fasterxml.jackson.core/jackson-databind/2.15.2,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/io.netty/netty-codec-http/4.1.80.Final,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/io.netty/netty-transport-native-epoll/4.1.42.Final,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.springframework.boot/spring-boot-netty/4.0.2,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/javax.annotation/javax.annotation-api/1.2,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.jspecify/jspecify/1.0.0,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/io.netty/netty-buffer/4.1.80.Final,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/io.micrometer/micrometer-jakarta9/1.16.5,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.jetbrains/annotations/13.0,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.springframework/spring-web/6.0.0,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/com.github.victools/jsonschema-module-swagger-2/4.38.0,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/commons-io/commons-io/2.17.0,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.jetbrains.kotlin/kotlin-stdlib-jdk8/1.5.31,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/org.springframework.boot/spring-boot-webflux/4.0.2,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/tools.jackson.core/jackson-core/3.0.0,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/io.projectreactor.netty/reactor-netty-core/1.1.0,/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/graalvm-reachability-metadata/197a94cbdd7e04398210a05f592f4acb3f2f66b5/io.netty/netty-common/5.0.0.Alpha2 --enable-url-protocols=http,https -H:+ReportExceptionStackTraces --exclude-config \Q/Users/leo/.m2/repository/io/netty/netty-resolver-dns/4.2.19.Final/netty-resolver-dns-4.2.19.Final.jar\E ^/META-INF/native-image/ --exclude-config \Q/Users/leo/.m2/repository/io/netty/netty-codec-http2/4.2.19.Final/netty-codec-http2-4.2.19.Final.jar\E ^/META-INF/native-image/ --exclude-config \Q/Users/leo/.m2/repository/io/netty/netty-handler/4.2.19.Final/netty-handler-4.2.19.Final.jar\E ^/META-INF/native-image/ --exclude-config \Q/Users/leo/.m2/repository/io/netty/netty-codec-http/4.2.19.Final/netty-codec-http-4.2.19.Final.jar\E ^/META-INF/native-image/ --exclude-config \Q/Users/leo/.m2/repository/io/netty/netty-buffer/4.2.19.Final/netty-buffer-4.2.19.Final.jar\E ^/META-INF/native-image/ io.github.leohou0430.llmgw.app.LlmGatewayApplication
+Warning: Option 'DynamicProxyConfigurationResources' is deprecated and might be removed in a future release: This can be caused by a proxy-config.json file in your META-INF directory. Consider including proxy configuration in the reflection section of reachability-metadata.md instead.. Please refer to the GraalVM release notes.
+Warning: Option 'DynamicProxyConfigurationResources' is deprecated and might be removed in a future release: This can be caused by a proxy-config.json file in your META-INF directory. Consider including proxy configuration in the reflection section of reachability-metadata.md instead.. Please refer to the GraalVM release notes.
+========================================================================================================================
+GraalVM Native Image: Generating 'llmgw-webflux-spi-review' (executable)...
+========================================================================================================================
+For detailed information and explanations on the build output, visit:
+https://github.com/oracle/graal/blob/master/docs/reference-manual/native-image/BuildOutput.md
+------------------------------------------------------------------------------------------------------------------------
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::arrayBaseOffset has been called by com.alibaba.fastjson2.util.JDKUtils (file:/Users/leo/.m2/repository/com/alibaba/fastjson2/fastjson2/2.0.56/fastjson2-2.0.56.jar)
+WARNING: Please consider reporting this to the maintainers of class com.alibaba.fastjson2.util.JDKUtils
+WARNING: sun.misc.Unsafe::arrayBaseOffset will be removed in a future release
+Warning: Cannot register dynamic proxy for interface list: net.bytebuddy.description.method.MethodDescription$InDefinedShape$AbstractBase$Executable. Reason: Class net.bytebuddy.description.method.MethodDescription$InDefinedShape$AbstractBase$Executable not found..
+Warning: Cannot register dynamic proxy for interface list: net.bytebuddy.description.method.ParameterDescription$ForLoadedParameter$Parameter. Reason: Class net.bytebuddy.description.method.ParameterDescription$ForLoadedParameter$Parameter not found..
+Warning: Cannot register dynamic proxy for interface list: net.bytebuddy.description.method.ParameterList$ForLoadedExecutable$Executable. Reason: Class net.bytebuddy.description.method.ParameterList$ForLoadedExecutable$Executable not found..
+Warning: Cannot register dynamic proxy for interface list: net.bytebuddy.description.type.TypeDefinition$Sort$AnnotatedType. Reason: Class net.bytebuddy.description.type.TypeDefinition$Sort$AnnotatedType not found..
+Warning: Cannot register dynamic proxy for interface list: net.bytebuddy.description.type.TypeDescription. Reason: Class net.bytebuddy.description.type.TypeDescription not found..
+Warning: Cannot register dynamic proxy for interface list: net.bytebuddy.description.type.TypeDescription$ForLoadedType$Dispatcher. Reason: Class net.bytebuddy.description.type.TypeDescription$ForLoadedType$Dispatcher not found..
+Warning: Cannot register dynamic proxy for interface list: net.bytebuddy.description.type.TypeDescription$Generic. Reason: Class net.bytebuddy.description.type.TypeDescription$Generic not found..
+Warning: Cannot register dynamic proxy for interface list: net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$Delegator$ForLoadedExecutableExceptionType$Dispatcher. Reason: Class net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$Delegator$ForLoadedExecutableExceptionType$Dispatcher not found..
+Warning: Cannot register dynamic proxy for interface list: net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$Delegator$ForLoadedExecutableParameterType$Dispatcher. Reason: Class net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$Delegator$ForLoadedExecutableParameterType$Dispatcher not found..
+Warning: Cannot register dynamic proxy for interface list: net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$Delegator$ForLoadedField$Dispatcher. Reason: Class net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$Delegator$ForLoadedField$Dispatcher not found..
+Warning: Cannot register dynamic proxy for interface list: net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$Delegator$ForLoadedMethodReturnType$Dispatcher. Reason: Class net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$Delegator$ForLoadedMethodReturnType$Dispatcher not found..
+Warning: Cannot register dynamic proxy for interface list: net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$ForComponentType$AnnotatedParameterizedType. Reason: Class net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$ForComponentType$AnnotatedParameterizedType not found..
+Warning: Cannot register dynamic proxy for interface list: net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$ForOwnerType$AnnotatedType. Reason: Class net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$ForOwnerType$AnnotatedType not found..
+Warning: Cannot register dynamic proxy for interface list: net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$ForTypeArgument$AnnotatedParameterizedType. Reason: Class net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$ForTypeArgument$AnnotatedParameterizedType not found..
+Warning: Cannot register dynamic proxy for interface list: net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$ForTypeVariableBoundType$AnnotatedTypeVariable. Reason: Class net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$ForTypeVariableBoundType$AnnotatedTypeVariable not found..
+Warning: Cannot register dynamic proxy for interface list: net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$ForTypeVariableBoundType$OfFormalTypeVariable$FormalTypeVariable. Reason: Class net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$ForTypeVariableBoundType$OfFormalTypeVariable$FormalTypeVariable not found..
+Warning: Cannot register dynamic proxy for interface list: net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$ForWildcardLowerBoundType$AnnotatedWildcardType. Reason: Class net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$ForWildcardLowerBoundType$AnnotatedWildcardType not found..
+Warning: Cannot register dynamic proxy for interface list: net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$ForWildcardUpperBoundType$AnnotatedWildcardType. Reason: Class net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$ForWildcardUpperBoundType$AnnotatedWildcardType not found..
+Warning: Cannot register dynamic proxy for interface list: net.bytebuddy.utility.JavaConstant$Simple$Dispatcher. Reason: Class net.bytebuddy.utility.JavaConstant$Simple$Dispatcher not found..
+Warning: Cannot register dynamic proxy for interface list: net.bytebuddy.utility.JavaConstant$Simple$Dispatcher$OfClassDesc. Reason: Class net.bytebuddy.utility.JavaConstant$Simple$Dispatcher$OfClassDesc not found..
+Warning: Cannot register dynamic proxy for interface list: net.bytebuddy.utility.JavaConstant$Simple$Dispatcher$OfDirectMethodHandleDesc. Reason: Class net.bytebuddy.utility.JavaConstant$Simple$Dispatcher$OfDirectMethodHandleDesc not found..
+Warning: Cannot register dynamic proxy for interface list: net.bytebuddy.utility.JavaConstant$Simple$Dispatcher$OfDirectMethodHandleDesc$ForKind. Reason: Class net.bytebuddy.utility.JavaConstant$Simple$Dispatcher$OfDirectMethodHandleDesc$ForKind not found..
+Warning: Cannot register dynamic proxy for interface list: net.bytebuddy.utility.JavaConstant$Simple$Dispatcher$OfDynamicConstantDesc. Reason: Class net.bytebuddy.utility.JavaConstant$Simple$Dispatcher$OfDynamicConstantDesc not found..
+Warning: Cannot register dynamic proxy for interface list: net.bytebuddy.utility.JavaConstant$Simple$Dispatcher$OfMethodHandleDesc. Reason: Class net.bytebuddy.utility.JavaConstant$Simple$Dispatcher$OfMethodHandleDesc not found..
+Warning: Cannot register dynamic proxy for interface list: net.bytebuddy.utility.JavaConstant$Simple$Dispatcher$OfMethodTypeDesc. Reason: Class net.bytebuddy.utility.JavaConstant$Simple$Dispatcher$OfMethodTypeDesc not found..
+Warning: Cannot register dynamic proxy for interface list: net.bytebuddy.utility.JavaModule$Module. Reason: Class net.bytebuddy.utility.JavaModule$Module not found..
+Warning: Cannot register dynamic proxy for interface list: net.bytebuddy.utility.JavaModule$Resolver. Reason: Class net.bytebuddy.utility.JavaModule$Resolver not found..
+Warning: Cannot register dynamic proxy for interface list: org.gradle.api.internal.tasks.testing.TestDefinitionProcessor. Reason: Class org.gradle.api.internal.tasks.testing.TestDefinitionProcessor not found..
+Warning: Cannot register dynamic proxy for interface list: org.gradle.api.internal.tasks.testing.TestResultProcessor, org.gradle.internal.concurrent.ThreadSafe. Reason: Class org.gradle.api.internal.tasks.testing.TestResultProcessor not found..
+Warning: Cannot register dynamic proxy for interface list: org.gradle.internal.logging.events.OutputEventListener. Reason: Class org.gradle.internal.logging.events.OutputEventListener not found..
+Warning: Cannot register dynamic proxy for interface list: org.gradle.process.internal.worker.child.WorkerLoggingProtocol, org.gradle.internal.concurrent.ThreadSafe. Reason: Class org.gradle.process.internal.worker.child.WorkerLoggingProtocol not found..
+Warning: Unknown attribute(s) [allDeclaredClasses, allPublicClasses] in reflection class descriptor object
+Warning: Could not resolve org.gradle.api.internal.tasks.testing.filter.TestFilterSpec for serialization configuration.
+Warning: Could not resolve org.gradle.api.internal.tasks.testing.junitplatform.JUnitPlatformSpec for serialization configuration.
+Warning: Could not resolve org.gradle.api.internal.tasks.testing.junitplatform.JUnitPlatformTestDefinitionProcessorFactory for serialization configuration.
+Warning: Could not resolve org.gradle.api.internal.tasks.testing.worker.TestWorker for serialization configuration.
+Warning: Could not resolve org.gradle.api.internal.tasks.testing.worker.TestWorker$State for serialization configuration.
+Warning: Could not resolve org.junit.platform.launcher.TestIdentifier$SerializedForm for serialization configuration.
+[1/8] Initializing...                                                                                   (15.2s @ 0.69GB)
+ Java version: 25+37-LTS, vendor version: Oracle GraalVM 25+37.1
+ Graal compiler: optimization level: 2, target machine: x86-64-v3, PGO: ML-inferred
+ C compiler: cc (apple, x86_64, 17.0.0)
+ Garbage collector: Serial GC (max heap size: 80% of RAM)
+ 2 user-specific feature(s):
+ - com.oracle.svm.thirdparty.gson.GsonFeature
+ - org.springframework.aot.nativex.feature.PreComputeFieldFeature
+------------------------------------------------------------------------------------------------------------------------
+Build resources:
+ - 11.57GB of memory (33.7% of system memory, using available memory)
+ - 16 thread(s) (100.0% of 16 available processor(s), determined at start)
+Warning: Unknown attribute(s) [module] in bundle descriptor object
+SLF4J(W): No SLF4J providers were found.
+SLF4J(W): Defaulting to no-operation (NOP) logger implementation
+SLF4J(W): See https://www.slf4j.org/codes.html#noProviders for further details.
+[2/8] Performing analysis...  [*****]                                                                  (143.1s @ 7.31GB)
+   60,611 types,  92,557 fields, and 315,086 methods found reachable
+   30,255 types,  34,245 fields, and 121,415 methods registered for reflection
+      108 types,      96 fields, and      85 methods registered for JNI access
+        0 downcalls and 0 upcalls registered for foreign access
+        5 native libraries: -framework CoreServices, -framework Foundation, dl, pthread, z
+[3/8] Building universe...                                                                              (21.9s @ 7.83GB)
+[4/8] Parsing methods...      [*****]                                                                   (26.5s @ 6.88GB)
+[5/8] Inlining methods...     [***]                                                                      (4.2s @ 7.57GB)
+[6/8] Compiling methods...    [*************]                                                          (171.4s @ 8.81GB)
+[7/8] Laying out methods...   [******]                                                                  (38.0s @ 7.51GB)
+[8/8] Creating image...       [****]                                                                    (18.8s @ 4.15GB)
+ 146.13MB (48.47%) for code area:   170,705 compilation units
+ 154.34MB (51.19%) for image heap:1,143,952 objects and 1,211 resources
+   1.03MB ( 0.34%) for other data
+ 301.49MB in total image size, 301.49MB in total file size
+------------------------------------------------------------------------------------------------------------------------
+Top 10 origins of code area:                                Top 10 object types in image heap:
+  46.02MB openai-java-core-4.100.0.jar                        38.74MB byte[] for code metadata
+  22.91MB svm.jar (Native Image)                              37.73MB byte[] for embedded resources
+  16.99MB java.base                                           23.78MB byte[] for java.lang.String
+   7.60MB jdk.compiler                                        14.43MB byte[] for reflection metadata
+   5.68MB kotlin-reflect-2.3.21.jar                            8.48MB java.lang.Class
+   3.77MB java.xml                                             7.81MB java.lang.String
+   3.04MB tomcat-embed-core-11.0.27.jar                        6.30MB com.oracle.svm.core.hub.DynamicHubCompanion
+   2.38MB spring-core-7.0.10.jar                               1.83MB c.o.svm.core.hub.DynamicHub$ReflectionMetadata
+   2.29MB jackson-databind-3.1.7.jar                           1.47MB c.o.svm.core.hub.DynamicHub$DynamicHubMetadata
+   2.03MB jackson-databind-2.21.7.jar                          1.33MB c.oracle.svm.core.reflect.SubstrateMethodAccessor
+  30.68MB for 179 more packages                               12.43MB for 11574 more object types
+                            Use '--emit build-report' to create a report with more details.
+------------------------------------------------------------------------------------------------------------------------
+Security report:
+ - Binary includes Java deserialization.
+ - CycloneDX SBOM with 114 component(s) is embedded in binary (6.03kB). 146 type(s) could not be associated to a component.
+ - Advanced obfuscation not enabled; enable with '-H:AdvancedObfuscation=""' (experimental support).
+------------------------------------------------------------------------------------------------------------------------
+Recommendations:
+ PGO:  Use Profile-Guided Optimizations ('--pgo') for improved throughput.
+ FUTR: Use '--future-defaults=all' to prepare for future releases.
+ AWT:  Use the tracing agent to collect metadata for AWT.
+ HEAP: Set max heap for improved and more predictable memory usage.
+ CPU:  Enable more CPU features with '-march=native' for improved performance.
+------------------------------------------------------------------------------------------------------------------------
+                     45.9s (10.3% of total time) in 2052 GCs | Peak RSS: 11.40GB | CPU load: 11.18
+------------------------------------------------------------------------------------------------------------------------
+Build artifacts:
+ /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/llmgw-webflux-spi-review (executable)
+========================================================================================================================
+Finished generating 'llmgw-webflux-spi-review' in 7m 25s.
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for llmgw4j 0.3.0:
+[INFO] 
+[INFO] llmgw4j ............................................ SUCCESS [  0.241 s]
+[INFO] llmgw-core ......................................... SUCCESS [  2.616 s]
+[INFO] llmgw-governance ................................... SUCCESS [  0.009 s]
+[INFO] llmgw-governance-api ............................... SUCCESS [  0.217 s]
+[INFO] llmgw-tokenizer .................................... SUCCESS [  0.006 s]
+[INFO] llmgw-tokenizer-api ................................ SUCCESS [  0.104 s]
+[INFO] llmgw-tokenizer-heuristic .......................... SUCCESS [  0.087 s]
+[INFO] llmgw-governance-default ........................... SUCCESS [  0.891 s]
+[INFO] llmgw-governance-redis ............................. SUCCESS [  0.391 s]
+[INFO] llmgw-engine ....................................... SUCCESS [  0.004 s]
+[INFO] llmgw-engine-api ................................... SUCCESS [  0.215 s]
+[INFO] llmgw-provider ..................................... SUCCESS [  0.004 s]
+[INFO] llmgw-provider-api ................................. SUCCESS [  0.081 s]
+[INFO] llmgw-engine-webflux ............................... SUCCESS [  0.409 s]
+[INFO] llmgw-engine-vt .................................... SUCCESS [  0.201 s]
+[INFO] llmgw-provider-http-jdk ............................ SUCCESS [  0.243 s]
+[INFO] llmgw-provider-openai .............................. SUCCESS [  0.062 s]
+[INFO] llmgw-provider-openai-sdk .......................... SUCCESS [  0.305 s]
+[INFO] llmgw-provider-anthropic ........................... SUCCESS [  0.106 s]
+[INFO] llmgw-tokenizer-jtokkit ............................ SUCCESS [  0.115 s]
+[INFO] llmgw-app .......................................... SUCCESS [07:41 min]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  07:49 min
+[INFO] Finished at: 2026-11-10T15:34:23+08:00
+[INFO] ------------------------------------------------------------------------

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent><groupId>io.github.leohou0430</groupId><artifactId>llmgw-parent</artifactId><version>0.3.0</version><relativePath>../pom.xml</relativePath></parent>
+  <artifactId>llmgw-provider</artifactId>
+  <packaging>pom</packaging>
+  <description>Provider contracts and isolated named implementations discovered by Dubbo SPI</description>
+  <properties><llmgw.foundation.enforcer.skip>false</llmgw.foundation.enforcer.skip></properties>
+  <modules>
+    <module>llmgw-provider-api</module>
+    <module>llmgw-provider-http-jdk</module>
+    <module>llmgw-provider-openai</module>
+    <module>llmgw-provider-openai-sdk</module>
+    <module>llmgw-provider-anthropic</module>
+  </modules>
+</project>

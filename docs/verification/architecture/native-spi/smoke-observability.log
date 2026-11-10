@@ -1,0 +1,33 @@
+=== engine=webflux ===
+  [PASS] json overhead header -- X-LLMGW-Overhead-Ms: 82.5
+  [PASS] json upstream header -- X-LLMGW-Upstream-Ms: 102.2
+  [PASS] correlation id echoed -- X-Request-Id: obs-correlation-1
+  [PASS] sse preflight overhead header -- X-LLMGW-Overhead-Ms: 1.2
+  [PASS] sse omits post-commit upstream header -- no upstream header (timing lives in meters)
+  [PASS] sse still completes -- data: [DONE] present
+  [PASS] ttft timer registered -- llmgw.ttft
+  [PASS] upstream timer registered -- llmgw.upstream
+  [PASS] gateway overhead timer registered -- llmgw.overhead
+  [PASS] engine metric tag = webflux -- engine tags: engine=webflux,
+  [PASS] no unresolved engine tag -- engine tags: engine=webflux,
+  [PASS] metrics json has no NaN -- finite values only
+  [PASS] audit carries ttftMs -- ttftMs
+  [PASS] audit carries gatewayOverheadMs -- gatewayOverheadMs
+  [PASS] audit carries upstreamMs -- upstreamMs
+=== engine=vt ===
+  [PASS] json overhead header -- X-LLMGW-Overhead-Ms: 42.1
+  [PASS] json upstream header -- X-LLMGW-Upstream-Ms: 115.9
+  [PASS] correlation id echoed -- X-Request-Id: obs-correlation-1
+  [PASS] sse preflight overhead header -- X-LLMGW-Overhead-Ms: 0.7
+  [PASS] sse omits post-commit upstream header -- no upstream header (timing lives in meters)
+  [PASS] sse still completes -- data: [DONE] present
+  [PASS] ttft timer registered -- llmgw.ttft
+  [PASS] upstream timer registered -- llmgw.upstream
+  [PASS] gateway overhead timer registered -- llmgw.overhead
+  [PASS] engine metric tag = vt -- engine tags: engine=vt,
+  [PASS] no unresolved engine tag -- engine tags: engine=vt,
+  [PASS] metrics json has no NaN -- finite values only
+  [PASS] audit carries ttftMs -- ttftMs
+  [PASS] audit carries gatewayOverheadMs -- gatewayOverheadMs
+  [PASS] audit carries upstreamMs -- upstreamMs
+PASS=30 FAIL=0

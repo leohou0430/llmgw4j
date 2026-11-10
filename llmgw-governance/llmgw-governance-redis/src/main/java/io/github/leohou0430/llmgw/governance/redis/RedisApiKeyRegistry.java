@@ -3,7 +3,7 @@ package io.github.leohou0430.llmgw.governance.redis;
 import io.github.leohou0430.llmgw.core.config.GatewayProperties;
 import io.github.leohou0430.llmgw.core.governance.ApiKeyRegistry;
 import io.github.leohou0430.llmgw.governance.GovernancePacks;
-import org.springframework.data.redis.core.StringRedisTemplate;
+import redis.clients.jedis.JedisPooled;
 import tools.jackson.databind.json.JsonMapper;
 import tools.jackson.databind.node.ObjectNode;
 
@@ -25,15 +25,15 @@ public final class RedisApiKeyRegistry implements ApiKeyRegistry {
 
     private static final JsonMapper MAPPER = JsonMapper.builder().build();
 
-    private final StringRedisTemplate redis;
+    private final JedisPooled redis;
     private final String hashKey;
     private final boolean production;
 
-    public RedisApiKeyRegistry(StringRedisTemplate redis, GatewayProperties properties) {
+    public RedisApiKeyRegistry(JedisPooled redis, GatewayProperties properties) {
         this(redis, properties, GovernancePacks.DEFAULT_REDIS_KEY_PREFIX);
     }
 
-    public RedisApiKeyRegistry(StringRedisTemplate redis, GatewayProperties properties,
+    public RedisApiKeyRegistry(JedisPooled redis, GatewayProperties properties,
                                String prefix) {
         this.redis = redis;
         this.production = properties.isProduction();
@@ -70,7 +70,7 @@ public final class RedisApiKeyRegistry implements ApiKeyRegistry {
         node.put("budgetMicroUsd", key.budgetMicroUsd());
         var models = node.putArray("allowedModels");
         key.allowedModels().forEach(models::add);
-        redis.<String, String>opsForHash().put(hashKey, token, MAPPER.writeValueAsString(node));
+        redis.hset(hashKey, token, MAPPER.writeValueAsString(node));
     }
 
     @Override
@@ -78,7 +78,7 @@ public final class RedisApiKeyRegistry implements ApiKeyRegistry {
         if (token == null || token.isBlank() || (production && "sk-demo".equals(token))) {
             return Optional.empty();
         }
-        Object json = redis.<String, String>opsForHash().get(hashKey, token);
+        Object json = redis.hget(hashKey, token);
         if (json == null) {
             return Optional.empty();
         }
@@ -87,7 +87,7 @@ public final class RedisApiKeyRegistry implements ApiKeyRegistry {
 
     @Override
     public Collection<ApiKey> all() {
-        Map<String, String> entries = redis.<String, String>opsForHash().entries(hashKey);
+        Map<String, String> entries = redis.hgetAll(hashKey);
         List<ApiKey> out = new ArrayList<>(entries.size());
         entries.forEach((token, json) -> out.add(parse(token, json)));
         return List.copyOf(out);

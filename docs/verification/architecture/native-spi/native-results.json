@@ -1,0 +1,14 @@
+{
+  "platform": "macOS x86_64",
+  "build": "GraalVM native-image -Ob; same Maven AOT classpath plus SharedArenaSupport",
+  "compiler": "native-image 25 2025-09-16\nGraalVM Runtime Environment Oracle GraalVM 25+37.1 (build 25+37-LTS-jvmci-b01)\nSubstrate VM Oracle GraalVM 25+37.1 (build 25+37-LTS, serial gc, compressed references)",
+  "binary": "bench/results/native-spi-release-030/llmgw-webflux-quick",
+  "sha256": "5910b25747d9cc1f14ea8a19fefd75fea406673d6adfd7eda005e55da4351900",
+  "checks": {
+    "health_json_sse_shutdown": true,
+    "stream_pass": 34,
+    "stream_fail": 0,
+    "protocol_pass": 28,
+    "protocol_fail": 0
+  }
+}

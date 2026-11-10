@@ -1,29 +1,16 @@
 package io.github.leohou0430.llmgw.app;
 
-import io.github.leohou0430.llmgw.core.config.GatewayProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.ComponentScan;
 
-/**
- * Composition root. IMPORTANT: component scanning deliberately EXCLUDES
- * {@code io.github.leohou0430.llmgw.governance} -- the default governance implementations are
- * registered as an auto-configuration ({@code META-INF/spring/...AutoConfiguration.imports})
- * guarded by {@code @ConditionalOnMissingBean}, so user-supplied SPI beans always
- * win. Scanning that package here would re-register the defaults as ordinary
- * beans and break that ordering guarantee.
- */
+/** HTTP composition root. Only app and engine adapters are scanned; foundation packs use Dubbo SPI. */
 @SpringBootApplication
 @ComponentScan(basePackages = {
         "io.github.leohou0430.llmgw.app",
         "io.github.leohou0430.llmgw.engine.webflux",
-        "io.github.leohou0430.llmgw.engine.vt",
-        "io.github.leohou0430.llmgw.provider.openai",
-        "io.github.leohou0430.llmgw.provider.anthropic",
-        "io.github.leohou0430.llmgw.tokenizer.jtokkit"
+        "io.github.leohou0430.llmgw.engine.vt"
 })
-@EnableConfigurationProperties(GatewayProperties.class)
 public class LlmGatewayApplication {
 
     public static void main(String[] args) {

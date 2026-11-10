@@ -18,7 +18,9 @@ Java 包名 `io.github.leohou0430.llmgw`，采用 [Apache-2.0](LICENSE) 许可�
 > 部署前的安全边界见 [SECURITY.md](SECURITY.md)。
 > 生产必须启用 `gateway.production=true`；默认配置仅用于本地演示。金额硬预算尚无内建持久共享账本，不能作为生产财务保证。
 
-> 当前发布：**v0.2.0**。升级变化与兼容边界见 [发布说明](docs/releases/v0.2.0.md)，性能证据见 [性能说明](docs/PERFORMANCE.md)。
+> 当前发布：**v0.3.0**。升级变化与兼容边界见 [发布说明](docs/releases/v0.3.0.md)，性能证据见 [性能说明](docs/PERFORMANCE.md)。
+
+> v0.3.0 引入原生 Dubbo SPI / 多模块重构；从 v0.2.0 升级的 Java 扩展作者请阅读 [扩展与迁移说明](docs/EXTENSIONS.md)。
 
 ## 核心能力（对照主流网关差距分析补齐，详见 [docs/gap-analysis.md](docs/gap-analysis.md)）
 
@@ -86,19 +88,24 @@ llmgw4j 是**模型数据面网关**：字节保真透传 + LLM 语义治理。�
 
 | 模块 | 职责 |
 |---|---|
-| `llmgw-core` | 纯 SPI + 协议薄 DTO、Jackson 3 编解码、路由、请求管线。**不依赖任何具体实现组件**（外部依赖仅 Spring 配置注解、Jackson、Reactor 类型） |
+| `llmgw-core` | 普通配置 POJO、协议 DTO/解析、路由与治理契约、Dubbo 扩展上下文；**无 Spring/Reactor 依赖** |
 | `llmgw-governance` | **治理子系统**：聚合 POM 兼子模块父 POM（`packaging=pom`，本身不产出 jar），下挂 1 个 API 模块 + 2 个实现包 |
-| └ `llmgw-governance-api` | 实现包公共契约（框架中立）：`GovernanceLimits`（配置归一化）、`QuotaMath`（配额预留/结算）、`UsageSummaries`、`GovernancePacks`（自动装配与 key 前缀常量）。**只依赖 core**，不引入 Caffeine / Micrometer / Jackson / Redis |
-| └ `llmgw-governance-default` | 默认全内存实现包（自动装配）：Caffeine 缓存、原子 token 桶、用量账本、JSON 快照、虚拟线程旁路、Micrometer。所有 bean 带 `@ConditionalOnMissingBean`，**声明自己的实现即自动替换默认实现** |
+| └ `llmgw-governance-api` | 实现包公共契约（框架中立）：`GovernanceLimits`（配置归一化）、`QuotaMath`（配额预留/结算）、`UsageSummaries`、`GovernancePacks`（命名扩展与 key 前缀常量）。**只依赖 core**，不引入 Caffeine / Micrometer / Jackson / Redis |
+| └ `llmgw-governance-default` | 默认全内存实现包（原生 Dubbo module）：Caffeine 缓存、原子 token 桶、用量账本、JSON 快照、虚拟线程旁路、Micrometer。显式 Java 构造和实例级资源所有权，使用命名模块的 `replace` 替换实现 |
 | └ `llmgw-governance-redis` | **可选**（`-Predis` 才链入）：Redis 版 `TokenLimiter` / `UsageLedger` / `CircuitBreaker`，全部用 Lua 脚本保证跨副本原子性；默认 fat jar 不含该模块与任何 Redis 依赖 |
 | `llmgw-engine` | **数据面子系统**：聚合 POM 兼子模块父 POM（`packaging=pom`，本身不产出 jar），下挂 1 个 API 模块 + 2 个实现模块 |
 | └ `llmgw-engine-api` | 数据面公共契约（框架中立）：`EngineKind`、`AbstractEngineConfiguration`、`EngineHeaders`、`EngineReasons`、`EngineRoutes`、`SseChunkAccounting`、`EngineTimings`、`EngineProfiles`。**只依赖 core**，不引入 WebFlux / Servlet |
 | └ `llmgw-engine-webflux` | 反应式数据面（`ServerHttpResponse.writeWith` 裸写 SSE）。依赖 `engine-api` + core + webflux starter |
 | └ `llmgw-engine-vt` | 虚拟线程数据面（Servlet 流 + JDK HttpClient 阻塞读）。依赖 `engine-api` + core + web starter |
-| `llmgw-provider-openai` | `openai-java` 4.100.0 适配：请求校验 + 可选真实上游连通性验证，**不进转发链** |
+| `llmgw-provider` | provider-api + http-jdk / openai / openai-sdk / anthropic，统一多模块域 |
+| └ `llmgw-provider-api` | 原生 Flow/Future、认证与验证契约；不依赖 Reactor/Spring |
+| └ `llmgw-provider-http-jdk` | 独立 JDK HTTP 转发、需求/取消/超时与资源关闭 |
+| └ `llmgw-provider-openai` / `anthropic` | 无框架认证方言，经 Dubbo 命名选择 |
+| └ `llmgw-provider-openai-sdk` | SDK 校验/显式连通性检查，与轻量认证模块分离 |
+| `llmgw-tokenizer` | tokenizer-api + heuristic / 可选 jtokkit，经 Dubbo 选择准入估算器 |
 | `llmgw-app` | 组合根：启动类、profile 配置、mock 上游、管理 API、native hints |
 
-两个能力域的依赖方向均由 Maven 强制为**单向无环**：
+各能力域的依赖方向均由 Maven 强制为**单向无环**：
 
 ```
 llmgw-core   领域核心：SPI、协议 DTO、路由、请求管线（engine / governance / provider / app 共用）
@@ -119,60 +126,19 @@ llmgw-app   组合根：同一 fat jar 装两个数据面实现（profile 二选
 下层模块反向依赖上层，形成环。两个 `-api` 承载的是「**只有本域实现需要、
 且多个实现逐字重复**」的部分，不是 SPI 定义本身。
 
-### 模块布局规范（强制）
+### 模块布局与 SPI 扩展
 
-凡有多实现的能力域，一律 `聚合层 + 一个 -api + 每个实现一个 module`：
-聚合 POM 为 `packaging=pom` 且兼作子模块 parent；`api` 只依赖 `llmgw-core`；
-实现模块依赖本域 `api`、彼此不依赖、Java 包必须是 api 包的子包（防 split package）；
-根 `pom.xml` 只列聚合目录。领域 SPI 留在 `llmgw-core` 不动。
+所有多实现能力域统一为「聚合 parent + 一个 api + 每个实现一个 child module」。现有 engine、governance、provider、tokenizer 都遵循此规则；未来新增域或实现也由 CI 自动检查，禁止重新在根目录平铺实现。
 
-`./bin/check-module-layout.sh` 会**自动发现**所有能力域，并在 CI 每次 PR 校验这些
-规则（新增域无需改脚本）。新增实现 / 新能力域的完整步骤见 `CONTRIBUTING.md` 第 2 节。
-当前两个域为 `llmgw-engine/` 与 `llmgw-governance/`；`llmgw-provider-openai`
-尚只有一个验证器，不构成多实现域，出现第二个 provider 时按同一模板拆分。
+基础能力采用真实 Dubbo `@SPI` / `META-INF/dubbo` / `ExtensionLoader`。治理和有构造依赖的客户端由命名 `ExtensionModule` 使用普通 Java 构造，状态与资源归各自 `ExtensionContext`。Spring 仅在 app 桥接配置和 HTTP 引擎；基础模块的源码与传递依赖均禁止 Spring/Reactor。
 
-### SPI 扩展点
+自定义实现需在独立模块提供命名 factory，并在 seal 前显式替换类型绑定；原来的 `@Component` / `@ConditionalOnMissingBean` 覆盖方式已移除。Provider 的认证、验证、上游契约在 provider-api；TokenCounter 在 tokenizer-api；通用领域契约继续留 core，避免依赖环。详细示例、旧新 API 对照、资源关闭与 native 边界见 [扩展说明](docs/EXTENSIONS.md)及 [贡献规范](CONTRIBUTING.md)。
 
-核心逻辑全部是 SPI 接口，core 不 import 任何实现类；引擎与实现之间只通过下面的接口对话。
-默认实现由 `GovernanceDefaultsConfiguration`（Spring Boot 自动装配）提供，每个 bean 都有
-`@ConditionalOnMissingBean(SPI类型)` 守卫——**在自己的配置里声明一个实现 bean，默认实现自动退位**：
-
-| SPI 接口（llmgw-core） | 职责 | 默认实现（llmgw-governance-default） | 换成自己的典型场景 |
-|---|---|---|---|
-| `GovernanceChain` | 准入管线（鉴权→配额→限流→缓存） | `DefaultGovernanceChain` | 分布式准入（Redis/Sidecar 决策） |
-| `ApiKeyRegistry` | API Key 鉴权与元数据 | `InMemoryApiKeyRegistry` | 数据库/OIDC 签发的密钥 |
-| `TokenLimiter` | 按Key的 token 速率限制 | `AtomicTokenLimiter` | Redis 令牌桶 / 多实例共享限流 |
-| `UsageLedger` | 用量账本 + 配额预留 | `InMemoryUsageLedger` | 计费系统落库 |
-| `SemanticCache` | 语义/精确缓存 | `CaffeineSemanticCache` | Redis、向量检索语义缓存 |
-| `AuditSink` | 审计事件 | `InMemoryAuditSink` | Kafka / ELK 审计管道 |
-| `SnapshotStore` | 用量快照持久化 | `JsonSnapshotStore` | JDBC / 对象存储 |
-| `Router` | 模型路由 + fallback 链 | `ConfigRouter` | 动态路由 / 权重中心化配置 |
-| `UpstreamProvider` | 上游转发（流式+非流式） | `JdkHttpUpstream`（app） | gRPC 上游、多协议适配 |
-| `CircuitBreaker` | 上游健康门（开路/半开探测） | `WindowedCircuitBreaker` | 共享 Redis 熔断状态、更细粒度策略 |
-| `RouteConfigSource` | 路由表不可变快照 + 原子替换 | `InMemoryRouteConfigSource` | 配置中心监听、GitOps 拉取、DB 路由 |
-
-替换示例（一个类 + 一个注解，无需改网关任何代码）：
-
-```java
-@Component
-public class RedisTokenLimiter implements TokenLimiter {
-    // ...
-}
-```
-
-启动日志与压测口径不变；`AtomicTokenLimiter` 自动退位，其余默认实现继续装配。
-依赖方向由 Maven 强制：`llmgw-engine/*` 与 `llmgw-provider-*` 的 POM **不依赖任何治理实现包**；
-两个数据面实现之间互不依赖，只共同依赖 `llmgw-engine-api`；两个治理实现包之间也互不依赖，
-只共同依赖 `llmgw-governance-api`。
-想换掉整套治理，把 app 里的 `llmgw-governance-default` 依赖替换成你自己的实现模块即可。
-
-**监控**：治理链路通过 `GovernanceMetrics` 接 Micrometer（`ObjectProvider<MeterRegistry>`，无 Registry 时静默降级），
-计数器/计时器带 `key`、`model`、`engine` 标签；`/admin/snapshot`、`/admin/keys` 提供业务侧视图，
-`/actuator/*` 提供标准运维视图。
+**检查**：`bin/check-module-layout.sh`、`bin/check-native-boundaries.py` 与 Maven Enforcer。app 可向原生图显式提供 Micrometer Registry，基础度量不再查找 Spring ObjectProvider。
 
 ## 二、关键设计判断（面试可讲）
 
-1. **为什么同时要 WebFlux 和虚拟线程**：不是叠加，是做单变量对照实验。两个引擎共用同一治理层和同一个上游客户端，唯一变量就是并发模型。两条数据面都是各自并发模型的「正统实现」：WebFlux 流式 + 非流式全走 `sendAsync`，请求路径没有任何阻塞 offload；VT 两条路径都直接阻塞自己的虚拟线程。
+1. **为什么同时要 WebFlux 和虚拟线程**：不是叠加，是做单变量对照实验。两个引擎共用同一治理层和同一个上游客户端，唯一变量就是并发模型。两条数据面都是各自并发模型的「正统实现」：WebFlux 网络转发走 `sendAsync`，阻塞治理通过虚拟线程移出事件循环；VT 两条路径都直接阻塞自己的虚拟线程。
 2. **为什么热点链路不让 SDK 碰**：SDK 会反序列化再序列化，厂商扩展字段（`reasoning_content` 等）会丢。网关的价值是协议保真，所以网关按协议各解析少量字段（model / stream / prompt 类文本）用于路由和计量，原始 chunk 与响应体原样透传，网关不做任何协议翻译。
 3. **为什么治理分热路径/旁路**：鉴权、配额、限流是纯内存原子操作，留在热路径；SSE 计量、账单、审计、快照交给公共 `VirtualThreadPerTaskExecutor`，避免阻塞事件循环，也让两个引擎的对照公平。
 4. **为什么不用 Spring AI / LangChain4j**：它们是应用框架（`ChatModel` / `AiServices`），目标是帮应用「调模型」；网关要的是「原样转发字节流」。选官方 `openai-java` 只做校验与连通性验证，是折中且克制的选择。
@@ -182,7 +148,8 @@ public class RedisTokenLimiter implements TokenLimiter {
 8. **请求体只解析一次**：`GatewayPipeline.enter` 解析出的 `ParsedRequest` 挂在 `GatewayDecision` 上，两个 controller 直接复用，不再各 parse 一遍同一个 JSON。准入与转发共用一次反序列化结果，是网关热路径最基本的节约。
 9. **传输层 EOF ≠ 协议层完成**：上游干净关闭连接时 HTTP 客户端不会抛异常，代理若把「没报错」当成功、甚至替上游补一帧终止帧，就会把被截断的回答伪装成完整回答——客户端不报错、账单不记失败、上游故障被静默吞掉。本项目把「上游是否显式发出**该协议自己的终止帧**」作为唯一完成判据（chat=`data: [DONE]`、Responses=`response.completed`、Messages=`message_stop`；images / videos 无流式），两个引擎共用 `ProtocolCodec.truncatedMessage(kind)`；网关**永远不伪造终止帧**——带内错误后的 `[DONE]` 只对 CHAT 追加，responses / messages 的错误事件之后直接干净断流，绝不替上游补另一种协议的终止帧。这是透明代理与「自作主张的中间件」的分界线。
 
-10. **透明代理要同时守住三条资源契约**：① 上游状态必须在 `BodyHandler.apply(ResponseInfo)` 阶段判定，晚于 body 订阅的 `whenComplete` 检查会被已发出的 `onComplete` 吞掉，4xx/5xx 的 JSON 错误体会被当成 `data:` 行发给客户端；② 下游 demand 要桥接到 JDK `Flow.Subscription`，`request(Long.MAX_VALUE)` + 无界 `Flux.create` 缓冲会让慢客户端把堆吃光；③ 只有**下游取消**才应该取消 `sendAsync` future 和 body 订阅。这里有个实测过的反例：把取消钩子同时挂到 `onDispose` 上，Reactor 在**正常完成**时也会触发它，HTTP/1.1 keep-alive 连接被提前拆掉，同连接上其他在途请求全部报 `Request cancelled`，50 VU 下 SSE 失败率 **16%**；改成只挂 `onCancel` 后归零。取消本身也不是 Reactor 的 terminal 信号，只挂 `doOnComplete`/`doOnError` 会**永久漏掉账单并泄漏配额预留** —— 两个引擎统一改 `doFinally`。回归里专门加了「40 路并发 SSE 零 502」断言，因为串行 curl 永远暴露不了连接复用竞态。
+10. **透明代理要同时守住三条资源契约**：上游非 2xx 在 BodyHandler 收到响应头时判定；下游 demand 透传给 JDK Flow.Subscription；正常结束不取消 transport，只有取消/超时等终止路径才中止实际 HTTP future/订阅。v0.3.0 将该逻辑移入无 Reactor 的 provider-http-jdk。账单和审计必须覆盖取消，退还预留；单元测试与双引擎「40 路并发 SSE」契约覆盖连接复用竞态。
+
 11. **计量以 usage 为准，准入以原子预留为准**：SSE 的 `usage.completion_tokens` 是权威值，必须**覆盖**而非叠加逐 delta 估算（否则 8 个 chunk 记成 16）；非流式要从 `usage` 取真实值，不能拿整个 JSON 信封（id/时间戳/object）估算。配额检查 `used()+estimate>quota` 是读-改-写竞态，并发下会把额度超卖 N 倍，改成含在途请求的 CAS 预留、`finish` 时释放；令牌桶按实际用量结算，失败 / 取消 / 缓存命中退还预扣；refill 的时间戳只在真的铸出整数 token 时推进，否则高频调用会把不足 1 token 的时间片永久丢掉。
 12. **缓存键必须是完整请求，不是 prompt**：`model + 文本 prompt` 会让 `temperature` / `max_tokens` / `tools` / 多模态 content 不同但文本相同的两个请求互串答案，并让截断答案污染后续 300 秒。改成完整请求体的 SHA-256（保守精确缓存：宁可 miss 不可错答），且只缓存校验过 `choices` 的合法响应。
 13. **管理面按默认最小暴露**：`/admin/routes` 原本直接序列化 `Route` record，里面的 `apiKey` 就是 `${DASHSCOPE_API_KEY}` —— 一个未鉴权 GET 会把上游厂商密钥交出去。现在只回显 `apiKeyConfigured` 布尔值，并支持 `LLMGW_ADMIN_TOKEN` 网关管理接口（本地演示默认空）。快照恢复改替换语义、SDK 客户端用后关闭、请求体有 4MB 上限。
@@ -285,7 +252,7 @@ curl -sS -H 'X-Admin-Token: change-me' http://127.0.0.1:8080/admin/routes
 接真实上游（阿里百炼 OpenAI 兼容端点，读环境变量 `DASHSCOPE_API_KEY`）：
 
 ```bash
-java -jar llmgw-app/target/llmgw-app-0.2.0.jar \
+java -jar llmgw-app/target/llmgw-app-0.3.0.jar \
   --spring.profiles.active=webflux,real
 curl -sS http://127.0.0.1:8080/admin/verify   # SDK 连通性验证
 ```
@@ -296,7 +263,7 @@ curl -sS http://127.0.0.1:8080/admin/verify   # SDK 连通性验证
 
 ```bash
 # 结构校验：能力域布局（CI 每次 PR 也跑，新增域自动纳入）
-./bin/check-module-layout.sh                 # 27 项：依赖方向、实现互不依赖、无 split package
+./bin/check-module-layout.sh                 # 依赖方向、实现互不依赖、无 split package
 
 ./bin/smoke-stream-errors.sh                                             # JVM，双引擎
 BINARY="$PWD/bin/native/llmgw-webflux" ./bin/smoke-stream-errors.sh webflux  # native 产物
@@ -368,15 +335,15 @@ JVM 冷启动 **3.538–6.946s**、native **0.387–0.560s**（矩阵实测，�
 
 ## 五、性能
 
-本轮减少 SSE 字符串复制和 WebFlux header 集合创建，局部分配分别下降约 22%–48% 和 32%。64 个 A/B 样本、约 422 万请求零错误。WebFlux SSE 吞吐中位数在治理开/关两批分别 +7.3% / +5.2%，但范围重叠；JSON 一正一负，不能声称全面稳定提速。
+历史冻结性能审查减少 SSE 字符串复制和 WebFlux header 集合创建，局部分配分别下降约 22%–48% 和 32%。64 个 A/B 样本、约 422 万请求零错误。WebFlux SSE 吞吐中位数在治理开/关两批分别 +7.3% / +5.2%，但范围重叠；JSON 一正一负，不能声称全面稳定提速。
 
-[最新性能说明](docs/PERFORMANCE.md)提供完整结果、JFR、失败的线程实验和剩余风险。跨网关对照是旧固定产物的历史批次，不能作为本次发布的最新排名；本轮未开展 native 性能复测。
+[最新性能说明](docs/PERFORMANCE.md)提供完整结果、JFR、失败的线程实验和剩余风险。跨网关对照是旧固定产物的历史批次，不能作为本次发布的最新排名；v0.3.0 的 SPI/Flow 重构没有重新执行网关或 native 性能 A/B。
 
 ## 六、风险清单（当前）
 
 | 风险 | 现状 / 预案 |
 |---|---|
-| **官方 SDK 很重** | `com.openai:openai-java` 4.100.0 core jar 约 **71MB**，fat jar 因此 127MB、native 代码区 46MB。它只在校验/连通性路径，可按需摘除 |
+| **官方 SDK 很重** | `com.openai:openai-java` 4.100.0 SDK 对产物体积有明显影响；旧构建的大小不能代替 v0.3.0 资产测量。SDK 只在校验/连通性路径，轻量认证已独立拆包 |
 | **默认全内存，多副本用 `-Predis`** | `-Predis` 覆盖 TokenLimiter/UsageLedger/CircuitBreaker/**ApiKeyRegistry/SemanticCache/TaskRouteSticky**；仍是本地实现的 SPI：`BudgetLedger` / `RequestLogSink` / `SnapshotStore`（生产替换为 JDBC/Redis） |
 | **配额不是最终用量硬上限** | 准入按估算做含在途的原子预留，成功后按实际用量结算；并发下最终 used 可能略超 quota（预留+结算语义，非超卖竞态）。需要硬上限改「按估算上限结算」 |
 | **Redis 模式是延迟换一致性** | 每请求 2–4 次 Redis 往返，未做流水线合并；只需跨副本一致时启用，默认全内存零影响 |
@@ -412,14 +379,15 @@ JVM 冷启动 **3.538–6.946s**、native **0.387–0.560s**（矩阵实测，�
 首 chunk 前后两套错误语义、`onCancel` 取消结算）与双引擎行为一致，
 并贴出四个回归脚本的 PASS/FAIL。
 
-**CI**：JDK 25 下执行默认和 `-Predis` 的 `mvn clean verify`、模块布局、OpenAPI 严格 YAML/操作结构校验，以及同一 jar 的双引擎流式错误契约。tag 发布构建默认/Redis JAR、Linux amd64 WebFlux native、文档和 SHA256；全部构建及 native 流契约通过后统一发布。
+**CI**：JDK 25 下执行默认、`-Predis` 和 `-Predis,jtokkit,otel` 的 `mvn clean verify`、模块布局、OpenAPI 严格 YAML/操作结构校验，以及同一 jar 的双引擎流式错误契约。tag 发布构建默认/Redis JAR、Linux amd64 WebFlux native、文档和 SHA256；全部构建及 native 流契约通过后统一发布。
 
 
 ## 九、文档索引
 
 | 文档 | 内容 |
 |---|---|
-| [docs/PERFORMANCE.md](docs/PERFORMANCE.md) | v0.2.0 性能结论、范围、证据及历史归档 |
+| [docs/EXTENSIONS.md](docs/EXTENSIONS.md) | 原生 SPI、多模块、配置与内部 API 迁移 |
+| [docs/PERFORMANCE.md](docs/PERFORMANCE.md) | 历史性能结果、v0.3.0 未复测范围及证据归档 |
 | [docs/gap-analysis.md](docs/gap-analysis.md) | 当前能力边界、优先级与历史统一容器对照 |
 | [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) | 部署拓扑 / TLS 立场 / 多副本 |
 | [docs/USER_GUIDE.md](docs/USER_GUIDE.md) / [docs/CONFIGURATION.md](docs/CONFIGURATION.md) | 接口与配置全典 |

@@ -21,7 +21,7 @@ import java.time.Duration;
  * The endpoint URL is the only config; the JSON contract mirrors what the
  * bundled mock upstream serves at /mock/v1/guardrail for smoke tests.
  */
-public class HttpGuardrail implements Guardrail {
+public class HttpGuardrail implements Guardrail, AutoCloseable {
 
     private static final Logger log = LoggerFactory.getLogger(HttpGuardrail.class);
 
@@ -104,4 +104,5 @@ public class HttpGuardrail implements Guardrail {
             return Verdict.unavailable("guardrail service unavailable");
         }
     }
+    @Override public void close() { client.close(); }
 }

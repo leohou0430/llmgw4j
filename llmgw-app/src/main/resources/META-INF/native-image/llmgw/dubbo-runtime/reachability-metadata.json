@@ -1,0 +1,478 @@
+{
+  "reflection": [
+    {
+      "type": "org.apache.dubbo.common.CommonScopeModelInitializer",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "org.apache.dubbo.common.beans.ScopeBeanExtensionInjector",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "org.apache.dubbo.common.config.Environment",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "org.apache.dubbo.rpc.model.ScopeModel"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "org.apache.dubbo.common.config.ModuleEnvironment",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "org.apache.dubbo.rpc.model.ModuleModel"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "org.apache.dubbo.common.constants.CommonConstants$DubboProperty",
+      "fields": [
+        {
+          "name": "DUBBO2_COMPACT_ENABLE"
+        },
+        {
+          "name": "DUBBO_APPLICATION_LOGGER"
+        },
+        {
+          "name": "DUBBO_CLASS_DESERIALIZE_ALLOWED_LIST"
+        },
+        {
+          "name": "DUBBO_CLASS_DESERIALIZE_BLOCKED_LIST"
+        },
+        {
+          "name": "DUBBO_CLASS_DESERIALIZE_BLOCK_ALL"
+        },
+        {
+          "name": "DUBBO_CLASS_DESERIALIZE_OPEN_CHECK"
+        },
+        {
+          "name": "DUBBO_CLOSE_TIMEOUT_CONFIG_KEY"
+        },
+        {
+          "name": "DUBBO_CONTAINER_KEY"
+        },
+        {
+          "name": "DUBBO_DEFAULT_REMOTING_SERIALIZATION_PROPERTY"
+        },
+        {
+          "name": "DUBBO_HEARTBEAT_CONFIG_KEY"
+        },
+        {
+          "name": "DUBBO_HESSIAN_ALLOW"
+        },
+        {
+          "name": "DUBBO_HESSIAN_ALLOW_NON_SERIALIZABLE"
+        },
+        {
+          "name": "DUBBO_HESSIAN_DENY"
+        },
+        {
+          "name": "DUBBO_HESSIAN_WHITELIST"
+        },
+        {
+          "name": "DUBBO_IP_TO_REGISTRY"
+        },
+        {
+          "name": "DUBBO_JSTACK_MAXLINE"
+        },
+        {
+          "name": "DUBBO_MANUAL_REGISTER_KEY"
+        },
+        {
+          "name": "DUBBO_MAPPING_CACHE_ENTRYSIZE"
+        },
+        {
+          "name": "DUBBO_MAPPING_CACHE_FILENAME"
+        },
+        {
+          "name": "DUBBO_MAPPING_CACHE_FILEPATH"
+        },
+        {
+          "name": "DUBBO_MAPPING_CACHE_MAXFILESIZE"
+        },
+        {
+          "name": "DUBBO_META_CACHE_ENTRYSIZE"
+        },
+        {
+          "name": "DUBBO_META_CACHE_FILENAME"
+        },
+        {
+          "name": "DUBBO_META_CACHE_FILEPATH"
+        },
+        {
+          "name": "DUBBO_META_CACHE_MAXFILESIZE"
+        },
+        {
+          "name": "DUBBO_MIGRATION_FILE_ENABLE"
+        },
+        {
+          "name": "DUBBO_MIGRATION_KEY"
+        },
+        {
+          "name": "DUBBO_MONITOR_ADDRESS"
+        },
+        {
+          "name": "DUBBO_NETWORK_IGNORED_INTERFACE"
+        },
+        {
+          "name": "DUBBO_NETWORK_INTERFACE_POINT_TO_POINT_IGNORED"
+        },
+        {
+          "name": "DUBBO_PREFERRED_NETWORK_INTERFACE"
+        },
+        {
+          "name": "DUBBO_PREFER_JSON_FRAMEWORK_NAME"
+        },
+        {
+          "name": "DUBBO_PROPERTIES_KEY"
+        },
+        {
+          "name": "DUBBO_RESOLVE_FILE"
+        },
+        {
+          "name": "DUBBO_SHUTDOWN_HOOK_KEY"
+        },
+        {
+          "name": "DUBBO_SPRING_CONFIG"
+        },
+        {
+          "name": "DUBBO_USE_SECURE_RANDOM_ID"
+        }
+      ]
+    },
+    {
+      "type": "org.apache.dubbo.common.constants.CommonConstants$SystemProperty",
+      "fields": [
+        {
+          "name": "JAVA_HOME"
+        },
+        {
+          "name": "JAVA_RUNTIME_NAME"
+        },
+        {
+          "name": "JAVA_RUNTIME_VERSION"
+        },
+        {
+          "name": "JAVA_VM_INFO"
+        },
+        {
+          "name": "JAVA_VM_NAME"
+        },
+        {
+          "name": "JAVA_VM_VERSION"
+        },
+        {
+          "name": "OS_ARCH"
+        },
+        {
+          "name": "SERIALIZATION_SECURITY_CHECK_KEY"
+        },
+        {
+          "name": "SYSTEM_BYTE_ACCESSOR_KEY"
+        },
+        {
+          "name": "SYSTEM_FILE_ENCODING"
+        },
+        {
+          "name": "SYSTEM_JAVA_IO_TMPDIR"
+        },
+        {
+          "name": "SYSTEM_JAVA_VERSION"
+        },
+        {
+          "name": "SYSTEM_LINE_SEPARATOR"
+        },
+        {
+          "name": "SYSTEM_OS_NAME"
+        },
+        {
+          "name": "SYSTEM_OS_VERSION"
+        },
+        {
+          "name": "SYSTEM_TCP_RESPONSE_TIMEOUT"
+        },
+        {
+          "name": "USER_HOME"
+        }
+      ]
+    },
+    {
+      "type": "org.apache.dubbo.common.constants.CommonConstants$ThirdPartyProperty",
+      "fields": [
+        {
+          "name": "APOLLO_ADDR_KEY"
+        },
+        {
+          "name": "APOLLO_APPID_KEY"
+        },
+        {
+          "name": "APOLLO_CLUSTER_KEY"
+        },
+        {
+          "name": "APOLLO_ENV_KEY"
+        },
+        {
+          "name": "CLEAR_FUTURE_AFTER_GET"
+        },
+        {
+          "name": "GRAALVM_NATIVEIMAGE_IMAGECODE"
+        },
+        {
+          "name": "NACOS_SERVICE_NAME_SEPARATOR"
+        },
+        {
+          "name": "NETTY_EPOLL_ENABLE_KEY"
+        },
+        {
+          "name": "SET_FUTURE_IN_SYNC_MODE"
+        },
+        {
+          "name": "ZOOKEEPER_CONFIG_ENABLE_EMBEDDED"
+        }
+      ]
+    },
+    {
+      "type": "org.apache.dubbo.common.convert.ConverterUtil",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "org.apache.dubbo.rpc.model.FrameworkModel"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "org.apache.dubbo.common.extension.DubboInternalLoadingStrategy"
+    },
+    {
+      "type": "org.apache.dubbo.common.extension.DubboLoadingStrategy"
+    },
+    {
+      "type": "org.apache.dubbo.common.extension.ExtensionAccessorAware"
+    },
+    {
+      "type": "org.apache.dubbo.common.extension.SPI"
+    },
+    {
+      "type": "org.apache.dubbo.common.extension.ServicesLoadingStrategy"
+    },
+    {
+      "type": "org.apache.dubbo.common.extension.inject.AdaptiveExtensionInjector",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "org.apache.dubbo.common.extension.inject.SpiExtensionInjector",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "org.apache.dubbo.common.lang.ShutdownHookCallbacks",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "org.apache.dubbo.rpc.model.ApplicationModel"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "org.apache.dubbo.common.logger.slf4j.Slf4jLoggerAdapter",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "org.apache.dubbo.common.serialization.ClassHolder",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "org.apache.dubbo.common.ssl.CertManager",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "org.apache.dubbo.rpc.model.FrameworkModel"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "org.apache.dubbo.common.ssl.impl.SSLConfigCertProvider",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "org.apache.dubbo.common.status.reporter.FrameworkStatusReportService",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "org.apache.dubbo.common.threadpool.manager.FrameworkExecutorRepository",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "org.apache.dubbo.common.utils.DefaultSerializeClassChecker",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "org.apache.dubbo.rpc.model.FrameworkModel"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "org.apache.dubbo.common.utils.SerializeSecurityConfigurator",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "org.apache.dubbo.rpc.model.ModuleModel"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "org.apache.dubbo.common.utils.SerializeSecurityManager",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "org.apache.dubbo.config.context.ConfigManager",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "org.apache.dubbo.rpc.model.ApplicationModel"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "org.apache.dubbo.config.context.ModuleConfigManager",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "org.apache.dubbo.rpc.model.ModuleModel"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "org.apache.dubbo.metadata.definition.builder.ArrayTypeBuilder",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "org.apache.dubbo.metadata.definition.builder.CollectionTypeBuilder",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "org.apache.dubbo.metadata.definition.builder.EnumTypeBuilder",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "org.apache.dubbo.metadata.definition.builder.MapTypeBuilder",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "org.apache.dubbo.rpc.model.ScopeModelAware"
+    },
+    {
+      "type": "org.apache.dubbo.rpc.service.EchoService"
+    },
+    {
+      "type": "org.apache.dubbo.rpc.service.EchoServiceDetector",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "org.apache.dubbo.rpc.service.GenericService"
+    },
+    {
+      "type": "org.apache.dubbo.rpc.service.GenericServiceDetector",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    }
+  ]
+}

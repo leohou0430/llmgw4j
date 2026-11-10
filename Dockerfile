@@ -10,7 +10,7 @@ FROM eclipse-temurin:25-jre
 WORKDIR /app
 RUN apt-get update && apt-get install -y --no-install-recommends curl \
     && rm -rf /var/lib/apt/lists/* && mkdir -p /app/data
-COPY --from=build /src/llmgw-app/target/llmgw-app-0.2.0.jar /app/llmgw.jar
+COPY --from=build /src/llmgw-app/target/llmgw-app-0.3.0.jar /app/llmgw.jar
 ENV SPRING_PROFILES_ACTIVE=webflux \
     JAVA_OPTS="-XX:MaxGCPauseMillis=10"
 EXPOSE 8080

@@ -1,22 +1,62 @@
 package io.github.leohou0430.llmgw.core.config;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
-
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-@ConfigurationProperties(prefix = "gateway")
-public class GatewayProperties implements org.springframework.beans.factory.InitializingBean {
+public class GatewayProperties {
+
+    private final Redis redis = new Redis();
+    private List<String> extensionModules = new ArrayList<>();
+    public Redis getRedis() { return redis; }
+    public List<String> getExtensionModules() { return List.copyOf(extensionModules); }
+    public void setExtensionModules(List<String> modules) { extensionModules = List.copyOf(modules); }
+
+    public static class Redis {
+        private boolean enabled;
+        private String host = "127.0.0.1";
+        private int port = 6379;
+        private int database;
+        private String username = "";
+        private String password = "";
+        private boolean ssl;
+        private int timeoutMs = 2000;
+        private int poolSize = 64;
+        public boolean isEnabled() { return enabled; }
+        public void setEnabled(boolean value) { enabled = value; }
+        public String getHost() { return host; }
+        public void setHost(String value) { host = value; }
+        public int getPort() { return port; }
+        public void setPort(int value) { if (value < 1 || value > 65535) throw new IllegalArgumentException("invalid Redis port"); port = value; }
+        public int getDatabase() { return database; }
+        public void setDatabase(int value) { if (value < 0) throw new IllegalArgumentException("invalid Redis database"); database = value; }
+        public String getUsername() { return username; }
+        public void setUsername(String value) { username = value; }
+        public String getPassword() { return password; }
+        public void setPassword(String value) { password = value; }
+        public boolean isSsl() { return ssl; }
+        public void setSsl(boolean value) { ssl = value; }
+        public int getTimeoutMs() { return timeoutMs; }
+        public void setTimeoutMs(int value) { if (value < 1) throw new IllegalArgumentException("invalid Redis timeout"); timeoutMs = value; }
+        public int getPoolSize() { return poolSize; }
+        public void setPoolSize(int value) { if (value < 1) throw new IllegalArgumentException("invalid Redis pool size"); poolSize = value; }
+    }
+
+    private String tokenizer = "heuristic";
+    public String getTokenizer() { return tokenizer; }
+    public void setTokenizer(String value) {
+        if (value == null || value.isBlank()) throw new IllegalArgumentException("tokenizer extension name is required");
+        tokenizer = value.trim().toLowerCase(java.util.Locale.ROOT);
+    }
 
     private boolean production;
 
     public boolean isProduction() { return production; }
     public void setProduction(boolean value) { this.production = value; }
 
-    @Override
-    public void afterPropertiesSet() {
+    /** Validate after binding, or explicitly when composing outside Spring. */
+    public void validate() {
         if (!production) {
             return;
         }

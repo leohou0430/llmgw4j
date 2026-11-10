@@ -44,8 +44,11 @@ jobs:
         run: python3 bin/check-openapi.py docs/openapi.yaml .github/workflows/ci.yml .github/workflows/release.yml docker-compose.yml docker-compose.redis.yml
       - name: Verify benchmark evidence parser and mock contract
         run: python3 -m unittest discover -s bench/cross-gateway -p 'test_*.py'
-      - name: Check module layout
-        run: bash bin/check-module-layout.sh
+      - name: Check module layout and native boundaries
+        run: |
+          bash bin/check-module-layout.sh
+          python3 bin/check-native-boundaries.py
+          python3 -m unittest discover -s bin -p 'test_native_*.py'
       - name: Verify default artifact (including JUnit)
         run: mvn -B clean verify
       - name: Verify both data planes against the same artifact
@@ -53,8 +56,13 @@ jobs:
           bash bin/smoke-stream-errors.sh
           bash bin/smoke-v13-extensions.sh
           bash bin/smoke-v13-hardening.sh
+          bash bin/smoke-multi-protocol.sh
+          bash bin/smoke-v13-provider.sh
+          bash bin/smoke-v13-platform.sh
           python3 bin/smoke-tenant-isolation.py
           python3 bin/smoke-admin-auth.py
           python3 bin/smoke-jwt-auth.py
       - name: Verify optional Redis profile (including JUnit)
         run: mvn -B -Predis clean verify
+      - name: Verify combined optional profiles
+        run: mvn -B -Predis,jtokkit,otel clean verify

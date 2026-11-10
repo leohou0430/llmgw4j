@@ -89,7 +89,7 @@ def verify(jar, engine, mode):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--jar', type=Path, default=ROOT/'llmgw-app/target/llmgw-app-0.2.0.jar')
+    parser.add_argument('--jar', type=Path, default=ROOT/'llmgw-app/target/llmgw-app-0.3.0.jar')
     parser.add_argument('--engine', choices=['webflux', 'vt'])
     args = parser.parse_args()
     failures = []

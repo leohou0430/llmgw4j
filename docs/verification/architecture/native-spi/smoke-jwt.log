@@ -1,0 +1,2 @@
+PASS webflux: JWT JSON/SSE claims, audience, expiry and static-key compatibility
+PASS vt: JWT JSON/SSE claims, audience, expiry and static-key compatibility

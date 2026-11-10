@@ -1,0 +1,11 @@
+=== distributed quota: mem (2 independent ledgers) vs redis (1 shared) ===
+  [PASS] local redis is up -- port=16399 pid=32252
+  [PASS] default jar stays free of redis classes -- no redis / lettuce / redis module
+  [info] in-memory pair: 200=20 429=180 charged=120 quota=60 (x2 ledgers)
+  [info] redis pair: 200=12 429=188 used=72 quota=60
+  [PASS] shared quota still admits traffic -- 200=12
+  [PASS] shared quota rejects the overflow -- 429=188
+  [PASS] shared ledger prevents double spending -- redis_charged=72 < mem_pair_charged=120 (quota=60 x2 ledgers)
+  [PASS] both replicas report the same ledger -- snapshot usage identical
+  [PASS] two in-memory ledgers oversell vs shared -- mem=20 redis=12 ratio=1.67
+PASS=7 FAIL=0

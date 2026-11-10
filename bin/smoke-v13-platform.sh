@@ -5,7 +5,7 @@
 set -uo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-JAR="$ROOT/llmgw-app/target/llmgw-app-0.2.0.jar"
+JAR="${LLMGW_TEST_JAR:-$ROOT/llmgw-app/target/llmgw-app-0.3.0.jar}"
 PORT="${PORT:-8080}"
 MOCK_PORT="${MOCK_PORT:-9090}"
 ENGINES="${1:-webflux vt}"
@@ -71,7 +71,7 @@ assert_not_contains() { [[ "$1" != *"$2"* ]] && ok "$3" || bad "$3 (unexpected: 
 
 chat() {
   curl -s --noproxy '*' -X POST "http://127.0.0.1:$PORT/v1/chat/completions" \
-    -H "Authorization: Bearer ${2:-sk-demo}" -H 'Content-Type: application/json' -d "$1"
+    -H "Authorization: Bearer ${2-sk-demo}" -H 'Content-Type: application/json' -d "$1"
 }
 
 echo "======== v13 platform: budget / hot reload / requests / console / keys ========"
@@ -120,8 +120,8 @@ for engine in $ENGINES; do
   created=$(curl -s --noproxy '*' -X POST "http://127.0.0.1:$PORT/admin/keys" \
     -H 'Content-Type: application/json' \
     -d '{"name":"e2e","group":"team-b","budgetMicroUsd":900000000,"quotaTokens":900000000,"ttlSeconds":null,"metadata":{"team":"qa"}}')
-  newToken=$(printf '%s' "$created" | grep -o '"token":"sk-[a-f0-9]*"' | head -1 | cut -d'"' -f4)
-  newId=$(printf '%s' "$created" | grep -o '"id":"key-[0-9]*"' | head -1 | cut -d'"' -f4)
+  newToken=$(printf '%s' "$created" | jq -r '.token // empty')
+  newId=$(printf '%s' "$created" | jq -r '.id // empty')
   oldTokenStill="$newToken"
   rotId="$newId"
   assert_contains "$created" '"metadata":{"team":"qa"}' "$engine key metadata accepted"
@@ -145,6 +145,9 @@ for engine in $ENGINES; do
   start "$engine" \
     --gateway.governance.snapshot-path="$TMP/snapshot.json" \
     --gateway.keys-store-path="$TMP/keys.json" \
+    '--gateway.models[0].model=*' \
+    '--gateway.models[0].inputPriceMicroUsdPerMillion=1000000' \
+    '--gateway.models[0].outputPriceMicroUsdPerMillion=1000000' \
     --gateway.governance.rate-limit-tokens-per-second=1 \
     --gateway.governance.rate-limit-burst=1 \
     '--gateway.api-keys[0].quota-tokens=900000000' \
@@ -171,11 +174,11 @@ for engine in $ENGINES; do
   rot=$(curl -s --noproxy '*' -X POST "http://127.0.0.1:$PORT/admin/keys" \
     -H 'Content-Type: application/json' \
     -d '{"name":"rot-e2e","group":"team-b","quotaTokens":900000000}')
-  rotId=$(printf '%s' "$rot" | grep -o '"id":"key-[0-9]*"' | head -1 | cut -d'"' -f4)
-  oldTokenStill=$(printf '%s' "$rot" | grep -o '"token":"sk-[a-f0-9]*"' | head -1 | cut -d'"' -f4)
+  rotId=$(printf '%s' "$rot" | jq -r '.id // empty')
+  oldTokenStill=$(printf '%s' "$rot" | jq -r '.token // empty')
   rot=$(curl -s --noproxy '*' -X POST "http://127.0.0.1:$PORT/admin/keys/$rotId/rotate" \
     -H 'Content-Type: application/json' -d '{"overlapSeconds":2}')
-  newTok=$(printf '%s' "$rot" | grep -o '"token":"sk-[a-f0-9]*"' | head -1 | cut -d'"' -f4)
+  newTok=$(printf '%s' "$rot" | jq -r '.token // empty')
   if [[ -n "$newTok" ]]; then ok "$engine rotate minted a new token"; else
     bad "$engine rotate failed: ${rot:0:160}"; fi
   body=$(chat '{"model":"m","messages":[{"content":"post-rotate new"}]}' "$newTok")

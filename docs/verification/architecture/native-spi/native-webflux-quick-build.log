@@ -1,0 +1,118 @@
+Warning: Option 'DynamicProxyConfigurationResources' is deprecated and might be removed in a future release: This can be caused by a proxy-config.json file in your META-INF directory. Consider including proxy configuration in the reflection section of reachability-metadata.md instead.. Please refer to the GraalVM release notes.
+Warning: Option 'DynamicProxyConfigurationResources' is deprecated and might be removed in a future release: This can be caused by a proxy-config.json file in your META-INF directory. Consider including proxy configuration in the reflection section of reachability-metadata.md instead.. Please refer to the GraalVM release notes.
+========================================================================================================================
+GraalVM Native Image: Generating 'llmgw-webflux-quick' (executable)...
+========================================================================================================================
+For detailed information and explanations on the build output, visit:
+https://github.com/oracle/graal/blob/master/docs/reference-manual/native-image/BuildOutput.md
+------------------------------------------------------------------------------------------------------------------------
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::arrayBaseOffset has been called by com.alibaba.fastjson2.util.JDKUtils (file:/Users/leo/.m2/repository/com/alibaba/fastjson2/fastjson2/2.0.56/fastjson2-2.0.56.jar)
+WARNING: Please consider reporting this to the maintainers of class com.alibaba.fastjson2.util.JDKUtils
+WARNING: sun.misc.Unsafe::arrayBaseOffset will be removed in a future release
+Warning: Cannot register dynamic proxy for interface list: net.bytebuddy.description.method.MethodDescription$InDefinedShape$AbstractBase$Executable. Reason: Class net.bytebuddy.description.method.MethodDescription$InDefinedShape$AbstractBase$Executable not found..
+Warning: Cannot register dynamic proxy for interface list: net.bytebuddy.description.method.ParameterDescription$ForLoadedParameter$Parameter. Reason: Class net.bytebuddy.description.method.ParameterDescription$ForLoadedParameter$Parameter not found..
+Warning: Cannot register dynamic proxy for interface list: net.bytebuddy.description.method.ParameterList$ForLoadedExecutable$Executable. Reason: Class net.bytebuddy.description.method.ParameterList$ForLoadedExecutable$Executable not found..
+Warning: Cannot register dynamic proxy for interface list: net.bytebuddy.description.type.TypeDefinition$Sort$AnnotatedType. Reason: Class net.bytebuddy.description.type.TypeDefinition$Sort$AnnotatedType not found..
+Warning: Cannot register dynamic proxy for interface list: net.bytebuddy.description.type.TypeDescription. Reason: Class net.bytebuddy.description.type.TypeDescription not found..
+Warning: Cannot register dynamic proxy for interface list: net.bytebuddy.description.type.TypeDescription$ForLoadedType$Dispatcher. Reason: Class net.bytebuddy.description.type.TypeDescription$ForLoadedType$Dispatcher not found..
+Warning: Cannot register dynamic proxy for interface list: net.bytebuddy.description.type.TypeDescription$Generic. Reason: Class net.bytebuddy.description.type.TypeDescription$Generic not found..
+Warning: Cannot register dynamic proxy for interface list: net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$Delegator$ForLoadedExecutableExceptionType$Dispatcher. Reason: Class net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$Delegator$ForLoadedExecutableExceptionType$Dispatcher not found..
+Warning: Cannot register dynamic proxy for interface list: net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$Delegator$ForLoadedExecutableParameterType$Dispatcher. Reason: Class net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$Delegator$ForLoadedExecutableParameterType$Dispatcher not found..
+Warning: Cannot register dynamic proxy for interface list: net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$Delegator$ForLoadedField$Dispatcher. Reason: Class net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$Delegator$ForLoadedField$Dispatcher not found..
+Warning: Cannot register dynamic proxy for interface list: net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$Delegator$ForLoadedMethodReturnType$Dispatcher. Reason: Class net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$Delegator$ForLoadedMethodReturnType$Dispatcher not found..
+Warning: Cannot register dynamic proxy for interface list: net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$ForComponentType$AnnotatedParameterizedType. Reason: Class net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$ForComponentType$AnnotatedParameterizedType not found..
+Warning: Cannot register dynamic proxy for interface list: net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$ForOwnerType$AnnotatedType. Reason: Class net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$ForOwnerType$AnnotatedType not found..
+Warning: Cannot register dynamic proxy for interface list: net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$ForTypeArgument$AnnotatedParameterizedType. Reason: Class net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$ForTypeArgument$AnnotatedParameterizedType not found..
+Warning: Cannot register dynamic proxy for interface list: net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$ForTypeVariableBoundType$AnnotatedTypeVariable. Reason: Class net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$ForTypeVariableBoundType$AnnotatedTypeVariable not found..
+Warning: Cannot register dynamic proxy for interface list: net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$ForTypeVariableBoundType$OfFormalTypeVariable$FormalTypeVariable. Reason: Class net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$ForTypeVariableBoundType$OfFormalTypeVariable$FormalTypeVariable not found..
+Warning: Cannot register dynamic proxy for interface list: net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$ForWildcardLowerBoundType$AnnotatedWildcardType. Reason: Class net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$ForWildcardLowerBoundType$AnnotatedWildcardType not found..
+Warning: Cannot register dynamic proxy for interface list: net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$ForWildcardUpperBoundType$AnnotatedWildcardType. Reason: Class net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$ForWildcardUpperBoundType$AnnotatedWildcardType not found..
+Warning: Cannot register dynamic proxy for interface list: net.bytebuddy.utility.JavaConstant$Simple$Dispatcher. Reason: Class net.bytebuddy.utility.JavaConstant$Simple$Dispatcher not found..
+Warning: Cannot register dynamic proxy for interface list: net.bytebuddy.utility.JavaConstant$Simple$Dispatcher$OfClassDesc. Reason: Class net.bytebuddy.utility.JavaConstant$Simple$Dispatcher$OfClassDesc not found..
+Warning: Cannot register dynamic proxy for interface list: net.bytebuddy.utility.JavaConstant$Simple$Dispatcher$OfDirectMethodHandleDesc. Reason: Class net.bytebuddy.utility.JavaConstant$Simple$Dispatcher$OfDirectMethodHandleDesc not found..
+Warning: Cannot register dynamic proxy for interface list: net.bytebuddy.utility.JavaConstant$Simple$Dispatcher$OfDirectMethodHandleDesc$ForKind. Reason: Class net.bytebuddy.utility.JavaConstant$Simple$Dispatcher$OfDirectMethodHandleDesc$ForKind not found..
+Warning: Cannot register dynamic proxy for interface list: net.bytebuddy.utility.JavaConstant$Simple$Dispatcher$OfDynamicConstantDesc. Reason: Class net.bytebuddy.utility.JavaConstant$Simple$Dispatcher$OfDynamicConstantDesc not found..
+Warning: Cannot register dynamic proxy for interface list: net.bytebuddy.utility.JavaConstant$Simple$Dispatcher$OfMethodHandleDesc. Reason: Class net.bytebuddy.utility.JavaConstant$Simple$Dispatcher$OfMethodHandleDesc not found..
+Warning: Cannot register dynamic proxy for interface list: net.bytebuddy.utility.JavaConstant$Simple$Dispatcher$OfMethodTypeDesc. Reason: Class net.bytebuddy.utility.JavaConstant$Simple$Dispatcher$OfMethodTypeDesc not found..
+Warning: Cannot register dynamic proxy for interface list: net.bytebuddy.utility.JavaModule$Module. Reason: Class net.bytebuddy.utility.JavaModule$Module not found..
+Warning: Cannot register dynamic proxy for interface list: net.bytebuddy.utility.JavaModule$Resolver. Reason: Class net.bytebuddy.utility.JavaModule$Resolver not found..
+Warning: Cannot register dynamic proxy for interface list: org.gradle.api.internal.tasks.testing.TestDefinitionProcessor. Reason: Class org.gradle.api.internal.tasks.testing.TestDefinitionProcessor not found..
+Warning: Cannot register dynamic proxy for interface list: org.gradle.api.internal.tasks.testing.TestResultProcessor, org.gradle.internal.concurrent.ThreadSafe. Reason: Class org.gradle.api.internal.tasks.testing.TestResultProcessor not found..
+Warning: Cannot register dynamic proxy for interface list: org.gradle.internal.logging.events.OutputEventListener. Reason: Class org.gradle.internal.logging.events.OutputEventListener not found..
+Warning: Cannot register dynamic proxy for interface list: org.gradle.process.internal.worker.child.WorkerLoggingProtocol, org.gradle.internal.concurrent.ThreadSafe. Reason: Class org.gradle.process.internal.worker.child.WorkerLoggingProtocol not found..
+Warning: Unknown attribute(s) [allDeclaredClasses, allPublicClasses] in reflection class descriptor object
+Warning: Could not resolve org.gradle.api.internal.tasks.testing.filter.TestFilterSpec for serialization configuration.
+Warning: Could not resolve org.gradle.api.internal.tasks.testing.junitplatform.JUnitPlatformSpec for serialization configuration.
+Warning: Could not resolve org.gradle.api.internal.tasks.testing.junitplatform.JUnitPlatformTestDefinitionProcessorFactory for serialization configuration.
+Warning: Could not resolve org.gradle.api.internal.tasks.testing.worker.TestWorker for serialization configuration.
+Warning: Could not resolve org.gradle.api.internal.tasks.testing.worker.TestWorker$State for serialization configuration.
+Warning: Could not resolve org.junit.platform.launcher.TestIdentifier$SerializedForm for serialization configuration.
+[1/8] Initializing...                                                                                   (15.1s @ 0.73GB)
+ Java version: 25+37-LTS, vendor version: Oracle GraalVM 25+37.1
+ Graal compiler: optimization level: b, target machine: x86-64-v3, PGO: off
+ C compiler: cc (apple, x86_64, 17.0.0)
+ Garbage collector: Serial GC (max heap size: 80% of RAM)
+ 2 user-specific feature(s):
+ - com.oracle.svm.thirdparty.gson.GsonFeature
+ - org.springframework.aot.nativex.feature.PreComputeFieldFeature
+------------------------------------------------------------------------------------------------------------------------
+ 1 experimental option(s) unlocked:
+ - '-H:+SharedArenaSupport' (origin(s): command line)
+------------------------------------------------------------------------------------------------------------------------
+Build resources:
+ - 21.53GB of memory (62.7% of system memory, using available memory)
+ - 16 thread(s) (100.0% of 16 available processor(s), determined at start)
+Warning: Unknown attribute(s) [module] in bundle descriptor object
+SLF4J(W): No SLF4J providers were found.
+SLF4J(W): Defaulting to no-operation (NOP) logger implementation
+SLF4J(W): See https://www.slf4j.org/codes.html#noProviders for further details.
+[2/8] Performing analysis...  [*****]                                                                  (123.4s @ 5.72GB)
+   60,606 types,  92,648 fields, and 315,256 methods found reachable
+   30,255 types,  34,361 fields, and 121,524 methods registered for reflection
+      108 types,      96 fields, and      85 methods registered for JNI access
+        0 downcalls and 0 upcalls registered for foreign access
+        5 native libraries: -framework CoreServices, -framework Foundation, dl, pthread, z
+[3/8] Building universe...                                                                              (17.2s @ 6.57GB)
+[4/8] Parsing methods...      [***]                                                                      (9.3s @ 4.10GB)
+[5/8] Inlining methods...     [***]                                                                      (3.4s @ 4.62GB)
+[6/8] Compiling methods...    [******]                                                                  (38.7s @ 5.18GB)
+[7/8] Laying out methods...   [****]                                                                    (20.8s @ 6.56GB)
+[8/8] Creating image...       [****]                                                                    (17.0s @ 4.85GB)
+  91.26MB (38.85%) for code area:   200,829 compilation units
+ 143.07MB (60.90%) for image heap:1,170,859 objects and 1,212 resources
+ 580.64kB ( 0.25%) for other data
+ 234.90MB in total image size, 234.90MB in total file size
+------------------------------------------------------------------------------------------------------------------------
+Top 10 origins of code area:                                Top 10 object types in image heap:
+  21.02MB openai-java-core-4.100.0.jar                        37.73MB byte[] for embedded resources
+  19.92MB svm.jar (Native Image)                              26.46MB byte[] for code metadata
+  10.91MB java.base                                           24.69MB byte[] for java.lang.String
+   4.99MB jdk.compiler                                        14.44MB byte[] for reflection metadata
+   3.57MB kotlin-reflect-2.3.21.jar                            8.48MB java.lang.Class
+   2.65MB java.xml                                             8.13MB java.lang.String
+   2.49MB tomcat-embed-core-11.0.27.jar                        6.30MB com.oracle.svm.core.hub.DynamicHubCompanion
+   1.40MB jackson-databind-3.1.7.jar                           1.83MB c.o.svm.core.hub.DynamicHub$ReflectionMetadata
+   1.21MB jackson-databind-2.21.7.jar                          1.47MB c.o.svm.core.hub.DynamicHub$DynamicHubMetadata
+   1.16MB spring-core-7.0.10.jar                               1.33MB c.oracle.svm.core.reflect.SubstrateMethodAccessor
+  18.62MB for 179 more packages                               12.20MB for 11758 more object types
+                            Use '--emit build-report' to create a report with more details.
+------------------------------------------------------------------------------------------------------------------------
+Security report:
+ - Binary includes Java deserialization.
+ - CycloneDX SBOM with 112 component(s) is embedded in binary (5.72kB). 322 type(s) could not be associated to a component.
+ - Advanced obfuscation not enabled; enable with '-H:AdvancedObfuscation=""' (experimental support).
+------------------------------------------------------------------------------------------------------------------------
+Recommendations:
+ PGO:  Use Profile-Guided Optimizations ('--pgo') for improved throughput.
+ FUTR: Use '--future-defaults=all' to prepare for future releases.
+ AWT:  Use the tracing agent to collect metadata for AWT.
+ HEAP: Set max heap for improved and more predictable memory usage.
+ CPU:  Enable more CPU features with '-march=native' for improved performance.
+------------------------------------------------------------------------------------------------------------------------
+                      22.0s (8.8% of total time) in 1128 GCs | Peak RSS: 9.16GB | CPU load: 10.78
+------------------------------------------------------------------------------------------------------------------------
+Build artifacts:
+ /Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/native-spi-release-030/llmgw-webflux-quick (executable)
+========================================================================================================================
+Finished generating 'llmgw-webflux-quick' in 4m 9s.

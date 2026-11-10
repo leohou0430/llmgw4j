@@ -1,0 +1,1380 @@
+{
+  "baseline": "c119ecf",
+  "files": 159,
+  "counts": {
+    "main": 118,
+    "test": 33,
+    "benchmark": 8
+  },
+  "coverage": [
+    {
+      "path": "bench/jfr/AnalyzeRecording.java",
+      "kind": "benchmark",
+      "lines": 44,
+      "sha256": "e9c02da394b15ec4742076d4b4cea5cebfeeaec6d6ed689360f0136a876c0d9c",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "bench/micro/BufferMicrobench.java",
+      "kind": "benchmark",
+      "lines": 140,
+      "sha256": "24cf40d3692bd54fbf9e3f7f3b2bd7839a800121044e85b176bda419147db8a3",
+      "framework_imports": [
+        "import org.springframework.core.io.buffer.DataBuffer;",
+        "import org.springframework.core.io.buffer.DataBufferUtils;",
+        "import org.springframework.core.io.buffer.NettyDataBuffer;",
+        "import org.springframework.core.io.buffer.NettyDataBufferFactory;"
+      ],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "bench/micro/HeaderCopyMicrobench.java",
+      "kind": "benchmark",
+      "lines": 31,
+      "sha256": "5eace4cbfc988f8f7cf5748ff6072fea8fdc1ba0a841ffbca62454acea14e7f3",
+      "framework_imports": [
+        "import org.springframework.http.HttpHeaders;",
+        "import org.springframework.http.support.Netty4HeadersAdapter;"
+      ],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "bench/micro/JwtValidationMicrobench.java",
+      "kind": "benchmark",
+      "lines": 41,
+      "sha256": "f4ca74aa2bc3b56afc964f1162687c2e20a457837b3db0ef4af96603a49d8b82",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "bench/micro/ParseMicrobench.java",
+      "kind": "benchmark",
+      "lines": 221,
+      "sha256": "d8ef0c0bf191be9fef9ff4b10c86c6d93deb2c53681e563c3caefd1264ada26a",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "bench/micro/ResourceOwnershipMicrobench.java",
+      "kind": "benchmark",
+      "lines": 28,
+      "sha256": "560b3e6aeb54ac58bb3356d445f86f18eebefa3eae5801c6fa1370245d662faf",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "bench/micro/SsePayloadMicrobench.java",
+      "kind": "benchmark",
+      "lines": 24,
+      "sha256": "2ac4c2d6586eeba7fbaa839ddd480c72e1fcc4ea834fe0c46570c3601fc5be97",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "bench/mock/StandaloneMockUpstream.java",
+      "kind": "benchmark",
+      "lines": 94,
+      "sha256": "bc221250b8126111a433cb7381df1897d76de1d6424886b647df888b4fcf9149",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/AdminController.java",
+      "kind": "main",
+      "lines": 508,
+      "sha256": "8f08239e0c8b601fa42dc54d675491a832697280e0dd9a77674f7ab332787791",
+      "framework_imports": [
+        "import org.springframework.beans.factory.ObjectProvider;",
+        "import org.springframework.http.HttpStatus;",
+        "import org.springframework.http.ResponseEntity;",
+        "import org.springframework.web.bind.annotation.GetMapping;",
+        "import org.springframework.web.bind.annotation.PostMapping;",
+        "import org.springframework.web.bind.annotation.RequestBody;",
+        "import org.springframework.web.bind.annotation.RequestHeader;",
+        "import org.springframework.web.bind.annotation.RequestMapping;",
+        "import org.springframework.web.bind.annotation.RestController;",
+        "import org.springframework.web.server.ResponseStatusException;"
+      ],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/EngineKindEnvironmentPostProcessor.java",
+      "kind": "main",
+      "lines": 53,
+      "sha256": "be41d2838c4797df4f39d8f060a61fcc740344c9474ce0da881052b99fc29a71",
+      "framework_imports": [
+        "import org.springframework.boot.EnvironmentPostProcessor;",
+        "import org.springframework.boot.SpringApplication;",
+        "import org.springframework.core.Ordered;",
+        "import org.springframework.core.env.ConfigurableEnvironment;"
+      ],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/GatewayConfiguration.java",
+      "kind": "main",
+      "lines": 14,
+      "sha256": "05bf48b1db3ce53b213462247ea51e7d10ff4e281f9dd256880854456d3005de",
+      "framework_imports": [
+        "import org.springframework.boot.context.properties.ConfigurationProperties;",
+        "import org.springframework.context.annotation.Bean;",
+        "import org.springframework.context.annotation.Configuration;"
+      ],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/GatewayRuntimeConfiguration.java",
+      "kind": "main",
+      "lines": 81,
+      "sha256": "a48b37a6265813eac03664c42ac9296d822595eb2067fd10913d98c51ecdc5ce",
+      "framework_imports": [
+        "import org.springframework.beans.factory.ObjectProvider;",
+        "import org.springframework.context.annotation.Bean;",
+        "import org.springframework.context.annotation.Configuration;",
+        "import org.springframework.core.env.Environment;"
+      ],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/GatewayRuntimeHints.java",
+      "kind": "main",
+      "lines": 97,
+      "sha256": "7043f143d0d3b39c1e26fdf0c0314f008d187784aa7f4d7406ed91f68045d811",
+      "framework_imports": [
+        "import org.springframework.aot.hint.MemberCategory;",
+        "import org.springframework.aot.hint.RuntimeHints;",
+        "import org.springframework.aot.hint.RuntimeHintsRegistrar;",
+        "import org.springframework.context.annotation.Configuration;",
+        "import org.springframework.context.annotation.ImportRuntimeHints;"
+      ],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/LlmGatewayApplication.java",
+      "kind": "main",
+      "lines": 19,
+      "sha256": "b7f2207c9ae3dcf1e0da6f52c989cbe58b2508f2af4fb40f6d096598a454a626",
+      "framework_imports": [
+        "import org.springframework.boot.SpringApplication;",
+        "import org.springframework.boot.autoconfigure.SpringBootApplication;",
+        "import org.springframework.context.annotation.ComponentScan;"
+      ],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/MockUpstreamServer.java",
+      "kind": "main",
+      "lines": 745,
+      "sha256": "6136c8a861609b5e6c6d1dde93be5a35ca39a70e50e7986b9befbe727cea0d26",
+      "framework_imports": [
+        "import org.springframework.beans.factory.DisposableBean;",
+        "import org.springframework.stereotype.Component;"
+      ],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/ProviderConfiguration.java",
+      "kind": "main",
+      "lines": 14,
+      "sha256": "dd118267b45efc908d359a57f6c496c2cb6aa4c886cf3cf3c5679a806d44d984",
+      "framework_imports": [
+        "import org.springframework.context.annotation.Bean;",
+        "import org.springframework.context.annotation.Configuration;"
+      ],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/AdminAuthorizationTest.java",
+      "kind": "test",
+      "lines": 101,
+      "sha256": "9e492c7546888a543c192dc25a422b51ca75dbe9c73ca629176c77c0ffcf0c96",
+      "framework_imports": [
+        "import org.springframework.beans.factory.support.DefaultListableBeanFactory;",
+        "import org.springframework.web.bind.annotation.DeleteMapping;",
+        "import org.springframework.web.bind.annotation.GetMapping;",
+        "import org.springframework.web.bind.annotation.PostMapping;",
+        "import org.springframework.web.server.ResponseStatusException;"
+      ],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/ExtensionRuntimeHintsTest.java",
+      "kind": "test",
+      "lines": 26,
+      "sha256": "f1554d82103abdfc83908b24d730b1e34b284afd7aea70d4f3cfe5a4a226f39a",
+      "framework_imports": [
+        "import org.springframework.aot.hint.RuntimeHints;"
+      ],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/NativeRuntimeBridgeTest.java",
+      "kind": "test",
+      "lines": 43,
+      "sha256": "468e93af857e8e554877ebaa4fe318452b540b09367cc08743c5a5b2ae139cb8",
+      "framework_imports": [
+        "import org.springframework.context.annotation.AnnotationConfigApplicationContext;",
+        "import org.springframework.boot.context.properties.ConfigurationPropertiesBindingPostProcessor;",
+        "import org.springframework.core.env.MapPropertySource;"
+      ],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/ProductionConfigurationTest.java",
+      "kind": "test",
+      "lines": 52,
+      "sha256": "76a4e76c072e76ab638ca19d0ec7a439c26a8f9e15c251961bca5bca11cd9414",
+      "framework_imports": [
+        "import org.springframework.boot.context.properties.bind.Bindable;",
+        "import org.springframework.boot.context.properties.bind.Binder;",
+        "import org.springframework.core.env.MapPropertySource;",
+        "import org.springframework.core.env.StandardEnvironment;"
+      ],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/ProviderDiscoveryTest.java",
+      "kind": "test",
+      "lines": 18,
+      "sha256": "8d8fb163fd71979624adfe6c81cf107fe788d1be374824a9be484a6222c18834",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/TestPolicyModule.java",
+      "kind": "test",
+      "lines": 11,
+      "sha256": "5dca52582639075f2c81f141216f3942b9cdb068706ed244f1d7f5918ba1b4c5",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/TokenizerSelectionTest.java",
+      "kind": "test",
+      "lines": 36,
+      "sha256": "747e54bf88930d672a954d02bcd18dcb9549c0163865b9fc0599fe928f14a69b",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/config/GatewayProperties.java",
+      "kind": "main",
+      "lines": 537,
+      "sha256": "136bc45043e1ede956d9f1c8483e7eeccb8bde790004e48158e4d1831b0aa395",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/extension/ExtensionContext.java",
+      "kind": "main",
+      "lines": 96,
+      "sha256": "45aa7f880c4bc48f0f744a77690e8102e1b81fd5bd89bdb0b5d3c26bcfc313d8",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/extension/ExtensionModule.java",
+      "kind": "main",
+      "lines": 10,
+      "sha256": "6e974c2cfdd6b72db772dcdf3ebfe4bb36cf9627fa9c4fc8b4e44e3e99eca0bb",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/ApiKeyRegistry.java",
+      "kind": "main",
+      "lines": 44,
+      "sha256": "5fcc09e4b8cc00d18b6e5d646dccb0474911346d56ff70309a1925874a5f40c2",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/AuditSink.java",
+      "kind": "main",
+      "lines": 14,
+      "sha256": "f62327595ab3ed427613433c8fd395c2ede982d3eee97c523b2cf8f227c9b87c",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/BudgetLedger.java",
+      "kind": "main",
+      "lines": 31,
+      "sha256": "915c2812677b25efac0d7da72ce97690564f43e4445731a95279ed8b17df62e5",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/Embedder.java",
+      "kind": "main",
+      "lines": 27,
+      "sha256": "21498a24774b531b4efef5b31eac9349cdc045edffd21bc2e0405b21e6a66889",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/GatewayContext.java",
+      "kind": "main",
+      "lines": 189,
+      "sha256": "1a69b077204c0d739cffbe84441b50aa78f426d25f6a842b41f746e9994041e4",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/GatewayDecision.java",
+      "kind": "main",
+      "lines": 56,
+      "sha256": "18d28753cd5084b00418b6e8fa871f4d9c9f5054085c4bf9040e283f147b0d7c",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/GatewayPipeline.java",
+      "kind": "main",
+      "lines": 121,
+      "sha256": "c63a08740409b0fd2f11da50c859acacda42237099283d21b08a8e5e348eb0be",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/GovernanceChain.java",
+      "kind": "main",
+      "lines": 33,
+      "sha256": "1017b9afc6799836be2fd293370dc764d481c2195ccdbace6dffb1f42be6658e",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/Guardrail.java",
+      "kind": "main",
+      "lines": 45,
+      "sha256": "cca4a2ab9e06f9bb47145bba5a6beae63965a1c52563929be404ecdf81c28f2a",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/KeyAdminService.java",
+      "kind": "main",
+      "lines": 46,
+      "sha256": "3a1d1753789052e4efa502ce372ee6981a0f3d2d121a611a111e5c33481e9482",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/KeyStore.java",
+      "kind": "main",
+      "lines": 37,
+      "sha256": "9a95c0304ae927caaff53916f22d420578a9b64b1b8fcd4cbfbd7972936311b9",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/RequestLogSink.java",
+      "kind": "main",
+      "lines": 38,
+      "sha256": "1493887fce507b4c42ab3c03cce33c898510d3d272393e3fd2c1cce3e0d2a8fe",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/SemanticCache.java",
+      "kind": "main",
+      "lines": 24,
+      "sha256": "79862979248738d9ffa0b7107a4ab2c1119ee4e21c5dd2aba32ec45941cbcbb8",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/SnapshotStore.java",
+      "kind": "main",
+      "lines": 12,
+      "sha256": "f915dca9a1a4a759569e3b1d00a5b6ee412fc217cef85016e1d0b8db2064f6de",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/TokenLimiter.java",
+      "kind": "main",
+      "lines": 25,
+      "sha256": "9ce856c1095ecb8a7f84fda5729cce3b0ae897c00a63812b6c17ca66e6619e36",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/TokenValidator.java",
+      "kind": "main",
+      "lines": 20,
+      "sha256": "7cd1f61cd3991ed30d2808f06bc1027b7ddca405d9308b1aad19caffeb81a6c5",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/UsageLedger.java",
+      "kind": "main",
+      "lines": 39,
+      "sha256": "d4b59c2b4b3df6490f4d2a21fd306541c8bb4b81b572b8b6b3812f633e5ff177",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/model/ModelCatalog.java",
+      "kind": "main",
+      "lines": 28,
+      "sha256": "2c196737fe0fd7496227a891566211f235a4e2ffcf3e08616cf8f3da3c704e7a",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/protocol/ChunkParser.java",
+      "kind": "main",
+      "lines": 290,
+      "sha256": "f6c9d144ba5e4103ae40e667857a5e7e3a6e567acded93ca7167545e1073a031",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/protocol/DefaultProtocols.java",
+      "kind": "main",
+      "lines": 293,
+      "sha256": "475bc363ccd89830700f0215b59211f4b232f6fedfd87b5793a2feab2c1d9b83",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/protocol/ImagesProtocol.java",
+      "kind": "main",
+      "lines": 44,
+      "sha256": "d04187c6546c7221d8a490a5d2aa38f26f38fbc5a104d7a4a7c3eb8320143bbe",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/protocol/JsonProtocols.java",
+      "kind": "main",
+      "lines": 58,
+      "sha256": "f3131cf261c43ea0e5d7a0cb1381a2900cf3319d785695154ed0e1292a600480",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/protocol/MessagesProtocol.java",
+      "kind": "main",
+      "lines": 142,
+      "sha256": "00bd6db51f98acdf8a532f15a7daa32836f7569aa9756e3850841fb15f6fac68",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/protocol/MultipartProbe.java",
+      "kind": "main",
+      "lines": 68,
+      "sha256": "122a052a013e3f98894686d33a47bdee48eb2286c45ee43b816afa393fbe469c",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/protocol/ParsedRequest.java",
+      "kind": "main",
+      "lines": 36,
+      "sha256": "d86ec1675ba221a6903d9de7c2e61206fc3b2621d576fa54d29fd4d0f6da2270",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/protocol/Protocol.java",
+      "kind": "main",
+      "lines": 66,
+      "sha256": "f9f0ffb7ff7304fb312132b34f21c1cc3a39d8360676945578638f5288bc4f72",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/protocol/ProtocolCodec.java",
+      "kind": "main",
+      "lines": 347,
+      "sha256": "31fe610bbef50bb10a651cdbc56fcf8b141768b334b0feba512ffe1f2792ebf8",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/protocol/ProtocolKind.java",
+      "kind": "main",
+      "lines": 63,
+      "sha256": "b13965b77f558872b4a7a3ad2b2c841fd8e71c4c2e7f4e7706e8cb047060388b",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/protocol/Protocols.java",
+      "kind": "main",
+      "lines": 45,
+      "sha256": "cf26bc311bd25bc0749eb9f8e54ecf173c4c71751bf63c6990fc8e1b414577f8",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/protocol/ResponsesProtocol.java",
+      "kind": "main",
+      "lines": 129,
+      "sha256": "c0cf550d66171886bf915863398b6b3b18c6b9ca0a7a1c0c03773c5a3fefcafe",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/protocol/VideosProtocol.java",
+      "kind": "main",
+      "lines": 58,
+      "sha256": "483423b6089ab6cdb3a7543c29809bf2f7545aa1da95e18367f9e8e47f605f7b",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/routing/ConfigRouter.java",
+      "kind": "main",
+      "lines": 57,
+      "sha256": "06107ed4c8f01deb08be8e0f9e5f89a1bea324c909e2af104cb1b9d557afbc3e",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/routing/InMemoryRouteConfigSource.java",
+      "kind": "main",
+      "lines": 60,
+      "sha256": "349c6efb3139e7666aab2a9f8c28690fe4d0dced378b50e78067c5feabdb87fd",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/routing/InMemoryTaskRouteSticky.java",
+      "kind": "main",
+      "lines": 73,
+      "sha256": "b0a76012d1b0e35cd05b45a478c77eb320035fd0876c1e49fafe33d3c21b19c7",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/routing/Route.java",
+      "kind": "main",
+      "lines": 70,
+      "sha256": "6356e6506b4051f3fd40f493b9646bbf128719b8d45f3bd2d32b8d857cad17b5",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/routing/RouteConfigSource.java",
+      "kind": "main",
+      "lines": 27,
+      "sha256": "bbb465822f26b0f0ad85f7c63258c721ec0728a0480f81324fe636b4172bb5bd",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/routing/RouteTable.java",
+      "kind": "main",
+      "lines": 196,
+      "sha256": "259181eca419d61b219022e06fcf7c74ff6472fa9dfc98c84306c4059c830ecc",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/routing/Router.java",
+      "kind": "main",
+      "lines": 20,
+      "sha256": "f59851c04d6f32e7d6e392d39b4611bae39ffc12bf444163c8920abd5f918c86",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/routing/TaskRouteSticky.java",
+      "kind": "main",
+      "lines": 36,
+      "sha256": "8e761c9037001cf591491eddc748462cd56cbbd27d3c1900910470c101f4f369",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/upstream/ChunkSink.java",
+      "kind": "main",
+      "lines": 26,
+      "sha256": "d4ca1db5093c7c78b7e469831184658cd395d016827ce99eac50fa2262ee67e1",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/upstream/CircuitBreaker.java",
+      "kind": "main",
+      "lines": 40,
+      "sha256": "dd7b24f633d6547882318e09ff0b51b64387da34e766b7d84c0c5dc5ca968bf3",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/upstream/CircuitOpenException.java",
+      "kind": "main",
+      "lines": 9,
+      "sha256": "86b973c9427de797674fa4ec7c8bca6753a95117531adcfe36eac9a8b35742cc",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/upstream/HeaderListener.java",
+      "kind": "main",
+      "lines": 24,
+      "sha256": "a8d37e2400339aac25f5959809f2dfbf1c594785985f71fb474f4e2401453007",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/upstream/HeaderPolicy.java",
+      "kind": "main",
+      "lines": 32,
+      "sha256": "e79ac1dda887858c42ce41e356df4178a307c715929a1cacb55236f85f7ea090",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/upstream/UpstreamMethod.java",
+      "kind": "main",
+      "lines": 11,
+      "sha256": "082cf44761333526d7a6102b22381dbfc421f2777cfd75e36d17a776df0c5b6f",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/upstream/UpstreamRequest.java",
+      "kind": "main",
+      "lines": 101,
+      "sha256": "a6788972c036ff7726903752f7c144fff972715393871fb65353646394e4c23c",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/upstream/UpstreamStatusException.java",
+      "kind": "main",
+      "lines": 42,
+      "sha256": "0e7aa046cf2248595bf86bfd2964df1a3f9e1b05494241d4d5d2eb725b590db3",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/upstream/UpstreamTimeoutException.java",
+      "kind": "main",
+      "lines": 15,
+      "sha256": "781e45e272adbd688b342cf7566445b3ee60249377b6ed4333a68c9e93081445",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/extension/ExtensionContextTest.java",
+      "kind": "test",
+      "lines": 46,
+      "sha256": "7bda4265c614d15080a80c0b54cadaf31256b3a79f0c68d080e116714a41c98f",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/protocol/ProtocolCodecTest.java",
+      "kind": "test",
+      "lines": 124,
+      "sha256": "05873b3f43f401ba801f721ddac93e373650ec4a565db1b954dbaeee2461f85a",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/protocol/ProtocolDiscoveryTest.java",
+      "kind": "test",
+      "lines": 15,
+      "sha256": "f3ee79b5548fd584059277c8ed60dea89c0ac94a570274be3ac91301eef41b84",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/protocol/ProtocolSpiTest.java",
+      "kind": "test",
+      "lines": 108,
+      "sha256": "2038e04c2fc438c15fd82623f24c4ab0b0fc16bdb61d2c0ceb699108b9a95f58",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/protocol/SsePayloadBoundaryTest.java",
+      "kind": "test",
+      "lines": 43,
+      "sha256": "c6c576914d6fe1acf6398d38330dfa75ee8da120ae5d789b3f03f98ca2c31f02",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/routing/TaskRouteIsolationTest.java",
+      "kind": "test",
+      "lines": 21,
+      "sha256": "990c84f465a2c500789c2836f234bd5cca1e384e96cf47c5fcc4e4b4272d0d8e",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/upstream/UpstreamRequestTest.java",
+      "kind": "test",
+      "lines": 64,
+      "sha256": "7c42b0908d70fd87a5c28fdff1d4d0ab4a7f044b1a9609322db39df6385e6006",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-engine/llmgw-engine-api/src/main/java/io/github/leohou0430/llmgw/engine/AbstractEngineConfiguration.java",
+      "kind": "main",
+      "lines": 27,
+      "sha256": "41dd4d2664c538b44c15a273cd5b396443b511cfe05571deaf33c816638a235f",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-engine/llmgw-engine-api/src/main/java/io/github/leohou0430/llmgw/engine/EngineHeaders.java",
+      "kind": "main",
+      "lines": 19,
+      "sha256": "a841ce3fde12743bbc3e7b1a49734f2144d318422f74e0bfd3573749179f1d57",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-engine/llmgw-engine-api/src/main/java/io/github/leohou0430/llmgw/engine/EngineKind.java",
+      "kind": "main",
+      "lines": 50,
+      "sha256": "1667bc5b7e234cfb8d517de9a40b2215e71a917f0b3569480dafbc027cf02434",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-engine/llmgw-engine-api/src/main/java/io/github/leohou0430/llmgw/engine/EngineProfiles.java",
+      "kind": "main",
+      "lines": 15,
+      "sha256": "c51a7589c7288a33a516581f5a23445f2c22c284069e7d31a55ec97cb9f2c2b7",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-engine/llmgw-engine-api/src/main/java/io/github/leohou0430/llmgw/engine/EngineReasons.java",
+      "kind": "main",
+      "lines": 33,
+      "sha256": "6e86caf0c8d41ceccc7fc0917b46ea5cf291e8112e0b551805197f54adfcc29f",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-engine/llmgw-engine-api/src/main/java/io/github/leohou0430/llmgw/engine/EngineRoutes.java",
+      "kind": "main",
+      "lines": 133,
+      "sha256": "33e5be1df2501ecb789170ed3a3587fcacc83953e89165d652fcf424bcf42263",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-engine/llmgw-engine-api/src/main/java/io/github/leohou0430/llmgw/engine/EngineTimings.java",
+      "kind": "main",
+      "lines": 34,
+      "sha256": "4db0494c75abdd67f61f60a2ed2508aabdc3e138f9669f088d8c2616ba5f8b7f",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-engine/llmgw-engine-api/src/main/java/io/github/leohou0430/llmgw/engine/ForwardingPolicy.java",
+      "kind": "main",
+      "lines": 192,
+      "sha256": "1d62463bfd51ed3e648cff6fae6eaa9fee4a0c877e40a5ffc3f7fc0ff7e680a7",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-engine/llmgw-engine-api/src/main/java/io/github/leohou0430/llmgw/engine/SseChunkAccounting.java",
+      "kind": "main",
+      "lines": 42,
+      "sha256": "5b63a197ae5fc35ab4afa58bb585f379d8036e6edb9aa416f6e2cbf057641a63",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-engine/llmgw-engine-api/src/test/java/io/github/leohou0430/llmgw/engine/FileReferencePolicyTest.java",
+      "kind": "test",
+      "lines": 30,
+      "sha256": "1d55694b401e426a64500bb5e2a519211d23956bcf4de6e53f94793e0a909f09",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-engine/llmgw-engine-api/src/test/java/io/github/leohou0430/llmgw/engine/ForwardingPolicyTest.java",
+      "kind": "test",
+      "lines": 154,
+      "sha256": "c6a4dcf0b58599342d379010e87526a65061388e61bb277362d88da72e122bd8",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-engine/llmgw-engine-vt/src/main/java/io/github/leohou0430/llmgw/engine/vt/VirtualThreadEngineConfiguration.java",
+      "kind": "main",
+      "lines": 16,
+      "sha256": "c6c29e528457837d60009adac6e802f29fb96c05720f85a00cb404d78b196fba",
+      "framework_imports": [
+        "import org.springframework.context.annotation.Configuration;",
+        "import org.springframework.context.annotation.Profile;"
+      ],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-engine/llmgw-engine-vt/src/main/java/io/github/leohou0430/llmgw/engine/vt/VirtualThreadGatewayController.java",
+      "kind": "main",
+      "lines": 884,
+      "sha256": "9bd4e847b7c9cbb59cef8bf2fbf6ed2c56fbf6a6190582530d54a9cc02b3cd00",
+      "framework_imports": [
+        "import jakarta.servlet.http.HttpServletRequest;",
+        "import jakarta.servlet.http.HttpServletResponse;",
+        "import org.springframework.context.annotation.Profile;",
+        "import org.springframework.web.bind.annotation.GetMapping;",
+        "import org.springframework.web.bind.annotation.PathVariable;",
+        "import org.springframework.web.bind.annotation.PostMapping;",
+        "import org.springframework.web.bind.annotation.RestController;"
+      ],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-engine/llmgw-engine-webflux/src/main/java/io/github/leohou0430/llmgw/engine/webflux/WebfluxEngineConfiguration.java",
+      "kind": "main",
+      "lines": 16,
+      "sha256": "2556480ba6320dcfb968a2a845ded62a73284291483979be75fb04608e7bfa78",
+      "framework_imports": [
+        "import org.springframework.context.annotation.Configuration;",
+        "import org.springframework.context.annotation.Profile;"
+      ],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-engine/llmgw-engine-webflux/src/main/java/io/github/leohou0430/llmgw/engine/webflux/WebfluxGatewayController.java",
+      "kind": "main",
+      "lines": 899,
+      "sha256": "19403a8cfe508e798460bb20fba19930503a2a23cefd38e5c6f81bb52b9bc86d",
+      "framework_imports": [
+        "import org.springframework.context.annotation.Profile;",
+        "import org.springframework.core.io.buffer.DataBuffer;",
+        "import org.springframework.core.io.buffer.DataBufferLimitException;",
+        "import org.springframework.core.io.buffer.DataBufferUtils;",
+        "import org.springframework.http.HttpHeaders;",
+        "import org.springframework.http.HttpStatus;",
+        "import org.springframework.http.MediaType;",
+        "import org.springframework.http.server.reactive.ServerHttpRequest;",
+        "import org.springframework.http.server.reactive.ServerHttpResponse;",
+        "import org.springframework.web.bind.annotation.GetMapping;",
+        "import org.springframework.web.bind.annotation.PathVariable;",
+        "import org.springframework.web.bind.annotation.PostMapping;",
+        "import org.springframework.web.bind.annotation.RestController;",
+        "import reactor.core.publisher.Flux;",
+        "import reactor.core.publisher.Mono;",
+        "import reactor.core.publisher.SignalType;"
+      ],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-api/src/main/java/io/github/leohou0430/llmgw/governance/GovernanceLimits.java",
+      "kind": "main",
+      "lines": 58,
+      "sha256": "1ee75af8995ff1759e637798c0ed1c2e2ce8cf770e13492cf2322bb8f81d644e",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-api/src/main/java/io/github/leohou0430/llmgw/governance/GovernancePacks.java",
+      "kind": "main",
+      "lines": 9,
+      "sha256": "6c8ab63feb81e3cb0a94d55f2a666eaa10e92e27f6e97e9c481de5fec54b77ab",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-api/src/main/java/io/github/leohou0430/llmgw/governance/QuotaMath.java",
+      "kind": "main",
+      "lines": 70,
+      "sha256": "9e66ba022735aff75a3361773793b7b851b8e993b6d5c18c5738ef55128e9681",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-api/src/main/java/io/github/leohou0430/llmgw/governance/UsageSummaries.java",
+      "kind": "main",
+      "lines": 35,
+      "sha256": "77e51cdea70d9e45334b0078c26f359f14840d0192bf9de79011381ed89f7219",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-api/src/test/java/io/github/leohou0430/llmgw/governance/QuotaMathTest.java",
+      "kind": "test",
+      "lines": 80,
+      "sha256": "68745f3ff29428731dd396c91f7ef74a413ad570cbae288bc53e84e0e7b9d209",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/AllowListHeaderPolicy.java",
+      "kind": "main",
+      "lines": 127,
+      "sha256": "95a367abd62f1c60131665a7182b4d0e35a7ddfa511660e3905668a6e9a5ec4e",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/AtomicTokenLimiter.java",
+      "kind": "main",
+      "lines": 127,
+      "sha256": "ea1ea3453f03ac74cc887ae7f14115e4cbd9173d83b34a078ddfdec1780dca17",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/CaffeineSemanticCache.java",
+      "kind": "main",
+      "lines": 85,
+      "sha256": "90d53d21983bf1c9d8c0234b7919b738292a6cc01db1aa14bc942e8af9029e32",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/ConfigModelCatalog.java",
+      "kind": "main",
+      "lines": 54,
+      "sha256": "58aed71f1883a35c609e5aefb5280e2ff96928bfe844aade5244ef191ce2a089",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/DefaultGovernanceChain.java",
+      "kind": "main",
+      "lines": 673,
+      "sha256": "711a5f1da130340015834e97f188d8ff9ca0b0b6e99104850701bf002190036f",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/DefaultGovernanceModule.java",
+      "kind": "main",
+      "lines": 50,
+      "sha256": "36462faee8fac04d8b2c8c31a7e292a15e98fee2dda804d4e860b09a7b71778b",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/DynamicGovernanceSettings.java",
+      "kind": "main",
+      "lines": 75,
+      "sha256": "a36aaeb8f186e41ac9a0a9593c7c5bdfb01f21d839f8f43bec4ef15447837c03",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/GovernanceMetrics.java",
+      "kind": "main",
+      "lines": 73,
+      "sha256": "af145a5d9d6e7c98a5f588a12772ded2c58cd973fe95fb73d00fe0896d9d183b",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/GuardrailChain.java",
+      "kind": "main",
+      "lines": 36,
+      "sha256": "3f4fedb27c20639cbff4f46d9aaf19d7957ffe48fcce6f655ae2daf6a984a04c",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/HttpEmbedder.java",
+      "kind": "main",
+      "lines": 115,
+      "sha256": "e61c968e2c9a6f1f9566a518869f05cb47fae7053a2646377d2ceb355d2f7845",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/HttpGuardrail.java",
+      "kind": "main",
+      "lines": 108,
+      "sha256": "b6a000a4c93963622f4411c595f204acfdc2d3db99cddd83186d603bd50a1f0b",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/InMemoryApiKeyRegistry.java",
+      "kind": "main",
+      "lines": 63,
+      "sha256": "7bb71c081c067ce8743e05fdf6a23351ae4258b5aa458e8eed51bb2bdd980e59",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/InMemoryAuditSink.java",
+      "kind": "main",
+      "lines": 39,
+      "sha256": "5cb90a9d59df3420d6ea0a879738cb125289a092fc13171a397b5442f7651690",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/InMemoryBudgetLedger.java",
+      "kind": "main",
+      "lines": 67,
+      "sha256": "cb5149084a9539bbb8c67281373c5755c32b3b0673332fa62002184da198a8c0",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/InMemoryRequestLog.java",
+      "kind": "main",
+      "lines": 59,
+      "sha256": "06dbe13bbcc875105fc7e14de4cc3f6019bfa6d037af7a7d8873a996ea0202e2",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/InMemoryUsageLedger.java",
+      "kind": "main",
+      "lines": 84,
+      "sha256": "5b2d532425df90a63c1ecec966d33902a4ed4ac7c7e4ad8f6ef858dc8c1b6289",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/InMemoryVectorStore.java",
+      "kind": "main",
+      "lines": 101,
+      "sha256": "cd4953fef4de7f34626e71b3a206b51c2fb79af22347812bebd5ff2a35e1d491",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/JsonKeyStore.java",
+      "kind": "main",
+      "lines": 226,
+      "sha256": "63249ebb48357b5ad19b9e0a247efaa5221684dd03c884bd2f45ecd2f7205ebf",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/JsonSnapshotStore.java",
+      "kind": "main",
+      "lines": 96,
+      "sha256": "45aad176e5b29100cb48648bd525df9b0bec39e8f088d5095de1fb97eb2fe901",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/JwtTokenValidator.java",
+      "kind": "main",
+      "lines": 132,
+      "sha256": "a69f30b654f8f5aaec42cd5433f6e8449dbea0e822971d88f31a4bfdbea0a495",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/ManagedApiKeyRegistry.java",
+      "kind": "main",
+      "lines": 175,
+      "sha256": "bcc4a8740c8ecc97dd82476eca473c869ff192da18d7e25a2fc97346d726f0ad",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/PatternGuardrail.java",
+      "kind": "main",
+      "lines": 54,
+      "sha256": "b18d3f83ef0b029f0041b8aa84e5c961f6b794158137e4bcc42b8e9f02d7ce91",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/WindowedCircuitBreaker.java",
+      "kind": "main",
+      "lines": 137,
+      "sha256": "4f9bbdd6d30eae90407dbd7c6297553b49bbc02029720384852eb4d593874c8d",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/test/java/io/github/leohou0430/llmgw/governance/inmemory/CacheIsolationTest.java",
+      "kind": "test",
+      "lines": 36,
+      "sha256": "091d262a75354604495c3bb1e9ae8ab522f25b7e859bd321cbdbb93f409b04db",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/test/java/io/github/leohou0430/llmgw/governance/inmemory/ConfigModelCatalogTest.java",
+      "kind": "test",
+      "lines": 61,
+      "sha256": "c51543bfa278ce7016dba191c27d2be7bb4bbe6e66f08ac3d35e1a4a7914c7ae",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/test/java/io/github/leohou0430/llmgw/governance/inmemory/GovernanceSafetyTest.java",
+      "kind": "test",
+      "lines": 71,
+      "sha256": "b101c1b690f12cea9680ed45849614e0f1f51e74f67789a45d4e4d6f7a0b499d",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/test/java/io/github/leohou0430/llmgw/governance/inmemory/HttpGuardrailTest.java",
+      "kind": "test",
+      "lines": 62,
+      "sha256": "ccd41bf24670c76433998a87aaf74383b0e2df746f0c35d7f1d6cc21d264544e",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/test/java/io/github/leohou0430/llmgw/governance/inmemory/InMemoryBudgetLedgerTest.java",
+      "kind": "test",
+      "lines": 86,
+      "sha256": "9ff95f596fe89cfed777d63a2dff3f6eb87d1029c89932d06f6ba5d32b55945c",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/test/java/io/github/leohou0430/llmgw/governance/inmemory/JwtTokenValidatorTest.java",
+      "kind": "test",
+      "lines": 191,
+      "sha256": "6b6579bc165a2c6dae08371cbdf2196c45d6b947573b3ce4b10ceba58a4f940c",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/test/java/io/github/leohou0430/llmgw/governance/inmemory/ManagedApiKeyRegistryTest.java",
+      "kind": "test",
+      "lines": 206,
+      "sha256": "29b93bf775d5abf6abda974386df280cc40d0cac595a627b82255758c78ae919",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/test/java/io/github/leohou0430/llmgw/governance/inmemory/ModelRateAccountingTest.java",
+      "kind": "test",
+      "lines": 45,
+      "sha256": "1d90dbe557716413db0b8e8c63364bd6d341de96b78ec29ae2186895d26a054a",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/test/java/io/github/leohou0430/llmgw/governance/inmemory/NativeGovernanceModuleTest.java",
+      "kind": "test",
+      "lines": 48,
+      "sha256": "6db047a6426f738b03d44f6c39221543243ffdc77e56579db3a896608e62e433",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-redis/src/main/java/io/github/leohou0430/llmgw/governance/redis/RedisApiKeyRegistry.java",
+      "kind": "main",
+      "lines": 108,
+      "sha256": "ebdd8c4599734a97b2681513c6b11fb70c3667a24fdd50ad242a7c91917f86fd",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-redis/src/main/java/io/github/leohou0430/llmgw/governance/redis/RedisCircuitBreaker.java",
+      "kind": "main",
+      "lines": 81,
+      "sha256": "2b60f5ea8e1ee1112b6c9497013d23121f4a66c5bd69b79e8de305582669b803",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-redis/src/main/java/io/github/leohou0430/llmgw/governance/redis/RedisGovernanceModule.java",
+      "kind": "main",
+      "lines": 36,
+      "sha256": "02c18b192eb0afcae8927c0c0541db755249ca1aac28daeaac96eb43267e92c2",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-redis/src/main/java/io/github/leohou0430/llmgw/governance/redis/RedisScripts.java",
+      "kind": "main",
+      "lines": 115,
+      "sha256": "7606cb3a182c29ea0a9128c7ccd1723f86c7220ed5baf92454c60dde3823653d",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-redis/src/main/java/io/github/leohou0430/llmgw/governance/redis/RedisSemanticCache.java",
+      "kind": "main",
+      "lines": 64,
+      "sha256": "cdecfa08286cf09edf97fe1dfb5debd2ebc09f3515cebc7a6578dab38c9ad593",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-redis/src/main/java/io/github/leohou0430/llmgw/governance/redis/RedisTaskRouteSticky.java",
+      "kind": "main",
+      "lines": 44,
+      "sha256": "e63765fcc7f96b5bc28b909a110e3483291f7b58a0723323b82eff21ced43db8",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-redis/src/main/java/io/github/leohou0430/llmgw/governance/redis/RedisTokenLimiter.java",
+      "kind": "main",
+      "lines": 84,
+      "sha256": "79862a7e15f5431beb4f00ce34a3ff0f9ad1037acd445c49f1cbedf6e686a614",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-redis/src/main/java/io/github/leohou0430/llmgw/governance/redis/RedisUsageLedger.java",
+      "kind": "main",
+      "lines": 107,
+      "sha256": "81295fd4c42cb8747321b5edb1a13fa7b23ad541a4bdb77fd9be559496a79025",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-redis/src/test/java/io/github/leohou0430/llmgw/governance/redis/RedisTokenLimiterTest.java",
+      "kind": "test",
+      "lines": 92,
+      "sha256": "8ff9d9460dea1a7a2f6970c28e626fdee5f88e771cb6656ca12fde127cc718dc",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-provider/llmgw-provider-anthropic/src/main/java/io/github/leohou0430/llmgw/provider/anthropic/AnthropicAuthenticator.java",
+      "kind": "main",
+      "lines": 36,
+      "sha256": "939274356a99cffbb48538baf143c912d702c5b540f0cc6cba98f10e9102d45c",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-provider/llmgw-provider-anthropic/src/test/java/io/github/leohou0430/llmgw/provider/anthropic/AnthropicAuthenticatorTest.java",
+      "kind": "test",
+      "lines": 41,
+      "sha256": "9c86e0fa41090bc73dc07def1dfee0fe3ac73ed6a7c1b77fb920683fcebe372f",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-provider/llmgw-provider-api/src/main/java/io/github/leohou0430/llmgw/provider/ProviderVerifier.java",
+      "kind": "main",
+      "lines": 11,
+      "sha256": "74954c13037f99c909c52890e3a4e1b366d6e5ce613d25d27fc78676e9a8a8be",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-provider/llmgw-provider-api/src/main/java/io/github/leohou0430/llmgw/provider/UpstreamAuthenticator.java",
+      "kind": "main",
+      "lines": 29,
+      "sha256": "8a73a667c494028ad461fa951f0e6eedd8377237ee568d4b3751260aee7bf3a9",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-provider/llmgw-provider-api/src/main/java/io/github/leohou0430/llmgw/provider/UpstreamProvider.java",
+      "kind": "main",
+      "lines": 36,
+      "sha256": "14d7e6efc45d49c20d84ad781feeaff40a4a5862770a9e444efb65e3bfc2a5e9",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-provider/llmgw-provider-http-jdk/src/main/java/io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpModule.java",
+      "kind": "main",
+      "lines": 12,
+      "sha256": "ddda8fa9ccce1cd9ee20acd94c0df85a8aef9663c01c166a5c22d2ec52363b60",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-provider/llmgw-provider-http-jdk/src/main/java/io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream.java",
+      "kind": "main",
+      "lines": 579,
+      "sha256": "a21b5cae8349f7af0ac24fe4d3c5f6f9841b8a933b6aa42f7c2464521f5f63ae",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-provider/llmgw-provider-http-jdk/src/test/java/io/github/leohou0430/llmgw/provider/http/jdk/JdkFlowTransportTest.java",
+      "kind": "test",
+      "lines": 110,
+      "sha256": "7afe3d88c226bba661633fc604b9d0dace2b199f518f872e9c75f207f3c95349",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-provider/llmgw-provider-http-jdk/src/test/java/io/github/leohou0430/llmgw/provider/http/jdk/NativeUpstreamApiTest.java",
+      "kind": "test",
+      "lines": 17,
+      "sha256": "22d1b64aaa5b3fe6a68f10ac0d8186c1fa4311d4a2f814ccb74fde735422b11c",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-provider/llmgw-provider-http-jdk/src/test/java/io/github/leohou0430/llmgw/provider/http/jdk/UpstreamResponseLimitTest.java",
+      "kind": "test",
+      "lines": 26,
+      "sha256": "e432f48f3fd68f436d409865cf62a085d7b902cef293abe329e38f1a34a3c1fd",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-provider/llmgw-provider-openai/src/main/java/io/github/leohou0430/llmgw/provider/openai/OpenAiAuthenticator.java",
+      "kind": "main",
+      "lines": 18,
+      "sha256": "e2fa80e8206738694413c2b254031b2315e459a3983054e81758fd523027e1a9",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-provider/llmgw-provider-openai-sdk/src/main/java/io/github/leohou0430/llmgw/provider/openai/sdk/OpenAiSdkVerifier.java",
+      "kind": "main",
+      "lines": 50,
+      "sha256": "dfdc06367dfdf5dd49662ad1d566b766a2f73cc143342a4b416c8012e78c0ff6",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-provider/llmgw-provider-openai-sdk/src/test/java/io/github/leohou0430/llmgw/provider/openai/sdk/OpenAiVerifierDiscoveryTest.java",
+      "kind": "test",
+      "lines": 14,
+      "sha256": "77373ffd51ae4661b45eeb78c950ed79606fc136e2731597acf272c082578dc5",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-tokenizer/llmgw-tokenizer-api/src/main/java/io/github/leohou0430/llmgw/tokenizer/TokenCounter.java",
+      "kind": "main",
+      "lines": 17,
+      "sha256": "42bc8092a86c23db93a90763ce87c99fc8dc80067fc80ad17c37b7dba7dcebd4",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-tokenizer/llmgw-tokenizer-heuristic/src/main/java/io/github/leohou0430/llmgw/tokenizer/heuristic/HeuristicTokenCounter.java",
+      "kind": "main",
+      "lines": 12,
+      "sha256": "28d88427c9f97baaed0fee4ee966f635ab6e73c93fcbd640da7d84102a14387d",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-tokenizer/llmgw-tokenizer-jtokkit/src/main/java/io/github/leohou0430/llmgw/tokenizer/jtokkit/JtokkitTokenCounter.java",
+      "kind": "main",
+      "lines": 36,
+      "sha256": "51d77b3baf3bacab3b3a8a8cbd9da43f0cd3c0131df5258a142869712e75be6d",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    },
+    {
+      "path": "llmgw-tokenizer/llmgw-tokenizer-jtokkit/src/test/java/io/github/leohou0430/llmgw/tokenizer/jtokkit/JtokkitTokenCounterTest.java",
+      "kind": "test",
+      "lines": 35,
+      "sha256": "9396dd5c90476da2b1a5c86a6840c61ed0046a7749bff333f6cb3a75a17860ea",
+      "framework_imports": [],
+      "review_scope": "source/dependency/lifecycle inventory; behavior evidence is suite-level, not a proof of every branch"
+    }
+  ]
+}

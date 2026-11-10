@@ -1,0 +1,41 @@
+########## webflux ##########
+-- responses + messages: happy paths --
+  [PASS] responses non-stream 200 -- 200 application/json {"id":"resp_mock","object":"response","status":"completed","
+  [PASS] responses SSE: deltas + response.completed, NO [DONE] -- 200 text/event-stream deltas=8 completed=1 done=0
+  [PASS] messages non-stream 200 -- 200 application/json {"id":"msg_mock","type":"message","role":"assistant","conten
+  [PASS] messages SSE: deltas + message_stop, NO [DONE] -- 200 text/event-stream deltas=8 stop=1 done=0
+-- governance covers every endpoint --
+  [PASS] responses without key -> 401 -- 401 {"error":{"message":"invalid api key","type":"gateway_error"
+  [PASS] messages invalid json -> 400 -- 400 {"error":{"message":"invalid json: Unrecognized token 'not':
+-- images: n units, never cached --
+  [PASS] images n=3 -> 3 b64 entries -- 200 application/json entries=3
+  [PASS] images n=99 capped at 10 -- 200 entries=10
+  [PASS] images never enter the semantic cache -- cacheSize=0
+-- videos: create -> poll -> content --
+  [PASS] video create 200 + task id -- 200 id=video-1
+  [PASS] video poll reaches completed -- status=completed id=video-1
+  [PASS] video content 200 video/mp4 -- 200 video/mp4 bytes=432
+  [PASS] video create/poll never cached -- cacheSize=0
+-- per-protocol metering (1+8+1+8+0 = 18 completion tokens) --
+  [PASS] usage frames from every protocol counted exactly -- completionTokens=18 requests=5 errors=0 (expect 18/5/0)
+-- protocol routing: each kind lands on its own route --
+  [PASS] five protocols resolved to five protocol-specific routes -- chat=1 responses=1 messages=1 images=1 videos=1
+-- responses truncation contract (no [DONE] ever) --
+  [PASS] responses mid-stream crash -> in-band error, NO fabricated terminators -- 200 err_event=1 done=0 completed=0
+  [PASS] responses zero-frame EOF -> 502 naming its own terminator -- 502 application/json {"error":{"message":"upstream: upstream closed SSE stream without response.compl
+  [PASS] responses mid-stream EOF -> in-band error only -- 200 err_event=1 done=0 completed=0
+  [PASS] responses disconnect after response.completed stays a success -- 200 completed=1 err_event=0
+  [PASS] responses upstream 429 -> gateway 502 -- 502 {"error":{"message":"upstream: upstream status 429: {\"error\":{\"message\":\"in
+-- messages truncation contract (no [DONE] ever) --
+  [PASS] messages mid-stream crash -> in-band error, NO fabricated terminators -- 200 err_event=1 done=0 stop=0
+  [PASS] messages zero-frame EOF -> 502 naming its own terminator -- 502 application/json {"error":{"message":"upstream: upstream closed SSE stream without message_stop",
+  [PASS] messages disconnect after message_stop stays a success -- 200 stop=1 err_event=0
+-- images/videos failure injection --
+  [PASS] images upstream 500 -> gateway 502 -- 502 {"error":{"message":"upstream: upstream status 500: {\"error\":{\"message\":\"in
+  [PASS] video create upstream 503 -> gateway 502 -- 502 {"error":{"message":"upstream: upstream status 503: {\"error\":{\"message\":\"in
+-- sticky video routing: a task exists only on its creating upstream --
+  [PASS] GW1: create + poll its own task -- status=completed id=video-1
+  [PASS] GW2 rejects a task without a local ownership binding -- code=404 id=video-1 on gw2
+  [PASS] GW2 create + poll its own task via wildcard fallback -- status=completed id=video-1
+==========================================
+PASS=28 FAIL=0

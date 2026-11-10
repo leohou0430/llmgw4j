@@ -1,0 +1,38 @@
+[
+  {
+    "profile": "default",
+    "exit_code": 0,
+    "junit": {
+      "tests": 142,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "jar": "bench/results/native-spi-release-030/default.jar",
+    "sha256": "24cfe5afefb4044f8e40bd55e5fa8e5e9da58cc07e7fb4bb35d7a4e4e5d0b657"
+  },
+  {
+    "profile": "redis",
+    "exit_code": 0,
+    "junit": {
+      "tests": 142,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "jar": "bench/results/native-spi-release-030/redis.jar",
+    "sha256": "9f87e5145caa6587361557c4c90e4207c7fa7f8a76a534af3fe563f1e0ade227"
+  },
+  {
+    "profile": "combined",
+    "exit_code": 0,
+    "junit": {
+      "tests": 142,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "jar": "bench/results/native-spi-release-030/combined.jar",
+    "sha256": "a27da29fe5d247a16ec46d93300e474035d6c005c6997fc2013bca8742b1436d"
+  }
+]

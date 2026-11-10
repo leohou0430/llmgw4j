@@ -1,0 +1,53 @@
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.1.2)
+
+2026-11-10T15:35:43.464+08:00  INFO 47711 --- [llmgw] [           main] i.g.l.llmgw.app.LlmGatewayApplication    : Starting LlmGatewayApplication v0.2.0 using Java 25 with PID 47711 (/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/native-spi-migration/default.jar started by leo in /private/var/folders/wx/9749nb1j7bbg_3n7kb15lbb80000gn/T/llmgw-native-preflight-py8eqkmz)
+2026-11-10T15:35:43.477+08:00  INFO 47711 --- [llmgw] [           main] i.g.l.llmgw.app.LlmGatewayApplication    : The following 1 profile is active: "vt"
+2026-11-10T15:35:48.362+08:00  INFO 47711 --- [llmgw] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 55279 (http)
+2026-11-10T15:35:48.446+08:00  INFO 47711 --- [llmgw] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-11-10T15:35:48.447+08:00  INFO 47711 --- [llmgw] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.27]
+2026-11-10T15:35:48.548+08:00  INFO 47711 --- [llmgw] [           main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 4836 ms
+2026-11-10T15:35:49.606+08:00  INFO 47711 --- [llmgw] [           main] o.apache.dubbo.rpc.model.FrameworkModel  :  [DUBBO] Dubbo Framework[1] is created, dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:35:49.638+08:00  INFO 47711 --- [llmgw] [           main] o.a.d.c.r.GlobalResourcesRepository      :  [DUBBO] Creating global shared handler ..., dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:35:49.729+08:00  INFO 47711 --- [llmgw] [           main] o.a.dubbo.rpc.model.ApplicationModel     :  [DUBBO] Dubbo Application[1.0](unknown) is created, dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:35:49.733+08:00  INFO 47711 --- [llmgw] [           main] org.apache.dubbo.rpc.model.ScopeModel    :  [DUBBO] Dubbo Module[1.0.0] is created, dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:35:49.803+08:00  INFO 47711 --- [llmgw] [           main] o.a.d.c.context.AbstractConfigManager    :  [DUBBO] Config settings: {dubbo.config.mode=STRICT, dubbo.config.ignore-duplicated-interface=false}, dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:35:49.805+08:00  INFO 47711 --- [llmgw] [           main] o.a.d.c.context.AbstractConfigManager    :  [DUBBO] Config settings: {dubbo.config.mode=STRICT, dubbo.config.ignore-duplicated-interface=false}, dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:35:49.814+08:00  INFO 47711 --- [llmgw] [           main] o.a.d.c.utils.SerializeSecurityManager   :  [DUBBO] Serialize check serializable: true, dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:35:49.816+08:00  INFO 47711 --- [llmgw] [           main] o.a.d.c.u.SerializeSecurityConfigurator  :  [DUBBO] Read serialize allow list from jar:nested:/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/native-spi-migration/default.jar/!BOOT-INF/lib/dubbo-common-3.3.6.jar!/security/serialize.allowlist, dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:35:49.834+08:00  INFO 47711 --- [llmgw] [           main] o.a.d.c.u.SerializeSecurityConfigurator  :  [DUBBO] Read serialize blocked list from jar:nested:/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/native-spi-migration/default.jar/!BOOT-INF/lib/dubbo-common-3.3.6.jar!/security/serialize.blockedlist, dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:35:50.338+08:00  INFO 47711 --- [llmgw] [           main] o.apache.dubbo.rpc.model.FrameworkModel  :  [DUBBO] Reset global default framework from null to Dubbo Framework[1], dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:35:50.339+08:00  INFO 47711 --- [llmgw] [           main] o.a.dubbo.rpc.model.ApplicationModel     :  [DUBBO] Dubbo Application[1.1](unknown) is created, dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:35:50.339+08:00  INFO 47711 --- [llmgw] [           main] org.apache.dubbo.rpc.model.ScopeModel    :  [DUBBO] Dubbo Module[1.1.0] is created, dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:35:50.367+08:00  INFO 47711 --- [llmgw] [           main] o.a.d.c.context.AbstractConfigManager    :  [DUBBO] Config settings: {dubbo.config.mode=STRICT, dubbo.config.ignore-duplicated-interface=false}, dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:35:50.367+08:00  INFO 47711 --- [llmgw] [           main] o.a.d.c.context.AbstractConfigManager    :  [DUBBO] Config settings: {dubbo.config.mode=STRICT, dubbo.config.ignore-duplicated-interface=false}, dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:35:50.371+08:00  INFO 47711 --- [llmgw] [           main] o.a.d.c.u.SerializeSecurityConfigurator  :  [DUBBO] Read serialize allow list from jar:nested:/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/native-spi-migration/default.jar/!BOOT-INF/lib/dubbo-common-3.3.6.jar!/security/serialize.allowlist, dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:35:50.372+08:00  INFO 47711 --- [llmgw] [           main] o.a.d.c.u.SerializeSecurityConfigurator  :  [DUBBO] Read serialize blocked list from jar:nested:/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/native-spi-migration/default.jar/!BOOT-INF/lib/dubbo-common-3.3.6.jar!/security/serialize.blockedlist, dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:35:50.386+08:00  INFO 47711 --- [llmgw] [           main] org.apache.dubbo.rpc.model.ScopeModel    :  [DUBBO] Dubbo Module[1.1.1] is created, dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:35:50.402+08:00  INFO 47711 --- [llmgw] [           main] o.a.d.c.context.AbstractConfigManager    :  [DUBBO] Config settings: {dubbo.config.mode=STRICT, dubbo.config.ignore-duplicated-interface=false}, dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:35:50.407+08:00  INFO 47711 --- [llmgw] [           main] o.a.d.c.u.SerializeSecurityConfigurator  :  [DUBBO] Read serialize allow list from jar:nested:/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/native-spi-migration/default.jar/!BOOT-INF/lib/dubbo-common-3.3.6.jar!/security/serialize.allowlist, dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:35:50.407+08:00  INFO 47711 --- [llmgw] [           main] o.a.d.c.u.SerializeSecurityConfigurator  :  [DUBBO] Read serialize blocked list from jar:nested:/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/native-spi-migration/default.jar/!BOOT-INF/lib/dubbo-common-3.3.6.jar!/security/serialize.blockedlist, dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:35:50.492+08:00  INFO 47711 --- [llmgw] [           main] i.g.l.llmgw.app.MockUpstreamServer       : Mock upstream listening on port 55280
+2026-11-10T15:35:52.471+08:00  INFO 47711 --- [llmgw] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 4 endpoints beneath base path '/actuator'
+2026-11-10T15:35:52.773+08:00  INFO 47711 --- [llmgw] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 55279 (http) with context path '/'
+2026-11-10T15:35:52.797+08:00  INFO 47711 --- [llmgw] [           main] i.g.l.llmgw.app.LlmGatewayApplication    : Started LlmGatewayApplication in 10.853 seconds (process running for 12.085)
+2026-11-10T15:35:53.288+08:00  INFO 47711 --- [llmgw] [omcat-handler-0] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-11-10T15:35:53.290+08:00  INFO 47711 --- [llmgw] [omcat-handler-0] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-11-10T15:35:53.298+08:00  INFO 47711 --- [llmgw] [omcat-handler-0] o.s.web.servlet.DispatcherServlet        : Completed initialization in 6 ms
+2026-11-10T15:35:53.954+08:00  INFO 47711 --- [llmgw] [ionShutdownHook] o.s.boot.tomcat.GracefulShutdown         : Commencing graceful shutdown. Waiting for active requests to complete
+2026-11-10T15:35:53.963+08:00  INFO 47711 --- [llmgw] [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown         : Graceful shutdown complete
+2026-11-10T15:35:53.981+08:00  INFO 47711 --- [llmgw] [ionShutdownHook] o.apache.dubbo.rpc.model.FrameworkModel  :  [DUBBO] Destroying default framework model: Dubbo Framework[1], dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:35:53.981+08:00  INFO 47711 --- [llmgw] [ionShutdownHook] o.apache.dubbo.rpc.model.FrameworkModel  :  [DUBBO] Dubbo Framework[1] is destroying ..., dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:35:53.983+08:00  INFO 47711 --- [llmgw] [ionShutdownHook] o.apache.dubbo.rpc.model.FrameworkModel  :  [DUBBO] Reset global default application from Dubbo Application[1.1](unknown) to null, dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:35:53.984+08:00  INFO 47711 --- [llmgw] [ionShutdownHook] o.apache.dubbo.rpc.model.FrameworkModel  :  [DUBBO] Dubbo Framework[1] is destroyed, dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:35:53.984+08:00  INFO 47711 --- [llmgw] [ionShutdownHook] o.apache.dubbo.rpc.model.FrameworkModel  :  [DUBBO] Reset global default framework from Dubbo Framework[1] to null, dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:35:53.984+08:00  INFO 47711 --- [llmgw] [ionShutdownHook] o.a.d.c.r.GlobalResourcesRepository      :  [DUBBO] Destroying global resources ..., dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:35:53.985+08:00  INFO 47711 --- [llmgw] [ionShutdownHook] o.a.d.c.r.GlobalResourcesRepository      :  [DUBBO] Dubbo is completely destroyed, dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:35:53.985+08:00  INFO 47711 --- [llmgw] [ionShutdownHook] o.a.d.c.t.m.FrameworkExecutorRepository  :  [DUBBO] destroying framework executor repository .., dubbo version: 3.3.6, current host: 192.168.139.3

@@ -6,7 +6,7 @@
   <parent>
     <groupId>io.github.leohou0430</groupId>
     <artifactId>llmgw-parent</artifactId>
-    <version>0.2.0</version>
+    <version>0.3.0</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
@@ -19,6 +19,7 @@
     depends only on llmgw-core. No implementation may depend on another
     implementation, and no implementation is visible to the data planes.</description>
 
+  <properties><llmgw.foundation.enforcer.skip>false</llmgw.foundation.enforcer.skip></properties>
   <modules>
     <module>llmgw-governance-api</module>
     <module>llmgw-governance-default</module>

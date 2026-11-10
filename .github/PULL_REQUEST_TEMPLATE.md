@@ -14,15 +14,15 @@
 
 - [ ] 新实现放进对应能力域的聚合目录，且依赖该域 `-api`；**未与其他实现互相依赖**
 - [ ] 新能力域采用 `聚合 POM + <domain>-api + 每个实现一个 module`，根 `pom.xml` 只列聚合目录
-- [ ] 领域 SPI 仍留在 `llmgw-core`；实现使用 api 包的**子包**（无 split package）
+- [ ] 通用领域契约留 core，能力域契约放对应 `-api`；实现使用 api 包的**子包**（无 split package）
 - [ ] `./bin/check-module-layout.sh` 通过（CI 每次 PR 自动运行，新域自动纳入）
 - [ ] 规则详见 `CONTRIBUTING.md` 第 2 节
 
 ## 协议契约（动过数据面就必须逐条确认）
 
-- [ ] `data: [DONE]` 仍是**唯一**完成判据，网关未伪造终止帧，静默截断记为失败
+- [ ] chat 的 `[DONE]`、Responses 的 `response.completed`、Messages 的 `message_stop` 仍分别作为完成判据，静默截断记为失败
 - [ ] 首 chunk 前上游失败 → `502 + JSON`；已发 chunk 后 → `event: error` + `[DONE]` 并记账失败
-- [ ] 下游取消只挂 `onCancel`；账单与审计经 `doFinally` 结算，配额预留已退还
+- [ ] Flow 取消传播到实际 HTTP future/订阅；正常结束不取消 transport，账单/审计结算并退还预留
 - [ ] 已发 chunk 后不再切换上游，不会拼出两段语义错乱的回答
 - [ ] 上游非 2xx 在 `BodyHandler.apply` 阶段拦截，错误体不会当 `data:` 行透传
 
@@ -36,7 +36,7 @@
 
 | 脚本 | 结果 |
 |---|---|
-| `./bin/check-module-layout.sh`（新增/移动模块时） | PASS=__ / FAIL=__ |
+| `./bin/check-module-layout.sh` + `python3 bin/check-native-boundaries.py` | PASS=__ / FAIL=__ |
 | `./bin/smoke-stream-errors.sh` | PASS=__ / FAIL=__ |
 | `./bin/smoke-observability.sh` | PASS=__ / FAIL=__ |
 | `./bin/smoke-hot-reload.sh webflux` / `vt` | __ / __ |

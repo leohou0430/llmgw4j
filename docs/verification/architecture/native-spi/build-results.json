@@ -1,0 +1,38 @@
+[
+  {
+    "profile": "default",
+    "exit_code": 0,
+    "junit": {
+      "tests": 139,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "jar": "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/native-spi-migration/default.jar",
+    "sha256": "7f9f69e392fc171d5bf094ff7de2e8d19dcb8fdce74bb96dac0892b4ba827757"
+  },
+  {
+    "profile": "redis",
+    "exit_code": 0,
+    "junit": {
+      "tests": 139,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "jar": "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/native-spi-migration/redis.jar",
+    "sha256": "e8054cf766e7fff46eb23975b8a6d37565f64bb4290f9a84ce86ab482a8a7866"
+  },
+  {
+    "profile": "combined",
+    "exit_code": 0,
+    "junit": {
+      "tests": 139,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "jar": "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/native-spi-migration/combined.jar",
+    "sha256": "555d750b07ee781b135db7fcd87b51ae6c935d1486ed47e1a9174d695647413e"
+  }
+]

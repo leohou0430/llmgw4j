@@ -1,0 +1,172 @@
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.1.2)
+
+2026-11-10T15:45:39.139+08:00  INFO 52066 --- [llmgw] [           main] i.g.l.llmgw.app.LlmGatewayApplication    : Starting AOT-processed LlmGatewayApplication using Java 25 with PID 52066 (/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/native-spi-release-030/llmgw-webflux started by leo in /private/var/folders/wx/9749nb1j7bbg_3n7kb15lbb80000gn/T/llmgw-native-preflight-f_xqvpgb)
+2026-11-10T15:45:39.139+08:00  INFO 52066 --- [llmgw] [           main] i.g.l.llmgw.app.LlmGatewayApplication    : The following 1 profile is active: "webflux"
+2026-11-10T15:45:39.162+08:00  INFO 52066 --- [llmgw] [           main] o.apache.dubbo.rpc.model.FrameworkModel  :  [DUBBO] Dubbo Framework[1] is created, dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:45:39.163+08:00  INFO 52066 --- [llmgw] [           main] o.a.d.c.r.GlobalResourcesRepository      :  [DUBBO] Creating global shared handler ..., dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:45:39.165+08:00  INFO 52066 --- [llmgw] [           main] o.a.dubbo.rpc.model.ApplicationModel     :  [DUBBO] Dubbo Application[1.0](unknown) is created, dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:45:39.165+08:00  INFO 52066 --- [llmgw] [           main] org.apache.dubbo.rpc.model.ScopeModel    :  [DUBBO] Dubbo Module[1.0.0] is created, dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:45:39.167+08:00  INFO 52066 --- [llmgw] [           main] o.a.d.c.context.AbstractConfigManager    :  [DUBBO] Config settings: {dubbo.config.mode=STRICT, dubbo.config.ignore-duplicated-interface=false}, dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:45:39.168+08:00  INFO 52066 --- [llmgw] [           main] o.a.d.c.context.AbstractConfigManager    :  [DUBBO] Config settings: {dubbo.config.mode=STRICT, dubbo.config.ignore-duplicated-interface=false}, dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:45:39.168+08:00  INFO 52066 --- [llmgw] [           main] o.a.d.c.utils.SerializeSecurityManager   :  [DUBBO] Serialize check serializable: true, dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:45:39.176+08:00  INFO 52066 --- [llmgw] [           main] o.apache.dubbo.rpc.model.FrameworkModel  :  [DUBBO] Reset global default framework from null to Dubbo Framework[1], dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:45:39.176+08:00  INFO 52066 --- [llmgw] [           main] o.a.dubbo.rpc.model.ApplicationModel     :  [DUBBO] Dubbo Application[1.1](unknown) is created, dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:45:39.176+08:00  INFO 52066 --- [llmgw] [           main] org.apache.dubbo.rpc.model.ScopeModel    :  [DUBBO] Dubbo Module[1.1.0] is created, dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:45:39.177+08:00  INFO 52066 --- [llmgw] [           main] o.a.d.c.context.AbstractConfigManager    :  [DUBBO] Config settings: {dubbo.config.mode=STRICT, dubbo.config.ignore-duplicated-interface=false}, dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:45:39.177+08:00  INFO 52066 --- [llmgw] [           main] o.a.d.c.context.AbstractConfigManager    :  [DUBBO] Config settings: {dubbo.config.mode=STRICT, dubbo.config.ignore-duplicated-interface=false}, dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:45:39.177+08:00  INFO 52066 --- [llmgw] [           main] org.apache.dubbo.rpc.model.ScopeModel    :  [DUBBO] Dubbo Module[1.1.1] is created, dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:45:39.178+08:00  INFO 52066 --- [llmgw] [           main] o.a.d.c.context.AbstractConfigManager    :  [DUBBO] Config settings: {dubbo.config.mode=STRICT, dubbo.config.ignore-duplicated-interface=false}, dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:45:39.180+08:00  INFO 52066 --- [llmgw] [           main] i.g.l.llmgw.app.MockUpstreamServer       : Mock upstream listening on port 60295
+2026-11-10T15:45:39.200+08:00  INFO 52066 --- [llmgw] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 4 endpoints beneath base path '/actuator'
+2026-11-10T15:45:39.208+08:00  WARN 52066 --- [llmgw] [           main] i.m.c.i.binder.jvm.JvmGcMetrics          : GC notifications will not be available because no GarbageCollectorMXBean of the JVM provides any. GCs=[young generation scavenger, complete scavenger]
+2026-11-10T15:45:39.223+08:00  INFO 52066 --- [llmgw] [           main] o.s.boot.reactor.netty.NettyWebServer    : Netty started on port 60294 (http)
+2026-11-10T15:45:39.223+08:00  INFO 52066 --- [llmgw] [           main] i.g.l.llmgw.app.LlmGatewayApplication    : Started LlmGatewayApplication in 0.103 seconds (process running for 0.117)
+2026-11-10T15:45:39.775+08:00  INFO 52066 --- [llmgw] [ionShutdownHook] o.s.boot.reactor.netty.GracefulShutdown  : Commencing graceful shutdown. Waiting for active requests to complete
+2026-11-10T15:45:39.776+08:00  INFO 52066 --- [llmgw] [ netty-shutdown] o.s.boot.reactor.netty.GracefulShutdown  : Graceful shutdown complete
+Exception in thread "reactor-http-nio-2" com.oracle.svm.core.jdk.UnsupportedFeatureError: Support for Arena.ofShared is not active: enable with -H:+SharedArenaSupport
+	at org.graalvm.nativeimage.builder/com.oracle.svm.core.util.VMError.unsupportedFeature(VMError.java:121)
+	at org.graalvm.nativeimage.foreign/com.oracle.svm.core.foreign.ForeignAPIPredicates$SharedArenasDisabled.fail(ForeignAPIPredicates.java:91)
+	at java.base@25/jdk.internal.misc.ScopedMemoryAccess.closeScope0Unsupported(ScopedMemoryAccess.java:214)
+	at java.base@25/jdk.internal.misc.ScopedMemoryAccess.closeScope(ScopedMemoryAccess.java:88)
+	at java.base@25/jdk.internal.foreign.SharedSession.justClose(SharedSession.java:92)
+	at java.base@25/jdk.internal.foreign.MemorySessionImpl.close(MemorySessionImpl.java:240)
+	at java.base@25/jdk.internal.foreign.ArenaImpl.close(ArenaImpl.java:47)
+	at io.netty.util.internal.CleanerJava25$CleanableDirectBufferImpl.clean(CleanerJava25.java:217)
+	at io.netty.buffer.UnpooledDirectByteBuf.deallocate(UnpooledDirectByteBuf.java:791)
+	at io.netty.buffer.AbstractReferenceCountedByteBuf.handleRelease(AbstractReferenceCountedByteBuf.java:93)
+	at io.netty.buffer.AbstractReferenceCountedByteBuf.release(AbstractReferenceCountedByteBuf.java:83)
+	at io.netty.buffer.AdaptivePoolingAllocator$Chunk.deallocate(AdaptivePoolingAllocator.java:1683)
+	at io.netty.buffer.AdaptivePoolingAllocator$SizeClassedChunk.deallocateIfNeeded(AdaptivePoolingAllocator.java:1944)
+	at io.netty.buffer.AdaptivePoolingAllocator$SizeClassedChunk.markToDeallocate(AdaptivePoolingAllocator.java:1953)
+	at io.netty.buffer.AdaptivePoolingAllocator$Chunk.releaseFromMagazine(AdaptivePoolingAllocator.java:1653)
+	at io.netty.buffer.AdaptivePoolingAllocator$Magazine.free(AdaptivePoolingAllocator.java:1550)
+	at io.netty.buffer.AdaptivePoolingAllocator$MagazineGroup.free(AdaptivePoolingAllocator.java:497)
+	at io.netty.buffer.AdaptivePoolingAllocator$MagazineGroup.access$300(AdaptivePoolingAllocator.java:367)
+	at io.netty.buffer.AdaptivePoolingAllocator$1.onRemoval(AdaptivePoolingAllocator.java:244)
+	at io.netty.buffer.AdaptivePoolingAllocator$1.onRemoval(AdaptivePoolingAllocator.java:231)
+	at io.netty.util.concurrent.FastThreadLocal.removeAndGet(FastThreadLocal.java:286)
+	at io.netty.util.concurrent.FastThreadLocal.remove(FastThreadLocal.java:268)
+	at io.netty.util.concurrent.FastThreadLocal.removeAll(FastThreadLocal.java:68)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:1305)
+	at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.base@25/java.lang.Thread.runWith(Thread.java:1487)
+	at java.base@25/java.lang.Thread.run(Thread.java:1474)
+	at org.graalvm.nativeimage.builder/com.oracle.svm.core.thread.PlatformThreads.threadStartRoutine(PlatformThreads.java:832)
+	at org.graalvm.nativeimage.builder/com.oracle.svm.core.thread.PlatformThreads.threadStartRoutine(PlatformThreads.java:808)
+Exception in thread "reactor-http-nio-3" com.oracle.svm.core.jdk.UnsupportedFeatureError: Support for Arena.ofShared is not active: enable with -H:+SharedArenaSupport
+	at org.graalvm.nativeimage.builder/com.oracle.svm.core.util.VMError.unsupportedFeature(VMError.java:121)
+	at org.graalvm.nativeimage.foreign/com.oracle.svm.core.foreign.ForeignAPIPredicates$SharedArenasDisabled.fail(ForeignAPIPredicates.java:91)
+	at java.base@25/jdk.internal.misc.ScopedMemoryAccess.closeScope0Unsupported(ScopedMemoryAccess.java:214)
+	at java.base@25/jdk.internal.misc.ScopedMemoryAccess.closeScope(ScopedMemoryAccess.java:88)
+	at java.base@25/jdk.internal.foreign.SharedSession.justClose(SharedSession.java:92)
+	at java.base@25/jdk.internal.foreign.MemorySessionImpl.close(MemorySessionImpl.java:240)
+	at java.base@25/jdk.internal.foreign.ArenaImpl.close(ArenaImpl.java:47)
+	at io.netty.util.internal.CleanerJava25$CleanableDirectBufferImpl.clean(CleanerJava25.java:217)
+	at io.netty.buffer.UnpooledDirectByteBuf.deallocate(UnpooledDirectByteBuf.java:791)
+	at io.netty.buffer.AbstractReferenceCountedByteBuf.handleRelease(AbstractReferenceCountedByteBuf.java:93)
+	at io.netty.buffer.AbstractReferenceCountedByteBuf.release(AbstractReferenceCountedByteBuf.java:83)
+	at io.netty.buffer.AdaptivePoolingAllocator$Chunk.deallocate(AdaptivePoolingAllocator.java:1683)
+	at io.netty.buffer.AdaptivePoolingAllocator$SizeClassedChunk.deallocateIfNeeded(AdaptivePoolingAllocator.java:1944)
+	at io.netty.buffer.AdaptivePoolingAllocator$SizeClassedChunk.markToDeallocate(AdaptivePoolingAllocator.java:1953)
+	at io.netty.buffer.AdaptivePoolingAllocator$Chunk.releaseFromMagazine(AdaptivePoolingAllocator.java:1653)
+	at io.netty.buffer.AdaptivePoolingAllocator$Magazine.free(AdaptivePoolingAllocator.java:1550)
+	at io.netty.buffer.AdaptivePoolingAllocator$MagazineGroup.free(AdaptivePoolingAllocator.java:497)
+	at io.netty.buffer.AdaptivePoolingAllocator$MagazineGroup.access$300(AdaptivePoolingAllocator.java:367)
+	at io.netty.buffer.AdaptivePoolingAllocator$1.onRemoval(AdaptivePoolingAllocator.java:244)
+	at io.netty.buffer.AdaptivePoolingAllocator$1.onRemoval(AdaptivePoolingAllocator.java:231)
+	at io.netty.util.concurrent.FastThreadLocal.removeAndGet(FastThreadLocal.java:286)
+	at io.netty.util.concurrent.FastThreadLocal.remove(FastThreadLocal.java:268)
+	at io.netty.util.concurrent.FastThreadLocal.removeAll(FastThreadLocal.java:68)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:1305)
+	at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.base@25/java.lang.Thread.runWith(Thread.java:1487)
+	at java.base@25/java.lang.Thread.run(Thread.java:1474)
+	at org.graalvm.nativeimage.builder/com.oracle.svm.core.thread.PlatformThreads.threadStartRoutine(PlatformThreads.java:832)
+	at org.graalvm.nativeimage.builder/com.oracle.svm.core.thread.PlatformThreads.threadStartRoutine(PlatformThreads.java:808)
+Exception in thread "reactor-http-nio-4" com.oracle.svm.core.jdk.UnsupportedFeatureError: Support for Arena.ofShared is not active: enable with -H:+SharedArenaSupport
+	at org.graalvm.nativeimage.builder/com.oracle.svm.core.util.VMError.unsupportedFeature(VMError.java:121)
+	at org.graalvm.nativeimage.foreign/com.oracle.svm.core.foreign.ForeignAPIPredicates$SharedArenasDisabled.fail(ForeignAPIPredicates.java:91)
+	at java.base@25/jdk.internal.misc.ScopedMemoryAccess.closeScope0Unsupported(ScopedMemoryAccess.java:214)
+	at java.base@25/jdk.internal.misc.ScopedMemoryAccess.closeScope(ScopedMemoryAccess.java:88)
+	at java.base@25/jdk.internal.foreign.SharedSession.justClose(SharedSession.java:92)
+	at java.base@25/jdk.internal.foreign.MemorySessionImpl.close(MemorySessionImpl.java:240)
+	at java.base@25/jdk.internal.foreign.ArenaImpl.close(ArenaImpl.java:47)
+	at io.netty.util.internal.CleanerJava25$CleanableDirectBufferImpl.clean(CleanerJava25.java:217)
+	at io.netty.buffer.UnpooledDirectByteBuf.deallocate(UnpooledDirectByteBuf.java:791)
+	at io.netty.buffer.AbstractReferenceCountedByteBuf.handleRelease(AbstractReferenceCountedByteBuf.java:93)
+	at io.netty.buffer.AbstractReferenceCountedByteBuf.release(AbstractReferenceCountedByteBuf.java:83)
+	at io.netty.buffer.AdaptivePoolingAllocator$Chunk.deallocate(AdaptivePoolingAllocator.java:1683)
+	at io.netty.buffer.AdaptivePoolingAllocator$SizeClassedChunk.deallocateIfNeeded(AdaptivePoolingAllocator.java:1944)
+	at io.netty.buffer.AdaptivePoolingAllocator$SizeClassedChunk.markToDeallocate(AdaptivePoolingAllocator.java:1953)
+	at io.netty.buffer.AdaptivePoolingAllocator$Chunk.releaseFromMagazine(AdaptivePoolingAllocator.java:1653)
+	at io.netty.buffer.AdaptivePoolingAllocator$Magazine.free(AdaptivePoolingAllocator.java:1550)
+	at io.netty.buffer.AdaptivePoolingAllocator$MagazineGroup.free(AdaptivePoolingAllocator.java:497)
+	at io.netty.buffer.AdaptivePoolingAllocator$MagazineGroup.access$300(AdaptivePoolingAllocator.java:367)
+	at io.netty.buffer.AdaptivePoolingAllocator$1.onRemoval(AdaptivePoolingAllocator.java:244)
+	at io.netty.buffer.AdaptivePoolingAllocator$1.onRemoval(AdaptivePoolingAllocator.java:231)
+	at io.netty.util.concurrent.FastThreadLocal.removeAndGet(FastThreadLocal.java:286)
+	at io.netty.util.concurrent.FastThreadLocal.remove(FastThreadLocal.java:268)
+	at io.netty.util.concurrent.FastThreadLocal.removeAll(FastThreadLocal.java:68)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:1305)
+	at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.base@25/java.lang.Thread.runWith(Thread.java:1487)
+	at java.base@25/java.lang.Thread.run(Thread.java:1474)
+	at org.graalvm.nativeimage.builder/com.oracle.svm.core.thread.PlatformThreads.threadStartRoutine(PlatformThreads.java:832)
+	at org.graalvm.nativeimage.builder/com.oracle.svm.core.thread.PlatformThreads.threadStartRoutine(PlatformThreads.java:808)
+2026-11-10T15:45:54.786+08:00  WARN 52066 --- [llmgw] [ionShutdownHook] o.s.c.support.DefaultLifecycleProcessor  : Failed to stop bean 'reactorResourceFactory'
+
+java.lang.IllegalStateException: LoopResources couldn't be disposed within 15000ms
+	at reactor.netty.resources.DefaultLoopResources.lambda$disposeLater$0(DefaultLoopResources.java:136) ~[na:na]
+	at reactor.core.publisher.MonoDefer.subscribe(MonoDefer.java:46) ~[na:na]
+	at reactor.core.publisher.Mono.subscribe(Mono.java:4569) ~[llmgw-webflux:3.8.8]
+	at reactor.core.publisher.MonoWhen$WhenCoordinator.request(MonoWhen.java:228) ~[llmgw-webflux:3.8.8]
+	at reactor.core.publisher.MonoWhen$WhenInner.onSubscribe(MonoWhen.java:399) ~[llmgw-webflux:3.8.8]
+	at reactor.core.publisher.MonoWhen.subscribe(MonoWhen.java:101) ~[na:na]
+	at reactor.core.publisher.Mono.subscribe(Mono.java:4569) ~[llmgw-webflux:3.8.8]
+	at reactor.core.publisher.MonoWhen$WhenCoordinator.request(MonoWhen.java:228) ~[llmgw-webflux:3.8.8]
+	at reactor.core.publisher.BlockingSingleSubscriber.onSubscribe(BlockingSingleSubscriber.java:55) ~[llmgw-webflux:3.8.8]
+	at reactor.core.publisher.MonoWhen.subscribe(MonoWhen.java:101) ~[na:na]
+	at reactor.core.publisher.MonoDefer.subscribe(MonoDefer.java:54) ~[na:na]
+	at reactor.core.publisher.Mono.subscribe(Mono.java:4569) ~[llmgw-webflux:3.8.8]
+	at reactor.core.publisher.Mono.block(Mono.java:1772) ~[llmgw-webflux:3.8.8]
+	at org.springframework.http.client.ReactorResourceFactory.stop(ReactorResourceFactory.java:296) ~[llmgw-webflux:7.0.10]
+	at org.springframework.context.SmartLifecycle.stop(SmartLifecycle.java:143) ~[llmgw-webflux:7.0.10]
+	at org.springframework.context.support.DefaultLifecycleProcessor.doStop(DefaultLifecycleProcessor.java:480) ~[llmgw-webflux:7.0.10]
+	at org.springframework.context.support.DefaultLifecycleProcessor$LifecycleGroup.stop(DefaultLifecycleProcessor.java:645) ~[llmgw-webflux:7.0.10]
+	at java.base@25/java.lang.Iterable.forEach(Iterable.java:75) ~[llmgw-webflux:na]
+	at org.springframework.context.support.DefaultLifecycleProcessor.stopBeans(DefaultLifecycleProcessor.java:448) ~[llmgw-webflux:7.0.10]
+	at org.springframework.context.support.DefaultLifecycleProcessor.onClose(DefaultLifecycleProcessor.java:337) ~[llmgw-webflux:7.0.10]
+	at org.springframework.context.support.AbstractApplicationContext.doClose(AbstractApplicationContext.java:1199) ~[llmgw-webflux:7.0.10]
+	at org.springframework.boot.web.server.reactive.context.ReactiveWebServerApplicationContext.doClose(ReactiveWebServerApplicationContext.java:146) ~[na:na]
+	at org.springframework.context.support.AbstractApplicationContext.close(AbstractApplicationContext.java:1153) ~[llmgw-webflux:7.0.10]
+	at org.springframework.boot.SpringApplicationShutdownHook.closeAndWait(SpringApplicationShutdownHook.java:135) ~[na:na]
+	at java.base@25/java.lang.Iterable.forEach(Iterable.java:75) ~[llmgw-webflux:na]
+	at org.springframework.boot.SpringApplicationShutdownHook.run(SpringApplicationShutdownHook.java:104) ~[na:na]
+	at java.base@25/java.lang.Thread.runWith(Thread.java:1487) ~[llmgw-webflux:na]
+	at java.base@25/java.lang.Thread.run(Thread.java:1474) ~[llmgw-webflux:na]
+	at org.graalvm.nativeimage.builder/com.oracle.svm.core.thread.PlatformThreads.threadStartRoutine(PlatformThreads.java:832) ~[llmgw-webflux:na]
+	at org.graalvm.nativeimage.builder/com.oracle.svm.core.thread.PlatformThreads.threadStartRoutine(PlatformThreads.java:808) ~[llmgw-webflux:na]
+	Suppressed: java.lang.Exception: #block terminated with an error
+		at reactor.core.publisher.BlockingSingleSubscriber.blockingGet(BlockingSingleSubscriber.java:104) ~[llmgw-webflux:3.8.8]
+		at reactor.core.publisher.Mono.block(Mono.java:1773) ~[llmgw-webflux:3.8.8]
+		... 17 common frames omitted
+
+2026-11-10T15:45:54.787+08:00  INFO 52066 --- [llmgw] [ionShutdownHook] o.apache.dubbo.rpc.model.FrameworkModel  :  [DUBBO] Destroying default framework model: Dubbo Framework[1], dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:45:54.787+08:00  INFO 52066 --- [llmgw] [ionShutdownHook] o.apache.dubbo.rpc.model.FrameworkModel  :  [DUBBO] Dubbo Framework[1] is destroying ..., dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:45:54.787+08:00  INFO 52066 --- [llmgw] [ionShutdownHook] o.apache.dubbo.rpc.model.FrameworkModel  :  [DUBBO] Reset global default application from Dubbo Application[1.1](unknown) to null, dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:45:54.787+08:00  INFO 52066 --- [llmgw] [ionShutdownHook] o.apache.dubbo.rpc.model.FrameworkModel  :  [DUBBO] Dubbo Framework[1] is destroyed, dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:45:54.787+08:00  INFO 52066 --- [llmgw] [ionShutdownHook] o.apache.dubbo.rpc.model.FrameworkModel  :  [DUBBO] Reset global default framework from Dubbo Framework[1] to null, dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:45:54.787+08:00  INFO 52066 --- [llmgw] [ionShutdownHook] o.a.d.c.r.GlobalResourcesRepository      :  [DUBBO] Destroying global resources ..., dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:45:54.787+08:00  INFO 52066 --- [llmgw] [ionShutdownHook] o.a.d.c.r.GlobalResourcesRepository      :  [DUBBO] Dubbo is completely destroyed, dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:45:54.788+08:00  INFO 52066 --- [llmgw] [ionShutdownHook] o.a.d.c.t.m.FrameworkExecutorRepository  :  [DUBBO] destroying framework executor repository .., dubbo version: 3.3.6, current host: 192.168.139.3

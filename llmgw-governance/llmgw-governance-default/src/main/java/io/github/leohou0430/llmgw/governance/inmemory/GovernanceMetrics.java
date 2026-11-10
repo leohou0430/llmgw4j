@@ -3,7 +3,6 @@ package io.github.leohou0430.llmgw.governance.inmemory;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Timer;
-import org.springframework.beans.factory.ObjectProvider;
 import java.time.Duration;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -11,28 +10,12 @@ import java.util.concurrent.TimeUnit;
 
 public class GovernanceMetrics {
 
-    private final ObjectProvider<MeterRegistry> provider;
+    private final MeterRegistry registry;
     private final Map<String, Counter> counters = new ConcurrentHashMap<>();
     private final Map<String, Timer> timers = new ConcurrentHashMap<>();
-    /** Resolved once: ObjectProvider.getIfAvailable() is a bean-factory lookup,
-     * not a field read, and it ran 3-4 times per request on the hot path. */
-    private volatile MeterRegistry registry;
 
-    public GovernanceMetrics(ObjectProvider<MeterRegistry> provider) {
-        this.provider = provider;
-    }
-
-    private MeterRegistry registry() {
-        MeterRegistry found = registry;
-        if (found == null) {
-            found = provider.getIfAvailable();
-            if (found == null) {
-                return null;
-            }
-            registry = found;
-        }
-        return found;
-    }
+    public GovernanceMetrics(MeterRegistry registry) { this.registry = registry; }
+    private MeterRegistry registry() { return registry; }
 
     public void count(String name, String... tags) {
         MeterRegistry target = registry();

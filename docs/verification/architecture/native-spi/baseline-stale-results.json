@@ -1,0 +1,13 @@
+{
+  "jar_sha256": "35d9c0a9792ed5be2b966e6d3bd6b9cdef42f18c013a1d93ec87b6fcd4bb935c",
+  "checks": [
+    {
+      "check": "protocols",
+      "exit_code": 1
+    },
+    {
+      "check": "platform",
+      "exit_code": 1
+    }
+  ]
+}

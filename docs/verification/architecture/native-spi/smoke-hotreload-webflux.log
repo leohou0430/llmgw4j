@@ -1,0 +1,12 @@
+=== engine=webflux streams=40 ===
+  [PASS] initial config version is 0 -- version=0
+  [PASS] first reload applied atomically -- status=200 version=1
+  [PASS] reload response never echoes provider key -- only apiKeyConfigured exposed
+  [PASS] new requests use 1:3 weights -- r-a share=0.195 (expected ~0.25)
+  [PASS] in-flight SSE streams survive reload -- complete=40 bad=0 streams=40
+  [PASS] reload landed while streams were active -- status=200 version=2
+  [PASS] config version header advances -- version=2
+  [PASS] new requests use 3:1 weights -- r-a share=0.750 (expected ~0.75)
+  [PASS] invalid configs rejected without changing table -- version=2 all400=1
+  [PASS] admin token gates reload -- status=401
+PASS=10 FAIL=0

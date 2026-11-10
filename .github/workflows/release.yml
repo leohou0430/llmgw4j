@@ -39,22 +39,27 @@ jobs:
           python3 bin/check-openapi.py docs/openapi.yaml .github/workflows/ci.yml .github/workflows/release.yml docker-compose.yml docker-compose.redis.yml llmgw-app/src/main/resources/application.yml
           python3 -m unittest discover -s bench/cross-gateway -p 'test_*.py'
           bash bin/check-module-layout.sh
+          python3 bin/check-native-boundaries.py
+          python3 -m unittest discover -s bin -p 'test_native_*.py'
       - name: Verify default artifact and both data planes
         run: |
           mvn -B clean verify
           bash bin/smoke-stream-errors.sh
           bash bin/smoke-v13-extensions.sh
           bash bin/smoke-v13-hardening.sh
+          bash bin/smoke-multi-protocol.sh
+          bash bin/smoke-v13-provider.sh
+          bash bin/smoke-v13-platform.sh
           python3 bin/smoke-tenant-isolation.py
           python3 bin/smoke-admin-auth.py
           python3 bin/smoke-jwt-auth.py
           mkdir -p dist
-          cp llmgw-app/target/llmgw-app-0.2.0.jar dist/
+          cp llmgw-app/target/llmgw-app-0.3.0.jar dist/
       - name: Verify and package Redis variant
         run: |
           mvn -B -Predis clean verify
-          cp llmgw-app/target/llmgw-app-0.2.0.jar dist/llmgw-app-0.2.0-redis.jar
-          tar -czf dist/llmgw-docs-0.2.0.tar.gz README.md README.en.md CHANGELOG.md CONTRIBUTING.md SECURITY.md LICENSE NOTICE docs bench/cross-gateway bench/jfr bench/micro
+          cp llmgw-app/target/llmgw-app-0.3.0.jar dist/llmgw-app-0.3.0-redis.jar
+          tar -czf dist/llmgw-docs-0.3.0.tar.gz README.md README.en.md CHANGELOG.md CONTRIBUTING.md SECURITY.md LICENSE NOTICE docs bench/cross-gateway bench/jfr bench/micro
       - uses: actions/upload-artifact@v4
         with:
           name: release-jvm-and-docs
@@ -75,11 +80,12 @@ jobs:
       - name: Install contract tools
         run: sudo apt-get update && sudo apt-get install -y lsof jq
       - name: Build WebFlux native image
-        run: mvn -B -Pnative -Dllmgw.native.profile=webflux -Dllmgw.native.image=llmgw-webflux -DskipTests package
+        run: mvn -B clean -Pnative -Dllmgw.native.profile=webflux -Dllmgw.native.image=llmgw-webflux -DskipTests package
       - name: Verify native stream contract
         run: |
           test -x llmgw-app/target/llmgw-webflux
           BINARY="$PWD/llmgw-app/target/llmgw-webflux" bash bin/smoke-stream-errors.sh webflux
+          BINARY="$PWD/llmgw-app/target/llmgw-webflux" bash bin/smoke-multi-protocol.sh webflux
       - uses: actions/upload-artifact@v4
         with:
           name: release-native-linux-amd64
@@ -100,13 +106,13 @@ jobs:
           merge-multiple: true
       - name: Name platform binary and calculate checksums
         run: |
-          mv dist/llmgw-webflux dist/llmgw-webflux-0.2.0-linux-amd64
+          mv dist/llmgw-webflux dist/llmgw-webflux-0.3.0-linux-amd64
           cd dist
           sha256sum * > SHA256SUMS
       - name: Publish complete release
         uses: softprops/action-gh-release@v2
         with:
           name: llmgw4j ${{ github.ref_name }}
-          body_path: docs/releases/v0.2.0.md
+          body_path: docs/releases/v0.3.0.md
           fail_on_unmatched_files: true
           files: dist/*

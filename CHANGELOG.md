@@ -4,13 +4,20 @@
 **性能数字的解释口径以 `bench/README.md` 的数据质量红线为准**：宿主过载期间的数据只作方向参考，
 不得据此声称性能提升或退化。
 
-## [Unreleased]
+## [0.3.0] - 2026-11-10
 
-后续变更在此记录。
+### Native SPI and modules
+
+- 基础能力使用真实 Dubbo SPI 和显式 Java 构造/实例生命周期，移除 core/provider/治理/tokenizer 的 Spring/Reactor 依赖与自动配置。
+- 上游契约改为 JDK Flow/Future；JDK HTTP 独立模块，保留背压、取消和正常完成保护，Reactor/心跳适配留在 WebFlux。
+- Provider 统一 api/http-jdk/openai/openai-sdk/anthropic；tokenizer 统一 api/heuristic/jtokkit，配置选择实际作用于准入估算。
+- Redis 改为 Jedis 原生池，保留六段原子 Lua；Spring 配置别名仅在 app 兼容，推荐 gateway.redis.*。
+- 新增源码/命名扩展/未来平铺实现规则、传递依赖 Enforcer、架构与生命周期测试；AOT 按描述文件注册元数据。
+- 内部 API/扩展方式有兼容变化，详见 [迁移说明](docs/EXTENSIONS.md)。完整资产与升级边界见 [v0.3.0 发布说明](docs/releases/v0.3.0.md)。
 
 ## [0.2.0] - 2026-11-10
 
-当前发布的准确范围、兼容变化、资产与限制见 [v0.2.0 发布说明](docs/releases/v0.2.0.md)。
+此历史版本的准确范围、兼容变化、资产与限制见 [v0.2.0 发布说明](docs/releases/v0.2.0.md)。
 
 ### Fixed
 

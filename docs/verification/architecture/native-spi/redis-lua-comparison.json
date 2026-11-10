@@ -1,0 +1,13 @@
+{
+  "baseline": "c119ecf",
+  "scripts": 6,
+  "identical": true,
+  "sha256": [
+    "db6902a3eabe13aedc070f75f5aa13e3f3d1dd8bd1eaba2959d5aa387f05b2a6",
+    "24f744f9622ed05ee9c633409cb93a668bb0c8f6af632178659595bfed1d3dbb",
+    "082cf4d2d77e780cea19095eebdf4b78b6a403f606de3644d9596e9b6272358c",
+    "bcd0d55a0ddf1393e8cec92800f27f71c65d92c9e4b28ac76a6f8b07332acf1b",
+    "0c475d9c93104403decc3e52c5630518491ba21f633e179cb3bdd9152d1b88f9",
+    "dfa9f9b9a437488c126d4d3ac0689adf4bd608de974ab56f0ece071ef7148ae2"
+  ]
+}

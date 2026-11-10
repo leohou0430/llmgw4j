@@ -1,0 +1,18 @@
+[
+  {
+    "check": "observability",
+    "exit_code": 0
+  },
+  {
+    "check": "hotreload-webflux",
+    "exit_code": 0
+  },
+  {
+    "check": "hotreload-vt",
+    "exit_code": 0
+  },
+  {
+    "check": "redis-replicas",
+    "exit_code": 0
+  }
+]

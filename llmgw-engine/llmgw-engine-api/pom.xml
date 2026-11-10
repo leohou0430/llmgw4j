@@ -6,7 +6,7 @@
   <parent>
     <groupId>io.github.leohou0430</groupId>
     <artifactId>llmgw-engine</artifactId>
-    <version>0.2.0</version>
+    <version>0.3.0</version>
   </parent>
 
   <artifactId>llmgw-engine-api</artifactId>
@@ -16,6 +16,7 @@
     candidate resolution, SSE usage accounting and timing headers.
     Carries no WebFlux / Servlet dependency.</description>
 
+  <properties><llmgw.foundation.enforcer.skip>false</llmgw.foundation.enforcer.skip></properties>
   <dependencies>
     <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-core</artifactId></dependency>
     <dependency>

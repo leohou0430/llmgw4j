@@ -21,7 +21,7 @@ import java.time.Duration;
  * adapter returns an empty vector and the cache key falls back to the exact
  * body hash -- a broken embedder degrades to exact caching, never to errors.
  */
-public class HttpEmbedder implements Embedder {
+public class HttpEmbedder implements Embedder, AutoCloseable {
 
     private static final Logger log = LoggerFactory.getLogger(HttpEmbedder.class);
 
@@ -111,4 +111,5 @@ public class HttpEmbedder implements Embedder {
             return new double[0];
         }
     }
+    @Override public void close() { client.close(); }
 }

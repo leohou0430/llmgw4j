@@ -1,0 +1,10 @@
+[
+  {
+    "check": "protocols",
+    "exit_code": 0
+  },
+  {
+    "check": "platform",
+    "exit_code": 0
+  }
+]

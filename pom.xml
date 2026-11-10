@@ -13,7 +13,7 @@
 
   <groupId>io.github.leohou0430</groupId>
   <artifactId>llmgw-parent</artifactId>
-  <version>0.2.0</version>
+  <version>0.3.0</version>
   <packaging>pom</packaging>
 
   <name>llmgw4j</name>
@@ -60,16 +60,18 @@
     <!-- Data plane subsystem: llmgw-engine-api + one module per implementation.
          llmgw-engine is both the aggregator and the parent POM of its children. -->
     <module>llmgw-engine</module>
-    <module>llmgw-provider-openai</module>
-    <module>llmgw-provider-anthropic</module>
-    <module>llmgw-tokenizer-jtokkit</module>
+    <module>llmgw-provider</module>
+    <module>llmgw-tokenizer</module>
     <module>llmgw-app</module>
   </modules>
 
   <properties>
+    <llmgw.foundation.enforcer.skip>true</llmgw.foundation.enforcer.skip>
     <java.version>25</java.version>
     <maven.compiler.release>25</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <jedis.version>7.0.0</jedis.version>
+    <dubbo.version>3.3.6</dubbo.version>
     <caffeine.version>3.3.1</caffeine.version>
     <jtokkit.version>1.1.0</jtokkit.version>
     <openai-java.version>4.100.0</openai-java.version>
@@ -80,6 +82,13 @@
 
   <dependencyManagement>
     <dependencies>
+      <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-provider-openai-sdk</artifactId><version>${project.version}</version></dependency>
+      <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-tokenizer-api</artifactId><version>${project.version}</version></dependency>
+      <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-tokenizer-heuristic</artifactId><version>${project.version}</version></dependency>
+      <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-provider-http-jdk</artifactId><version>${project.version}</version></dependency>
+      <dependency><groupId>redis.clients</groupId><artifactId>jedis</artifactId><version>${jedis.version}</version></dependency>
+      <dependency><groupId>org.apache.dubbo</groupId><artifactId>dubbo-common</artifactId><version>${dubbo.version}</version></dependency>
+      <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-provider-api</artifactId><version>${project.version}</version></dependency>
       <dependency>
         <groupId>com.github.ben-manes.caffeine</groupId>
         <artifactId>caffeine</artifactId>
@@ -127,6 +136,30 @@
   </dependencyManagement>
 
   <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.6.1</version>
+        <executions><execution>
+          <id>native-foundation-dependencies</id>
+          <goals><goal>enforce</goal></goals>
+          <configuration>
+            <skip>${llmgw.foundation.enforcer.skip}</skip>
+            <rules><bannedDependencies>
+              <searchTransitive>true</searchTransitive>
+              <excludes>
+                <exclude>org.springframework:*</exclude>
+                <exclude>org.springframework.*:*</exclude>
+                <exclude>io.projectreactor:*</exclude>
+                <exclude>io.projectreactor.*:*</exclude>
+              </excludes>
+            </bannedDependencies></rules>
+          </configuration>
+        </execution></executions>
+      </plugin>
+    </plugins>
+
     <pluginManagement>
       <plugins>
         <plugin>

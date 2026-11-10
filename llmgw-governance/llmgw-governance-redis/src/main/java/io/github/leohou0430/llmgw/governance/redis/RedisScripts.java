@@ -1,6 +1,12 @@
 package io.github.leohou0430.llmgw.governance.redis;
 
-import org.springframework.data.redis.core.script.DefaultRedisScript;
+import redis.clients.jedis.JedisPooled;
+import redis.clients.jedis.exceptions.JedisNoScriptException;
+import java.util.List;
+import java.util.HexFormat;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * All multi-step state changes are one Lua script: read-modify-write on a
@@ -10,7 +16,7 @@ import org.springframework.data.redis.core.script.DefaultRedisScript;
  */
 public final class RedisScripts {
 
-    public final DefaultRedisScript<Long> acquire = script("""
+    public final Script acquire = script("""
             local capacity = tonumber(ARGV[1])
             local rate = tonumber(ARGV[2])
             local now = tonumber(ARGV[3])
@@ -32,7 +38,7 @@ public final class RedisScripts {
             return allowed
             """);
 
-    public final DefaultRedisScript<Long> refund = script("""
+    public final Script refund = script("""
             local capacity = tonumber(redis.call('HGET', KEYS[1], 'capacity')) or tonumber(ARGV[1])
             local back = tonumber(ARGV[2])
             local tokens = tonumber(redis.call('HGET', KEYS[1], 'tokens'))
@@ -41,7 +47,7 @@ public final class RedisScripts {
             return 1
             """);
 
-    public final DefaultRedisScript<Long> reserve = script("""
+    public final Script reserve = script("""
             local want = tonumber(ARGV[1])
             local quota = tonumber(ARGV[2])
             local used = tonumber(redis.call('HGET', KEYS[1], 'used') or '0') or 0
@@ -52,7 +58,7 @@ public final class RedisScripts {
             return 1
             """);
 
-    public final DefaultRedisScript<Long> settle = script("""
+    public final Script settle = script("""
             local released = tonumber(ARGV[1])
             local success = ARGV[2]
             local prompt = tonumber(ARGV[3])
@@ -71,7 +77,7 @@ public final class RedisScripts {
             return 1
             """);
 
-    public final DefaultRedisScript<Long> breakerAllow = script("""
+    public final Script breakerAllow = script("""
             if redis.call('EXISTS', KEYS[1]) == 1 then
               if redis.call('SETNX', KEYS[2], '1') == 1 then
                 redis.call('EXPIRE', KEYS[2], 10)
@@ -82,7 +88,7 @@ public final class RedisScripts {
             return 1
             """);
 
-    public final DefaultRedisScript<Long> breakerFailure = script("""
+    public final Script breakerFailure = script("""
             local n = redis.call('INCR', KEYS[1])
             if n >= tonumber(ARGV[1]) then
               redis.call('SET', KEYS[2], '1', 'PX', ARGV[2])
@@ -91,10 +97,19 @@ public final class RedisScripts {
             return n
             """);
 
-    private static DefaultRedisScript<Long> script(String lua) {
-        DefaultRedisScript<Long> value = new DefaultRedisScript<>();
-        value.setScriptText(lua);
-        value.setResultType(Long.class);
-        return value;
+    public record Script(String text, String sha1) {}
+
+    public Long execute(JedisPooled redis, Script script, List<String> keys, String... arguments) {
+        Object result;
+        try { result = redis.evalsha(script.sha1(), keys, List.of(arguments)); }
+        catch (JedisNoScriptException missing) { result = redis.eval(script.text(), keys, List.of(arguments)); }
+        return result == null ? null : ((Number) result).longValue();
+    }
+
+    private static Script script(String lua) {
+        try {
+            String sha1 = HexFormat.of().formatHex(MessageDigest.getInstance("SHA-1").digest(lua.getBytes(StandardCharsets.UTF_8)));
+            return new Script(lua, sha1);
+        } catch (NoSuchAlgorithmException impossible) { throw new IllegalStateException(impossible); }
     }
 }

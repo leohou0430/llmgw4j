@@ -1,12 +1,14 @@
 # llmgw4j 配置说明
 
+> v0.3.0 使用原生 Dubbo SPI。内部 API、模块及 Redis 配置升级方式见 [扩展与迁移说明](EXTENSIONS.md)。
+
 审查修复补充：`gateway.production=true`（或 `LLMGW_PRODUCTION=true`）启用生产启动校验。
 `gateway.max-response-bytes` 默认 `4194304`，独立限制上游非流式响应；
 `gateway.max-concurrent-requests` 默认 `64`，达到上限返回 `503`，请求结束或取消后释放容量。
 当前金额预算仅为演示估算账本，生产启用会被拒绝；未知模型价格不能当作免费。
 未知资源返回 `404`，文件和批任务列表暂不支持并返回 `501`。
 
-> **适用版本**：`0.2.0`（包名 `io.github.leohou0430.llmgw`）
+> **适用版本**：`0.3.0`（包名 `io.github.leohou0430.llmgw`）
 > **文档日期**：2026-11-10，逐项核对 `GatewayProperties.java`、`application*.yml`、`bin/*.sh`、`bench/*` 实读结果
 > **配套**：[使用手册](USER_GUIDE.md) · [项目 README](../README.md) · [压测口径](../bench/README.md)
 
@@ -23,9 +25,11 @@
         ↓ 被覆盖
 ③ application-{profile}.yml（webflux / vt / real，按激活顺序后加载的优先）
         ↓ 被覆盖
-④ 命令行参数 --key=value（Spring Boot 标准，含 run-*.sh 追加的 "$@"）
-        ↓ 被覆盖/等价
-⑤ 环境变量（经 Spring Boot 宽松绑定，或 yml 里 ${VAR:default} 显式引用）
+④ 环境变量（Spring Boot 宽松绑定，或 yml 中 ${VAR:default} 显式引用）
+        ↓ 被覆盖
+⑤ JVM system properties / SPRING_APPLICATION_JSON 等标准外部来源
+        ↓ 被覆盖
+⑥ 命令行参数 --key=value（含 run-*.sh 参数）
 ```
 
 **关键点**：`application.yml` 会覆盖 `GatewayProperties.java` 里的代码默认值，而且有两项差了 **10 倍**（见 [第 4 节](#4-代码默认--随仓库发布值差异重要)）。所以「代码里写的默认值」不等于「你实际跑起来的默认值」——配置说明里两者都列，别只信一边。
@@ -34,12 +38,12 @@
 
 | 类型 | 位置 | 说明 |
 | --- | --- | --- |
-| 配置属性类 | `llmgw-core/.../config/GatewayProperties.java` | `@ConfigurationProperties(prefix = "gateway")`，所有 `gateway.*` 项的 Java 默认值与类型定义 |
-| 主配置 | `llmgw-app/src/main/resources/application.yml` | 唯一主配置文件，60 行 |
-| Profile 配置 | 同目录 `application-webflux.yml` / `application-vt.yml` / `application-real.yml` | 各 6 / 6 / 16 行 |
+| 配置属性类 | `llmgw-core/.../config/GatewayProperties.java` | 普通 POJO；Java 默认值与校验不依赖 Spring，配置绑定在 app 的 GatewayConfiguration |
+| 主配置 | `llmgw-app/src/main/resources/application.yml` | 主配置文件，行数随版本演进 |
+| Profile 配置 | 同目录 `application-webflux.yml` / `application-vt.yml` / `application-real.yml` | 按引擎或真实上游覆盖主配置 |
 | 环境后置处理器 | `llmgw-app/src/main/resources/META-INF/spring.factories` | 注册 `EngineKindEnvironmentPostProcessor`，把 `llmgw.engine` 写进 System Property 供指标打标签 |
-| 自动装配 | `llmgw-governance-*/src/main/resources/META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports` | 默认（in-memory）与 Redis 两套治理实现包按条件装配 |
-| 构建配置 | `pom.xml`、`llmgw-app/pom.xml` | 版本锁定 + 4 个 Maven profile |
+| 原生扩展 | 各实现包的 `META-INF/dubbo/` | Dubbo 命名发现、显式 Java 构造，app 仅桥接原生图 |
+| 构建配置 | `pom.xml`、`llmgw-app/pom.xml` | 版本锁定、能力域与可选 Maven profiles |
 
 ### 1.3 明确不存在的配置形式
 
@@ -181,10 +185,16 @@ api-keys:
 
 | 配置项 | 类型 | 默认 | 说明与约束 |
 | --- | --- | --- | --- |
-| `gateway.redis.enabled` | boolean | 无（条件装配） | **必须显式设 `true`** 且 jar 用 `-Predis` 编译，对应 `@ConditionalOnProperty(havingValue="true")` |
-| `spring.data.redis.host` | String | Spring Boot 默认 `localhost` | 实验脚本示例 `127.0.0.1` |
-| `spring.data.redis.port` | int | Spring Boot 默认 `6379` | 实验脚本用 `6399` |
-| （常量）Redis key 前缀 | String | `llmgw:` | `GovernancePacks.DEFAULT_REDIS_KEY_PREFIX`，代码常量，不可配 |
+| `gateway.redis.enabled` | boolean | `false` | 显式启用，并需链接 `-Predis` 实现包 |
+| `gateway.redis.host` / `port` | String / int | `127.0.0.1` / `6379` | 独立 Redis 服务；端口需 1–65535 |
+| `gateway.redis.database` | int | `0` | 非负数据库编号 |
+| `gateway.redis.username` / `password` | String | 空 | ACL/凭据仅运行时注入 |
+| `gateway.redis.ssl` | boolean | `false` | 使用原生客户端 TLS |
+| `gateway.redis.timeout-ms` | int | `2000` | 连接/socket/借用池等待的超时基线，必须为正 |
+| `gateway.redis.pool-size` | int | `64` | 连接池上限，必须为正 |
+| （常量）Redis key 前缀 | String | `llmgw:` | `GovernancePacks.DEFAULT_REDIS_KEY_PREFIX` |
+
+实现为 Jedis，不再要求 Spring Data。app 边缘保留部分 `spring.data.redis.*` 别名（详见扩展说明），旧 URL 形式必须迁移。默认产物无 Redis 客户端，多个网关实例可共享同一 Redis；这不等同于 Redis Cluster/Sentinel 支持。
 
 覆盖 `TokenLimiter` / `UsageLedger` / `CircuitBreaker` / `ApiKeyRegistry` / `SemanticCache` / `TaskRouteSticky`；`BudgetLedger` / `RequestLogSink` / `SnapshotStore` 仍是本地实现。每请求 2–4 次 Redis 往返，无流水线合并。
 
@@ -340,7 +350,7 @@ POST `{model,prompt}` → `{action,reason}`，不可达或无效响应时返回 
 
 `CONTRIBUTING.md` 明确要求：密钥通过 `DASHSCOPE_API_KEY` 注入，**永远不要写进文件**。仓库内无真实凭据。
 
-其余 Spring Boot 标准环境变量（如 `SERVER_PORT`、`SPRING_DATA_REDIS_HOST`）通过宽松绑定生效——这正是 `run-*.sh` 要显式钉死 `--server.port=8080` 的原因：宿主注入 `SERVER__PORT` 之类变量会把端口抢走（本机实测被抢到 58458）。
+其余 Spring Boot 标准环境变量（如 `SERVER_PORT`、`GATEWAY_REDIS_HOST`）通过宽松绑定生效——这正是 `run-*.sh` 要显式钉死 `--server.port=8080` 的原因：宿主注入 `SERVER__PORT` 之类变量会把端口抢走（本机实测被抢到 58458）。
 
 ---
 
@@ -402,7 +412,7 @@ POST `{model,prompt}` → `{action,reason}`，不可达或无效响应时返回 
 | `QUOTA` | `60` | `smoke-redis-cluster.sh:15` |
 | `N` | `200` | `smoke-redis-cluster.sh:16` |
 
-另有 `smoke-*.sh` 内部固定的第 1/2 实例端口（8080 / 8081）与故障注入用的不可达上游 19999，脚本内直接赋值，不作为可调变量。
+shell 契约可通过 `LLMGW_TEST_JAR` 固定被测 JAR。Redis 双副本额外使用 `LLMGW_TEST_REDIS_JAR`，需先分别保存默认/Redis 产物；`P1`/`P2` 默认 8080/8081，可选择空闲测试端口。`PORT` 控制主要 shell 契约端口；不可达上游 19999 用于故障注入。
 
 ---
 
@@ -410,7 +420,7 @@ POST `{model,prompt}` → `{action,reason}`，不可达或无效响应时返回 
 
 | Profile | 作用 | 关键参数 |
 | --- | --- | --- |
-| `redis` | 加入 `llmgw-governance-redis` + `spring-boot-starter-data-redis` | 默认 fat jar 不含任何 Redis 类；启用需 `-Predis` 且 `--gateway.redis.enabled=true` |
+| `redis` | 加入 `llmgw-governance-redis` + Jedis | 默认 fat jar 不含任何 Redis 类；启用需 `-Predis` 且 `--gateway.redis.enabled=true` |
 | `kqueue` | macOS 原生传输实验，加 `netty-transport-classes-kqueue` + native kqueue | classifier 默认 `osx-x86_64`；Apple silicon 用 `-Dllmgw.kqueue.classifier=osx-aarch_64` |
 | `native` | GraalVM native-image | `--enable-url-protocols=http,https`、`-H:+ReportExceptionStackTraces`；Spring Boot 只对名字**恰好叫 `native`** 的 profile 自动接线 AOT |
 | `native-g1` | 实验性 G1 GC native 构建 | 因为名字不叫 `native`，必须显式声明 `process-aot` / `add-reachability-metadata` / `classesDirectory`，否则 native-image 在 fat jar 上找不到主类 |
@@ -446,7 +456,7 @@ gateway:
 
 ```bash
 export DASHSCOPE_API_KEY='<密钥>'
-java -jar llmgw-app/target/llmgw-app-0.2.0.jar \
+java -jar llmgw-app/target/llmgw-app-0.3.0.jar \
   --spring.profiles.active=webflux,real \
   --gateway.upstream.base-url=http://127.0.0.1:8000/v1 \
   --gateway.routes[0].target-url=http://127.0.0.1:8000/v1 \
@@ -534,8 +544,8 @@ curl -sS -X POST http://127.0.0.1:8080/admin/routes/reload \
 | --- | --- | --- |
 | **路由表** | ✅ 能 | `POST /admin/routes/reload`，先全量校验再一次 CAS 换 `AtomicReference<RouteTable>`，在途 SSE 不中断；`GET /admin/routes` 的 `X-LLMGW-Config-Version` 递增 |
 | 快照用量账本 | ✅ 能（手动、非幂等安全） | `POST /admin/snapshot/load`，替换语义；建议停流量后操作 |
-| `api-keys` | ❌ 不能 | 构造期读入 `InMemoryApiKeyRegistry` |
-| `quota` / `rate-limit` / `cache` / `circuit` 参数 | ❌ 不能 | `GovernanceLimits.from()` 在构造期固化 |
+| 静态 `api-keys` 配置 | 配置文件修改需重启 | 内存默认包可通过 `/admin/keys` 管理运行时 key；Redis CRUD 尚返回 501 |
+| rate/burst/cache/circuit 支持字段 | ✅ 能 | `POST /admin/governance` 更新 DynamicGovernanceSettings；不支持的构造期字段仍需重启 |
 | `governance-enabled` / `admin-token` / `max-request-bytes` | ❌ 不能 | 启动时绑定 |
 | `upstream.*` / `mock.*` / `server.port` | ❌ 不能 | 启动时绑定；mock 是构造期决定是否起服务 |
 | 引擎 / profile | ❌ 不能 | profile 决定组件扫描，native 下更是构建期求值 |
@@ -549,7 +559,7 @@ curl -sS -X POST http://127.0.0.1:8080/admin/routes/reload \
 | 现象 | 原因 | 处理 |
 | --- | --- | --- |
 | 启动失败，9090 端口被占 | 用 `real` 或自定义上游时忘了 `gateway.mock.enabled=false` | 显式加该参数；`application-real.yml` 已内置 |
-| 请求打到 404 / 上游路径重复 | `base-url` 把 `/chat/completions` 也写进去了 | `targetUri()` 会自动追加 `/chat/completions`，base-url 填到 `/v1` 即可 |
+| 请求打到 404 / 上游路径重复 | 上游基址与协议端点不匹配 | 通常配置到 `/v1`；已经以正确协议后缀结尾的完整 URL 会复用 |
 | 上游返回 401 | `api-key` 为空或仍是字面量 `${...}`；此时网关**不发** `Authorization` 头 | 通过 `DASHSCOPE_API_KEY` 注入真实值 |
 | `/admin/routes/reload` 400 | `specs` 为空；`id` 空白/重复；`targetUrl` 非 http(s)；`fallback` 引用了不存在的 id | 按 `AdminController.reloadRoutes` 的校验逐条修；字段名用 camelCase |
 | `/admin/routes/reload` 409 | `RouteConfigSource` 只读或不可用 | 默认 `InMemoryRouteConfigSource` 可写；检查是否替换成了只读实现 |
@@ -650,3 +660,7 @@ management:
 ---
 
 **怎么装、怎么跑、怎么用、坏了怎么修**，见 [USER_GUIDE.md](USER_GUIDE.md)。
+
+## 原生扩展选择补充
+
+`gateway.extension-modules` 是在内建模块后加载的 Dubbo 模块名列表，默认空。模块在 seal 前显式替换绑定，未知模块失败。`gateway.tokenizer` 默认 `heuristic`；`jtokkit` 需要 `-Pjtokkit`，配置了但未链接时失败。真实 tokenizer 只作用于支持的文本准入估算；authoritative usage 和媒体单位语义不变。基础类 `GatewayProperties.validate()` 在原生治理入口和 Boot 绑定后均执行，基础不再实现 InitializingBean。

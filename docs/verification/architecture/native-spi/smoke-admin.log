@@ -1,0 +1,6 @@
+PASS webflux/protected: administrative credential boundaries
+PASS webflux/read-only: administrative credential boundaries
+PASS webflux/demo: administrative credential boundaries
+PASS vt/protected: administrative credential boundaries
+PASS vt/read-only: administrative credential boundaries
+PASS vt/demo: administrative credential boundaries

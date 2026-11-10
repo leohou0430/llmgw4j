@@ -6,13 +6,18 @@
   <parent>
     <groupId>io.github.leohou0430</groupId>
     <artifactId>llmgw-parent</artifactId>
-    <version>0.2.0</version>
+    <version>0.3.0</version>
   </parent>
   <artifactId>llmgw-app</artifactId>
   <name>llmgw-app</name>
   <description>Runnable gateway application, mock upstream, admin API and native hints</description>
 
   <dependencies>
+    <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-provider-openai-sdk</artifactId></dependency>
+    <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-tokenizer-heuristic</artifactId></dependency>
+    <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-provider-http-jdk</artifactId></dependency>
+    <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-configuration-processor</artifactId><optional>true</optional></dependency>
+    <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-provider-api</artifactId></dependency>
     <dependency><groupId>org.junit.jupiter</groupId><artifactId>junit-jupiter</artifactId><scope>test</scope></dependency>
     <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-core</artifactId></dependency>
     <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-governance-default</artifactId></dependency>
@@ -41,20 +46,19 @@
 
   <profiles>
     <!-- Opt-in distributed governance. -Predis links the Redis SPI pack and
-         the Redis starter; activate by setting gateway.redis.enabled=true and a
-         spring.data.redis.* endpoint. Without this profile the gateway keeps
+         Jedis; activate by setting gateway.redis.enabled=true and a
+         gateway.redis.* endpoint. Without this profile the gateway keeps
          the all-in-memory defaults and no Redis classes reach the fat jar. -->
     <profile>
       <id>redis</id>
       <dependencies>
         <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-governance-redis</artifactId></dependency>
-        <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-data-redis</artifactId></dependency>
       </dependencies>
     </profile>
     <!-- B6 opt-in real tokenizer: jtokkit (tiktoken BPE). Select with
          gateway.tokenizer=jtokkit; without it the heuristic default applies.
-         JtokkitTokenCounter is component-scanned only when this module is on
-         the classpath. -->
+         JtokkitTokenCounter is discovered by named Dubbo SPI when this module
+         is on the classpath. -->
     <profile>
       <id>jtokkit</id>
       <dependencies>

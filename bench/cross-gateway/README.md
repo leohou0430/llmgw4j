@@ -4,7 +4,7 @@
 
 ```sh
 mvn -B clean verify
-cp llmgw-app/target/llmgw-app-0.2.0.jar /tmp/llmgw-candidate.jar
+cp llmgw-app/target/llmgw-app-0.3.0.jar /tmp/llmgw-candidate.jar
 # 镜像版本见 compare.py 的 IMAGES；base 是本项目含 Java 25 的运行镜像。
 docker build --build-arg MAVEN_PROFILES=-Predis -t llmgw-audit:redis .
 python3 -m unittest discover -s bench/cross-gateway -p 'test_*.py'

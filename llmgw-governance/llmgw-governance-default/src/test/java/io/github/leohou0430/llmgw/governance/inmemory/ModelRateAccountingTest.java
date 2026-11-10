@@ -23,8 +23,7 @@ class ModelRateAccountingTest {
         try (var executor = Executors.newSingleThreadExecutor()) {
             var chain = new DefaultGovernanceChain(new InMemoryApiKeyRegistry(p), limiter,
                     new InMemoryUsageLedger(),new CaffeineSemanticCache(p),new InMemoryAuditSink(),
-                    executor,new GovernanceMetrics(new org.springframework.beans.factory.support.DefaultListableBeanFactory()
-                        .getBeanProvider(io.micrometer.core.instrument.MeterRegistry.class)),p);
+                    executor,new GovernanceMetrics(null),p);
             var admitted = chain.enter("Bearer secret",parsed,route);
             assertTrue(admitted.allowed());
             var context = GatewayPipeline.context(admitted);

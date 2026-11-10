@@ -1,0 +1,41 @@
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.1.2)
+
+2026-11-10T15:51:12.408+08:00  INFO 54047 --- [llmgw] [           main] i.g.l.llmgw.app.LlmGatewayApplication    : Starting AOT-processed LlmGatewayApplication using Java 25 with PID 54047 (/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/native-spi-release-030/llmgw-webflux-quick started by leo in /private/var/folders/wx/9749nb1j7bbg_3n7kb15lbb80000gn/T/llmgw-native-preflight-n5el16iw)
+2026-11-10T15:51:12.408+08:00  INFO 54047 --- [llmgw] [           main] i.g.l.llmgw.app.LlmGatewayApplication    : The following 1 profile is active: "webflux"
+2026-11-10T15:51:12.435+08:00  INFO 54047 --- [llmgw] [           main] o.apache.dubbo.rpc.model.FrameworkModel  :  [DUBBO] Dubbo Framework[1] is created, dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:51:12.435+08:00  INFO 54047 --- [llmgw] [           main] o.a.d.c.r.GlobalResourcesRepository      :  [DUBBO] Creating global shared handler ..., dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:51:12.438+08:00  INFO 54047 --- [llmgw] [           main] o.a.dubbo.rpc.model.ApplicationModel     :  [DUBBO] Dubbo Application[1.0](unknown) is created, dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:51:12.439+08:00  INFO 54047 --- [llmgw] [           main] org.apache.dubbo.rpc.model.ScopeModel    :  [DUBBO] Dubbo Module[1.0.0] is created, dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:51:12.441+08:00  INFO 54047 --- [llmgw] [           main] o.a.d.c.context.AbstractConfigManager    :  [DUBBO] Config settings: {dubbo.config.mode=STRICT, dubbo.config.ignore-duplicated-interface=false}, dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:51:12.441+08:00  INFO 54047 --- [llmgw] [           main] o.a.d.c.context.AbstractConfigManager    :  [DUBBO] Config settings: {dubbo.config.mode=STRICT, dubbo.config.ignore-duplicated-interface=false}, dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:51:12.442+08:00  INFO 54047 --- [llmgw] [           main] o.a.d.c.utils.SerializeSecurityManager   :  [DUBBO] Serialize check serializable: true, dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:51:12.454+08:00  INFO 54047 --- [llmgw] [           main] o.apache.dubbo.rpc.model.FrameworkModel  :  [DUBBO] Reset global default framework from null to Dubbo Framework[1], dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:51:12.454+08:00  INFO 54047 --- [llmgw] [           main] o.a.dubbo.rpc.model.ApplicationModel     :  [DUBBO] Dubbo Application[1.1](unknown) is created, dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:51:12.454+08:00  INFO 54047 --- [llmgw] [           main] org.apache.dubbo.rpc.model.ScopeModel    :  [DUBBO] Dubbo Module[1.1.0] is created, dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:51:12.457+08:00  INFO 54047 --- [llmgw] [           main] o.a.d.c.context.AbstractConfigManager    :  [DUBBO] Config settings: {dubbo.config.mode=STRICT, dubbo.config.ignore-duplicated-interface=false}, dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:51:12.457+08:00  INFO 54047 --- [llmgw] [           main] o.a.d.c.context.AbstractConfigManager    :  [DUBBO] Config settings: {dubbo.config.mode=STRICT, dubbo.config.ignore-duplicated-interface=false}, dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:51:12.459+08:00  INFO 54047 --- [llmgw] [           main] org.apache.dubbo.rpc.model.ScopeModel    :  [DUBBO] Dubbo Module[1.1.1] is created, dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:51:12.460+08:00  INFO 54047 --- [llmgw] [           main] o.a.d.c.context.AbstractConfigManager    :  [DUBBO] Config settings: {dubbo.config.mode=STRICT, dubbo.config.ignore-duplicated-interface=false}, dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:51:12.465+08:00  INFO 54047 --- [llmgw] [           main] i.g.l.llmgw.app.MockUpstreamServer       : Mock upstream listening on port 63102
+2026-11-10T15:51:12.492+08:00  INFO 54047 --- [llmgw] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 4 endpoints beneath base path '/actuator'
+2026-11-10T15:51:12.500+08:00  WARN 54047 --- [llmgw] [           main] i.m.c.i.binder.jvm.JvmGcMetrics          : GC notifications will not be available because no GarbageCollectorMXBean of the JVM provides any. GCs=[young generation scavenger, complete scavenger]
+2026-11-10T15:51:12.516+08:00  INFO 54047 --- [llmgw] [           main] o.s.boot.reactor.netty.NettyWebServer    : Netty started on port 63101 (http)
+2026-11-10T15:51:12.517+08:00  INFO 54047 --- [llmgw] [           main] i.g.l.llmgw.app.LlmGatewayApplication    : Started LlmGatewayApplication in 0.13 seconds (process running for 0.144)
+2026-11-10T15:51:12.951+08:00  INFO 54047 --- [llmgw] [ionShutdownHook] o.s.boot.reactor.netty.GracefulShutdown  : Commencing graceful shutdown. Waiting for active requests to complete
+2026-11-10T15:51:12.951+08:00  INFO 54047 --- [llmgw] [ netty-shutdown] o.s.boot.reactor.netty.GracefulShutdown  : Graceful shutdown complete
+2026-11-10T15:51:14.973+08:00  INFO 54047 --- [llmgw] [ionShutdownHook] o.apache.dubbo.rpc.model.FrameworkModel  :  [DUBBO] Destroying default framework model: Dubbo Framework[1], dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:51:14.973+08:00  INFO 54047 --- [llmgw] [ionShutdownHook] o.apache.dubbo.rpc.model.FrameworkModel  :  [DUBBO] Dubbo Framework[1] is destroying ..., dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:51:14.973+08:00  INFO 54047 --- [llmgw] [ionShutdownHook] o.apache.dubbo.rpc.model.FrameworkModel  :  [DUBBO] Reset global default application from Dubbo Application[1.1](unknown) to null, dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:51:14.974+08:00  INFO 54047 --- [llmgw] [ionShutdownHook] o.apache.dubbo.rpc.model.FrameworkModel  :  [DUBBO] Dubbo Framework[1] is destroyed, dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:51:14.974+08:00  INFO 54047 --- [llmgw] [ionShutdownHook] o.apache.dubbo.rpc.model.FrameworkModel  :  [DUBBO] Reset global default framework from Dubbo Framework[1] to null, dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:51:14.974+08:00  INFO 54047 --- [llmgw] [ionShutdownHook] o.a.d.c.r.GlobalResourcesRepository      :  [DUBBO] Destroying global resources ..., dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:51:14.974+08:00  INFO 54047 --- [llmgw] [ionShutdownHook] o.a.d.c.r.GlobalResourcesRepository      :  [DUBBO] Dubbo is completely destroyed, dubbo version: 3.3.6, current host: 192.168.139.3
+2026-11-10T15:51:14.974+08:00  INFO 54047 --- [llmgw] [ionShutdownHook] o.a.d.c.t.m.FrameworkExecutorRepository  :  [DUBBO] destroying framework executor repository .., dubbo version: 3.3.6, current host: 192.168.139.3

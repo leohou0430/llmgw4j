@@ -2,9 +2,8 @@ package io.github.leohou0430.llmgw.governance.redis;
 
 import io.github.leohou0430.llmgw.core.routing.TaskRouteSticky;
 import io.github.leohou0430.llmgw.governance.GovernancePacks;
-import org.springframework.data.redis.core.StringRedisTemplate;
+import redis.clients.jedis.JedisPooled;
 
-import java.time.Duration;
 
 /**
  * W3.6/W4.3: cross-replica task stickiness. A job created on replica A is
@@ -13,15 +12,15 @@ import java.time.Duration;
  */
 public final class RedisTaskRouteSticky implements TaskRouteSticky {
 
-    private final StringRedisTemplate redis;
+    private final JedisPooled redis;
     private final String prefix;
     private final long ttlSeconds;
 
-    public RedisTaskRouteSticky(StringRedisTemplate redis, long ttlSeconds) {
+    public RedisTaskRouteSticky(JedisPooled redis, long ttlSeconds) {
         this(redis, GovernancePacks.DEFAULT_REDIS_KEY_PREFIX, ttlSeconds);
     }
 
-    public RedisTaskRouteSticky(StringRedisTemplate redis, String prefix, long ttlSeconds) {
+    public RedisTaskRouteSticky(JedisPooled redis, String prefix, long ttlSeconds) {
         this.redis = redis;
         this.prefix = prefix;
         this.ttlSeconds = Math.max(60, ttlSeconds);
@@ -32,8 +31,7 @@ public final class RedisTaskRouteSticky implements TaskRouteSticky {
         if (taskId == null || taskId.isBlank() || routeId == null || routeId.isBlank()) {
             return;
         }
-        redis.opsForValue().set(prefix + "sticky:" + taskId, routeId,
-                Duration.ofSeconds(ttlSeconds));
+        redis.setex(prefix + "sticky:" + taskId, ttlSeconds, routeId);
     }
 
     @Override
@@ -41,6 +39,6 @@ public final class RedisTaskRouteSticky implements TaskRouteSticky {
         if (taskId == null || taskId.isBlank()) {
             return null;
         }
-        return redis.opsForValue().get(prefix + "sticky:" + taskId);
+        return redis.get(prefix + "sticky:" + taskId);
     }
 }

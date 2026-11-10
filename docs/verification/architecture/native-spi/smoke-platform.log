@@ -1,0 +1,53 @@
+======== v13 platform: budget / hot reload / requests / console / keys ========
+--- engine=webflux ---
+[PASS] webflux first request inside budget succeeds
+[PASS] webflux second request hits the hard budget stop
+[PASS] webflux snapshot carries per-key spend
+[PASS] webflux group rollup answers which team burned what
+[PASS] webflux key metadata accepted
+[FAIL] webflux key creation failed: {"id":"key-<test-value:f5614619>","name":"e2e","token":"sk-<test-value:80df983c>","group":"team-b","budgetMicroUsd":900000
+[PASS] webflux freshly created key authenticates
+[FAIL] webflux key revoke acknowledged (missing: "revoked":true; got: {"timestamp":"2026-11-10T06:58:56.251Z","path":"/admin/keys/","status":404,"error":"Not Found","requestId":"0ba8da7b-7"})
+[FAIL] webflux revoked key expected 401, got 200
+[PASS] webflux tiny bucket rejects before reload
+[PASS] webflux governance hot swap acknowledged
+[PASS] webflux request passes WITHOUT restart after hot reload
+[FAIL] webflux rotate failed: {"timestamp":"2026-11-10T06:59:05.774Z","path":"/admin/keys//rotate","status":404,"error":"Not Found","requestId":"d6d62017-7"}
+[PASS] webflux rotated new token authenticates
+[FAIL] webflux old token works in overlap window (missing: "object":"chat.completion"; got: {"error":{"message":"model price is unknown for budgeted request","type":"gateway_error"}})
+[FAIL] webflux old token expected 401 after overlap, got 503
+[PASS] webflux JWT (HS256) authenticates as virtual key
+[PASS] webflux per-model rate limit rejects (429)
+[PASS] webflux request log carries served requests
+[PASS] webflux request log carries denied requests
+[PASS] webflux admin console serves
+[PASS] webflux pattern guardrail blocks locally
+[PASS] webflux external engine blocks
+[PASS] webflux clean request passes both guardrails
+--- engine=vt ---
+[PASS] vt first request inside budget succeeds
+[PASS] vt second request hits the hard budget stop
+[PASS] vt snapshot carries per-key spend
+[PASS] vt group rollup answers which team burned what
+[PASS] vt key metadata accepted
+[FAIL] vt key creation failed: {"id":"key-<test-value:9be86d81>","name":"e2e","token":"sk-<test-value:97e0b253>","group":"team-b","budgetMicroUsd":900000
+[PASS] vt freshly created key authenticates
+[FAIL] vt key revoke acknowledged (missing: "revoked":true; got: {"timestamp":"2026-11-10T06:59:27.278Z","status":404,"error":"Not Found","path":"/admin/keys/"})
+[FAIL] vt revoked key expected 401, got 200
+[PASS] vt tiny bucket rejects before reload
+[PASS] vt governance hot swap acknowledged
+[PASS] vt request passes WITHOUT restart after hot reload
+[FAIL] vt rotate failed: {"timestamp":"2026-11-10T06:59:36.613Z","status":404,"error":"Not Found","path":"/admin/keys//rotate"}
+[PASS] vt rotated new token authenticates
+[FAIL] vt old token works in overlap window (missing: "object":"chat.completion"; got: {"error":{"message":"model price is unknown for budgeted request","type":"gateway_error"}})
+[FAIL] vt old token expected 401 after overlap, got 503
+[PASS] vt JWT (HS256) authenticates as virtual key
+[PASS] vt per-model rate limit rejects (429)
+[PASS] vt request log carries served requests
+[PASS] vt request log carries denied requests
+[PASS] vt admin console serves
+[PASS] vt pattern guardrail blocks locally
+[PASS] vt external engine blocks
+[PASS] vt clean request passes both guardrails
+=================================================
+PASS=36 FAIL=12

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Exercise tenant boundaries against both real data planes and the local mock."""
 import json
+import os
 import threading
 from concurrent.futures import ThreadPoolExecutor
 import socket
@@ -12,7 +13,7 @@ import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-JAR = ROOT / 'llmgw-app/target/llmgw-app-0.2.0.jar'
+JAR = Path(os.environ.get('LLMGW_TEST_JAR', str(ROOT / 'llmgw-app/target/llmgw-app-0.3.0.jar')))
 
 
 def free_port():

@@ -24,7 +24,7 @@ OUT="$ROOT/bench/results/paired-ab-$TAG.csv"
 run_arm() {
   local arm="$1" jar="$2" round="$3"
   echo "=== round=$round arm=$arm jar=$(basename "$jar") pad=$PAYLOAD_BYTES ===" | tee -a "$LOG"
-  cp "$jar" "$ROOT/llmgw-app/target/llmgw-app-0.2.0.jar"
+  cp "$jar" "$ROOT/llmgw-app/target/llmgw-app-0.3.0.jar"
   local out csv
   out="$(cd "$ROOT" && PAYLOAD_BYTES="$PAYLOAD_BYTES" ENGINES=webflux GOVS=on \
         RUNTIMES=jvm MODES="$MODES" ROUNDS=1 DURATION="$DURATION" VUS="$VUS" \

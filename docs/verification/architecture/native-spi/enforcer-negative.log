@@ -1,0 +1,96 @@
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] llmgw4j                                                            [pom]
+[INFO] llmgw-core                                                         [jar]
+[INFO] llmgw-engine                                                       [pom]
+[INFO] llmgw-engine-api                                                   [jar]
+[INFO] llmgw-provider                                                     [pom]
+[INFO] llmgw-provider-api                                                 [jar]
+[INFO] llmgw-engine-webflux                                               [jar]
+[INFO] 
+[INFO] -----------------< io.github.leohou0430:llmgw-parent >------------------
+[INFO] Building llmgw4j 0.2.0                                             [1/7]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-parent ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] ------------------< io.github.leohou0430:llmgw-core >-------------------
+[INFO] Building llmgw-core 0.2.0                                          [2/7]
+[INFO]   from llmgw-core/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-core ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] -----------------< io.github.leohou0430:llmgw-engine >------------------
+[INFO] Building llmgw-engine 0.2.0                                        [3/7]
+[INFO]   from llmgw-engine/pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-engine ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] ---------------< io.github.leohou0430:llmgw-engine-api >----------------
+[INFO] Building llmgw-engine-api 0.2.0                                    [4/7]
+[INFO]   from llmgw-engine/llmgw-engine-api/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-engine-api ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] ----------------< io.github.leohou0430:llmgw-provider >-----------------
+[INFO] Building llmgw-provider 0.2.0                                      [5/7]
+[INFO]   from llmgw-provider/pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-provider ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --------------< io.github.leohou0430:llmgw-provider-api >---------------
+[INFO] Building llmgw-provider-api 0.2.0                                  [6/7]
+[INFO]   from llmgw-provider/llmgw-provider-api/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-provider-api ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] -------------< io.github.leohou0430:llmgw-engine-webflux >--------------
+[INFO] Building llmgw-engine-webflux 0.2.0                                [7/7]
+[INFO]   from llmgw-engine/llmgw-engine-webflux/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.1:enforce (native-foundation-dependencies) @ llmgw-engine-webflux ---
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for llmgw4j 0.2.0:
+[INFO] 
+[INFO] llmgw4j ............................................ SUCCESS [  0.263 s]
+[INFO] llmgw-core ......................................... SUCCESS [  0.090 s]
+[INFO] llmgw-engine ....................................... SUCCESS [  0.008 s]
+[INFO] llmgw-engine-api ................................... SUCCESS [  0.018 s]
+[INFO] llmgw-provider ..................................... SUCCESS [  0.008 s]
+[INFO] llmgw-provider-api ................................. SUCCESS [  0.019 s]
+[INFO] llmgw-engine-webflux ............................... FAILURE [  0.218 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  1.002 s
+[INFO] Finished at: 2026-11-10T14:32:07+08:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-enforcer-plugin:3.6.1:enforce (native-foundation-dependencies) on project llmgw-engine-webflux: 
+[ERROR] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies failed with message:
+[ERROR] io.github.leohou0430:llmgw-engine-webflux:jar:0.2.0
+[ERROR]    org.springframework.boot:spring-boot-starter-webflux:jar:4.1.2 <--- banned via the exclude/include list
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException
+[ERROR] 
+[ERROR] After correcting the problems, you can resume the build with the command
+[ERROR]   mvn <args> -rf :llmgw-engine-webflux

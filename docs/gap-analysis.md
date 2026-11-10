@@ -1,5 +1,7 @@
 # 当前实现与主流大模型网关的差距
 
+> v0.3.0 架构更新：基础能力已迁移为命名 Dubbo SPI、原生 Java 生命周期与 Flow 上游契约；provider/tokenizer 使用聚合模块。见 [迁移说明](EXTENSIONS.md)。下文竞品核查与性能数字保持原批次范围，未重新测量 v0.3.0。
+
 核查日期：2026-11-10。结论：本项目适合 Java 技术栈中的轻量协议透传与可扩展治理数据面，尚不能替代完整企业 AI 管理平台。生产金额预算、统一身份与 RBAC、跨副本控制面是优先缺口。旧版“市场综合第一”和宿主机对 Docker 的倍数比较已撤回，原文仅保留在 [历史档案](archive/gap-analysis-v13-pre-audit.md)。
 
 ## 产品定位与官方能力对照
@@ -82,7 +84,7 @@ JWT 后续增补：新增 `gateway.auth.jwt-audience`，修复无效时间声明
 
 Cloudflare、Kong、Higress、New API 没有同口径数据，保持“未测”。该性能批次源码通过真实 Redis 环境下的 105 项 JUnit（零跳过），WebFlux native 构建及 34 项契约通过。随后 JWT 增补的 114 项测试已通过（含单独补跑的 2 项真实 Redis 测试），但未重跑 native 或整网关压测。完整 [完成审计和证据](verification/audit/2026-11-10-completion-audit.md)。
 
-## v0.2.0 最新性能与验证
+## v0.2.0 历史性能与验证
 
 最新 [性能审查](verification/perf/2026-11-10/perf-review/README.md)包含 JWT 后的冻结产物、两项 SSE/header 优化与 64 个治理 on/off A/B 样本，约 422 万请求零错误。确认局部分配下降；WebFlux SSE 吞吐中位数正向但范围重叠，JSON 一正一负，不认定稳定全面提速。它与上方旧跨网关表不是同一批。测试增加到 117 项（含独立真实 Redis 补跑），契约 67/54/46 与双引擎隔离通过。发布构建的 native 验证由 tag workflow 单独记录，不追溯更改历史产物证据。
 

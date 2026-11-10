@@ -17,7 +17,7 @@ import io.github.leohou0430.llmgw.core.upstream.CircuitOpenException;
 import io.github.leohou0430.llmgw.core.upstream.HeaderListener;
 import io.github.leohou0430.llmgw.core.upstream.HeaderPolicy;
 import io.github.leohou0430.llmgw.core.upstream.UpstreamMethod;
-import io.github.leohou0430.llmgw.core.upstream.UpstreamProvider;
+import io.github.leohou0430.llmgw.provider.UpstreamProvider;
 import io.github.leohou0430.llmgw.engine.EngineHeaders;
 import io.github.leohou0430.llmgw.engine.EngineProfiles;
 import io.github.leohou0430.llmgw.engine.EngineReasons;
@@ -326,9 +326,9 @@ public class WebfluxGatewayController {
                                     return Mono.<byte[]>error(new CircuitOpenException(route.id()));
                                 }
                                 context.markUpstreamStart();
-                                return provider.fetchRawAsync(EngineRoutes.postBytes(
+                                return Mono.fromFuture(() -> provider.fetchRawAsync(EngineRoutes.postBytes(
                                         rawJson, decision.parsed(), route,
-                                        properties.getUpstream().getTimeoutMs(), pass));
+                                        properties.getUpstream().getTimeoutMs(), pass)));
                             })
                             .doOnSuccess(body -> breaker.recordSuccess(route))
                             .doOnError(e -> {
@@ -569,7 +569,7 @@ public class WebfluxGatewayController {
                 return Flux.<String>error(new CircuitOpenException(route.id()));
             }
             context.markUpstreamStart();
-            return provider.streamRaw(EngineRoutes.request(rawJson, parsed, route, timeout, pass), egress)
+            return upstreamLines(EngineRoutes.request(rawJson, parsed, route, timeout, pass), egress)
                     .doOnNext(line -> {
                         // Comment frames are transport-level: never a first chunk,
                         // never a fallback trigger, invisible to TTFT.
@@ -618,8 +618,8 @@ public class WebfluxGatewayController {
                 return Mono.<Completed>error(new CircuitOpenException(attempt.route().id()));
             }
             context.markUpstreamStart();
-            return provider.completeRawAsync(
-                            EngineRoutes.request(rawJson, parsed, attempt.route(), timeout, pass), egress)
+            return Mono.fromFuture(() -> provider.completeRawAsync(
+                            EngineRoutes.request(rawJson, parsed, attempt.route(), timeout, pass), egress))
                     .map(body -> {
                         winner.set(attempt.route());
                         return new Completed(body, attempt.route());
@@ -699,8 +699,8 @@ public class WebfluxGatewayController {
                         return Mono.<byte[]>error(new CircuitOpenException(route.id()));
                     }
                     context.markUpstreamStart();
-                    return provider.fetchRawAsync(EngineRoutes.methodFetch(route, upstreamPath,
-                            method, properties.getUpstream().getTimeoutMs()));
+                    return Mono.fromFuture(() -> provider.fetchRawAsync(EngineRoutes.methodFetch(route, upstreamPath,
+                            method, properties.getUpstream().getTimeoutMs())));
                 })
                 .doOnSuccess(body -> {
                     if (!isPinned) {
@@ -787,9 +787,9 @@ public class WebfluxGatewayController {
                                             new CircuitOpenException(decision.route().id()));
                                 }
                                 context.markUpstreamStart();
-                                return provider.fetchRawAsync(EngineRoutes.postRawBytes(body,
+                                return Mono.fromFuture(() -> provider.fetchRawAsync(EngineRoutes.postRawBytes(body,
                                         parsed, decision.route(),
-                                        properties.getUpstream().getTimeoutMs(), pass));
+                                        properties.getUpstream().getTimeoutMs(), pass)));
                             })
                             .doOnSuccess(ignored -> breaker.recordSuccess(decision.route()))
                             .doOnError(e -> {
@@ -884,5 +884,16 @@ public class WebfluxGatewayController {
             }
         }
         return out;
+    }
+    private Flux<String> upstreamLines(io.github.leohou0430.llmgw.core.upstream.UpstreamRequest request, HeaderListener listener) {
+        return Flux.defer(() -> {
+            Flux<String> lines = reactor.adapter.JdkFlowAdapter.flowPublisherToFlux(provider.streamRaw(request, listener));
+            int heartbeatMs = properties.getUpstream().getHeartbeatIntervalMs();
+            if (heartbeatMs <= 0) return lines;
+            var ended = reactor.core.publisher.Sinks.<Void>one();
+            return lines.doFinally(signal -> ended.tryEmitEmpty()).mergeWith(
+                    Flux.interval(java.time.Duration.ofMillis(heartbeatMs)).map(tick -> ": keep-alive\n\n")
+                            .takeUntilOther(ended.asMono()));
+        });
     }
 }

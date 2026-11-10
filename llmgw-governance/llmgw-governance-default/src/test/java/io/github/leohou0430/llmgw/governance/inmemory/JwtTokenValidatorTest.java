@@ -132,11 +132,7 @@ class JwtTokenValidatorTest {
 
     private GatewayProperties audienceProps() {
         var p = props();
-        var env = new org.springframework.core.env.StandardEnvironment();
-        env.getPropertySources().addFirst(new org.springframework.core.env.MapPropertySource("audience-test",
-                java.util.Map.of("gateway.auth.jwt-audience", "gateway")));
-        org.springframework.boot.context.properties.bind.Binder.get(env).bind("gateway",
-                org.springframework.boot.context.properties.bind.Bindable.ofInstance(p));
+        p.getAuth().setJwtAudience("gateway");
         return p;
     }
 

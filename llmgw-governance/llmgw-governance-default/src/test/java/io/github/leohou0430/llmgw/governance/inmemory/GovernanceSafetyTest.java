@@ -33,7 +33,7 @@ class GovernanceSafetyTest {
             var chain = new DefaultGovernanceChain(new ManagedApiKeyRegistry(p,new JsonKeyStore(p)),
                     new AtomicTokenLimiter(p), new InMemoryUsageLedger(), new CaffeineSemanticCache(p),
                     new InMemoryAuditSink(), executor,
-                    new GovernanceMetrics(new org.springframework.beans.factory.support.DefaultListableBeanFactory().getBeanProvider(io.micrometer.core.instrument.MeterRegistry.class)),
+                    new GovernanceMetrics(null),
                     p, budgets, new ConfigModelCatalog(p));
             var context = new GatewayContext("team", "m", "r", false, 1);
             context.setBudgetReservedMicroUsd(10);context.markUpstreamStart();
@@ -47,7 +47,7 @@ class GovernanceSafetyTest {
         try (var executor = Executors.newSingleThreadExecutor()) {
             var chain = new DefaultGovernanceChain(new ManagedApiKeyRegistry(p, new JsonKeyStore(p)),
                     new AtomicTokenLimiter(p),new InMemoryUsageLedger(),new CaffeineSemanticCache(p),
-                    new InMemoryAuditSink(), executor,new GovernanceMetrics(new org.springframework.beans.factory.support.DefaultListableBeanFactory().getBeanProvider(io.micrometer.core.instrument.MeterRegistry.class)),p,
+                    new InMemoryAuditSink(), executor,new GovernanceMetrics(null),p,
                     new InMemoryBudgetLedger(),new ConfigModelCatalog(p));
             var decision = chain.enter("Bearer secret", ProtocolCodec.parse(ProtocolKind.CHAT,
                     "{\"model\":\"m\",\"messages\":[{\"content\":\"hello\"}]}"),
@@ -60,7 +60,7 @@ class GovernanceSafetyTest {
         try (var executor = Executors.newSingleThreadExecutor()) {
             var chain = new DefaultGovernanceChain(new ManagedApiKeyRegistry(p, new JsonKeyStore(p)),
                     new AtomicTokenLimiter(p),new InMemoryUsageLedger(),new CaffeineSemanticCache(p),
-                    new InMemoryAuditSink(), executor,new GovernanceMetrics(new org.springframework.beans.factory.support.DefaultListableBeanFactory().getBeanProvider(io.micrometer.core.instrument.MeterRegistry.class)),p,
+                    new InMemoryAuditSink(), executor,new GovernanceMetrics(null),p,
                     new InMemoryBudgetLedger(),new ConfigModelCatalog(p));
             var decision = chain.enter("Bearer secret", ProtocolCodec.parse(ProtocolKind.CHAT,
                     "{\"model\":\"unknown\",\"messages\":[{\"content\":\"hello\"}]}"),

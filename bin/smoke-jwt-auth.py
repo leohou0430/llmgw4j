@@ -32,7 +32,7 @@ def verify(engine):
     gateway_port, mock_port = port(), port()
     with tempfile.TemporaryDirectory(prefix='llmgw-jwt-auth-') as folder:
         log_path = Path(folder)/'gateway.log'
-        command = ['java', '-jar', str(ROOT/'llmgw-app/target/llmgw-app-0.2.0.jar'),
+        command = ['java', '-jar', str(ROOT/'llmgw-app/target/llmgw-app-0.3.0.jar'),
             f'--spring.profiles.active={engine}', f'--server.port={gateway_port}',
             '--server.address=127.0.0.1', '--gateway.production=false',
             '--gateway.mock.enabled=true', f'--gateway.mock.port={mock_port}',

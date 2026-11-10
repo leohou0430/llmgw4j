@@ -18,7 +18,7 @@ import io.github.leohou0430.llmgw.core.upstream.CircuitBreaker;
 import io.github.leohou0430.llmgw.core.upstream.CircuitOpenException;
 import io.github.leohou0430.llmgw.core.upstream.HeaderListener;
 import io.github.leohou0430.llmgw.core.upstream.HeaderPolicy;
-import io.github.leohou0430.llmgw.core.upstream.UpstreamProvider;
+import io.github.leohou0430.llmgw.provider.UpstreamProvider;
 import io.github.leohou0430.llmgw.core.upstream.UpstreamRequest;
 import io.github.leohou0430.llmgw.engine.EngineHeaders;
 import io.github.leohou0430.llmgw.engine.EngineProfiles;

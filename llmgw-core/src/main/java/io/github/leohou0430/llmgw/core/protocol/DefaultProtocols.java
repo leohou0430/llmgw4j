@@ -5,7 +5,6 @@ import tools.jackson.core.JsonToken;
 import tools.jackson.databind.JsonNode;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Map;
 
 /**
  * The five wire-protocol implementations. Each delegates to the parsing
@@ -13,155 +12,145 @@ import java.util.Map;
  * ChunkParser); the value added here is the SEAM: behavior is reachable
  * through one interface instead of four closed switches.
  */
-final class DefaultProtocols {
+public final class DefaultProtocols {
 
     private DefaultProtocols() {
     }
 
-    static void registerAll(Map<ProtocolKind, Protocol> registry) {
-        registry.put(ProtocolKind.CHAT, CHAT);
-        registry.put(ProtocolKind.RESPONSES, RESPONSES);
-        registry.put(ProtocolKind.MESSAGES, MESSAGES);
-        registry.put(ProtocolKind.IMAGES, IMAGES);
-        registry.put(ProtocolKind.VIDEOS, VIDEOS);
-        registry.put(ProtocolKind.EMBEDDINGS, passthroughJson(ProtocolKind.EMBEDDINGS, "input"));
-        registry.put(ProtocolKind.RERANK, passthroughJson(ProtocolKind.RERANK, "query"));
-        registry.put(ProtocolKind.SPEECH, passthroughJson(ProtocolKind.SPEECH, "input"));
-        registry.put(ProtocolKind.TRANSCRIPTIONS, multipart(ProtocolKind.TRANSCRIPTIONS, "model"));
-        registry.put(ProtocolKind.FILES, multipart(ProtocolKind.FILES, "purpose"));
-        registry.put(ProtocolKind.BATCHES, batches());
-    }
 
     /**
      * W4.3 multipart upload kinds (transcriptions, files): the probe scans the
      * raw bytes for one form field; the body always forwards byte-for-byte.
      */
-    private static Protocol multipart(ProtocolKind kind, String fieldName) {
-        return new Protocol() {
-            @Override public ProtocolKind kind() {
-                return kind;
-            }
+    public static class Multipart implements Protocol {
+        private final ProtocolKind kind;
+        private final String fieldName;
+        protected Multipart(ProtocolKind kind, String fieldName) { this.kind = kind; this.fieldName = fieldName; }
 
-            @Override public ParsedRequest parse(String rawJson) {
-                // JSON entry points never exist for these kinds; the byte
-                // variant is the real probe. Decode for safety.
-                return parse(rawJson == null ? new byte[0] : rawJson.getBytes(StandardCharsets.UTF_8));
-            }
+        @Override public ProtocolKind kind() {
+            return kind;
+        }
 
-            @Override public ParsedRequest parse(byte[] body) {
-                String model = MultipartProbe.field(body, fieldName);
-                return new ParsedRequest("", kind, model, false,
-                        MultipartProbe.field(body, "prompt"),
-                        MultipartProbe.estimateTokens(body), 1, null);
-            }
+        @Override public ParsedRequest parse(String rawJson) {
+            // JSON entry points never exist for these kinds; the byte
+            // variant is the real probe. Decode for safety.
+            return parse(rawJson == null ? new byte[0] : rawJson.getBytes(StandardCharsets.UTF_8));
+        }
 
-            @Override public ChunkParser.SseChunk parseChunk(String rawLine) {
-                return ChunkParser.SseChunk.passthrough(rawLine);
-            }
+        @Override public ParsedRequest parse(byte[] body) {
+            String model = MultipartProbe.field(body, fieldName);
+            return new ParsedRequest("", kind, model, false,
+                    MultipartProbe.field(body, "prompt"),
+                    MultipartProbe.estimateTokens(body), 1, null);
+        }
 
-            @Override public int completionTokens(JsonNode root) {
-                return 0;
-            }
+        @Override public ChunkParser.SseChunk parseChunk(String rawLine) {
+            return ChunkParser.SseChunk.passthrough(rawLine);
+        }
 
-            @Override public boolean cacheable(JsonNode root) {
-                return false;
-            }
+        @Override public int completionTokens(JsonNode root) {
+            return 0;
+        }
 
-            @Override public boolean appendDoneAfterInBandError() {
-                return false;
-            }
+        @Override public boolean cacheable(JsonNode root) {
+            return false;
+        }
 
-            /** File upload responses carry the file id → sticky routing. */
-            @Override public String taskId(JsonNode root) {
-                return kind == ProtocolKind.FILES ? VideosProtocol.taskId(root) : "";
-            }
-        };
+        @Override public boolean appendDoneAfterInBandError() {
+            return false;
+        }
+
+        /** File upload responses carry the file id → sticky routing. */
+        @Override public String taskId(JsonNode root) {
+            return kind == ProtocolKind.FILES ? VideosProtocol.taskId(root) : "";
+        }
     }
 
     /** W4.3 batches: JSON create + async job polling, sticky-routed like videos. */
-    private static Protocol batches() {
-        return new Protocol() {
-            @Override public ProtocolKind kind() {
-                return ProtocolKind.BATCHES;
-            }
+    public static final class Batches implements Protocol {
 
-            @Override public ParsedRequest parse(String rawJson) {
-                String model = "default";
-                StringBuilder text = new StringBuilder();
-                try (JsonParser p = ProtocolCodec.parser(rawJson)) {
-                    if (p.nextToken() != JsonToken.START_OBJECT) {
-                        throw new IllegalArgumentException("request body must be a JSON object");
-                    }
-                    JsonToken field;
-                    while ((field = p.nextToken()) == JsonToken.PROPERTY_NAME) {
-                        String name = p.currentName();
-                        JsonToken value = p.nextToken();
-                        if ("model".equals(name)) {
-                            model = ProtocolCodec.scalarOrSkip(p, value, model);
-                        } else if (value == JsonToken.START_OBJECT || value == JsonToken.START_ARRAY) {
-                            p.skipChildren();
-                        }
+        @Override public ProtocolKind kind() {
+            return ProtocolKind.BATCHES;
+        }
+
+        @Override public ParsedRequest parse(String rawJson) {
+            String model = "default";
+            StringBuilder text = new StringBuilder();
+            try (JsonParser p = ProtocolCodec.parser(rawJson)) {
+                if (p.nextToken() != JsonToken.START_OBJECT) {
+                    throw new IllegalArgumentException("request body must be a JSON object");
+                }
+                JsonToken field;
+                while ((field = p.nextToken()) == JsonToken.PROPERTY_NAME) {
+                    String name = p.currentName();
+                    JsonToken value = p.nextToken();
+                    if ("model".equals(name)) {
+                        model = ProtocolCodec.scalarOrSkip(p, value, model);
+                    } else if (value == JsonToken.START_OBJECT || value == JsonToken.START_ARRAY) {
+                        p.skipChildren();
                     }
                 }
-                return new ParsedRequest(rawJson, ProtocolKind.BATCHES, model, false, "",
-                        1, 1, null);
             }
+            return new ParsedRequest(rawJson, ProtocolKind.BATCHES, model, false, "",
+                    1, 1, null);
+        }
 
-            @Override public ChunkParser.SseChunk parseChunk(String rawLine) {
-                return ChunkParser.SseChunk.passthrough(rawLine);
-            }
+        @Override public ChunkParser.SseChunk parseChunk(String rawLine) {
+            return ChunkParser.SseChunk.passthrough(rawLine);
+        }
 
-            @Override public int completionTokens(JsonNode root) {
-                return 0;
-            }
+        @Override public int completionTokens(JsonNode root) {
+            return 0;
+        }
 
-            @Override public boolean cacheable(JsonNode root) {
-                return false;
-            }
+        @Override public boolean cacheable(JsonNode root) {
+            return false;
+        }
 
-            @Override public boolean appendDoneAfterInBandError() {
-                return false;
-            }
+        @Override public boolean appendDoneAfterInBandError() {
+            return false;
+        }
 
-            @Override public String taskId(JsonNode root) {
-                return VideosProtocol.taskId(root);
-            }
-        };
+        @Override public String taskId(JsonNode root) {
+            return VideosProtocol.taskId(root);
+        }
     }
 
     /**
      * W4.3 factory for the JSON/binary pass-through kinds: minimal probe,
      * no streaming, no cache, no tokens, no terminator appendix.
      */
-    private static Protocol passthroughJson(ProtocolKind kind, String textField) {
-        return new Protocol() {
-            @Override public ProtocolKind kind() {
-                return kind;
-            }
+    public static class JsonPassthrough implements Protocol {
+        private final ProtocolKind kind;
+        private final String textField;
+        protected JsonPassthrough(ProtocolKind kind, String textField) { this.kind = kind; this.textField = textField; }
 
-            @Override public ParsedRequest parse(String rawJson) {
-                return JsonProtocols.parse(kind, rawJson, textField);
-            }
+        @Override public ProtocolKind kind() {
+            return kind;
+        }
 
-            @Override public ChunkParser.SseChunk parseChunk(String rawLine) {
-                return ChunkParser.SseChunk.passthrough(rawLine);
-            }
+        @Override public ParsedRequest parse(String rawJson) {
+            return JsonProtocols.parse(kind, rawJson, textField);
+        }
 
-            @Override public int completionTokens(JsonNode root) {
-                return 0;
-            }
+        @Override public ChunkParser.SseChunk parseChunk(String rawLine) {
+            return ChunkParser.SseChunk.passthrough(rawLine);
+        }
 
-            @Override public boolean cacheable(JsonNode root) {
-                return false;
-            }
+        @Override public int completionTokens(JsonNode root) {
+            return 0;
+        }
 
-            @Override public boolean appendDoneAfterInBandError() {
-                return false;
-            }
-        };
+        @Override public boolean cacheable(JsonNode root) {
+            return false;
+        }
+
+        @Override public boolean appendDoneAfterInBandError() {
+            return false;
+        }
     }
 
-    static final Protocol CHAT = new Protocol() {
+    public static final class Chat implements Protocol {
         @Override public ProtocolKind kind() {
             return ProtocolKind.CHAT;
         }
@@ -185,9 +174,9 @@ final class DefaultProtocols {
         @Override public boolean appendDoneAfterInBandError() {
             return true;
         }
-    };
+    }
 
-    static final Protocol RESPONSES = new Protocol() {
+    public static final class Responses implements Protocol {
         @Override public ProtocolKind kind() {
             return ProtocolKind.RESPONSES;
         }
@@ -211,9 +200,9 @@ final class DefaultProtocols {
         @Override public boolean appendDoneAfterInBandError() {
             return false;
         }
-    };
+    }
 
-    static final Protocol MESSAGES = new Protocol() {
+    public static final class Messages implements Protocol {
         @Override public ProtocolKind kind() {
             return ProtocolKind.MESSAGES;
         }
@@ -237,9 +226,9 @@ final class DefaultProtocols {
         @Override public boolean appendDoneAfterInBandError() {
             return false;
         }
-    };
+    }
 
-    static final Protocol IMAGES = new Protocol() {
+    public static final class Images implements Protocol {
         @Override public ProtocolKind kind() {
             return ProtocolKind.IMAGES;
         }
@@ -264,9 +253,9 @@ final class DefaultProtocols {
         @Override public boolean appendDoneAfterInBandError() {
             return false;
         }
-    };
+    }
 
-    static final Protocol VIDEOS = new Protocol() {
+    public static final class Videos implements Protocol {
         @Override public ProtocolKind kind() {
             return ProtocolKind.VIDEOS;
         }
@@ -294,5 +283,11 @@ final class DefaultProtocols {
         @Override public String taskId(JsonNode root) {
             return VideosProtocol.taskId(root);
         }
-    };
+    }
+
+    public static final class Embeddings extends JsonPassthrough { public Embeddings() { super(ProtocolKind.EMBEDDINGS, "input"); } }
+    public static final class Rerank extends JsonPassthrough { public Rerank() { super(ProtocolKind.RERANK, "query"); } }
+    public static final class Speech extends JsonPassthrough { public Speech() { super(ProtocolKind.SPEECH, "input"); } }
+    public static final class Transcriptions extends Multipart { public Transcriptions() { super(ProtocolKind.TRANSCRIPTIONS, "model"); } }
+    public static final class Files extends Multipart { public Files() { super(ProtocolKind.FILES, "purpose"); } }
 }

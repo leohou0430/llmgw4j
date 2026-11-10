@@ -6,8 +6,8 @@
 set -uo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-DEFAULT_JAR="$ROOT/llmgw-app/target/llmgw-app-0.2.0.jar"
-REDIS_JAR="$ROOT/bench/results/v10-redis.jar"
+DEFAULT_JAR="${LLMGW_TEST_JAR:-$ROOT/llmgw-app/target/llmgw-app-0.3.0.jar}"
+REDIS_JAR="${LLMGW_TEST_REDIS_JAR:-$ROOT/bench/results/v10-redis.jar}"
 REDIS_PORT="${REDIS_PORT:-6399}"
 P1="${P1:-8080}"
 P2="${P2:-8081}"
@@ -86,8 +86,8 @@ start_pair() {
   local -a extra=()
   if [[ "$mode" == "redis" ]]; then
     extra=(--gateway.redis.enabled=true
-           --spring.data.redis.host=127.0.0.1
-           "--spring.data.redis.port=$REDIS_PORT")
+           --gateway.redis.host=127.0.0.1
+           "--gateway.redis.port=$REDIS_PORT")
   fi
   java -jar "$jar" "${common[@]}" "${extra[@]}" \
     --server.port="$P1" --gateway.mock.enabled=true \
@@ -130,6 +130,13 @@ if lsof -nP -iTCP:"$REDIS_PORT" -sTCP:LISTEN >/dev/null 2>&1; then
   exit 1
 fi
 
+for port in "$P1" "$P2" "$MOCK_PORT"; do
+  if lsof -nP -iTCP:"$port" -sTCP:LISTEN >/dev/null 2>&1; then
+    echo "test port $port is already in use; no process stopped" >&2
+    exit 1
+  fi
+done
+
 echo "=== distributed quota: mem (2 independent ledgers) vs redis (1 shared) ==="
 redis-server --port "$REDIS_PORT" --save '' --appendonly no --dir "$TMP" \
   > "$TMP/redis.log" 2>&1 &
@@ -142,7 +149,7 @@ done
 ok=$?
 check "local redis is up" "$ok" "port=$REDIS_PORT pid=$REDIS_PID"
 
-unzip -l "$DEFAULT_JAR" | grep -qiE 'spring-data-redis|llmgw-governance-redis'
+unzip -l "$DEFAULT_JAR" | grep -qiE 'spring-data-redis|llmgw-governance-redis|jedis|lettuce'
 if [[ $? -eq 0 ]]; then
   check "default jar stays free of redis classes" "1" "unexpected redis dependency"
 else

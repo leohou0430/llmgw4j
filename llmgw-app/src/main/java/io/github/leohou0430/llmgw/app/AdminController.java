@@ -9,7 +9,7 @@ import io.github.leohou0430.llmgw.core.routing.Route;
 import io.github.leohou0430.llmgw.core.routing.RouteConfigSource;
 import io.github.leohou0430.llmgw.core.routing.RouteTable;
 import io.github.leohou0430.llmgw.core.routing.Router;
-import io.github.leohou0430.llmgw.provider.openai.OpenAiSdkVerifier;
+import io.github.leohou0430.llmgw.provider.ProviderVerifier;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.Meter;
 import io.micrometer.core.instrument.MeterRegistry;
@@ -60,7 +60,7 @@ public class AdminController {
     private final ObjectProvider<io.github.leohou0430.llmgw.governance.inmemory.DynamicGovernanceSettings> governanceSettings;
     private final ObjectProvider<io.github.leohou0430.llmgw.core.governance.SemanticCache> semanticCaches;
     private final ObjectProvider<io.github.leohou0430.llmgw.core.governance.AuditSink> auditSink;
-    private final OpenAiSdkVerifier sdkVerifier;
+    private final ProviderVerifier sdkVerifier;
     private final ObjectProvider<MeterRegistry> meterRegistries;
     private final ObjectProvider<RouteConfigSource> routeSources;
     private final GatewayProperties properties;
@@ -74,7 +74,7 @@ public class AdminController {
                            ObjectProvider<io.github.leohou0430.llmgw.governance.inmemory.DynamicGovernanceSettings> governanceSettings,
                            ObjectProvider<io.github.leohou0430.llmgw.core.governance.SemanticCache> semanticCaches,
                            ObjectProvider<io.github.leohou0430.llmgw.core.governance.AuditSink> auditSink,
-                           OpenAiSdkVerifier sdkVerifier,
+                           ProviderVerifier sdkVerifier,
                            ObjectProvider<MeterRegistry> meterRegistries,
                            ObjectProvider<RouteConfigSource> routeSources,
                            GatewayProperties properties) {
@@ -356,7 +356,7 @@ public class AdminController {
         requireAdmin(token);
         Map<String, Object> out = new LinkedHashMap<>();
         out.put("sdkValidation", sdkVerifier.validate("qwen-plus", "ping"));
-        out.put("connectivity", sdkVerifier.verify());
+        out.put("connectivity", sdkVerifier.verify(properties));
         return out;
     }
 

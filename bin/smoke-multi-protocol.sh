@@ -6,7 +6,7 @@
 set -uo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-JAR="$ROOT/llmgw-app/target/llmgw-app-0.2.0.jar"
+JAR="${LLMGW_TEST_JAR:-$ROOT/llmgw-app/target/llmgw-app-0.3.0.jar}"
 PORT="${PORT:-8080}"
 MOCK_PORT="${MOCK_PORT:-9090}"
 MOCK_PORT_2=9091
@@ -357,8 +357,8 @@ for ENGINE in $ENGINES; do
   start "$ENGINE" "--gateway.mock.port=$MOCK_PORT_2" \
     "--gateway.routes[0].target-url=http://127.0.0.1:$MOCK_PORT_2/mock/v1"
   read -r CODE CTYPE < <(req GET "/v1/videos/$VID")
-  [[ "$CODE" == "502" ]]
-  check "GW2 cannot poll GW1's task (sticky pinning holds)" "$?" \
+  [[ "$CODE" == "404" ]]
+  check "GW2 rejects a task without a local ownership binding" "$?" \
     "code=$CODE id=$VID on gw2"
 
   req POST /v1/videos '{"model":"sora","prompt":"gw2-own-task"}' >/dev/null

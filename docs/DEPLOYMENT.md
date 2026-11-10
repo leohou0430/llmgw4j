@@ -1,4 +1,6 @@
-# llmgw4j 部署指南（v0.2.0）
+# llmgw4j 部署指南（v0.3.0）
+
+> v0.3.0 使用原生 Dubbo SPI。内部 API、模块及 Redis 配置升级方式见 [扩展与迁移说明](EXTENSIONS.md)。
 
 ## TLS 立场
 
@@ -9,7 +11,7 @@ TLS 在前置代理终止**。理由：
    交给久经考验的 nginx/Envoy 比自建 JSSE 配置更可靠；
 2. 前置代理同时承担 WAF、mTLS 客户端认证、全站限流——这些是 API 网关层的职责
    （见 gap-analysis「自研 vs 采用」一节）；
-3. native image / fat jar 的零依赖优势不被证书管理复杂化。
+3. 将证书轮换和 TLS 策略集中在已有入口层。
 
 需要网关进程内 TLS 的部署（如无法引入前置代理），用 Spring Boot 标准配置即可：
 `server.ssl.*`（Boot 4 原生支持，无需改代码）。
@@ -98,7 +100,7 @@ gateway:
   mock:
     enabled: false
   upstream:
-    type: real
+    type: openai-compatible
     base-url: ${LLMGW_UPSTREAM_URL}
     api-key: ${LLMGW_UPSTREAM_KEY}
   routes:
@@ -126,19 +128,19 @@ gateway:
 
 ## 验证与发布
 
-`main` CI 执行默认和 Redis profile 的 clean verify、真实 Redis JUnit、YAML/OpenAPI/模块布局、Python 基准测试，以及双引擎契约、隔离和管理/JWT 鉴权回归。
+`main` CI 执行默认、Redis 和 Redis/jtokkit/otel 组合 profile 的 clean verify、真实 Redis JUnit、YAML/OpenAPI/模块布局、Python 基准测试，以及双引擎契约、隔离和管理/JWT 鉴权回归。
 
-tag 必须与 Maven 版本一致（本版 `v0.2.0` / `0.2.0`）。推送 tag 后，Release workflow 先验证默认 JAR 及契约，再验证 Redis JAR；随后构建 Linux amd64 WebFlux native 并运行其流式错误契约。全部通过后才统一发布默认/Redis JAR、native、文档包及 SHA256SUMS。VT native 及其他平台需自行构建；native 契约不等于性能复测。
+tag 必须与 Maven 版本一致（本版 `v0.3.0` / `0.3.0`）。推送 tag 后，Release workflow 先验证默认 JAR 及契约，再验证 Redis JAR；随后构建 Linux amd64 WebFlux native 并运行其流式错误与多协议契约。全部通过后才统一发布默认/Redis JAR、native、文档包及 SHA256SUMS。VT native 及其他平台需自行构建；native 契约不等于性能复测。
 
 ```sh
 git push origin main
 # 等待 main CI 通过后再标记已经验证的 commit
-git tag -a v0.2.0 -m 'llmgw4j v0.2.0'
-git push origin v0.2.0
+git tag -a v0.3.0 -m 'llmgw4j v0.3.0'
+git push origin v0.3.0
 gh run list --workflow release.yml
 ```
 
-[版本说明](releases/v0.2.0.md)列出资产和兼容边界。发布产物下载后校验 SHA256SUMS；日志和 Actions 的 commit SHA 是验收依据，不能只看 tag 存在。本流程不发布容器镜像或 Maven Central；后者需要另行配置签名、命名空间、凭据及部署插件并独立验收。
+[版本说明](releases/v0.3.0.md)列出资产和兼容边界。发布产物下载后校验 SHA256SUMS；日志和 Actions 的 commit SHA 是验收依据，不能只看 tag 存在。本流程不发布容器镜像或 Maven Central；后者需要另行配置签名、命名空间、凭据及部署插件并独立验收。
 
 ### 资源和内存限制补充
 

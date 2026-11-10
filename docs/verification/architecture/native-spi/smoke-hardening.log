@@ -1,0 +1,57 @@
+======== v13 hardening: retry / timeouts / heartbeat / headers / breaker ========
+--- engine=webflux -- retry + header passthrough (defaults otherwise) ---
+[PASS] webflux ambiguous 5xx is not automatically retried
+[PASS] webflux SSE ambiguous 5xx is not retried
+[PASS] webflux 4xx is not retried
+[PASS] webflux 429 with Retry-After still recovers via retry
+[PASS] webflux Retry-After honored (recovered in 1074ms >= 1000ms)
+[PASS] webflux ingress allowlist forwards anthropic-version upstream
+[PASS] webflux route credentials become the upstream Authorization
+[PASS] webflux caller token never forwarded upstream
+[PASS] webflux SSE ingress forwards anthropic-version upstream
+[PASS] webflux SSE upstream Authorization is the route key
+[PASS] webflux SSE caller token never forwarded upstream
+[PASS] webflux SSE ingress strips non-allowlisted headers upstream
+[PASS] webflux egress allowlist forwards x-ratelimit-* to client
+[PASS] webflux non-allowlisted upstream header never reaches client
+--- engine=webflux -- three-tier timeouts ---
+[PASS] webflux first-byte watchdog fails a hung upstream as 502
+[PASS] webflux idle-read stall reports in-band error
+[PASS] webflux idle-read reason is precise
+[PASS] webflux idle-read abort never fabricates a terminator
+--- engine=webflux -- SSE heartbeat ---
+[PASS] webflux heartbeat injects comment frames (21)
+[PASS] webflux heartbeat coexists with protocol data
+[PASS] webflux heartbeat does not break the terminator
+--- engine=webflux -- video sticky-miss circuit breaker ---
+[PASS] webflux unknown-task video poll returns 404
+[PASS] webflux unknown resource never falls through to shared upstream
+--- engine=vt -- retry + header passthrough (defaults otherwise) ---
+[PASS] vt ambiguous 5xx is not automatically retried
+[PASS] vt SSE ambiguous 5xx is not retried
+[PASS] vt 4xx is not retried
+[PASS] vt 429 with Retry-After still recovers via retry
+[PASS] vt Retry-After honored (recovered in 1159ms >= 1000ms)
+[PASS] vt ingress allowlist forwards anthropic-version upstream
+[PASS] vt route credentials become the upstream Authorization
+[PASS] vt caller token never forwarded upstream
+[PASS] vt SSE ingress forwards anthropic-version upstream
+[PASS] vt SSE upstream Authorization is the route key
+[PASS] vt SSE caller token never forwarded upstream
+[PASS] vt SSE ingress strips non-allowlisted headers upstream
+[PASS] vt egress allowlist forwards x-ratelimit-* to client
+[PASS] vt non-allowlisted upstream header never reaches client
+--- engine=vt -- three-tier timeouts ---
+[PASS] vt first-byte watchdog fails a hung upstream as 502
+[PASS] vt idle-read stall reports in-band error
+[PASS] vt idle-read reason is precise
+[PASS] vt idle-read abort never fabricates a terminator
+--- engine=vt -- SSE heartbeat ---
+[PASS] vt heartbeat injects comment frames (21)
+[PASS] vt heartbeat coexists with protocol data
+[PASS] vt heartbeat does not break the terminator
+--- engine=vt -- video sticky-miss circuit breaker ---
+[PASS] vt unknown-task video poll returns 404
+[PASS] vt unknown resource never falls through to shared upstream
+=================================================
+PASS=46 FAIL=0

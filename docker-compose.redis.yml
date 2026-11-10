@@ -8,8 +8,8 @@ services:
     image: llmgw4j:redis
     environment:
       GATEWAY_REDIS_ENABLED: "true"
-      SPRING_DATA_REDIS_HOST: redis
-      SPRING_DATA_REDIS_PORT: "6379"
+      GATEWAY_REDIS_HOST: redis
+      GATEWAY_REDIS_PORT: "6379"
     depends_on:
       redis:
         condition: service_healthy

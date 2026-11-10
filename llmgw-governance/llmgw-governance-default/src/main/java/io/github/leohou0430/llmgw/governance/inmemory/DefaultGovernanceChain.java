@@ -50,6 +50,7 @@ public class DefaultGovernanceChain implements GovernanceChain {
     private final io.github.leohou0430.llmgw.core.governance.Embedder embedder;
     /** B1 JWT ingress validation; nullable = registry keys only. */
     private final io.github.leohou0430.llmgw.core.governance.TokenValidator tokenValidator;
+    private final io.github.leohou0430.llmgw.tokenizer.TokenCounter tokenCounter;
     /** B4: group -> hard budget (micro-USD); empty = no group metering. */
     private final Map<String, Long> groupBudgets;
     /** B4: per-model token-bucket overrides, matched exact > prefix > *. */
@@ -155,6 +156,24 @@ public class DefaultGovernanceChain implements GovernanceChain {
                                   Guardrail guardrail,
                                   io.github.leohou0430.llmgw.core.governance.Embedder embedder,
                                   io.github.leohou0430.llmgw.core.governance.TokenValidator tokenValidator) {
+        this(apiKeys, limiter, ledger, cache, audit, sideCar, metrics, properties, budgets, catalog, requestLog, guardrail, embedder, tokenValidator, null);
+    }
+
+    public DefaultGovernanceChain(ApiKeyRegistry apiKeys,
+                                  TokenLimiter limiter,
+                                  UsageLedger ledger,
+                                  SemanticCache cache,
+                                  AuditSink audit,
+                                  ExecutorService sideCar,
+                                  GovernanceMetrics metrics,
+                                  GatewayProperties properties,
+                                  BudgetLedger budgets,
+                                  io.github.leohou0430.llmgw.core.model.ModelCatalog catalog,
+                                  RequestLogSink requestLog,
+                                  Guardrail guardrail,
+                                  io.github.leohou0430.llmgw.core.governance.Embedder embedder,
+                                  io.github.leohou0430.llmgw.core.governance.TokenValidator tokenValidator,
+                                  io.github.leohou0430.llmgw.tokenizer.TokenCounter tokenCounter) {
         this.apiKeys = apiKeys;
         this.limiter = limiter;
         this.ledger = ledger;
@@ -169,6 +188,7 @@ public class DefaultGovernanceChain implements GovernanceChain {
         this.guardrail = guardrail;
         this.embedder = embedder;
         this.tokenValidator = tokenValidator;
+        this.tokenCounter = tokenCounter;
         this.groupBudgets = groupBudgetsFrom(properties);
         this.modelLimits = List.copyOf(properties.getModelLimits());
         this.vectorStore = new io.github.leohou0430.llmgw.governance.inmemory.InMemoryVectorStore(
@@ -264,6 +284,11 @@ public class DefaultGovernanceChain implements GovernanceChain {
                 logDeny(request, key.id(), verdict.reason(), status);
                 return GatewayDecision.deny(status, verdict.reason());
             }
+        }
+        if (tokenCounter != null) {
+            int estimate = tokenCounter.estimate(request);
+            if (estimate != request.estimatedTokens()) request = new ParsedRequest(request.rawJson(), request.kind(), request.model(),
+                    request.stream(), request.promptText(), estimate, request.units(), request.cacheFingerprint());
         }
         int reserved = Math.max(1, request.estimatedTokens());
         // v13 $ hard budget, checked BEFORE the token reservation so a denial

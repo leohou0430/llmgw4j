@@ -1,0 +1,1158 @@
+{
+  "files": 140,
+  "main": 110,
+  "source_snapshot": "c119ecf",
+  "coverage": [
+    {
+      "path": "llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/AdminController.java",
+      "kind": "main",
+      "lines": 508,
+      "framework_references": [
+        "import org.springframework.beans.factory.ObjectProvider;",
+        "import org.springframework.http.HttpStatus;",
+        "import org.springframework.http.ResponseEntity;",
+        "import org.springframework.web.bind.annotation.GetMapping;",
+        "import org.springframework.web.bind.annotation.PostMapping;",
+        "import org.springframework.web.bind.annotation.RequestBody;",
+        "import org.springframework.web.bind.annotation.RequestHeader;",
+        "import org.springframework.web.bind.annotation.RequestMapping;",
+        "import org.springframework.web.bind.annotation.RestController;",
+        "import org.springframework.web.server.ResponseStatusException;",
+        "@org.springframework.web.bind.annotation.DeleteMapping(\"/keys/{id}\")",
+        "@org.springframework.web.bind.annotation.PathVariable(\"id\") String id) {",
+        "@org.springframework.web.bind.annotation.PostMapping(\"/keys/{id}/rotate\")",
+        "@org.springframework.web.bind.annotation.PathVariable(\"id\") String id,",
+        "@org.springframework.web.bind.annotation.RequestParam(defaultValue = \"100\") int limit) {",
+        "@org.springframework.web.bind.annotation.DeleteMapping(\"/cache\")"
+      ],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/EngineKindEnvironmentPostProcessor.java",
+      "kind": "main",
+      "lines": 53,
+      "framework_references": [
+        "import org.springframework.boot.EnvironmentPostProcessor;",
+        "import org.springframework.boot.SpringApplication;",
+        "import org.springframework.core.Ordered;",
+        "import org.springframework.core.env.ConfigurableEnvironment;"
+      ],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/GatewayRuntimeHints.java",
+      "kind": "main",
+      "lines": 41,
+      "framework_references": [
+        "import org.springframework.aot.hint.MemberCategory;",
+        "import org.springframework.aot.hint.RuntimeHints;",
+        "import org.springframework.aot.hint.RuntimeHintsRegistrar;",
+        "import org.springframework.context.annotation.Configuration;",
+        "import org.springframework.context.annotation.ImportRuntimeHints;"
+      ],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/JdkHttpUpstream.java",
+      "kind": "main",
+      "lines": 638,
+      "framework_references": [
+        "import org.springframework.stereotype.Component;",
+        "import reactor.core.Disposable;",
+        "import reactor.core.publisher.Flux;",
+        "import reactor.core.publisher.FluxSink;",
+        "import reactor.core.publisher.Mono;",
+        "org.springframework.beans.factory.ObjectProvider<io.github.leohou0430.llmgw.core.upstream.UpstreamAuthenticator> authenticators) {",
+        "@jakarta.annotation.PreDestroy"
+      ],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/LlmGatewayApplication.java",
+      "kind": "main",
+      "lines": 32,
+      "framework_references": [
+        "import org.springframework.boot.SpringApplication;",
+        "import org.springframework.boot.autoconfigure.SpringBootApplication;",
+        "import org.springframework.boot.context.properties.EnableConfigurationProperties;",
+        "import org.springframework.context.annotation.ComponentScan;"
+      ],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/MockUpstreamServer.java",
+      "kind": "main",
+      "lines": 745,
+      "framework_references": [
+        "import org.springframework.beans.factory.DisposableBean;",
+        "import org.springframework.stereotype.Component;"
+      ],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/AdminAuthorizationTest.java",
+      "kind": "test",
+      "lines": 101,
+      "framework_references": [
+        "import org.springframework.beans.factory.support.DefaultListableBeanFactory;",
+        "import org.springframework.web.bind.annotation.DeleteMapping;",
+        "import org.springframework.web.bind.annotation.GetMapping;",
+        "import org.springframework.web.bind.annotation.PostMapping;",
+        "import org.springframework.web.server.ResponseStatusException;"
+      ],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/UpstreamResponseLimitTest.java",
+      "kind": "test",
+      "lines": 30,
+      "framework_references": [
+        "import org.springframework.boot.context.properties.bind.*;",
+        "import org.springframework.core.env.*;"
+      ],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/config/GatewayProperties.java",
+      "kind": "main",
+      "lines": 497,
+      "framework_references": [
+        "import org.springframework.boot.context.properties.ConfigurationProperties;",
+        "public class GatewayProperties implements org.springframework.beans.factory.InitializingBean {"
+      ],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/ApiKeyRegistry.java",
+      "kind": "main",
+      "lines": 44,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/AuditSink.java",
+      "kind": "main",
+      "lines": 14,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/BudgetLedger.java",
+      "kind": "main",
+      "lines": 31,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/Embedder.java",
+      "kind": "main",
+      "lines": 27,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/GatewayContext.java",
+      "kind": "main",
+      "lines": 189,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/GatewayDecision.java",
+      "kind": "main",
+      "lines": 56,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/GatewayPipeline.java",
+      "kind": "main",
+      "lines": 121,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/GovernanceChain.java",
+      "kind": "main",
+      "lines": 33,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/Guardrail.java",
+      "kind": "main",
+      "lines": 45,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/KeyAdminService.java",
+      "kind": "main",
+      "lines": 46,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/KeyStore.java",
+      "kind": "main",
+      "lines": 37,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/RequestLogSink.java",
+      "kind": "main",
+      "lines": 38,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/SemanticCache.java",
+      "kind": "main",
+      "lines": 24,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/SnapshotStore.java",
+      "kind": "main",
+      "lines": 12,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/TokenCounter.java",
+      "kind": "main",
+      "lines": 17,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/TokenLimiter.java",
+      "kind": "main",
+      "lines": 25,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/TokenValidator.java",
+      "kind": "main",
+      "lines": 20,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/UsageLedger.java",
+      "kind": "main",
+      "lines": 39,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/model/ModelCatalog.java",
+      "kind": "main",
+      "lines": 28,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/protocol/ChunkParser.java",
+      "kind": "main",
+      "lines": 290,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/protocol/DefaultProtocols.java",
+      "kind": "main",
+      "lines": 298,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/protocol/ImagesProtocol.java",
+      "kind": "main",
+      "lines": 44,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/protocol/JsonProtocols.java",
+      "kind": "main",
+      "lines": 58,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/protocol/MessagesProtocol.java",
+      "kind": "main",
+      "lines": 142,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/protocol/MultipartProbe.java",
+      "kind": "main",
+      "lines": 68,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/protocol/ParsedRequest.java",
+      "kind": "main",
+      "lines": 36,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/protocol/Protocol.java",
+      "kind": "main",
+      "lines": 65,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/protocol/ProtocolCodec.java",
+      "kind": "main",
+      "lines": 347,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/protocol/ProtocolKind.java",
+      "kind": "main",
+      "lines": 63,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/protocol/ProtocolRegistrar.java",
+      "kind": "main",
+      "lines": 26,
+      "framework_references": [
+        "import org.springframework.boot.ApplicationRunner;",
+        "import org.springframework.beans.factory.ObjectProvider;",
+        "public void run(org.springframework.boot.ApplicationArguments args) {"
+      ],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/protocol/Protocols.java",
+      "kind": "main",
+      "lines": 41,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/protocol/ResponsesProtocol.java",
+      "kind": "main",
+      "lines": 129,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/protocol/VideosProtocol.java",
+      "kind": "main",
+      "lines": 58,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/routing/ConfigRouter.java",
+      "kind": "main",
+      "lines": 57,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/routing/InMemoryRouteConfigSource.java",
+      "kind": "main",
+      "lines": 60,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/routing/InMemoryTaskRouteSticky.java",
+      "kind": "main",
+      "lines": 73,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/routing/Route.java",
+      "kind": "main",
+      "lines": 70,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/routing/RouteConfigSource.java",
+      "kind": "main",
+      "lines": 27,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/routing/RouteTable.java",
+      "kind": "main",
+      "lines": 196,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/routing/Router.java",
+      "kind": "main",
+      "lines": 20,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/routing/TaskRouteSticky.java",
+      "kind": "main",
+      "lines": 36,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/upstream/ChunkSink.java",
+      "kind": "main",
+      "lines": 26,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/upstream/CircuitBreaker.java",
+      "kind": "main",
+      "lines": 40,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/upstream/CircuitOpenException.java",
+      "kind": "main",
+      "lines": 9,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/upstream/HeaderListener.java",
+      "kind": "main",
+      "lines": 24,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/upstream/HeaderPolicy.java",
+      "kind": "main",
+      "lines": 32,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/upstream/UpstreamAuthenticator.java",
+      "kind": "main",
+      "lines": 28,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/upstream/UpstreamMethod.java",
+      "kind": "main",
+      "lines": 11,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/upstream/UpstreamProvider.java",
+      "kind": "main",
+      "lines": 79,
+      "framework_references": [
+        "import reactor.core.publisher.Flux;",
+        "import reactor.core.publisher.Mono;",
+        "import reactor.core.scheduler.Schedulers;"
+      ],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/upstream/UpstreamRequest.java",
+      "kind": "main",
+      "lines": 101,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/upstream/UpstreamStatusException.java",
+      "kind": "main",
+      "lines": 42,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/upstream/UpstreamTimeoutException.java",
+      "kind": "main",
+      "lines": 15,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/config/ProductionConfigurationTest.java",
+      "kind": "test",
+      "lines": 47,
+      "framework_references": [
+        "import org.springframework.beans.factory.support.DefaultListableBeanFactory;",
+        "import org.springframework.boot.context.properties.bind.Bindable;",
+        "import org.springframework.boot.context.properties.bind.Binder;",
+        "import org.springframework.core.env.MapPropertySource;",
+        "import org.springframework.core.env.StandardEnvironment;"
+      ],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/protocol/ProtocolCodecTest.java",
+      "kind": "test",
+      "lines": 124,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/protocol/ProtocolSpiTest.java",
+      "kind": "test",
+      "lines": 108,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/protocol/SsePayloadBoundaryTest.java",
+      "kind": "test",
+      "lines": 43,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/routing/TaskRouteIsolationTest.java",
+      "kind": "test",
+      "lines": 21,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/upstream/UpstreamRequestTest.java",
+      "kind": "test",
+      "lines": 64,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-engine/llmgw-engine-api/src/main/java/io/github/leohou0430/llmgw/engine/AbstractEngineConfiguration.java",
+      "kind": "main",
+      "lines": 27,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-engine/llmgw-engine-api/src/main/java/io/github/leohou0430/llmgw/engine/EngineHeaders.java",
+      "kind": "main",
+      "lines": 19,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-engine/llmgw-engine-api/src/main/java/io/github/leohou0430/llmgw/engine/EngineKind.java",
+      "kind": "main",
+      "lines": 50,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-engine/llmgw-engine-api/src/main/java/io/github/leohou0430/llmgw/engine/EngineProfiles.java",
+      "kind": "main",
+      "lines": 15,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-engine/llmgw-engine-api/src/main/java/io/github/leohou0430/llmgw/engine/EngineReasons.java",
+      "kind": "main",
+      "lines": 33,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-engine/llmgw-engine-api/src/main/java/io/github/leohou0430/llmgw/engine/EngineRoutes.java",
+      "kind": "main",
+      "lines": 133,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-engine/llmgw-engine-api/src/main/java/io/github/leohou0430/llmgw/engine/EngineTimings.java",
+      "kind": "main",
+      "lines": 34,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-engine/llmgw-engine-api/src/main/java/io/github/leohou0430/llmgw/engine/ForwardingPolicy.java",
+      "kind": "main",
+      "lines": 192,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-engine/llmgw-engine-api/src/main/java/io/github/leohou0430/llmgw/engine/SseChunkAccounting.java",
+      "kind": "main",
+      "lines": 42,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-engine/llmgw-engine-api/src/test/java/io/github/leohou0430/llmgw/engine/FileReferencePolicyTest.java",
+      "kind": "test",
+      "lines": 30,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-engine/llmgw-engine-api/src/test/java/io/github/leohou0430/llmgw/engine/ForwardingPolicyTest.java",
+      "kind": "test",
+      "lines": 154,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-engine/llmgw-engine-vt/src/main/java/io/github/leohou0430/llmgw/engine/vt/VirtualThreadEngineConfiguration.java",
+      "kind": "main",
+      "lines": 16,
+      "framework_references": [
+        "import org.springframework.context.annotation.Configuration;",
+        "import org.springframework.context.annotation.Profile;"
+      ],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-engine/llmgw-engine-vt/src/main/java/io/github/leohou0430/llmgw/engine/vt/VirtualThreadGatewayController.java",
+      "kind": "main",
+      "lines": 884,
+      "framework_references": [
+        "import jakarta.servlet.http.HttpServletRequest;",
+        "import jakarta.servlet.http.HttpServletResponse;",
+        "import org.springframework.context.annotation.Profile;",
+        "import org.springframework.web.bind.annotation.GetMapping;",
+        "import org.springframework.web.bind.annotation.PathVariable;",
+        "import org.springframework.web.bind.annotation.PostMapping;",
+        "import org.springframework.web.bind.annotation.RestController;",
+        "@org.springframework.web.bind.annotation.DeleteMapping(\"/v1/files/{id}\")"
+      ],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-engine/llmgw-engine-webflux/src/main/java/io/github/leohou0430/llmgw/engine/webflux/WebfluxEngineConfiguration.java",
+      "kind": "main",
+      "lines": 16,
+      "framework_references": [
+        "import org.springframework.context.annotation.Configuration;",
+        "import org.springframework.context.annotation.Profile;"
+      ],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-engine/llmgw-engine-webflux/src/main/java/io/github/leohou0430/llmgw/engine/webflux/WebfluxGatewayController.java",
+      "kind": "main",
+      "lines": 888,
+      "framework_references": [
+        "import org.springframework.context.annotation.Profile;",
+        "import org.springframework.core.io.buffer.DataBuffer;",
+        "import org.springframework.core.io.buffer.DataBufferLimitException;",
+        "import org.springframework.core.io.buffer.DataBufferUtils;",
+        "import org.springframework.http.HttpHeaders;",
+        "import org.springframework.http.HttpStatus;",
+        "import org.springframework.http.MediaType;",
+        "import org.springframework.http.server.reactive.ServerHttpRequest;",
+        "import org.springframework.http.server.reactive.ServerHttpResponse;",
+        "import org.springframework.web.bind.annotation.GetMapping;",
+        "import org.springframework.web.bind.annotation.PathVariable;",
+        "import org.springframework.web.bind.annotation.PostMapping;",
+        "import org.springframework.web.bind.annotation.RestController;",
+        "import reactor.core.publisher.Flux;",
+        "import reactor.core.publisher.Mono;",
+        "import reactor.core.publisher.SignalType;",
+        "@org.springframework.web.bind.annotation.DeleteMapping(\"/v1/files/{id}\")",
+        ".publishOn(reactor.core.scheduler.Schedulers.boundedElastic())",
+        ".publishOn(reactor.core.scheduler.Schedulers.boundedElastic())",
+        ".subscribeOn(reactor.core.scheduler.Schedulers.boundedElastic());",
+        ".publishOn(reactor.core.scheduler.Schedulers.boundedElastic())"
+      ],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-api/src/main/java/io/github/leohou0430/llmgw/governance/GovernanceLimits.java",
+      "kind": "main",
+      "lines": 58,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-api/src/main/java/io/github/leohou0430/llmgw/governance/GovernancePacks.java",
+      "kind": "main",
+      "lines": 31,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-api/src/main/java/io/github/leohou0430/llmgw/governance/QuotaMath.java",
+      "kind": "main",
+      "lines": 70,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-api/src/main/java/io/github/leohou0430/llmgw/governance/UsageSummaries.java",
+      "kind": "main",
+      "lines": 35,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-api/src/test/java/io/github/leohou0430/llmgw/governance/QuotaMathTest.java",
+      "kind": "test",
+      "lines": 80,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/AllowListHeaderPolicy.java",
+      "kind": "main",
+      "lines": 127,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/AtomicTokenLimiter.java",
+      "kind": "main",
+      "lines": 127,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/CaffeineSemanticCache.java",
+      "kind": "main",
+      "lines": 85,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/ConfigModelCatalog.java",
+      "kind": "main",
+      "lines": 54,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/DefaultGovernanceChain.java",
+      "kind": "main",
+      "lines": 648,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/DynamicGovernanceSettings.java",
+      "kind": "main",
+      "lines": 75,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/GovernanceDefaultsConfiguration.java",
+      "kind": "main",
+      "lines": 227,
+      "framework_references": [
+        "import org.springframework.beans.factory.ObjectProvider;",
+        "import org.springframework.boot.autoconfigure.AutoConfiguration;",
+        "import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;",
+        "import org.springframework.context.annotation.Bean;",
+        "@org.springframework.context.annotation.Bean",
+        "@org.springframework.boot.autoconfigure.condition.ConditionalOnProperty(",
+        "public org.springframework.boot.ApplicationRunner snapshotAutoRestore(SnapshotStore snapshots) {",
+        "org.springframework.beans.factory.ObjectProvider<io.github.leohou0430.llmgw.core.protocol.Protocol> protocols) {"
+      ],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/GovernanceMetrics.java",
+      "kind": "main",
+      "lines": 90,
+      "framework_references": [
+        "import org.springframework.beans.factory.ObjectProvider;"
+      ],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/GuardrailChain.java",
+      "kind": "main",
+      "lines": 36,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/HttpEmbedder.java",
+      "kind": "main",
+      "lines": 114,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/HttpGuardrail.java",
+      "kind": "main",
+      "lines": 107,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/InMemoryApiKeyRegistry.java",
+      "kind": "main",
+      "lines": 63,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/InMemoryAuditSink.java",
+      "kind": "main",
+      "lines": 39,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/InMemoryBudgetLedger.java",
+      "kind": "main",
+      "lines": 67,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/InMemoryRequestLog.java",
+      "kind": "main",
+      "lines": 59,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/InMemoryUsageLedger.java",
+      "kind": "main",
+      "lines": 84,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/InMemoryVectorStore.java",
+      "kind": "main",
+      "lines": 101,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/JsonKeyStore.java",
+      "kind": "main",
+      "lines": 226,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/JsonSnapshotStore.java",
+      "kind": "main",
+      "lines": 96,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/JwtTokenValidator.java",
+      "kind": "main",
+      "lines": 132,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/ManagedApiKeyRegistry.java",
+      "kind": "main",
+      "lines": 175,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/PatternGuardrail.java",
+      "kind": "main",
+      "lines": 54,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/WindowedCircuitBreaker.java",
+      "kind": "main",
+      "lines": 137,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/test/java/io/github/leohou0430/llmgw/governance/inmemory/CacheIsolationTest.java",
+      "kind": "test",
+      "lines": 36,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/test/java/io/github/leohou0430/llmgw/governance/inmemory/ConfigModelCatalogTest.java",
+      "kind": "test",
+      "lines": 61,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/test/java/io/github/leohou0430/llmgw/governance/inmemory/GovernanceSafetyTest.java",
+      "kind": "test",
+      "lines": 71,
+      "framework_references": [
+        "new GovernanceMetrics(new org.springframework.beans.factory.support.DefaultListableBeanFactory().getBeanProvider(io.micrometer.core.instrument.MeterRegistry.class)),",
+        "new InMemoryAuditSink(), executor,new GovernanceMetrics(new org.springframework.beans.factory.support.DefaultListableBeanFactory().getBeanProvider(io.micrometer.core.instrument.MeterRegistry.class)),p,",
+        "new InMemoryAuditSink(), executor,new GovernanceMetrics(new org.springframework.beans.factory.support.DefaultListableBeanFactory().getBeanProvider(io.micrometer.core.instrument.MeterRegistry.class)),p,"
+      ],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/test/java/io/github/leohou0430/llmgw/governance/inmemory/HttpGuardrailTest.java",
+      "kind": "test",
+      "lines": 62,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/test/java/io/github/leohou0430/llmgw/governance/inmemory/InMemoryBudgetLedgerTest.java",
+      "kind": "test",
+      "lines": 86,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/test/java/io/github/leohou0430/llmgw/governance/inmemory/JwtTokenValidatorTest.java",
+      "kind": "test",
+      "lines": 195,
+      "framework_references": [
+        "var env = new org.springframework.core.env.StandardEnvironment();",
+        "env.getPropertySources().addFirst(new org.springframework.core.env.MapPropertySource(\"audience-test\",",
+        "org.springframework.boot.context.properties.bind.Binder.get(env).bind(\"gateway\",",
+        "org.springframework.boot.context.properties.bind.Bindable.ofInstance(p));"
+      ],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/test/java/io/github/leohou0430/llmgw/governance/inmemory/ManagedApiKeyRegistryTest.java",
+      "kind": "test",
+      "lines": 206,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-default/src/test/java/io/github/leohou0430/llmgw/governance/inmemory/ModelRateAccountingTest.java",
+      "kind": "test",
+      "lines": 46,
+      "framework_references": [
+        "executor,new GovernanceMetrics(new org.springframework.beans.factory.support.DefaultListableBeanFactory()"
+      ],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-redis/src/main/java/io/github/leohou0430/llmgw/governance/redis/RedisApiKeyRegistry.java",
+      "kind": "main",
+      "lines": 108,
+      "framework_references": [
+        "import org.springframework.data.redis.core.StringRedisTemplate;"
+      ],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-redis/src/main/java/io/github/leohou0430/llmgw/governance/redis/RedisCircuitBreaker.java",
+      "kind": "main",
+      "lines": 81,
+      "framework_references": [
+        "import org.springframework.data.redis.core.StringRedisTemplate;"
+      ],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-redis/src/main/java/io/github/leohou0430/llmgw/governance/redis/RedisGovernanceConfiguration.java",
+      "kind": "main",
+      "lines": 84,
+      "framework_references": [
+        "import org.springframework.boot.autoconfigure.AutoConfiguration;",
+        "import org.springframework.boot.autoconfigure.AutoConfigureAfter;",
+        "import org.springframework.boot.autoconfigure.AutoConfigureBefore;",
+        "import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;",
+        "import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;",
+        "import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;",
+        "import org.springframework.context.annotation.Bean;",
+        "import org.springframework.data.redis.core.StringRedisTemplate;",
+        "@AutoConfigureAfter(name = \"org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration\")"
+      ],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-redis/src/main/java/io/github/leohou0430/llmgw/governance/redis/RedisScripts.java",
+      "kind": "main",
+      "lines": 100,
+      "framework_references": [
+        "import org.springframework.data.redis.core.script.DefaultRedisScript;"
+      ],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-redis/src/main/java/io/github/leohou0430/llmgw/governance/redis/RedisSemanticCache.java",
+      "kind": "main",
+      "lines": 69,
+      "framework_references": [
+        "import org.springframework.data.redis.core.StringRedisTemplate;",
+        "var options = org.springframework.data.redis.core.ScanOptions"
+      ],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-redis/src/main/java/io/github/leohou0430/llmgw/governance/redis/RedisTaskRouteSticky.java",
+      "kind": "main",
+      "lines": 46,
+      "framework_references": [
+        "import org.springframework.data.redis.core.StringRedisTemplate;"
+      ],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-redis/src/main/java/io/github/leohou0430/llmgw/governance/redis/RedisTokenLimiter.java",
+      "kind": "main",
+      "lines": 84,
+      "framework_references": [
+        "import org.springframework.data.redis.core.StringRedisTemplate;"
+      ],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-redis/src/main/java/io/github/leohou0430/llmgw/governance/redis/RedisUsageLedger.java",
+      "kind": "main",
+      "lines": 107,
+      "framework_references": [
+        "import org.springframework.data.redis.core.StringRedisTemplate;"
+      ],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-governance/llmgw-governance-redis/src/test/java/io/github/leohou0430/llmgw/governance/redis/RedisTokenLimiterTest.java",
+      "kind": "test",
+      "lines": 38,
+      "framework_references": [
+        "import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;",
+        "import org.springframework.data.redis.core.StringRedisTemplate;"
+      ],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-provider-anthropic/src/main/java/io/github/leohou0430/llmgw/provider/anthropic/AnthropicAuthenticator.java",
+      "kind": "main",
+      "lines": 38,
+      "framework_references": [
+        "import org.springframework.stereotype.Component;"
+      ],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-provider-anthropic/src/test/java/io/github/leohou0430/llmgw/provider/anthropic/AnthropicAuthenticatorTest.java",
+      "kind": "test",
+      "lines": 41,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-provider-openai/src/main/java/io/github/leohou0430/llmgw/provider/openai/OpenAiSdkVerifier.java",
+      "kind": "main",
+      "lines": 57,
+      "framework_references": [
+        "import org.springframework.stereotype.Component;"
+      ],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-tokenizer-jtokkit/src/main/java/io/github/leohou0430/llmgw/tokenizer/jtokkit/JtokkitTokenCounter.java",
+      "kind": "main",
+      "lines": 38,
+      "framework_references": [
+        "import org.springframework.stereotype.Component;"
+      ],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "llmgw-tokenizer-jtokkit/src/test/java/io/github/leohou0430/llmgw/tokenizer/jtokkit/JtokkitTokenCounterTest.java",
+      "kind": "test",
+      "lines": 35,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "bench/jfr/AnalyzeRecording.java",
+      "kind": "benchmark",
+      "lines": 44,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "bench/micro/BufferMicrobench.java",
+      "kind": "benchmark",
+      "lines": 140,
+      "framework_references": [
+        "import org.springframework.core.io.buffer.DataBuffer;",
+        "import org.springframework.core.io.buffer.DataBufferUtils;",
+        "import org.springframework.core.io.buffer.NettyDataBuffer;",
+        "import org.springframework.core.io.buffer.NettyDataBufferFactory;"
+      ],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "bench/micro/HeaderCopyMicrobench.java",
+      "kind": "benchmark",
+      "lines": 31,
+      "framework_references": [
+        "import org.springframework.http.HttpHeaders;",
+        "import org.springframework.http.support.Netty4HeadersAdapter;"
+      ],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "bench/micro/JwtValidationMicrobench.java",
+      "kind": "benchmark",
+      "lines": 41,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "bench/micro/ParseMicrobench.java",
+      "kind": "benchmark",
+      "lines": 221,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "bench/micro/ResourceOwnershipMicrobench.java",
+      "kind": "benchmark",
+      "lines": 28,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "bench/micro/SsePayloadMicrobench.java",
+      "kind": "benchmark",
+      "lines": 24,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    },
+    {
+      "path": "bench/mock/StandaloneMockUpstream.java",
+      "kind": "benchmark",
+      "lines": 94,
+      "framework_references": [],
+      "review": "Architecture/import/lifecycle inventory; detailed migration verification pending"
+    }
+  ]
+}

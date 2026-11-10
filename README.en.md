@@ -18,7 +18,9 @@
 
 llmgw4j is a **Java LLM API gateway** built on Spring Boot 4.1.2 / JDK 25.
 
-Current release: **v0.2.0**. See [release notes](docs/releases/v0.2.0.md) and [performance evidence](docs/PERFORMANCE.md).
+Current release: **v0.3.0**. See [release notes](docs/releases/v0.3.0.md) and [performance evidence](docs/PERFORMANCE.md).
+
+Version 0.3.0: foundation discovery uses real Dubbo SPI with explicit native Java construction. Provider and tokenizer use aggregator/api/implementation modules; Spring/Reactor remain at HTTP adapters. See [extension and migration guide](docs/EXTENSIONS.md). Internal Java extension APIs changed since v0.2.0; HTTP routes remain compatible.
 
 ## Capability overview (parity gaps vs mainstream gateways, see docs/gap-analysis.md)
 
@@ -58,7 +60,7 @@ A/B harness needed to compare them without hidden variables.
 | Understands tokens | ✅ token-based quota & rate limiting | ❌ request/connection only | ✅ |
 | Data plane A/B | ✅ **same jar, one variable** (WebFlux vs virtual threads) | ❌ | ❌ |
 | Streaming contract | ✅ `data: [DONE]` is the *only* completion signal; never faked | ⚠️ often treats EOF as success | ⚠️ varies |
-| Governance | ✅ 10 SPIs, no vendor lock-in | ⚠️ plugin SDK | ⚠️ built-in features |
+| Governance | ✅ named Dubbo SPIs, native factories | ⚠️ plugin SDK | ⚠️ built-in features |
 | TTFT / overhead accounting | ✅ dedicated metrics, headers, audit fields | ❌ | ⚠️ partial |
 | Reproducible evidence | ✅ ABBA paired A/B + published load timeline | ❌ | ❌ |
 
@@ -84,26 +86,27 @@ production replacement for Kong / Higress / Envoy. See
   │   Router · TokenLimiter · UsageLedger · CircuitBreaker    │
   │   SemanticCache · ApiKeyRegistry · AuditSink · Metrics    │
   │                           │                              │
-  │              all of them are SPIs + @ConditionalOnMissingBean
+  │              named Dubbo SPIs + explicit native Java factories
   └───────────────────────────┼──────────────────────────────┘
                               ▼
                  JdkHttpUpstream (java.net.http)
                  mock upstream on :9090 by default
 ```
 
-Maven layout is **two capability domains, each an aggregator + one API +
-pluggable implementations**, both rooted at `llmgw-core` (domain SPIs):
+Maven layout is **four capability domains**, each with an aggregator, API and implementation modules:
 
 | Domain | API | Implementations |
 |---|---|---|
+| `llmgw-provider/` | `llmgw-provider-api` | `http-jdk`, `openai`, `openai-sdk`, `anthropic` |
+| `llmgw-tokenizer/` | `llmgw-tokenizer-api` | `heuristic`, `jtokkit` (opt-in) |
 | `llmgw-engine/` | `llmgw-engine-api` | `llmgw-engine-webflux`, `llmgw-engine-vt` |
 | `llmgw-governance/` | `llmgw-governance-api` | `llmgw-governance-default`, `llmgw-governance-redis` (opt-in, `-Predis`) |
 
 Each implementation depends on its domain API and never on a sibling; the
 APIs depend only on `llmgw-core`; the data planes never reference a governance
 implementation. `llmgw-app` is the composition root (both engines in one fat
-jar, selected by Spring profile); `llmgw-provider-openai` is a single SDK
-verifier and will adopt the same layout when a second provider arrives.
+jar, selected by Spring profile). Foundation services use explicit construction
+and named Dubbo SPI; only the HTTP boundary uses Spring/Reactor.
 `./bin/check-module-layout.sh` enforces these rules in CI.
 
 ## Quick start
@@ -140,15 +143,17 @@ curl -sS -X POST http://127.0.0.1:8080/admin/routes/reload \
 
 ## The streaming contract (non-negotiable)
 
-- `data: [DONE]` from the upstream is the **only** completion signal.
+- For chat, `data: [DONE]` from the upstream is the completion signal. Responses
+  and Messages use their own protocol terminators.
   A clean EOF without it is a **failure**, not a successful response, and the
   gateway never fabricates a termination frame.
 - Upstream failure **before** the first chunk → `502 + JSON`.
 - Upstream failure **after** the first chunk → `event: error` followed by
   `[DONE]`, and the request is billed as failed.
 - No upstream fallback after any chunk has been sent (no spliced answers).
-- Downstream cancellation only hooks `onCancel`; billing and audit always
-  settle via `doFinally`, and quota reservations are refunded.
+- Native Flow cancellation propagates to the HTTP subscription/future; normal
+  completion does not abort transport. Engines settle billing/audit on cancellation
+  and release reservations.
 
 ## Observability
 
@@ -159,7 +164,7 @@ curl -sS -X POST http://127.0.0.1:8080/admin/routes/reload \
 | `llmgw.overhead` | total − upstream |
 | `X-LLMGW-Overhead-Ms` | preflight overhead in the response header (both modes) |
 | `X-LLMGW-Upstream-Ms` | non-streaming only — SSE headers are already committed |
-| `X-Request-Id`, `X-LLMGW-Config-Version` | correlation and routing-table version |
+| `X-Request-Id`, `X-LLMGW-Config-Version` | request correlation; configuration version on `GET /admin/routes` |
 | `ttftMs`, `upstreamMs`, `gatewayOverheadMs` | audit event fields |
 
 Timing starts when the request enters the data plane, so `llmgw.latency`
@@ -171,8 +176,8 @@ the governance virtual-thread side path, never on the hot path.
 - `RouteConfigSource` SPI + immutable `RouteTable` behind one
   `AtomicReference`. Validation happens before the table is built, then a
   single CAS publishes it. In-flight requests keep their already-resolved
-  `Route`; nothing is drained or re-routed. Hot reload currently covers
-  **the routing table only**.
+  `Route`; nothing is drained or re-routed. `POST /admin/governance` also updates the supported rate/burst/cache/circuit
+  settings. Other startup configuration still requires a restart.
 - `llmgw-governance/llmgw-governance-redis` is **opt-in**: built with `-Predis` and activated
   with `gateway.redis.enabled=true`. Lua scripts make shared rate limiting,
   quota reservation and circuit breaking atomic across replicas. The default
@@ -181,11 +186,11 @@ the governance virtual-thread side path, never on the hot path.
 
 ## Performance and measurement limits
 
-The SSE parser copies payload text once; WebFlux header copying avoids multi-value collections. Local allocations dropped by 22%–48% for SSE and 32% for headers. This does not imply equal end-to-end speedups.
+The pre-v0.2.0 frozen performance review measured these changes: the SSE parser copies payload text once; WebFlux header copying avoids multi-value collections. Local allocations dropped by 22%–48% for SSE and 32% for headers. This does not imply equal end-to-end speedups.
 
 The latest frozen-artifact A/B contains 64 samples and 4,217,770 requests, all error-free with matching upstream counts. WebFlux SSE median throughput increased 7.3% / 5.2% in separate governance-on/off batches, with overlapping ranges. JSON results change direction and some p99 values worsen; there is no evidence for a general stable throughput gain. A 4-thread experiment produced an SSE truncation, so the default remains 32.
 
-See the [full report](docs/verification/perf/2026-11-10/perf-review/README.md) for JFR, ranges, raw evidence and limitations. Historical cross-gateway results describe older fixed artifacts, not a new v0.2.0 ranking. Native performance, public TLS and remote governance latency were not remeasured. The release build changes version metadata; the benchmark JAR hashes remain explicitly recorded.
+See the [full report](docs/verification/perf/2026-11-10/perf-review/README.md) for JFR, ranges, raw evidence and limitations. Historical cross-gateway results describe older fixed artifacts, not a new v0.3.0 ranking. Native performance, public TLS and remote governance latency were not remeasured. The SPI/Flow refactor in v0.3.0 has not been benchmarked; benchmark JAR hashes remain explicitly recorded.
 
 The URI cache remains unbounded for high-cardinality dynamic paths. Default concurrency is 64 and non-streaming response size is capped at 4 MiB; uploads and downloads still buffer whole bodies. See [benchmark instructions](bench/cross-gateway/README.md).
 
