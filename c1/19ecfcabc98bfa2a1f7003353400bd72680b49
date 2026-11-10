@@ -1,0 +1,2261 @@
+bench/micro/SsePayloadMicrobench.java
+  s_6d30f4d467a543::t_b924b91e199c42 1-24
+docs/verification/audit/2026-11-09-http-evidence.json
+  s_6d30f4d467a543::t_25a88a1fb5a2ae 1-150
+docs/verification/perf/2026-11-10/perf-review/profile-on/raw/wire-sse-llmgw-vt-proxy-r1.json
+  s_6d30f4d467a543::t_7728db56eaee20 1-158
+docs/verification/perf/2026-11-10/perf-review/artifacts.json
+  s_6d30f4d467a543::t_840b436c8ca900 1-8
+bin/run-webflux.sh
+  s_6d30f4d467a543::t_fbca71bbc20e38 4
+bin/smoke-redis-cluster.sh
+  s_6d30f4d467a543::t_fbca71bbc20e38 9
+docs/verification/perf/2026-11-10/perf-review/profile-on/manifest.json
+  s_6d30f4d467a543::t_7728db56eaee20 6,28,36,81,103,110-111
+  s_6d30f4d467a543::t_bc50970c7ca972 1-5,7-27,29-35,37-80,82-102,104-109,112
+docs/verification/perf/2026-11-10/webflux-ab/README.md
+  s_6d30f4d467a543::t_20ff7df7301838 1-21
+docs/verification/audit/2026-11-10-evidence/ownership-before.csv
+  s_6d30f4d467a543::t_e26091c4d73e88 1-7
+docs/verification/perf/2026-11-10/perf-review/micro/summary.json
+  s_6d30f4d467a543::t_840b436c8ca900 1-26
+llmgw-governance/llmgw-governance-default/pom.xml
+  s_6d30f4d467a543::t_fbca71bbc20e38 9
+docs/verification/audit/2026-11-09-remediation-verification.json
+  s_6d30f4d467a543::t_803d7936ad910e 1-36
+bin/smoke-admin-auth.py
+  s_6d30f4d467a543::t_fbca71bbc20e38 92
+  s_6d30f4d467a543::t_77eca840c8e382 1-91,93-107
+docs/verification/perf/2026-11-10/perf-review/plan.md
+  s_6d30f4d467a543::t_35d25b476b9fc0 1-12
+docs/verification/perf/2026-11-10/webflux-ab/compare-used.py
+  s_6d30f4d467a543::t_c6e2d18595199b 1-316
+llmgw-engine/llmgw-engine-webflux/src/main/java/io/github/leohou0430/llmgw/engine/webflux/WebfluxGatewayController.java
+  s_6d30f4d467a543::t_71648d72bce777 274,310,418-420,666-673,679-682,684-694,763,802-808
+  s_6d30f4d467a543::t_0013b0375f1f03 372-375,398,447
+  s_6d30f4d467a543::t_38b03ef72e30d8 102,115,253-263,289-298,654-665,741-750
+  s_6d30f4d467a543::t_2eb3f7baf995d6 299,417,751,880-883
+llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/AdminAuthorizationTest.java
+  s_6d30f4d467a543::t_3d59bfb33e204d 28
+  s_6d30f4d467a543::t_1330f40acad5c3 1-27,29-101
+bin/bench-matrix.sh
+  s_6d30f4d467a543::t_fbca71bbc20e38 5
+llmgw-engine/llmgw-engine-api/pom.xml
+  s_6d30f4d467a543::t_fbca71bbc20e38 9
+llmgw-engine/llmgw-engine-api/src/main/java/io/github/leohou0430/llmgw/engine/ForwardingPolicy.java
+  s_6d30f4d467a543::t_54a8d967c9b686 24-26,115-117,132-133,143-147,178-188,190
+bin/smoke-stream-errors.sh
+  s_6d30f4d467a543::t_fbca71bbc20e38 7
+docs/archive/performance-charts-v12-v13.html
+  s_6d30f4d467a543::t_fbca71bbc20e38 1-75
+docs/verification/perf/2026-11-10/perf-review/micro/sse-before-64.csv
+  s_6d30f4d467a543::t_840b436c8ca900 1-5
+docs/verification/audit/2026-11-10-verification.json
+  s_6d30f4d467a543::t_20ff7df7301838 37-44
+  s_6d30f4d467a543::t_385880c1f2d285 1-36,45-46
+bin/smoke-multi-protocol.sh
+  s_6d30f4d467a543::t_fbca71bbc20e38 9
+docs/verification/perf/2026-11-10/perf-review/README.md
+  s_6d30f4d467a543::t_906162042615b4 59,61
+  s_6d30f4d467a543::t_969fec5b55fdd7 40,42-51,53,55-58,60,62,64,66-76
+  s_6d30f4d467a543::t_c1969a5f888be8 63
+  s_6d30f4d467a543::t_0e553fce77f7cb 1-37
+  s_6d30f4d467a543::t_64bc399059ae3f 65
+  s_6d30f4d467a543::t_a99321b8bd5a74 38-39,41,52,54
+llmgw-governance/pom.xml
+  s_6d30f4d467a543::t_fbca71bbc20e38 9
+docs/verification/audit/2026-11-10-final-verification.json
+  s_6d30f4d467a543::t_8f6a8394d58d9c 28
+  s_6d30f4d467a543::t_887dd67607c798 1-27,29-31,45-49,59,63
+  s_6d30f4d467a543::t_f6f32d487fc000 32-44,50-58,60-62
+docs/verification/perf/2026-11-10/perf-review/profile-on/ranking.json
+  s_6d30f4d467a543::t_7728db56eaee20 3-4,6,13-15,24-38
+  s_6d30f4d467a543::t_76ecda37abdc70 1-2,5,7-12,16-23,39-49
+docs/verification/audit/2026-11-09-remediation-plan.md
+  s_6d30f4d467a543::t_085dfb756d9a94 1-36
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/BudgetLedger.java
+  s_6d30f4d467a543::t_a49ebfa7dfbd4e 6-7
+  s_6d30f4d467a543::t_920af2a560ec5a 8-9,24-25
+llmgw-governance/llmgw-governance-api/pom.xml
+  s_6d30f4d467a543::t_fbca71bbc20e38 9
+README.en.md
+  s_6d30f4d467a543::t_25a0d63d32aff5 21-22,46,182,184,186,188,190,200-203
+  s_6d30f4d467a543::t_a49ebfa7dfbd4e 34-35
+  s_6d30f4d467a543::t_e2e92da6f99d4a 36
+  s_6d30f4d467a543::t_c586b8e77a4cc7 3-7
+bench/cross-gateway/compare.py
+  s_6d30f4d467a543::t_942b544495cfc1 183-184
+  s_6d30f4d467a543::t_c5dcb8faa2de7a 60,318
+  s_6d30f4d467a543::t_69c4e3a76c801e 54,68-69,91,225
+  s_6d30f4d467a543::t_39612cafb15867 93
+  s_6d30f4d467a543::t_fbca71bbc20e38 53
+  s_6d30f4d467a543::t_4b522f6a2e2279 246-248,253-254
+  s_6d30f4d467a543::t_43d0ee3483c22b 251
+  s_6d30f4d467a543::t_8baa1d826afcf8 31-36,109,240-241,290-293
+  s_6d30f4d467a543::t_15eab6d97c1f42 1-30,37-52,55-59,61-67,70-90,92,94-108,110-182,185-224,226-239,242-245,249-250,252,255-289,294-317,319-349
+docs/verification/perf/2026-11-10/perf-review/junit-final.json
+  s_6d30f4d467a543::t_b86d507308c0d3 1-165
+bin/smoke-v13-extensions.sh
+  s_6d30f4d467a543::t_6338afbc247a74 158-162,169,210,218-219
+  s_6d30f4d467a543::t_fbca71bbc20e38 8
+  s_6d30f4d467a543::t_38dcbbe1e7eac6 61-69,95,98,101-102,106-109,113
+docs/openapi.yaml
+  s_6d30f4d467a543::t_9bfef67d2716e2 6,12-17,419,423-426,469,472-483,486,588,631,697,718,737,757,820,839
+  s_6d30f4d467a543::t_e2e92da6f99d4a 865
+  s_6d30f4d467a543::t_1ae0fc813bb847 4
+  s_6d30f4d467a543::t_fd8e78844be634 529-530,532-587,589-630,632-676,680,683-696,698-717,719-736,738-756,758-819,821-838,840-848,852-861,918
+.dockerignore
+  s_6d30f4d467a543::t_df25a7c9fa8cbf 5-8
+docs/verification/perf/2026-11-10/final/README.md
+  s_6d30f4d467a543::t_8f6a8394d58d9c 7-8
+  s_6d30f4d467a543::t_1750a78bf44456 69-71
+  s_6d30f4d467a543::t_6bc8b58d96e645 1-6,9-68
+bench/README.md
+  s_6d30f4d467a543::t_9755d89c129875 3-4
+CHANGELOG.md
+  s_6d30f4d467a543::t_9755d89c129875 9-31
+docs/PRODUCTION_BEST_PRACTICES.md
+  s_6d30f4d467a543::t_fbca71bbc20e38 50
+  s_6d30f4d467a543::t_9755d89c129875 3,5,7,9,11,13,17,20,24-27,30-32,35-39,44-45,48-49,51-52,55,57,59-63,65,67,69,71,73,75-79,81,83,85
+.gitattributes
+  s_6d30f4d467a543::t_1ae0fc813bb847 19-22
+  s_6d30f4d467a543::t_742c170ca1d7f2 23
+Dockerfile
+  s_6d30f4d467a543::t_fbca71bbc20e38 13
+  s_6d30f4d467a543::t_9bfef67d2716e2 1-2,5,7,11-12,18-19
+docs/archive/gap-analysis-v13-pre-audit.md
+  s_6d30f4d467a543::t_a79d8460c07bdf 1-2
+  s_6d30f4d467a543::t_a3e0570511e8ad 3-178
+llmgw-engine/pom.xml
+  s_6d30f4d467a543::t_fbca71bbc20e38 9
+docs/performance-charts.html
+  s_6d30f4d467a543::t_fbca71bbc20e38 1
+docker-compose.redis.yml
+  s_6d30f4d467a543::t_9bfef67d2716e2 1-27
+docs/releases/v0.2.0.md
+  s_6d30f4d467a543::t_9755d89c129875 1-31,33-34
+  s_6d30f4d467a543::t_64bc399059ae3f 32
+docs/verification/audit/2026-11-10-jwt-evidence/after.csv
+  s_6d30f4d467a543::t_1750a78bf44456 1-5
+llmgw-app/src/main/resources/application.yml
+  s_6d30f4d467a543::t_374ce342237441 20,27-28
+bin/smoke-hot-reload.sh
+  s_6d30f4d467a543::t_fbca71bbc20e38 9
+bin/smoke-tenant-isolation.py
+  s_6d30f4d467a543::t_fbca71bbc20e38 15
+  s_6d30f4d467a543::t_5f9e72cdcb4df5 1-14,16-132
+docs/verification/audit/2026-11-09-verification.json
+  s_6d30f4d467a543::t_023864022e596d 1-33
+docs/verification/audit/2026-11-10-followup.md
+  s_6d30f4d467a543::t_eef14d5c4917eb 18
+  s_6d30f4d467a543::t_d80a04b048e9ee 27
+  s_6d30f4d467a543::t_20ff7df7301838 30-35
+  s_6d30f4d467a543::t_8f6a8394d58d9c 36-39
+  s_6d30f4d467a543::t_0c56ac4b352cce 1-17,19-26,28-29
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/Guardrail.java
+  s_6d30f4d467a543::t_83b79a85d419bf 20,32-33
+  s_6d30f4d467a543::t_837af7bc6ab235 34-35
+llmgw-tokenizer-jtokkit/pom.xml
+  s_6d30f4d467a543::t_fbca71bbc20e38 9
+docs/gap-analysis.md
+  s_6d30f4d467a543::t_25a0d63d32aff5 46,69,85-89
+  s_6d30f4d467a543::t_7bbb1fa76219af 1,3,5,7,9-18,20,22,24-27,29,31-39,41,43-45,48,54,56,58-63,65,67
+  s_6d30f4d467a543::t_b5ca28fb3bb145 30
+  s_6d30f4d467a543::t_15a3a19af6a0bc 71-72
+  s_6d30f4d467a543::t_1ae0fc813bb847 50
+  s_6d30f4d467a543::t_1750a78bf44456 83
+  s_6d30f4d467a543::t_8f6a8394d58d9c 73-77,79,81
+  s_6d30f4d467a543::t_5be954a13d8286 28,52
+docs/DEPLOYMENT.md
+  s_6d30f4d467a543::t_15c70b04068f86 143,145-150
+  s_6d30f4d467a543::t_9755d89c129875 1,129-138,141
+  s_6d30f4d467a543::t_c586b8e77a4cc7 64-69,72-127
+  s_6d30f4d467a543::t_7f4c6fc9970159 128
+docs/USER_GUIDE.md
+  s_6d30f4d467a543::t_1ae0fc813bb847 521
+  s_6d30f4d467a543::t_fbca71bbc20e38 3-4,49,82-83,218,317
+  s_6d30f4d467a543::t_742c170ca1d7f2 23
+  s_6d30f4d467a543::t_c586b8e77a4cc7 392
+docs/verification/perf/2026-11-10/perf-review/micro/sse-before-4096.csv
+  s_6d30f4d467a543::t_840b436c8ca900 1-5
+llmgw-governance/llmgw-governance-redis/src/main/java/io/github/leohou0430/llmgw/governance/redis/RedisScripts.java
+  s_6d30f4d467a543::t_8bb2b0440f80ad 30,36
+llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/DefaultGovernanceChain.java
+  s_6d30f4d467a543::t_feb3dd3db09faf 240-247,472-474,484
+  s_6d30f4d467a543::t_83b79a85d419bf 260-261,264-265,376,402,424,596-622
+  s_6d30f4d467a543::t_ea8cef83f04528 452-466
+llmgw-governance/llmgw-governance-api/src/main/java/io/github/leohou0430/llmgw/governance/QuotaMath.java
+  s_6d30f4d467a543::t_87b441ebea249f 28-30
+docs/verification/perf/2026-11-10/perf-review/ab-summary.json
+  s_6d30f4d467a543::t_9ed57b795ac0ac 1-178
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/config/GatewayProperties.java
+  s_6d30f4d467a543::t_7b06cbb0af6fd5 68-69,128-129
+  s_6d30f4d467a543::t_7d3cd573956254 70,130-131
+  s_6d30f4d467a543::t_956a53341c2d2e 11-48
+  s_6d30f4d467a543::t_374ce342237441 339
+  s_6d30f4d467a543::t_0e2ea77f6e2c1e 73,87-88,100-101
+CONTRIBUTING.md
+  s_6d30f4d467a543::t_fbca71bbc20e38 28,86-87
+  s_6d30f4d467a543::t_c586b8e77a4cc7 24-25
+llmgw-engine/llmgw-engine-vt/src/main/java/io/github/leohou0430/llmgw/engine/vt/VirtualThreadGatewayController.java
+  s_6d30f4d467a543::t_71648d72bce777 372,392,473-479,524-525,530-541
+  s_6d30f4d467a543::t_38b03ef72e30d8 92,105,161-173,310-321,423-435,506-517
+  s_6d30f4d467a543::t_7fb6587c587068 322,346-350,518-519,599
+SECURITY.md
+  s_6d30f4d467a543::t_c586b8e77a4cc7 25,38-39,42-47
+  s_6d30f4d467a543::t_374ce342237441 48-53
+  s_6d30f4d467a543::t_15c70b04068f86 59-62
+  s_6d30f4d467a543::t_fbca71bbc20e38 19-20
+  s_6d30f4d467a543::t_f77bb441f6c0c5 28-30,63-67
+bench/cross-gateway/test_analysis.py
+  s_6d30f4d467a543::t_9dc8bda2af9875 1-41
+docs/verification/perf/2026-11-10/unified-v3/README.md
+  s_6d30f4d467a543::t_20ff7df7301838 75-76
+  s_6d30f4d467a543::t_a4637da35cd5a9 1-2
+  s_6d30f4d467a543::t_8227e71c8a9cb1 3-74
+docs/verification/audit/2026-11-10-evidence/ownership-after.csv
+  s_6d30f4d467a543::t_e26091c4d73e88 1-7
+docs/verification/audit/2026-11-10-jwt-auth.md
+  s_6d30f4d467a543::t_1750a78bf44456 1-32
+docs/verification/perf/2026-11-10/perf-review/executor-4-vs-32/raw/wire-json-llmgw-webflux-before-warm.json
+  s_6d30f4d467a543::t_06fae8afe7a8cb 1-144
+llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/protocol/SsePayloadBoundaryTest.java
+  s_6d30f4d467a543::t_b924b91e199c42 1-43
+docs/verification/perf/2026-11-10/perf-review/profile-on/webflux-analysis.txt
+  s_6d30f4d467a543::t_89da4913be0d0f 1-108
+bin/smoke-observability.sh
+  s_6d30f4d467a543::t_fbca71bbc20e38 10
+docs/verification/perf/2026-11-10/perf-review/profile-on/vt-analysis.txt
+  s_6d30f4d467a543::t_89da4913be0d0f 1-108
+docker-compose.yml
+  s_6d30f4d467a543::t_9bfef67d2716e2 6-7,19
+llmgw-engine/llmgw-engine-webflux/pom.xml
+  s_6d30f4d467a543::t_fbca71bbc20e38 9
+.gitignore
+  s_6d30f4d467a543::t_fbca71bbc20e38 56,58
+  s_6d30f4d467a543::t_64bc399059ae3f 57
+bench/micro/JwtValidationMicrobench.java
+  s_6d30f4d467a543::t_f47c3b6c86c27f 1-41
+bin/smoke-v13-hardening.sh
+  s_6d30f4d467a543::t_fbca71bbc20e38 9
+  s_6d30f4d467a543::t_6338afbc247a74 230,234-236,239
+  s_6d30f4d467a543::t_410efd7fd4911f 62-70,108,110-111,113-114
+llmgw-governance/llmgw-governance-redis/pom.xml
+  s_6d30f4d467a543::t_fbca71bbc20e38 9
+  s_6d30f4d467a543::t_eebd4354025d4c 18-19
+bin/smoke-jwt-auth.py
+  s_6d30f4d467a543::t_fbca71bbc20e38 35
+  s_6d30f4d467a543::t_f44d67e67f78d2 1-34,36-96
+docs/verification/perf/2026-11-10/preflight-final/manifest.json
+  s_6d30f4d467a543::t_69c4e3a76c801e 26,35,44,53,67-70,73-82,85-88,91-93
+  s_6d30f4d467a543::t_6bfba93002b7b6 62,65,71,83,89,94-101
+  s_6d30f4d467a543::t_abf0a9fc9e4689 23-25
+  s_6d30f4d467a543::t_e16ebb7fe2cd52 27-29,32-34
+  s_6d30f4d467a543::t_f616d7155b2332 36-38,41-43
+  s_6d30f4d467a543::t_4b1c2dd13836f3 45-47,50-52
+  s_6d30f4d467a543::t_fecfad07a01b0e 54-56,59-61
+  s_6d30f4d467a543::t_cfaea4627c8994 63-64
+  s_6d30f4d467a543::t_a910cce05d8d31 66
+  s_6d30f4d467a543::t_da8a83ae9caf66 72
+  s_6d30f4d467a543::t_2e6ffa38fbc941 84
+  s_6d30f4d467a543::t_ee0bae7884d6c6 90
+  s_6d30f4d467a543::t_5013787c7932e6 102-104
+  s_6d30f4d467a543::t_986c1ad7cf2f43 1-22,30-31,39-40,48-49,57-58,105-111
+bin/run-vt.sh
+  s_6d30f4d467a543::t_fbca71bbc20e38 4
+llmgw-provider-anthropic/pom.xml
+  s_6d30f4d467a543::t_fbca71bbc20e38 9
+docs/CONFIGURATION.md
+  s_6d30f4d467a543::t_9755d89c129875 92
+  s_6d30f4d467a543::t_374ce342237441 3-8
+  s_6d30f4d467a543::t_fbca71bbc20e38 9-10,449
+  s_6d30f4d467a543::t_c586b8e77a4cc7 189,232
+  s_6d30f4d467a543::t_742c170ca1d7f2 50
+  s_6d30f4d467a543::t_fc57e453ab133a 95
+  s_6d30f4d467a543::t_a49ebfa7dfbd4e 265
+  s_6d30f4d467a543::t_15c70b04068f86 251
+  s_6d30f4d467a543::t_0846d9c8f9919d 82,236-239,246-247,252-259,271-272,338,607
+.github/workflows/release.yml
+  s_6d30f4d467a543::t_2c35c3c46de423 14-22
+  s_6d30f4d467a543::t_92b4fe3781c564 8,13,28-29,35,37-40,42-43,51-58,60-62,67,72,75-77,79-83,85-87,89-90,92-93,96,98-101,103-112
+  s_6d30f4d467a543::t_9bfef67d2716e2 30,32,34,36,41,44-45,65,78
+  s_6d30f4d467a543::t_6338afbc247a74 48
+  s_6d30f4d467a543::t_f6e46106b970ba 33,46-47,49-50
+docs/verification/audit/2026-11-10-admin-auth.md
+  s_6d30f4d467a543::t_8f6a8394d58d9c 33
+  s_6d30f4d467a543::t_97d2657e4d08df 1-32,34-35
+docs/verification/perf/2026-11-10/perf-review/micro/sse-after-64.csv
+  s_6d30f4d467a543::t_840b436c8ca900 1-5
+bench/k6-sse.js
+  s_6d30f4d467a543::t_528055f43c2b99 55
+  s_6d30f4d467a543::t_d3ff1f0733cd26 58
+bench/jfr/AnalyzeRecording.java
+  s_6d30f4d467a543::t_89da4913be0d0f 1-44
+README.md
+  s_6d30f4d467a543::t_c586b8e77a4cc7 19
+  s_6d30f4d467a543::t_15c70b04068f86 42
+  s_6d30f4d467a543::t_25a0d63d32aff5 21,44,371,373,384,386-387,389,409,415,422-423
+  s_6d30f4d467a543::t_fbca71bbc20e38 288
+  s_6d30f4d467a543::t_0e007fd919baee 20,30-31,37,180
+llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/InMemoryApiKeyRegistry.java
+  s_6d30f4d467a543::t_1e16dcd9afc62b 23
+.github/workflows/ci.yml
+  s_6d30f4d467a543::t_69c4e3a76c801e 45-46
+  s_6d30f4d467a543::t_9bfef67d2716e2 19,21,33,38-40,42-44,48-51,59-60
+  s_6d30f4d467a543::t_6338afbc247a74 53-56
+  s_6d30f4d467a543::t_2c35c3c46de423 22-30
+  s_6d30f4d467a543::t_838a2c548d4fc7 41,57-58
+docs/verification/perf/2026-11-10/final/compare-used.py
+  s_6d30f4d467a543::t_887dd67607c798 1-316
+bench/cross-gateway/cross-gateway-benchmark.sh
+  s_6d30f4d467a543::t_fbca71bbc20e38 58
+llmgw-provider-openai/pom.xml
+  s_6d30f4d467a543::t_fbca71bbc20e38 9
+llmgw-app/pom.xml
+  s_6d30f4d467a543::t_fbca71bbc20e38 9
+  s_6d30f4d467a543::t_b47657844fdd88 16
+bench/micro/HeaderCopyMicrobench.java
+  s_6d30f4d467a543::t_ccf43f0ccdd015 1-19,21-31
+  s_6d30f4d467a543::t_ec11f68f8c482f 20
+bin/check-openapi.py
+  s_6d30f4d467a543::t_e17b8a04ac9288 1-59
+llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/GuardrailChain.java
+  s_6d30f4d467a543::t_83b79a85d419bf 30
+llmgw-governance/llmgw-governance-redis/src/main/java/io/github/leohou0430/llmgw/governance/redis/RedisApiKeyRegistry.java
+  s_6d30f4d467a543::t_1e16dcd9afc62b 21-22,30,39,47-49,78
+docs/verification/audit/2026-11-10-comparison-plan.md
+  s_6d30f4d467a543::t_d725c7ad76bdf8 1-13
+pom.xml
+  s_6d30f4d467a543::t_fbca71bbc20e38 16
+llmgw-core/pom.xml
+  s_6d30f4d467a543::t_fbca71bbc20e38 9
+docs/verification/audit/2026-11-10-completion-audit.md
+  s_6d30f4d467a543::t_572740a74db7c4 3-15,21-22
+  s_6d30f4d467a543::t_a4637da35cd5a9 16-20,23-30
+  s_6d30f4d467a543::t_1750a78bf44456 1-2
+docs/verification/audit/2026-11-10-jwt-evidence/before.csv
+  s_6d30f4d467a543::t_1750a78bf44456 1-5
+bench/k6-json.js
+  s_6d30f4d467a543::t_528055f43c2b99 51-56
+  s_6d30f4d467a543::t_e2fb03580e4e94 57
+llmgw-engine/llmgw-engine-api/src/main/java/io/github/leohou0430/llmgw/engine/EngineRoutes.java
+  s_6d30f4d467a543::t_2feb11d42bff8e 17-37,43,45-62
+  s_6d30f4d467a543::t_a44ffd364f6e3e 38-42,44
+docs/verification/audit/2026-11-10-jwt-verification.json
+  s_6d30f4d467a543::t_1750a78bf44456 1-34
+docs/verification/perf/2026-11-10/perf-review/profile-on/samples.json
+  s_6d30f4d467a543::t_7728db56eaee20 2,5,10,12-13,15,19-21,24,28-29,31-32,34,38-40,43,48-51,53,57-76
+  s_6d30f4d467a543::t_456d8d4f650a00 1,3-4,6-9,11,14,16-18,22-23,25-27,30,33,35-37,41-42,44-47,52,54-56,77-78
+.github/ISSUE_TEMPLATE/bug_report.yml
+  s_6d30f4d467a543::t_fbca71bbc20e38 53
+llmgw-engine/llmgw-engine-vt/pom.xml
+  s_6d30f4d467a543::t_fbca71bbc20e38 9
+llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/ManagedApiKeyRegistry.java
+  s_6d30f4d467a543::t_08ccf28b61d5c2 48-49,51-60
+  s_6d30f4d467a543::t_9734878e230f1e 61-62
+  s_6d30f4d467a543::t_6fb9bb7edc69aa 80,84,93,100,103,106-112,122,124-131,133-138,161
+llmgw-governance/llmgw-governance-redis/src/main/java/io/github/leohou0430/llmgw/governance/redis/RedisTokenLimiter.java
+  s_6d30f4d467a543::t_8bb2b0440f80ad 46-55,57
+docs/verification/audit/2026-11-10-admin-auth-verification.json
+  s_6d30f4d467a543::t_6ea71ce74dfb87 1-11,25-26,29
+  s_6d30f4d467a543::t_3d02918962c912 12-24
+  s_6d30f4d467a543::t_a4637da35cd5a9 27-28
+bin/bench-paired-ab.sh
+  s_6d30f4d467a543::t_fbca71bbc20e38 27
+docs/verification/audit/2026-11-09-remediation-results.md
+  s_6d30f4d467a543::t_08e6a664ef93c0 1-54
+docs/verification/perf/2026-11-10/unified-v3/compare-used.py
+  s_6d30f4d467a543::t_c5dcb8faa2de7a 1-315
+.env.example
+  s_6d30f4d467a543::t_fbca71bbc20e38 8-9,28-32
+docs/verification/perf/2026-11-10/perf-review/micro/header-after.csv
+  s_6d30f4d467a543::t_840b436c8ca900 1-5
+docs/verification/perf/2026-11-10/perf-review/micro/header-before.csv
+  s_6d30f4d467a543::t_840b436c8ca900 1-5
+docs/archive/performance-v12-v13.md
+  s_6d30f4d467a543::t_fbca71bbc20e38 1-142
+bench/cross-gateway/README.md
+  s_6d30f4d467a543::t_279d9cd1fde8bb 1-6,8,10-16,18,21-22,25-27
+  s_6d30f4d467a543::t_9060b54f4c119c 9
+  s_6d30f4d467a543::t_57c098289ae25f 19-20
+  s_6d30f4d467a543::t_d80a04b048e9ee 23-24
+  s_6d30f4d467a543::t_fbca71bbc20e38 7
+  s_6d30f4d467a543::t_fc57e453ab133a 17,28-35
+bin/build.sh
+  s_6d30f4d467a543::t_fbca71bbc20e38 5
+docs/verification/audit/2026-11-09-review.md
+  s_6d30f4d467a543::t_354d57148fcb8c 1-26,29-166,168-194,204-227
+  s_6d30f4d467a543::t_f9287841773d46 27-28
+  s_6d30f4d467a543::t_16a3ed3f70fd91 167,195-203
+bin/smoke-v13-platform.sh
+  s_6d30f4d467a543::t_6338afbc247a74 107
+  s_6d30f4d467a543::t_fbca71bbc20e38 8
+docs/PERFORMANCE.md
+  s_6d30f4d467a543::t_25a0d63d32aff5 1,3,5,7-11,13,15,17,19,21,23,25-29,31,33,35,37
+docs/verification/perf/2026-11-10/perf-review/ab-table.md
+  s_6d30f4d467a543::t_9ed57b795ac0ac 1-10
+docs/verification/perf/2026-11-10/perf-review/production-change.patch
+  s_6d30f4d467a543::t_9c573f4ba0d367 1-66
+docs/verification/perf/2026-11-10/perf-review/micro/sse-after-4096.csv
+  s_6d30f4d467a543::t_840b436c8ca900 1-5
+llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/HttpGuardrail.java
+  s_6d30f4d467a543::t_83b79a85d419bf 20,35,63-65,70-72,88-89,92,97-98,101,103-104
+bin/smoke-v13-provider.sh
+  s_6d30f4d467a543::t_fbca71bbc20e38 9
+bench/cross-gateway/bench_analysis.py
+  s_6d30f4d467a543::t_8309aaf55ae33b 1-49
+bench/cross-gateway/test_mock.py
+  s_6d30f4d467a543::t_f33373a8015926 1-77
+bench/micro/ResourceOwnershipMicrobench.java
+  s_6d30f4d467a543::t_e93184e28f85d7 1-28
+bench/mock/StandaloneMockUpstream.java
+  s_6d30f4d467a543::t_d2ceb860501622 6-7,9,11-15,19-22,25-44,50-55,57-58,60-71,73-76,78-80,85,87,90-92
+docs/verification/audit/2026-11-10-admin-auth-evidence/auth-green.log
+  s_6d30f4d467a543::t_e73a2613294843 1-289
+docs/verification/audit/2026-11-10-admin-auth-evidence/auth-red.log
+  s_6d30f4d467a543::t_dadfe6102f3029 1-299
+docs/verification/audit/2026-11-10-admin-auth-evidence/config-red.log
+  s_6d30f4d467a543::t_5da4f3365e7d53 1-65
+docs/verification/audit/2026-11-10-admin-auth-evidence/full-verify.log
+  s_6d30f4d467a543::t_b4f2c5db8cabd2 1-516
+docs/verification/audit/2026-11-10-admin-auth-evidence/http-green.log
+  s_6d30f4d467a543::t_3f7e934e6417cd 1-6
+docs/verification/audit/2026-11-10-admin-auth-evidence/http-red.log
+  s_6d30f4d467a543::t_f804a35f058575 1-3
+docs/verification/audit/2026-11-10-evidence/benchmark-unit-final.log
+  s_6d30f4d467a543::t_97922c60570f35 1-7
+docs/verification/audit/2026-11-10-evidence/clean-verify.log
+  s_6d30f4d467a543::t_6cbde2416e70c1 1-514
+docs/verification/audit/2026-11-10-evidence/end-to-end-contract.log
+  s_6d30f4d467a543::t_2e404734c04d68 1-224
+docs/verification/audit/2026-11-10-evidence/final-verify.log
+  s_6d30f4d467a543::t_9fbf083569e315 1-476
+docs/verification/audit/2026-11-10-evidence/model-rate-green.log
+  s_6d30f4d467a543::t_6219d067b17959 1-112
+docs/verification/audit/2026-11-10-evidence/model-rate-red.log
+  s_6d30f4d467a543::t_db74a7ea97b014 1-147
+docs/verification/audit/2026-11-10-evidence/native-contract.log
+  s_6d30f4d467a543::t_9f66546696d896 1-54
+docs/verification/audit/2026-11-10-evidence/ownership-tests-green.log
+  s_6d30f4d467a543::t_f5a2c9ec95dad1 1-87
+docs/verification/audit/2026-11-10-evidence/redis-green.log
+  s_6d30f4d467a543::t_aefcf3dff516b9 1-114
+docs/verification/audit/2026-11-10-evidence/redis-red.log
+  s_6d30f4d467a543::t_babed91b246e33 1-157
+docs/verification/audit/2026-11-10-evidence/yaml-final.log
+  s_6d30f4d467a543::t_cb84188d509d13 1-5
+docs/verification/audit/2026-11-10-final-evidence/admin-http.log
+  s_6d30f4d467a543::t_ee49941ef4a07a 1-6
+docs/verification/audit/2026-11-10-final-evidence/comparison.log
+  s_6d30f4d467a543::t_f6fbbb6b5570d0 1-78
+docs/verification/audit/2026-11-10-final-evidence/native-build.log
+  s_6d30f4d467a543::t_d534a999e30fde 1-802
+docs/verification/audit/2026-11-10-final-evidence/native-contract.log
+  s_6d30f4d467a543::t_c5a512b0b3b094 1-54
+docs/verification/audit/2026-11-10-final-evidence/python-tests.log
+  s_6d30f4d467a543::t_d8cb56c8333c88 1-7
+docs/verification/audit/2026-11-10-final-evidence/verify.log
+  s_6d30f4d467a543::t_0de7fc95ce261c 1-521
+docs/verification/audit/2026-11-10-final-source.json
+  s_6d30f4d467a543::t_c915b81c379dd2 1-138
+docs/verification/audit/2026-11-10-jwt-evidence/final-unit.log
+  s_6d30f4d467a543::t_8fad64d0394c62 1-112
+docs/verification/audit/2026-11-10-jwt-evidence/green.log
+  s_6d30f4d467a543::t_a9a96ad8397e90 1-118
+docs/verification/audit/2026-11-10-jwt-evidence/http.log
+  s_6d30f4d467a543::t_08729dbe10d967 1-2
+docs/verification/audit/2026-11-10-jwt-evidence/precision-red.log
+  s_6d30f4d467a543::t_30285e157fae07 1-147
+docs/verification/audit/2026-11-10-jwt-evidence/red.log
+  s_6d30f4d467a543::t_bf550ab227511c 1-166
+docs/verification/audit/2026-11-10-jwt-evidence/redis-test.log
+  s_6d30f4d467a543::t_b86f62a21c20ef 1-110
+docs/verification/audit/2026-11-10-jwt-evidence/verify.log
+  s_6d30f4d467a543::t_0dea45207ae47f 1-516
+docs/verification/perf/2026-11-10/final/manifest.json
+  s_6d30f4d467a543::t_4f8c5eb0d69d52 1-130
+docs/verification/perf/2026-11-10/final/ranking.json
+  s_6d30f4d467a543::t_c2e5dc412a7f2f 1-269
+docs/verification/perf/2026-11-10/final/raw/04ef6e8fb182.container.log
+  s_6d30f4d467a543::t_4ba454c9238b32 1-11
+docs/verification/perf/2026-11-10/final/raw/07c215bb3598.container.log
+  s_6d30f4d467a543::t_4813e11d3f05dc 1-21
+docs/verification/perf/2026-11-10/final/raw/40a2f4212d7c.container.log
+  s_6d30f4d467a543::t_1dafd65b2a3247 1-9
+docs/verification/perf/2026-11-10/final/raw/43f737ad95e4.container.log
+  s_6d30f4d467a543::t_11667d4ed2feda 1-23
+docs/verification/perf/2026-11-10/final/raw/4d9d05e2b406.container.log
+  s_6d30f4d467a543::t_b69413193cc247 1-21
+docs/verification/perf/2026-11-10/final/raw/51c0eec6347c.container.log
+  s_6d30f4d467a543::t_3f85402378867f 1-137
+docs/verification/perf/2026-11-10/final/raw/626cd61a26d4.container.log
+  s_6d30f4d467a543::t_e5a4d16d49f450 1-9
+docs/verification/perf/2026-11-10/final/raw/9adaf1dff19b.container.log
+  s_6d30f4d467a543::t_5fda5432200e00 1-30
+docs/verification/perf/2026-11-10/final/raw/b8c546d69991.container.log
+  s_6d30f4d467a543::t_f8ec577dd43fad 1-9
+docs/verification/perf/2026-11-10/final/raw/bc67aee1f2ce.container.log
+  s_6d30f4d467a543::t_fc4dbbef882704 1
+docs/verification/perf/2026-11-10/final/raw/d15d0cafed9c.container.log
+  s_6d30f4d467a543::t_3093feb3edb27f 1-23
+docs/verification/perf/2026-11-10/final/raw/f2499675051a.container.log
+  s_6d30f4d467a543::t_8fe95a3ab4b9ad 1-23
+docs/verification/perf/2026-11-10/final/raw/f588123883ef.container.log
+  s_6d30f4d467a543::t_ccdf4a1256c229 1-26
+docs/verification/perf/2026-11-10/final/raw/inference-json-bifrost-r1.json
+  s_6d30f4d467a543::t_37b5d7d3b16f6c 1-144
+docs/verification/perf/2026-11-10/final/raw/inference-json-bifrost-r1.log
+  s_6d30f4d467a543::t_2c0469b00dc154 1-40
+docs/verification/perf/2026-11-10/final/raw/inference-json-bifrost-r2.json
+  s_6d30f4d467a543::t_b5ccb368e2aa3e 1-144
+docs/verification/perf/2026-11-10/final/raw/inference-json-bifrost-r2.log
+  s_6d30f4d467a543::t_94bd0f9285a4ee 1-40
+docs/verification/perf/2026-11-10/final/raw/inference-json-bifrost-r3.json
+  s_6d30f4d467a543::t_009e597f604f2b 1-144
+docs/verification/perf/2026-11-10/final/raw/inference-json-bifrost-r3.log
+  s_6d30f4d467a543::t_eac6fa649f8eee 1-40
+docs/verification/perf/2026-11-10/final/raw/inference-json-bifrost-warm.json
+  s_6d30f4d467a543::t_5bea5605bb2eaa 1-144
+docs/verification/perf/2026-11-10/final/raw/inference-json-bifrost-warm.log
+  s_6d30f4d467a543::t_7de5bae4c1d628 1-40
+docs/verification/perf/2026-11-10/final/raw/inference-json-direct-r1.json
+  s_6d30f4d467a543::t_382622dd57c51f 1-144
+docs/verification/perf/2026-11-10/final/raw/inference-json-direct-r1.log
+  s_6d30f4d467a543::t_fecc46e23f4d26 1-40
+docs/verification/perf/2026-11-10/final/raw/inference-json-direct-r2.json
+  s_6d30f4d467a543::t_d158524ffb2326 1-144
+docs/verification/perf/2026-11-10/final/raw/inference-json-direct-r2.log
+  s_6d30f4d467a543::t_35736dda2eb7e2 1-40
+docs/verification/perf/2026-11-10/final/raw/inference-json-direct-r3.json
+  s_6d30f4d467a543::t_f940708a3669cd 1-144
+docs/verification/perf/2026-11-10/final/raw/inference-json-direct-r3.log
+  s_6d30f4d467a543::t_c77786f757dfd1 1-40
+docs/verification/perf/2026-11-10/final/raw/inference-json-direct-warm.json
+  s_6d30f4d467a543::t_0dca9e848319f6 1-144
+docs/verification/perf/2026-11-10/final/raw/inference-json-direct-warm.log
+  s_6d30f4d467a543::t_3673f28ed96bc1 1-40
+docs/verification/perf/2026-11-10/final/raw/inference-json-litellm-r1.json
+  s_6d30f4d467a543::t_fd6b31e86c8f83 1-144
+docs/verification/perf/2026-11-10/final/raw/inference-json-litellm-r1.log
+  s_6d30f4d467a543::t_0af752bc8c87e5 1-40
+docs/verification/perf/2026-11-10/final/raw/inference-json-litellm-r2.json
+  s_6d30f4d467a543::t_51095763a044f1 1-144
+docs/verification/perf/2026-11-10/final/raw/inference-json-litellm-r2.log
+  s_6d30f4d467a543::t_b1128887ddf5cb 1-40
+docs/verification/perf/2026-11-10/final/raw/inference-json-litellm-r3.json
+  s_6d30f4d467a543::t_ce48949d07ab9d 1-144
+docs/verification/perf/2026-11-10/final/raw/inference-json-litellm-r3.log
+  s_6d30f4d467a543::t_949c67a76dcaa7 1-40
+docs/verification/perf/2026-11-10/final/raw/inference-json-litellm-warm.json
+  s_6d30f4d467a543::t_70117dd56153ad 1-144
+docs/verification/perf/2026-11-10/final/raw/inference-json-litellm-warm.log
+  s_6d30f4d467a543::t_a454f3223e6762 1-40
+docs/verification/perf/2026-11-10/final/raw/inference-json-llmgw-vt-proxy-r1.json
+  s_6d30f4d467a543::t_d8cc936f01454f 1-144
+docs/verification/perf/2026-11-10/final/raw/inference-json-llmgw-vt-proxy-r1.log
+  s_6d30f4d467a543::t_0e4e98b6a5e3ff 1-40
+docs/verification/perf/2026-11-10/final/raw/inference-json-llmgw-vt-proxy-r2.json
+  s_6d30f4d467a543::t_e8d96730a09218 1-144
+docs/verification/perf/2026-11-10/final/raw/inference-json-llmgw-vt-proxy-r2.log
+  s_6d30f4d467a543::t_2af4eec5a6551e 1-40
+docs/verification/perf/2026-11-10/final/raw/inference-json-llmgw-vt-proxy-r3.json
+  s_6d30f4d467a543::t_41637e6750dbdd 1-144
+docs/verification/perf/2026-11-10/final/raw/inference-json-llmgw-vt-proxy-r3.log
+  s_6d30f4d467a543::t_e7877453f62fc7 1-40
+docs/verification/perf/2026-11-10/final/raw/inference-json-llmgw-vt-proxy-warm.json
+  s_6d30f4d467a543::t_944becede7c9c6 1-144
+docs/verification/perf/2026-11-10/final/raw/inference-json-llmgw-vt-proxy-warm.log
+  s_6d30f4d467a543::t_98f3d381287cef 1-40
+docs/verification/perf/2026-11-10/final/raw/inference-json-llmgw-webflux-proxy-r1.json
+  s_6d30f4d467a543::t_927c88621ab2d9 1-144
+docs/verification/perf/2026-11-10/final/raw/inference-json-llmgw-webflux-proxy-r1.log
+  s_6d30f4d467a543::t_5197d313216566 1-40
+docs/verification/perf/2026-11-10/final/raw/inference-json-llmgw-webflux-proxy-r2.json
+  s_6d30f4d467a543::t_1dd60c97eb31e9 1-144
+docs/verification/perf/2026-11-10/final/raw/inference-json-llmgw-webflux-proxy-r2.log
+  s_6d30f4d467a543::t_a1d2936ba1db51 1-40
+docs/verification/perf/2026-11-10/final/raw/inference-json-llmgw-webflux-proxy-r3.json
+  s_6d30f4d467a543::t_842718e887dac1 1-144
+docs/verification/perf/2026-11-10/final/raw/inference-json-llmgw-webflux-proxy-r3.log
+  s_6d30f4d467a543::t_9cf1f5ce582556 1-40
+docs/verification/perf/2026-11-10/final/raw/inference-json-llmgw-webflux-proxy-warm.json
+  s_6d30f4d467a543::t_1f89b361248aa3 1-144
+docs/verification/perf/2026-11-10/final/raw/inference-json-llmgw-webflux-proxy-warm.log
+  s_6d30f4d467a543::t_3c206d7bb747c2 1-40
+docs/verification/perf/2026-11-10/final/raw/inference-json-portkey-r1.json
+  s_6d30f4d467a543::t_cf3ba4b36fa8e3 1-144
+docs/verification/perf/2026-11-10/final/raw/inference-json-portkey-r1.log
+  s_6d30f4d467a543::t_0857bc47b1bf34 1-40
+docs/verification/perf/2026-11-10/final/raw/inference-json-portkey-r2.json
+  s_6d30f4d467a543::t_ae579388ec09ba 1-144
+docs/verification/perf/2026-11-10/final/raw/inference-json-portkey-r2.log
+  s_6d30f4d467a543::t_be00f5706b1c18 1-40
+docs/verification/perf/2026-11-10/final/raw/inference-json-portkey-r3.json
+  s_6d30f4d467a543::t_1185cd39ef1c86 1-144
+docs/verification/perf/2026-11-10/final/raw/inference-json-portkey-r3.log
+  s_6d30f4d467a543::t_3ece5e95794e49 1-40
+docs/verification/perf/2026-11-10/final/raw/inference-json-portkey-warm.json
+  s_6d30f4d467a543::t_30a51f81e8d666 1-144
+docs/verification/perf/2026-11-10/final/raw/inference-json-portkey-warm.log
+  s_6d30f4d467a543::t_81c13fd8093e28 1-40
+docs/verification/perf/2026-11-10/final/raw/inference-sse-bifrost-r1.json
+  s_6d30f4d467a543::t_f87e76499fc802 1-158
+docs/verification/perf/2026-11-10/final/raw/inference-sse-bifrost-r1.log
+  s_6d30f4d467a543::t_85cceb7a336223 1-42
+docs/verification/perf/2026-11-10/final/raw/inference-sse-bifrost-r2.json
+  s_6d30f4d467a543::t_667a7405f79e4e 1-158
+docs/verification/perf/2026-11-10/final/raw/inference-sse-bifrost-r2.log
+  s_6d30f4d467a543::t_bba7d635de6b49 1-42
+docs/verification/perf/2026-11-10/final/raw/inference-sse-bifrost-r3.json
+  s_6d30f4d467a543::t_0a9cc851dec4ef 1-158
+docs/verification/perf/2026-11-10/final/raw/inference-sse-bifrost-r3.log
+  s_6d30f4d467a543::t_4e511a3d0fca35 1-42
+docs/verification/perf/2026-11-10/final/raw/inference-sse-bifrost-warm.json
+  s_6d30f4d467a543::t_5f96c5ca7dc30c 1-158
+docs/verification/perf/2026-11-10/final/raw/inference-sse-bifrost-warm.log
+  s_6d30f4d467a543::t_f5a29b48ba1678 1-42
+docs/verification/perf/2026-11-10/final/raw/inference-sse-direct-r1.json
+  s_6d30f4d467a543::t_16224d824779c5 1-158
+docs/verification/perf/2026-11-10/final/raw/inference-sse-direct-r1.log
+  s_6d30f4d467a543::t_bc0cef92c53b2c 1-42
+docs/verification/perf/2026-11-10/final/raw/inference-sse-direct-r2.json
+  s_6d30f4d467a543::t_b623327318c173 1-158
+docs/verification/perf/2026-11-10/final/raw/inference-sse-direct-r2.log
+  s_6d30f4d467a543::t_7409dbaf44ae15 1-42
+docs/verification/perf/2026-11-10/final/raw/inference-sse-direct-r3.json
+  s_6d30f4d467a543::t_93196a68b290f9 1-158
+docs/verification/perf/2026-11-10/final/raw/inference-sse-direct-r3.log
+  s_6d30f4d467a543::t_d29421962f8d3d 1-42
+docs/verification/perf/2026-11-10/final/raw/inference-sse-direct-warm.json
+  s_6d30f4d467a543::t_e4dbe5a5448f98 1-158
+docs/verification/perf/2026-11-10/final/raw/inference-sse-direct-warm.log
+  s_6d30f4d467a543::t_319c3991511bec 1-42
+docs/verification/perf/2026-11-10/final/raw/inference-sse-litellm-r1.json
+  s_6d30f4d467a543::t_afb88afdda734b 1-158
+docs/verification/perf/2026-11-10/final/raw/inference-sse-litellm-r1.log
+  s_6d30f4d467a543::t_cdd306adb6794d 1-42
+docs/verification/perf/2026-11-10/final/raw/inference-sse-litellm-r2.json
+  s_6d30f4d467a543::t_c93faaa7787648 1-158
+docs/verification/perf/2026-11-10/final/raw/inference-sse-litellm-r2.log
+  s_6d30f4d467a543::t_c423fa65f6ef03 1-42
+docs/verification/perf/2026-11-10/final/raw/inference-sse-litellm-r3.json
+  s_6d30f4d467a543::t_f84530ae7d965b 1-158
+docs/verification/perf/2026-11-10/final/raw/inference-sse-litellm-r3.log
+  s_6d30f4d467a543::t_0187efa4192919 1-42
+docs/verification/perf/2026-11-10/final/raw/inference-sse-litellm-warm.json
+  s_6d30f4d467a543::t_641610c1b5b621 1-158
+docs/verification/perf/2026-11-10/final/raw/inference-sse-litellm-warm.log
+  s_6d30f4d467a543::t_96f2b3f8ab6887 1-42
+docs/verification/perf/2026-11-10/final/raw/inference-sse-llmgw-vt-proxy-r1.json
+  s_6d30f4d467a543::t_af4a01e8826ad1 1-158
+docs/verification/perf/2026-11-10/final/raw/inference-sse-llmgw-vt-proxy-r1.log
+  s_6d30f4d467a543::t_9f6e5d618f7487 1-42
+docs/verification/perf/2026-11-10/final/raw/inference-sse-llmgw-vt-proxy-r2.json
+  s_6d30f4d467a543::t_44bbe5c9c1681c 1-158
+docs/verification/perf/2026-11-10/final/raw/inference-sse-llmgw-vt-proxy-r2.log
+  s_6d30f4d467a543::t_a8f006ccf286b1 1-42
+docs/verification/perf/2026-11-10/final/raw/inference-sse-llmgw-vt-proxy-r3.json
+  s_6d30f4d467a543::t_e0886d18f6397b 1-158
+docs/verification/perf/2026-11-10/final/raw/inference-sse-llmgw-vt-proxy-r3.log
+  s_6d30f4d467a543::t_8df6f380cc051c 1-42
+docs/verification/perf/2026-11-10/final/raw/inference-sse-llmgw-vt-proxy-warm.json
+  s_6d30f4d467a543::t_1e70f8dc9e58a9 1-158
+docs/verification/perf/2026-11-10/final/raw/inference-sse-llmgw-vt-proxy-warm.log
+  s_6d30f4d467a543::t_34040195becc3c 1-42
+docs/verification/perf/2026-11-10/final/raw/inference-sse-llmgw-webflux-proxy-r1.json
+  s_6d30f4d467a543::t_6e7b229a3ccaee 1-158
+docs/verification/perf/2026-11-10/final/raw/inference-sse-llmgw-webflux-proxy-r1.log
+  s_6d30f4d467a543::t_50fa342f9195b7 1-42
+docs/verification/perf/2026-11-10/final/raw/inference-sse-llmgw-webflux-proxy-r2.json
+  s_6d30f4d467a543::t_d21ebf823137d8 1-158
+docs/verification/perf/2026-11-10/final/raw/inference-sse-llmgw-webflux-proxy-r2.log
+  s_6d30f4d467a543::t_fdac4a40b0a12e 1-42
+docs/verification/perf/2026-11-10/final/raw/inference-sse-llmgw-webflux-proxy-r3.json
+  s_6d30f4d467a543::t_0da9d744dab980 1-158
+docs/verification/perf/2026-11-10/final/raw/inference-sse-llmgw-webflux-proxy-r3.log
+  s_6d30f4d467a543::t_0e51d8bc295952 1-42
+docs/verification/perf/2026-11-10/final/raw/inference-sse-llmgw-webflux-proxy-warm.json
+  s_6d30f4d467a543::t_8985b6f573d911 1-158
+docs/verification/perf/2026-11-10/final/raw/inference-sse-llmgw-webflux-proxy-warm.log
+  s_6d30f4d467a543::t_1af3ddd619060a 1-42
+docs/verification/perf/2026-11-10/final/raw/inference-sse-portkey-r1.json
+  s_6d30f4d467a543::t_6ce60a5c1cb743 1-158
+docs/verification/perf/2026-11-10/final/raw/inference-sse-portkey-r1.log
+  s_6d30f4d467a543::t_13b948576abd21 1-42
+docs/verification/perf/2026-11-10/final/raw/inference-sse-portkey-r2.json
+  s_6d30f4d467a543::t_b308dedf85725a 1-158
+docs/verification/perf/2026-11-10/final/raw/inference-sse-portkey-r2.log
+  s_6d30f4d467a543::t_76035f6073eb71 1-42
+docs/verification/perf/2026-11-10/final/raw/inference-sse-portkey-r3.json
+  s_6d30f4d467a543::t_4e08f5fd5e129f 1-158
+docs/verification/perf/2026-11-10/final/raw/inference-sse-portkey-r3.log
+  s_6d30f4d467a543::t_ede0bb0e76d14b 1-42
+docs/verification/perf/2026-11-10/final/raw/inference-sse-portkey-warm.json
+  s_6d30f4d467a543::t_3abcc5d829e5bf 1-158
+docs/verification/perf/2026-11-10/final/raw/inference-sse-portkey-warm.log
+  s_6d30f4d467a543::t_f9dd8b9c8124e3 1-42
+docs/verification/perf/2026-11-10/final/raw/wire-json-bifrost-r1.json
+  s_6d30f4d467a543::t_6744e02aff6beb 1-144
+docs/verification/perf/2026-11-10/final/raw/wire-json-bifrost-r1.log
+  s_6d30f4d467a543::t_2a4b9b3dddf58b 1-40
+docs/verification/perf/2026-11-10/final/raw/wire-json-bifrost-r2.json
+  s_6d30f4d467a543::t_71d1f43014d15e 1-144
+docs/verification/perf/2026-11-10/final/raw/wire-json-bifrost-r2.log
+  s_6d30f4d467a543::t_bd20ab9f5e61fc 1-40
+docs/verification/perf/2026-11-10/final/raw/wire-json-bifrost-r3.json
+  s_6d30f4d467a543::t_8aa90d18221939 1-144
+docs/verification/perf/2026-11-10/final/raw/wire-json-bifrost-r3.log
+  s_6d30f4d467a543::t_f921565d86c5bf 1-40
+docs/verification/perf/2026-11-10/final/raw/wire-json-bifrost-warm.json
+  s_6d30f4d467a543::t_622cea1ff2d6ed 1-144
+docs/verification/perf/2026-11-10/final/raw/wire-json-bifrost-warm.log
+  s_6d30f4d467a543::t_c1a6c7a0ed866f 1-40
+docs/verification/perf/2026-11-10/final/raw/wire-json-direct-r1.json
+  s_6d30f4d467a543::t_1c60d3d42cfad4 1-144
+docs/verification/perf/2026-11-10/final/raw/wire-json-direct-r1.log
+  s_6d30f4d467a543::t_87d1579deb17b4 1-40
+docs/verification/perf/2026-11-10/final/raw/wire-json-direct-r2.json
+  s_6d30f4d467a543::t_2756f72c3907f7 1-144
+docs/verification/perf/2026-11-10/final/raw/wire-json-direct-r2.log
+  s_6d30f4d467a543::t_1369cccd54e20f 1-40
+docs/verification/perf/2026-11-10/final/raw/wire-json-direct-r3.json
+  s_6d30f4d467a543::t_210b613bf590ee 1-144
+docs/verification/perf/2026-11-10/final/raw/wire-json-direct-r3.log
+  s_6d30f4d467a543::t_b947eb9f94a8a6 1-40
+docs/verification/perf/2026-11-10/final/raw/wire-json-direct-warm.json
+  s_6d30f4d467a543::t_6b1838f912f3c7 1-144
+docs/verification/perf/2026-11-10/final/raw/wire-json-direct-warm.log
+  s_6d30f4d467a543::t_16c94279327da2 1-40
+docs/verification/perf/2026-11-10/final/raw/wire-json-litellm-r1.json
+  s_6d30f4d467a543::t_9c2117ab0d9e56 1-144
+docs/verification/perf/2026-11-10/final/raw/wire-json-litellm-r1.log
+  s_6d30f4d467a543::t_006a6e2c753d7e 1-40
+docs/verification/perf/2026-11-10/final/raw/wire-json-litellm-r2.json
+  s_6d30f4d467a543::t_5fac1af769099c 1-144
+docs/verification/perf/2026-11-10/final/raw/wire-json-litellm-r2.log
+  s_6d30f4d467a543::t_f9445777466ec5 1-40
+docs/verification/perf/2026-11-10/final/raw/wire-json-litellm-r3.json
+  s_6d30f4d467a543::t_e01b9a05ff8530 1-144
+docs/verification/perf/2026-11-10/final/raw/wire-json-litellm-r3.log
+  s_6d30f4d467a543::t_50876f8d6e5385 1-40
+docs/verification/perf/2026-11-10/final/raw/wire-json-litellm-warm.json
+  s_6d30f4d467a543::t_5a4463b0644cf2 1-144
+docs/verification/perf/2026-11-10/final/raw/wire-json-litellm-warm.log
+  s_6d30f4d467a543::t_d24e0514188988 1-40
+docs/verification/perf/2026-11-10/final/raw/wire-json-llmgw-vt-proxy-r1.json
+  s_6d30f4d467a543::t_f5a83d1cba11ef 1-144
+docs/verification/perf/2026-11-10/final/raw/wire-json-llmgw-vt-proxy-r1.log
+  s_6d30f4d467a543::t_0e695c0b16c4e8 1-40
+docs/verification/perf/2026-11-10/final/raw/wire-json-llmgw-vt-proxy-r2.json
+  s_6d30f4d467a543::t_82e57fc8817916 1-144
+docs/verification/perf/2026-11-10/final/raw/wire-json-llmgw-vt-proxy-r2.log
+  s_6d30f4d467a543::t_3675ea76c44068 1-40
+docs/verification/perf/2026-11-10/final/raw/wire-json-llmgw-vt-proxy-r3.json
+  s_6d30f4d467a543::t_087eca1a028b93 1-144
+docs/verification/perf/2026-11-10/final/raw/wire-json-llmgw-vt-proxy-r3.log
+  s_6d30f4d467a543::t_63cb717f8b6e99 1-40
+docs/verification/perf/2026-11-10/final/raw/wire-json-llmgw-vt-proxy-warm.json
+  s_6d30f4d467a543::t_30744a6477ac09 1-144
+docs/verification/perf/2026-11-10/final/raw/wire-json-llmgw-vt-proxy-warm.log
+  s_6d30f4d467a543::t_8fd92ddeecceb4 1-40
+docs/verification/perf/2026-11-10/final/raw/wire-json-llmgw-webflux-proxy-r1.json
+  s_6d30f4d467a543::t_7bd3183cf06ab9 1-144
+docs/verification/perf/2026-11-10/final/raw/wire-json-llmgw-webflux-proxy-r1.log
+  s_6d30f4d467a543::t_6987e831d4179e 1-40
+docs/verification/perf/2026-11-10/final/raw/wire-json-llmgw-webflux-proxy-r2.json
+  s_6d30f4d467a543::t_39275b5cae7567 1-144
+docs/verification/perf/2026-11-10/final/raw/wire-json-llmgw-webflux-proxy-r2.log
+  s_6d30f4d467a543::t_575918636880b9 1-40
+docs/verification/perf/2026-11-10/final/raw/wire-json-llmgw-webflux-proxy-r3.json
+  s_6d30f4d467a543::t_bafea60afd45c6 1-144
+docs/verification/perf/2026-11-10/final/raw/wire-json-llmgw-webflux-proxy-r3.log
+  s_6d30f4d467a543::t_54a59497440824 1-40
+docs/verification/perf/2026-11-10/final/raw/wire-json-llmgw-webflux-proxy-warm.json
+  s_6d30f4d467a543::t_d098639c4ee29d 1-144
+docs/verification/perf/2026-11-10/final/raw/wire-json-llmgw-webflux-proxy-warm.log
+  s_6d30f4d467a543::t_4948158045cec9 1-40
+docs/verification/perf/2026-11-10/final/raw/wire-json-portkey-r1.json
+  s_6d30f4d467a543::t_008590fd84d8db 1-144
+docs/verification/perf/2026-11-10/final/raw/wire-json-portkey-r1.log
+  s_6d30f4d467a543::t_45704e577ec83e 1-40
+docs/verification/perf/2026-11-10/final/raw/wire-json-portkey-r2.json
+  s_6d30f4d467a543::t_7159ebd3b5e441 1-144
+docs/verification/perf/2026-11-10/final/raw/wire-json-portkey-r2.log
+  s_6d30f4d467a543::t_1aec9af9722f2f 1-40
+docs/verification/perf/2026-11-10/final/raw/wire-json-portkey-r3.json
+  s_6d30f4d467a543::t_c20e6fbab948ef 1-144
+docs/verification/perf/2026-11-10/final/raw/wire-json-portkey-r3.log
+  s_6d30f4d467a543::t_98752a1d5f9eaa 1-40
+docs/verification/perf/2026-11-10/final/raw/wire-json-portkey-warm.json
+  s_6d30f4d467a543::t_6750e92b89fc85 1-144
+docs/verification/perf/2026-11-10/final/raw/wire-json-portkey-warm.log
+  s_6d30f4d467a543::t_b97eb1512f3821 1-40
+docs/verification/perf/2026-11-10/final/raw/wire-sse-bifrost-r1.json
+  s_6d30f4d467a543::t_a6a031994b60c9 1-158
+docs/verification/perf/2026-11-10/final/raw/wire-sse-bifrost-r1.log
+  s_6d30f4d467a543::t_fed17ee4d35467 1-42
+docs/verification/perf/2026-11-10/final/raw/wire-sse-bifrost-r2.json
+  s_6d30f4d467a543::t_c0f6cd641af509 1-158
+docs/verification/perf/2026-11-10/final/raw/wire-sse-bifrost-r2.log
+  s_6d30f4d467a543::t_298152b310d78c 1-42
+docs/verification/perf/2026-11-10/final/raw/wire-sse-bifrost-r3.json
+  s_6d30f4d467a543::t_4984b1fd67b5a4 1-158
+docs/verification/perf/2026-11-10/final/raw/wire-sse-bifrost-r3.log
+  s_6d30f4d467a543::t_294653f27fd8dd 1-42
+docs/verification/perf/2026-11-10/final/raw/wire-sse-bifrost-warm.json
+  s_6d30f4d467a543::t_6165ce0a1d2205 1-158
+docs/verification/perf/2026-11-10/final/raw/wire-sse-bifrost-warm.log
+  s_6d30f4d467a543::t_947f4d7d524b01 1-42
+docs/verification/perf/2026-11-10/final/raw/wire-sse-direct-r1.json
+  s_6d30f4d467a543::t_4a6032910db4fb 1-158
+docs/verification/perf/2026-11-10/final/raw/wire-sse-direct-r1.log
+  s_6d30f4d467a543::t_ae5f1963308249 1-42
+docs/verification/perf/2026-11-10/final/raw/wire-sse-direct-r2.json
+  s_6d30f4d467a543::t_934b7456fd0510 1-158
+docs/verification/perf/2026-11-10/final/raw/wire-sse-direct-r2.log
+  s_6d30f4d467a543::t_f34b6b005bab50 1-42
+docs/verification/perf/2026-11-10/final/raw/wire-sse-direct-r3.json
+  s_6d30f4d467a543::t_ffcabb1086b726 1-158
+docs/verification/perf/2026-11-10/final/raw/wire-sse-direct-r3.log
+  s_6d30f4d467a543::t_1b7117c9016e73 1-42
+docs/verification/perf/2026-11-10/final/raw/wire-sse-direct-warm.json
+  s_6d30f4d467a543::t_00bcc370b05b9b 1-158
+docs/verification/perf/2026-11-10/final/raw/wire-sse-direct-warm.log
+  s_6d30f4d467a543::t_ddf48270a8f7df 1-42
+docs/verification/perf/2026-11-10/final/raw/wire-sse-litellm-r1.json
+  s_6d30f4d467a543::t_7791cfced32fd5 1-158
+docs/verification/perf/2026-11-10/final/raw/wire-sse-litellm-r1.log
+  s_6d30f4d467a543::t_ead2d66e7e3d1e 1-42
+docs/verification/perf/2026-11-10/final/raw/wire-sse-litellm-r2.json
+  s_6d30f4d467a543::t_5dcf49b92a0ee3 1-158
+docs/verification/perf/2026-11-10/final/raw/wire-sse-litellm-r2.log
+  s_6d30f4d467a543::t_00e287a158d685 1-42
+docs/verification/perf/2026-11-10/final/raw/wire-sse-litellm-r3.json
+  s_6d30f4d467a543::t_c5af41321cd1d6 1-158
+docs/verification/perf/2026-11-10/final/raw/wire-sse-litellm-r3.log
+  s_6d30f4d467a543::t_8fbb0d9ddf4482 1-42
+docs/verification/perf/2026-11-10/final/raw/wire-sse-litellm-warm.json
+  s_6d30f4d467a543::t_eb9a2fabf33279 1-158
+docs/verification/perf/2026-11-10/final/raw/wire-sse-litellm-warm.log
+  s_6d30f4d467a543::t_0d188b0bff84e6 1-42
+docs/verification/perf/2026-11-10/final/raw/wire-sse-llmgw-vt-proxy-r1.json
+  s_6d30f4d467a543::t_eb0d399cc93834 1-158
+docs/verification/perf/2026-11-10/final/raw/wire-sse-llmgw-vt-proxy-r1.log
+  s_6d30f4d467a543::t_9b596d7ae0bc5c 1-42
+docs/verification/perf/2026-11-10/final/raw/wire-sse-llmgw-vt-proxy-r2.json
+  s_6d30f4d467a543::t_4eef95f196bb56 1-158
+docs/verification/perf/2026-11-10/final/raw/wire-sse-llmgw-vt-proxy-r2.log
+  s_6d30f4d467a543::t_6b79dc94e5b557 1-42
+docs/verification/perf/2026-11-10/final/raw/wire-sse-llmgw-vt-proxy-r3.json
+  s_6d30f4d467a543::t_39cc55d796e763 1-158
+docs/verification/perf/2026-11-10/final/raw/wire-sse-llmgw-vt-proxy-r3.log
+  s_6d30f4d467a543::t_8263bfcaa77f1a 1-42
+docs/verification/perf/2026-11-10/final/raw/wire-sse-llmgw-vt-proxy-warm.json
+  s_6d30f4d467a543::t_5a8a0ade3acb39 1-158
+docs/verification/perf/2026-11-10/final/raw/wire-sse-llmgw-vt-proxy-warm.log
+  s_6d30f4d467a543::t_bbd68305e6c8c0 1-42
+docs/verification/perf/2026-11-10/final/raw/wire-sse-llmgw-webflux-proxy-r1.json
+  s_6d30f4d467a543::t_97137946e5a425 1-158
+docs/verification/perf/2026-11-10/final/raw/wire-sse-llmgw-webflux-proxy-r1.log
+  s_6d30f4d467a543::t_e15150bddb35e1 1-42
+docs/verification/perf/2026-11-10/final/raw/wire-sse-llmgw-webflux-proxy-r2.json
+  s_6d30f4d467a543::t_04c19396a8b826 1-158
+docs/verification/perf/2026-11-10/final/raw/wire-sse-llmgw-webflux-proxy-r2.log
+  s_6d30f4d467a543::t_73a456fe969911 1-42
+docs/verification/perf/2026-11-10/final/raw/wire-sse-llmgw-webflux-proxy-r3.json
+  s_6d30f4d467a543::t_fb9e06d61a8a3b 1-158
+docs/verification/perf/2026-11-10/final/raw/wire-sse-llmgw-webflux-proxy-r3.log
+  s_6d30f4d467a543::t_a2c305795c93ef 1-42
+docs/verification/perf/2026-11-10/final/raw/wire-sse-llmgw-webflux-proxy-warm.json
+  s_6d30f4d467a543::t_7267068ea533d6 1-158
+docs/verification/perf/2026-11-10/final/raw/wire-sse-llmgw-webflux-proxy-warm.log
+  s_6d30f4d467a543::t_6f2da522087786 1-42
+docs/verification/perf/2026-11-10/final/raw/wire-sse-portkey-r1.json
+  s_6d30f4d467a543::t_44a8d86eb0873b 1-158
+docs/verification/perf/2026-11-10/final/raw/wire-sse-portkey-r1.log
+  s_6d30f4d467a543::t_38e6aa3632347d 1-42
+docs/verification/perf/2026-11-10/final/raw/wire-sse-portkey-r2.json
+  s_6d30f4d467a543::t_264fdc086d9165 1-158
+docs/verification/perf/2026-11-10/final/raw/wire-sse-portkey-r2.log
+  s_6d30f4d467a543::t_afad3406973f66 1-42
+docs/verification/perf/2026-11-10/final/raw/wire-sse-portkey-r3.json
+  s_6d30f4d467a543::t_45f25fd6126cbc 1-158
+docs/verification/perf/2026-11-10/final/raw/wire-sse-portkey-r3.log
+  s_6d30f4d467a543::t_cf38bb470cf9a1 1-42
+docs/verification/perf/2026-11-10/final/raw/wire-sse-portkey-warm.json
+  s_6d30f4d467a543::t_cb29da1146fc7d 1-158
+docs/verification/perf/2026-11-10/final/raw/wire-sse-portkey-warm.log
+  s_6d30f4d467a543::t_aa80d13dad427f 1-42
+docs/verification/perf/2026-11-10/final/samples.json
+  s_6d30f4d467a543::t_b825b881f052e0 1-1370
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/manifest.json
+  s_6d30f4d467a543::t_8b6d424c5a7f63 1-133
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/ranking.json
+  s_6d30f4d467a543::t_17cc9b5449cc5b 1-93
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/02bb75814934.container.log
+  s_6d30f4d467a543::t_b3e4194d88f9a9 1-23
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/1b7bd87627c8.container.log
+  s_6d30f4d467a543::t_3217bd9416714f 1
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/418625a1f09e.container.log
+  s_6d30f4d467a543::t_6dc13ec83118e6 1-28
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/4c3a01e4197f.container.log
+  s_6d30f4d467a543::t_73da9cc5ae800f 1-9
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/5838fdb8ce8a.container.log
+  s_6d30f4d467a543::t_a42512b3c0aa89 1-25
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/5dbfa987880a.container.log
+  s_6d30f4d467a543::t_c519b6a1d4a0e5 1-23
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/7775479798c4.container.log
+  s_6d30f4d467a543::t_f7fd6c9d3b5baf 1-23
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/970805fabcd3.container.log
+  s_6d30f4d467a543::t_c9692493eca7ef 1-25
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/b3ff67a7290f.container.log
+  s_6d30f4d467a543::t_3de287e11336f7 1-21
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/c28dd6e16b11.container.log
+  s_6d30f4d467a543::t_a817765077c7f5 1-21
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-json-llmgw-vt-before-r1.json
+  s_6d30f4d467a543::t_298447a7603df7 1-144
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-json-llmgw-vt-before-r1.log
+  s_6d30f4d467a543::t_af099f652f8084 1-40
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-json-llmgw-vt-before-r2.json
+  s_6d30f4d467a543::t_34ae3d2e93e4ce 1-144
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-json-llmgw-vt-before-r2.log
+  s_6d30f4d467a543::t_6d6d58fd8772aa 1-40
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-json-llmgw-vt-before-r3.json
+  s_6d30f4d467a543::t_8f4ca67cdbaff8 1-144
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-json-llmgw-vt-before-r3.log
+  s_6d30f4d467a543::t_2b4cb4f5853d8c 1-40
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-json-llmgw-vt-before-r4.json
+  s_6d30f4d467a543::t_e17e20226ac452 1-144
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-json-llmgw-vt-before-r4.log
+  s_6d30f4d467a543::t_751654779d3caa 1-40
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-json-llmgw-vt-before-warm.json
+  s_6d30f4d467a543::t_8378ce7517d58f 1-144
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-json-llmgw-vt-before-warm.log
+  s_6d30f4d467a543::t_d80bea098d8e91 1-40
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-json-llmgw-vt-proxy-r1.json
+  s_6d30f4d467a543::t_141140f32d84d1 1-144
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-json-llmgw-vt-proxy-r1.log
+  s_6d30f4d467a543::t_77e44bf0b28ac6 1-40
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-json-llmgw-vt-proxy-r2.json
+  s_6d30f4d467a543::t_d3ee7771dee2a2 1-144
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-json-llmgw-vt-proxy-r2.log
+  s_6d30f4d467a543::t_a31419d1490e1a 1-40
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-json-llmgw-vt-proxy-r3.json
+  s_6d30f4d467a543::t_f5287cbb4c2538 1-144
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-json-llmgw-vt-proxy-r3.log
+  s_6d30f4d467a543::t_5844a39851bc7a 1-40
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-json-llmgw-vt-proxy-r4.json
+  s_6d30f4d467a543::t_75adac8bcb208d 1-144
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-json-llmgw-vt-proxy-r4.log
+  s_6d30f4d467a543::t_1bbcbf7628e35f 1-40
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-json-llmgw-vt-proxy-warm.json
+  s_6d30f4d467a543::t_6f50792cce5ff8 1-144
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-json-llmgw-vt-proxy-warm.log
+  s_6d30f4d467a543::t_9fb3a4c3546e18 1-40
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-json-llmgw-webflux-before-r1.json
+  s_6d30f4d467a543::t_c70d65e448427f 1-144
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-json-llmgw-webflux-before-r1.log
+  s_6d30f4d467a543::t_84122abc6e0dbe 1-40
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-json-llmgw-webflux-before-r2.json
+  s_6d30f4d467a543::t_01eb4afa05ed46 1-144
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-json-llmgw-webflux-before-r2.log
+  s_6d30f4d467a543::t_c24138e3a49705 1-40
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-json-llmgw-webflux-before-r3.json
+  s_6d30f4d467a543::t_542711423a16da 1-144
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-json-llmgw-webflux-before-r3.log
+  s_6d30f4d467a543::t_978a5ff2cf8a7f 1-40
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-json-llmgw-webflux-before-r4.json
+  s_6d30f4d467a543::t_c49dd3389cc103 1-144
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-json-llmgw-webflux-before-r4.log
+  s_6d30f4d467a543::t_b01ca8ec8496e9 1-40
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-json-llmgw-webflux-before-warm.json
+  s_6d30f4d467a543::t_40124875773193 1-144
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-json-llmgw-webflux-before-warm.log
+  s_6d30f4d467a543::t_13126445a42893 1-40
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-json-llmgw-webflux-proxy-r1.json
+  s_6d30f4d467a543::t_94beaa69dcddde 1-144
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-json-llmgw-webflux-proxy-r1.log
+  s_6d30f4d467a543::t_3cc5f165bcbd77 1-40
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-json-llmgw-webflux-proxy-r2.json
+  s_6d30f4d467a543::t_49501c92300bcd 1-144
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-json-llmgw-webflux-proxy-r2.log
+  s_6d30f4d467a543::t_2c95291fa100f3 1-40
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-json-llmgw-webflux-proxy-r3.json
+  s_6d30f4d467a543::t_3c89b37e944b10 1-144
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-json-llmgw-webflux-proxy-r3.log
+  s_6d30f4d467a543::t_a5c8ba3b7a16e3 1-40
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-json-llmgw-webflux-proxy-r4.json
+  s_6d30f4d467a543::t_6615ca9b87706a 1-144
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-json-llmgw-webflux-proxy-r4.log
+  s_6d30f4d467a543::t_e27cdfabc988d2 1-40
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-json-llmgw-webflux-proxy-warm.json
+  s_6d30f4d467a543::t_c87f8d8e760306 1-144
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-json-llmgw-webflux-proxy-warm.log
+  s_6d30f4d467a543::t_ae4083a4436b0e 1-40
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-sse-llmgw-vt-before-r1.json
+  s_6d30f4d467a543::t_62bf8f850acaf3 1-158
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-sse-llmgw-vt-before-r1.log
+  s_6d30f4d467a543::t_53dc92a69ea00e 1-42
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-sse-llmgw-vt-before-r2.json
+  s_6d30f4d467a543::t_a2345513e19fe4 1-158
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-sse-llmgw-vt-before-r2.log
+  s_6d30f4d467a543::t_9d695063b407e7 1-42
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-sse-llmgw-vt-before-r3.json
+  s_6d30f4d467a543::t_57c6e358cf92e0 1-158
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-sse-llmgw-vt-before-r3.log
+  s_6d30f4d467a543::t_ed5d94c06ae1e5 1-42
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-sse-llmgw-vt-before-r4.json
+  s_6d30f4d467a543::t_6b62037adc5a84 1-158
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-sse-llmgw-vt-before-r4.log
+  s_6d30f4d467a543::t_a71e61a0343b27 1-42
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-sse-llmgw-vt-before-warm.json
+  s_6d30f4d467a543::t_8b6543025f891a 1-158
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-sse-llmgw-vt-before-warm.log
+  s_6d30f4d467a543::t_64eef17bb3fe09 1-42
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-sse-llmgw-vt-proxy-r1.json
+  s_6d30f4d467a543::t_bb6d466bf52062 1-158
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-sse-llmgw-vt-proxy-r1.log
+  s_6d30f4d467a543::t_4c313c1d9dee9b 1-42
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-sse-llmgw-vt-proxy-r2.json
+  s_6d30f4d467a543::t_73474199393aae 1-158
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-sse-llmgw-vt-proxy-r2.log
+  s_6d30f4d467a543::t_6c281a851f6e44 1-42
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-sse-llmgw-vt-proxy-r3.json
+  s_6d30f4d467a543::t_736b432378a684 1-158
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-sse-llmgw-vt-proxy-r3.log
+  s_6d30f4d467a543::t_eacecd78a4c1e2 1-42
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-sse-llmgw-vt-proxy-r4.json
+  s_6d30f4d467a543::t_5ca62e448ad4d0 1-158
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-sse-llmgw-vt-proxy-r4.log
+  s_6d30f4d467a543::t_e4e08b9872c8a2 1-42
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-sse-llmgw-vt-proxy-warm.json
+  s_6d30f4d467a543::t_87d76beb85eb9c 1-158
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-sse-llmgw-vt-proxy-warm.log
+  s_6d30f4d467a543::t_19c3084233c8d6 1-42
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-sse-llmgw-webflux-before-r1.json
+  s_6d30f4d467a543::t_a05322cfb04ade 1-158
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-sse-llmgw-webflux-before-r1.log
+  s_6d30f4d467a543::t_27002dee967906 1-42
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-sse-llmgw-webflux-before-r2.json
+  s_6d30f4d467a543::t_a39a879a52cc3d 1-158
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-sse-llmgw-webflux-before-r2.log
+  s_6d30f4d467a543::t_48a80055bc227f 1-42
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-sse-llmgw-webflux-before-r3.json
+  s_6d30f4d467a543::t_5827958deaf88d 1-158
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-sse-llmgw-webflux-before-r3.log
+  s_6d30f4d467a543::t_c8b62ac3358d66 1-42
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-sse-llmgw-webflux-before-r4.json
+  s_6d30f4d467a543::t_43febf54328fbf 1-158
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-sse-llmgw-webflux-before-r4.log
+  s_6d30f4d467a543::t_cc8f5faef2da04 1-42
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-sse-llmgw-webflux-before-warm.json
+  s_6d30f4d467a543::t_d6af0f9ba95d5e 1-158
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-sse-llmgw-webflux-before-warm.log
+  s_6d30f4d467a543::t_965ba13ba5c7a9 1-42
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-sse-llmgw-webflux-proxy-r1.json
+  s_6d30f4d467a543::t_3a5cc740850277 1-158
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-sse-llmgw-webflux-proxy-r1.log
+  s_6d30f4d467a543::t_c9d2c628fa4707 1-42
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-sse-llmgw-webflux-proxy-r2.json
+  s_6d30f4d467a543::t_67b49a9b51d16f 1-158
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-sse-llmgw-webflux-proxy-r2.log
+  s_6d30f4d467a543::t_c01f6f65043b6b 1-42
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-sse-llmgw-webflux-proxy-r3.json
+  s_6d30f4d467a543::t_b76d98812d1efc 1-158
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-sse-llmgw-webflux-proxy-r3.log
+  s_6d30f4d467a543::t_f30f595f61bc89 1-42
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-sse-llmgw-webflux-proxy-r4.json
+  s_6d30f4d467a543::t_78523b0392e58b 1-158
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-sse-llmgw-webflux-proxy-r4.log
+  s_6d30f4d467a543::t_f528af12002601 1-42
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-sse-llmgw-webflux-proxy-warm.json
+  s_6d30f4d467a543::t_32a08f01abe65b 1-158
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/raw/wire-sse-llmgw-webflux-proxy-warm.log
+  s_6d30f4d467a543::t_9c9c55780f5f57 1-42
+docs/verification/perf/2026-11-10/perf-review/ab-governance-off/samples.json
+  s_6d30f4d467a543::t_bb7117dc973aa0 1-610
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/manifest.json
+  s_6d30f4d467a543::t_b79c64f5c09428 1-133
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/ranking.json
+  s_6d30f4d467a543::t_174411e6f2c5a6 1-93
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/056abaa609b4.container.log
+  s_6d30f4d467a543::t_34e4270c3fc62e 1-21
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/0aeb078a560f.container.log
+  s_6d30f4d467a543::t_e52e2a7cfd7c64 1
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/25420218ee95.container.log
+  s_6d30f4d467a543::t_c5f293ecad55ae 1-21
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/5fa12945d6b8.container.log
+  s_6d30f4d467a543::t_665444f78b1aad 1-23
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/67246969162b.container.log
+  s_6d30f4d467a543::t_1f7caf0be72a98 1-23
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/71220c7ebb94.container.log
+  s_6d30f4d467a543::t_445f227b307220 1-9
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/8a4690b0dc7f.container.log
+  s_6d30f4d467a543::t_7f9f7f6524663a 1-21
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/e147cb868c40.container.log
+  s_6d30f4d467a543::t_c10edd6b4fb296 1-21
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/e26fcbb958a9.container.log
+  s_6d30f4d467a543::t_47a99f3d79e62d 1-21
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/ec69c5a246f8.container.log
+  s_6d30f4d467a543::t_519d39538b3f70 1-21
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-json-llmgw-vt-before-r1.json
+  s_6d30f4d467a543::t_12df05a1973839 1-144
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-json-llmgw-vt-before-r1.log
+  s_6d30f4d467a543::t_90d3f0273fb439 1-40
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-json-llmgw-vt-before-r2.json
+  s_6d30f4d467a543::t_a76f28a1f877ca 1-144
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-json-llmgw-vt-before-r2.log
+  s_6d30f4d467a543::t_2f3caad5c8f222 1-40
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-json-llmgw-vt-before-r3.json
+  s_6d30f4d467a543::t_f97f1fa35c01c2 1-144
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-json-llmgw-vt-before-r3.log
+  s_6d30f4d467a543::t_451bc476f74d01 1-40
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-json-llmgw-vt-before-r4.json
+  s_6d30f4d467a543::t_0611129a164d5e 1-144
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-json-llmgw-vt-before-r4.log
+  s_6d30f4d467a543::t_98232df3e2ffac 1-40
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-json-llmgw-vt-before-warm.json
+  s_6d30f4d467a543::t_3f6902b7ab7611 1-144
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-json-llmgw-vt-before-warm.log
+  s_6d30f4d467a543::t_ea2a59111aeaa7 1-40
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-json-llmgw-vt-proxy-r1.json
+  s_6d30f4d467a543::t_767cc2254b820e 1-144
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-json-llmgw-vt-proxy-r1.log
+  s_6d30f4d467a543::t_9b40bf99731b5a 1-40
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-json-llmgw-vt-proxy-r2.json
+  s_6d30f4d467a543::t_a4e1db42ecbbe8 1-144
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-json-llmgw-vt-proxy-r2.log
+  s_6d30f4d467a543::t_d4a9f94455478e 1-40
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-json-llmgw-vt-proxy-r3.json
+  s_6d30f4d467a543::t_07e22a89545e68 1-144
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-json-llmgw-vt-proxy-r3.log
+  s_6d30f4d467a543::t_9c16a1e0c25d83 1-40
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-json-llmgw-vt-proxy-r4.json
+  s_6d30f4d467a543::t_c6a8a0ffe21b85 1-144
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-json-llmgw-vt-proxy-r4.log
+  s_6d30f4d467a543::t_0cae0357f27f47 1-40
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-json-llmgw-vt-proxy-warm.json
+  s_6d30f4d467a543::t_e37e53022df0b8 1-144
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-json-llmgw-vt-proxy-warm.log
+  s_6d30f4d467a543::t_4c358b98998043 1-40
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-json-llmgw-webflux-before-r1.json
+  s_6d30f4d467a543::t_5a536281c06022 1-144
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-json-llmgw-webflux-before-r1.log
+  s_6d30f4d467a543::t_416f428f2c7308 1-40
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-json-llmgw-webflux-before-r2.json
+  s_6d30f4d467a543::t_c2eb2a76f1c90c 1-144
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-json-llmgw-webflux-before-r2.log
+  s_6d30f4d467a543::t_6bca0200fb92e9 1-40
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-json-llmgw-webflux-before-r3.json
+  s_6d30f4d467a543::t_436d535e35a597 1-144
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-json-llmgw-webflux-before-r3.log
+  s_6d30f4d467a543::t_174450399eae05 1-40
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-json-llmgw-webflux-before-r4.json
+  s_6d30f4d467a543::t_d5bbb87eed695d 1-144
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-json-llmgw-webflux-before-r4.log
+  s_6d30f4d467a543::t_f1a78d0d50aef8 1-40
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-json-llmgw-webflux-before-warm.json
+  s_6d30f4d467a543::t_cc9c85c1d49865 1-144
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-json-llmgw-webflux-before-warm.log
+  s_6d30f4d467a543::t_45cd64a901fd32 1-40
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-json-llmgw-webflux-proxy-r1.json
+  s_6d30f4d467a543::t_b8854c0fbaf701 1-144
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-json-llmgw-webflux-proxy-r1.log
+  s_6d30f4d467a543::t_b6a63044b5bc2a 1-40
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-json-llmgw-webflux-proxy-r2.json
+  s_6d30f4d467a543::t_b4693e69480b98 1-144
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-json-llmgw-webflux-proxy-r2.log
+  s_6d30f4d467a543::t_9d7565097048fb 1-40
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-json-llmgw-webflux-proxy-r3.json
+  s_6d30f4d467a543::t_c0200b2f676587 1-144
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-json-llmgw-webflux-proxy-r3.log
+  s_6d30f4d467a543::t_1998707a401e84 1-40
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-json-llmgw-webflux-proxy-r4.json
+  s_6d30f4d467a543::t_10f017eda337bf 1-144
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-json-llmgw-webflux-proxy-r4.log
+  s_6d30f4d467a543::t_aadb135d7dfb7a 1-40
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-json-llmgw-webflux-proxy-warm.json
+  s_6d30f4d467a543::t_adae0cfecdd131 1-144
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-json-llmgw-webflux-proxy-warm.log
+  s_6d30f4d467a543::t_cca19ebb411e67 1-40
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-sse-llmgw-vt-before-r1.json
+  s_6d30f4d467a543::t_8ac26be17801a1 1-158
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-sse-llmgw-vt-before-r1.log
+  s_6d30f4d467a543::t_1e55483b05d502 1-42
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-sse-llmgw-vt-before-r2.json
+  s_6d30f4d467a543::t_c992b3d5a0fa26 1-158
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-sse-llmgw-vt-before-r2.log
+  s_6d30f4d467a543::t_48510b95d67df0 1-42
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-sse-llmgw-vt-before-r3.json
+  s_6d30f4d467a543::t_2184a18dd321aa 1-158
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-sse-llmgw-vt-before-r3.log
+  s_6d30f4d467a543::t_7fb91d0dcfac43 1-42
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-sse-llmgw-vt-before-r4.json
+  s_6d30f4d467a543::t_3b5a97d352466e 1-158
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-sse-llmgw-vt-before-r4.log
+  s_6d30f4d467a543::t_c4134518846789 1-42
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-sse-llmgw-vt-before-warm.json
+  s_6d30f4d467a543::t_08412ee230a850 1-158
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-sse-llmgw-vt-before-warm.log
+  s_6d30f4d467a543::t_4b9c55c8ad6e61 1-42
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-sse-llmgw-vt-proxy-r1.json
+  s_6d30f4d467a543::t_a4b64d4ff72684 1-158
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-sse-llmgw-vt-proxy-r1.log
+  s_6d30f4d467a543::t_d6130076d43597 1-42
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-sse-llmgw-vt-proxy-r2.json
+  s_6d30f4d467a543::t_cd59c00da5188d 1-158
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-sse-llmgw-vt-proxy-r2.log
+  s_6d30f4d467a543::t_199dcd682eecb7 1-42
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-sse-llmgw-vt-proxy-r3.json
+  s_6d30f4d467a543::t_459121a45625c7 1-158
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-sse-llmgw-vt-proxy-r3.log
+  s_6d30f4d467a543::t_125f3ca4357f86 1-42
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-sse-llmgw-vt-proxy-r4.json
+  s_6d30f4d467a543::t_06ac3fbc7d7921 1-158
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-sse-llmgw-vt-proxy-r4.log
+  s_6d30f4d467a543::t_bfc2e0d98a3dc2 1-42
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-sse-llmgw-vt-proxy-warm.json
+  s_6d30f4d467a543::t_d2ce8e66dad7cc 1-158
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-sse-llmgw-vt-proxy-warm.log
+  s_6d30f4d467a543::t_2078232172023d 1-42
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-sse-llmgw-webflux-before-r1.json
+  s_6d30f4d467a543::t_1c52f61e7accd9 1-158
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-sse-llmgw-webflux-before-r1.log
+  s_6d30f4d467a543::t_25635c1d18f6a8 1-42
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-sse-llmgw-webflux-before-r2.json
+  s_6d30f4d467a543::t_fda3871b7121a0 1-158
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-sse-llmgw-webflux-before-r2.log
+  s_6d30f4d467a543::t_8a7e0554927a29 1-42
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-sse-llmgw-webflux-before-r3.json
+  s_6d30f4d467a543::t_31a0c8d2ebf02a 1-158
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-sse-llmgw-webflux-before-r3.log
+  s_6d30f4d467a543::t_8c9e4c9ddfcaa3 1-42
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-sse-llmgw-webflux-before-r4.json
+  s_6d30f4d467a543::t_4bf9e5898d8fd2 1-158
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-sse-llmgw-webflux-before-r4.log
+  s_6d30f4d467a543::t_c5996b29c1437a 1-42
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-sse-llmgw-webflux-before-warm.json
+  s_6d30f4d467a543::t_73bd8596accb26 1-158
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-sse-llmgw-webflux-before-warm.log
+  s_6d30f4d467a543::t_8f921713b7d56b 1-42
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-sse-llmgw-webflux-proxy-r1.json
+  s_6d30f4d467a543::t_8ae8c5ae7d7a57 1-158
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-sse-llmgw-webflux-proxy-r1.log
+  s_6d30f4d467a543::t_01219698ddc8fc 1-42
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-sse-llmgw-webflux-proxy-r2.json
+  s_6d30f4d467a543::t_f513d90484b2a2 1-158
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-sse-llmgw-webflux-proxy-r2.log
+  s_6d30f4d467a543::t_f716766f334be5 1-42
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-sse-llmgw-webflux-proxy-r3.json
+  s_6d30f4d467a543::t_f3a7b3d8797897 1-158
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-sse-llmgw-webflux-proxy-r3.log
+  s_6d30f4d467a543::t_26b7015e8c275e 1-42
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-sse-llmgw-webflux-proxy-r4.json
+  s_6d30f4d467a543::t_4e6c9a51cc387f 1-158
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-sse-llmgw-webflux-proxy-r4.log
+  s_6d30f4d467a543::t_56889e5d647f9b 1-42
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-sse-llmgw-webflux-proxy-warm.json
+  s_6d30f4d467a543::t_3035d8683f431a 1-158
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/raw/wire-sse-llmgw-webflux-proxy-warm.log
+  s_6d30f4d467a543::t_56b6982d619c5e 1-42
+docs/verification/perf/2026-11-10/perf-review/ab-governance-on/samples.json
+  s_6d30f4d467a543::t_5c9db49eefa10c 1-610
+docs/verification/perf/2026-11-10/perf-review/contract-results.json
+  s_6d30f4d467a543::t_0e3a215fac7f3c 1-18
+docs/verification/perf/2026-11-10/perf-review/executor-4-vs-32/manifest.json
+  s_6d30f4d467a543::t_683c5d5c2fc9f6 1-117
+docs/verification/perf/2026-11-10/perf-review/executor-4-vs-32/ranking.json
+  s_6d30f4d467a543::t_a02a3dcb409f64 1-45
+docs/verification/perf/2026-11-10/perf-review/executor-4-vs-32/raw/1060aa8a3a9c.container.log
+  s_6d30f4d467a543::t_8e19aa8876915a 1-21
+docs/verification/perf/2026-11-10/perf-review/executor-4-vs-32/raw/1b91634f769a.container.log
+  s_6d30f4d467a543::t_5326b7f7adbbff 1-9
+docs/verification/perf/2026-11-10/perf-review/executor-4-vs-32/raw/2999a9579a56.container.log
+  s_6d30f4d467a543::t_49a086688922e7 1-21
+docs/verification/perf/2026-11-10/perf-review/executor-4-vs-32/raw/2f60da873dd1.container.log
+  s_6d30f4d467a543::t_acb442de4c8215 1-21
+docs/verification/perf/2026-11-10/perf-review/executor-4-vs-32/raw/d2f880206328.container.log
+  s_6d30f4d467a543::t_7eeb38e947ef9d 1-24
+docs/verification/perf/2026-11-10/perf-review/executor-4-vs-32/raw/fcb9df289b4a.container.log
+  s_6d30f4d467a543::t_14b6f230c9b9d9 1
+docs/verification/perf/2026-11-10/perf-review/executor-4-vs-32/raw/wire-json-llmgw-webflux-before-r1.json
+  s_6d30f4d467a543::t_7f01511524fe14 1-144
+docs/verification/perf/2026-11-10/perf-review/executor-4-vs-32/raw/wire-json-llmgw-webflux-before-r1.log
+  s_6d30f4d467a543::t_92b0066066517c 1-40
+docs/verification/perf/2026-11-10/perf-review/executor-4-vs-32/raw/wire-json-llmgw-webflux-before-r2.json
+  s_6d30f4d467a543::t_712f2de776c94f 1-144
+docs/verification/perf/2026-11-10/perf-review/executor-4-vs-32/raw/wire-json-llmgw-webflux-before-r2.log
+  s_6d30f4d467a543::t_2ee2fc9ad5162c 1-40
+docs/verification/perf/2026-11-10/perf-review/executor-4-vs-32/raw/wire-json-llmgw-webflux-before-r3.json
+  s_6d30f4d467a543::t_9ed52417a330e6 1-144
+docs/verification/perf/2026-11-10/perf-review/executor-4-vs-32/raw/wire-json-llmgw-webflux-before-r3.log
+  s_6d30f4d467a543::t_5e0097a60b2183 1-40
+docs/verification/perf/2026-11-10/perf-review/executor-4-vs-32/raw/wire-json-llmgw-webflux-before-warm.log
+  s_6d30f4d467a543::t_9a560c4b73918b 1-40
+docs/verification/perf/2026-11-10/perf-review/executor-4-vs-32/raw/wire-json-llmgw-webflux-proxy-r1.json
+  s_6d30f4d467a543::t_16a347ffb111d5 1-144
+docs/verification/perf/2026-11-10/perf-review/executor-4-vs-32/raw/wire-json-llmgw-webflux-proxy-r1.log
+  s_6d30f4d467a543::t_ca036fec97d288 1-40
+docs/verification/perf/2026-11-10/perf-review/executor-4-vs-32/raw/wire-json-llmgw-webflux-proxy-r2.json
+  s_6d30f4d467a543::t_ae0b4b101329a2 1-144
+docs/verification/perf/2026-11-10/perf-review/executor-4-vs-32/raw/wire-json-llmgw-webflux-proxy-r2.log
+  s_6d30f4d467a543::t_7cf6c58eb7b7fa 1-40
+docs/verification/perf/2026-11-10/perf-review/executor-4-vs-32/raw/wire-json-llmgw-webflux-proxy-r3.json
+  s_6d30f4d467a543::t_0434e9f3ab3813 1-144
+docs/verification/perf/2026-11-10/perf-review/executor-4-vs-32/raw/wire-json-llmgw-webflux-proxy-r3.log
+  s_6d30f4d467a543::t_a238c230b710ef 1-40
+docs/verification/perf/2026-11-10/perf-review/executor-4-vs-32/raw/wire-json-llmgw-webflux-proxy-warm.json
+  s_6d30f4d467a543::t_000d7ba9445451 1-144
+docs/verification/perf/2026-11-10/perf-review/executor-4-vs-32/raw/wire-json-llmgw-webflux-proxy-warm.log
+  s_6d30f4d467a543::t_c2f16de46cdf31 1-40
+docs/verification/perf/2026-11-10/perf-review/executor-4-vs-32/raw/wire-sse-llmgw-webflux-before-r1.json
+  s_6d30f4d467a543::t_50ee73faf89a31 1-158
+docs/verification/perf/2026-11-10/perf-review/executor-4-vs-32/raw/wire-sse-llmgw-webflux-before-r1.log
+  s_6d30f4d467a543::t_47663fe1d86fda 1-42
+docs/verification/perf/2026-11-10/perf-review/executor-4-vs-32/raw/wire-sse-llmgw-webflux-before-r2.json
+  s_6d30f4d467a543::t_41abcf5e96b7bc 1-158
+docs/verification/perf/2026-11-10/perf-review/executor-4-vs-32/raw/wire-sse-llmgw-webflux-before-r2.log
+  s_6d30f4d467a543::t_ad37017ef67b4d 1-42
+docs/verification/perf/2026-11-10/perf-review/executor-4-vs-32/raw/wire-sse-llmgw-webflux-before-r3.json
+  s_6d30f4d467a543::t_0ab23369b25c42 1-158
+docs/verification/perf/2026-11-10/perf-review/executor-4-vs-32/raw/wire-sse-llmgw-webflux-before-r3.log
+  s_6d30f4d467a543::t_ca65254016bd7a 1-42
+docs/verification/perf/2026-11-10/perf-review/executor-4-vs-32/raw/wire-sse-llmgw-webflux-before-warm.json
+  s_6d30f4d467a543::t_c22d999e49f818 1-158
+docs/verification/perf/2026-11-10/perf-review/executor-4-vs-32/raw/wire-sse-llmgw-webflux-before-warm.log
+  s_6d30f4d467a543::t_9e8d34773515e9 1-42
+docs/verification/perf/2026-11-10/perf-review/executor-4-vs-32/raw/wire-sse-llmgw-webflux-proxy-r1.json
+  s_6d30f4d467a543::t_d95a443ad9b052 1-158
+docs/verification/perf/2026-11-10/perf-review/executor-4-vs-32/raw/wire-sse-llmgw-webflux-proxy-r1.log
+  s_6d30f4d467a543::t_2d67e3536fa5ac 1-42
+docs/verification/perf/2026-11-10/perf-review/executor-4-vs-32/raw/wire-sse-llmgw-webflux-proxy-r2.json
+  s_6d30f4d467a543::t_a3837f56f076c2 1-158
+docs/verification/perf/2026-11-10/perf-review/executor-4-vs-32/raw/wire-sse-llmgw-webflux-proxy-r2.log
+  s_6d30f4d467a543::t_ae31b2d8db1e94 1-45
+docs/verification/perf/2026-11-10/perf-review/executor-4-vs-32/raw/wire-sse-llmgw-webflux-proxy-r3.json
+  s_6d30f4d467a543::t_6fd3e4ed486286 1-158
+docs/verification/perf/2026-11-10/perf-review/executor-4-vs-32/raw/wire-sse-llmgw-webflux-proxy-r3.log
+  s_6d30f4d467a543::t_2bad8199c7c91a 1-42
+docs/verification/perf/2026-11-10/perf-review/executor-4-vs-32/raw/wire-sse-llmgw-webflux-proxy-warm.json
+  s_6d30f4d467a543::t_d3a953cf2201ee 1-158
+docs/verification/perf/2026-11-10/perf-review/executor-4-vs-32/raw/wire-sse-llmgw-webflux-proxy-warm.log
+  s_6d30f4d467a543::t_0ccf5fc0c27ed3 1-42
+docs/verification/perf/2026-11-10/perf-review/executor-4-vs-32/samples.json
+  s_6d30f4d467a543::t_d89b550174d5d0 1-230
+docs/verification/perf/2026-11-10/perf-review/extensions.log
+  s_6d30f4d467a543::t_3bd1223dedef8d 1-61
+docs/verification/perf/2026-11-10/perf-review/hardening.log
+  s_6d30f4d467a543::t_60ff373226d266 1-57
+docs/verification/perf/2026-11-10/perf-review/maven-verify.log
+  s_6d30f4d467a543::t_d6f0f4b1ba5132 1-518
+docs/verification/perf/2026-11-10/perf-review/micro/budget-after.log
+  s_6d30f4d467a543::t_e44cca183bf46c 1-5
+docs/verification/perf/2026-11-10/perf-review/micro/budget-before.log
+  s_6d30f4d467a543::t_75e8d48a6929b0 1-7
+docs/verification/perf/2026-11-10/perf-review/micro/budget-results.json
+  s_6d30f4d467a543::t_26cb1d0685cf64 1-4
+docs/verification/perf/2026-11-10/perf-review/profile-on/raw/2ba6af922d24.container.log
+  s_6d30f4d467a543::t_cfefc8b5ee1347 1-28
+docs/verification/perf/2026-11-10/perf-review/profile-on/raw/42e0461ff4c5.container.log
+  s_6d30f4d467a543::t_1dcb43b2ebb7e0 1-22
+docs/verification/perf/2026-11-10/perf-review/profile-on/raw/bc474a04e1ff.container.log
+  s_6d30f4d467a543::t_227453f391ea78 1-22
+docs/verification/perf/2026-11-10/perf-review/profile-on/raw/bebf75142dc8.container.log
+  s_6d30f4d467a543::t_b72088bbaab515 1-9
+docs/verification/perf/2026-11-10/perf-review/profile-on/raw/edea2f4faf42.container.log
+  s_6d30f4d467a543::t_65b27614b99e25 1
+docs/verification/perf/2026-11-10/perf-review/profile-on/raw/f6ffb88e2dd5.container.log
+  s_6d30f4d467a543::t_9a6dbc8888bb33 1-26
+docs/verification/perf/2026-11-10/perf-review/profile-on/raw/wire-json-llmgw-vt-proxy-r1.json
+  s_6d30f4d467a543::t_84438225917bf4 1-144
+docs/verification/perf/2026-11-10/perf-review/profile-on/raw/wire-json-llmgw-vt-proxy-r1.log
+  s_6d30f4d467a543::t_4f84a1a4f0ca01 1-40
+docs/verification/perf/2026-11-10/perf-review/profile-on/raw/wire-json-llmgw-vt-proxy-warm.json
+  s_6d30f4d467a543::t_5b7799f72dc10f 1-144
+docs/verification/perf/2026-11-10/perf-review/profile-on/raw/wire-json-llmgw-vt-proxy-warm.log
+  s_6d30f4d467a543::t_70c3cf7f4d5744 1-40
+docs/verification/perf/2026-11-10/perf-review/profile-on/raw/wire-json-llmgw-webflux-proxy-r1.json
+  s_6d30f4d467a543::t_9daac9b2292e25 1-144
+docs/verification/perf/2026-11-10/perf-review/profile-on/raw/wire-json-llmgw-webflux-proxy-r1.log
+  s_6d30f4d467a543::t_4ced4902eb7f53 1-40
+docs/verification/perf/2026-11-10/perf-review/profile-on/raw/wire-json-llmgw-webflux-proxy-warm.json
+  s_6d30f4d467a543::t_f38bf64fecd88a 1-144
+docs/verification/perf/2026-11-10/perf-review/profile-on/raw/wire-json-llmgw-webflux-proxy-warm.log
+  s_6d30f4d467a543::t_72ee8ed40e278b 1-40
+docs/verification/perf/2026-11-10/perf-review/profile-on/raw/wire-sse-llmgw-vt-proxy-r1.log
+  s_6d30f4d467a543::t_a42bf67754e477 1-42
+docs/verification/perf/2026-11-10/perf-review/profile-on/raw/wire-sse-llmgw-vt-proxy-warm.json
+  s_6d30f4d467a543::t_a6c5b968023f61 1-158
+docs/verification/perf/2026-11-10/perf-review/profile-on/raw/wire-sse-llmgw-vt-proxy-warm.log
+  s_6d30f4d467a543::t_887669860e7244 1-42
+docs/verification/perf/2026-11-10/perf-review/profile-on/raw/wire-sse-llmgw-webflux-proxy-r1.json
+  s_6d30f4d467a543::t_3f19b77aba5f31 1-158
+docs/verification/perf/2026-11-10/perf-review/profile-on/raw/wire-sse-llmgw-webflux-proxy-r1.log
+  s_6d30f4d467a543::t_4db1f657f6b613 1-42
+docs/verification/perf/2026-11-10/perf-review/profile-on/raw/wire-sse-llmgw-webflux-proxy-warm.json
+  s_6d30f4d467a543::t_f74bbf9a94f53b 1-158
+docs/verification/perf/2026-11-10/perf-review/profile-on/raw/wire-sse-llmgw-webflux-proxy-warm.log
+  s_6d30f4d467a543::t_39dc6118f77ec9 1-42
+docs/verification/perf/2026-11-10/perf-review/redis-results.json
+  s_6d30f4d467a543::t_df71cb814709e1 1-5
+docs/verification/perf/2026-11-10/perf-review/redis-tests.log
+  s_6d30f4d467a543::t_7ad74afd28a4be 1-110
+docs/verification/perf/2026-11-10/perf-review/stream-errors.log
+  s_6d30f4d467a543::t_2e35cecfbdab51 1-104
+docs/verification/perf/2026-11-10/perf-review/tenant-isolation.log
+  s_6d30f4d467a543::t_36cff835714647 1-2
+docs/verification/perf/2026-11-10/preflight-offline-final/raw/f5d81540bacd.container.log
+  s_6d30f4d467a543::t_a1fa650db53efd 1-26
+docs/verification/perf/2026-11-10/unified-v2/manifest.json
+  s_6d30f4d467a543::t_fb4665581654fe 1-185
+docs/verification/perf/2026-11-10/unified-v2/ranking.json
+  s_6d30f4d467a543::t_0f6a2241046cdc 1-75
+docs/verification/perf/2026-11-10/unified-v2/raw/0a6619cf650b.container.log
+  s_6d30f4d467a543::t_a943c30d52a56a 1-32
+docs/verification/perf/2026-11-10/unified-v2/raw/0c00a2dc9efa.container.log
+  s_6d30f4d467a543::t_9932fafe484ee3 1-21
+docs/verification/perf/2026-11-10/unified-v2/raw/0ef142d5ae40.container.log
+  s_6d30f4d467a543::t_0811cbfe817e0e 1-9
+docs/verification/perf/2026-11-10/unified-v2/raw/28684f4dcdff.container.log
+  s_6d30f4d467a543::t_bb9cec087e0f9d 1-10
+docs/verification/perf/2026-11-10/unified-v2/raw/5cd04c7a55e9.container.log
+  s_6d30f4d467a543::t_f2347aee3032ae 1-12
+docs/verification/perf/2026-11-10/unified-v2/raw/6a8daea03014.container.log
+  s_6d30f4d467a543::t_c933146d18c782 1-21
+docs/verification/perf/2026-11-10/unified-v2/raw/6bd00bc2d415.container.log
+  s_6d30f4d467a543::t_1868f47e9579ba 1-22
+docs/verification/perf/2026-11-10/unified-v2/raw/71770dc3ab55.container.log
+  s_6d30f4d467a543::t_9c1cf8cef7b899 1-21
+docs/verification/perf/2026-11-10/unified-v2/raw/9aff6d21207c.container.log
+  s_6d30f4d467a543::t_758cf279688c3a 1-14
+docs/verification/perf/2026-11-10/unified-v2/raw/ac8f67e1bba8.container.log
+  s_6d30f4d467a543::t_7d76f9a116c818 1-21
+docs/verification/perf/2026-11-10/unified-v2/raw/ae0e9451e17f.container.log
+  s_6d30f4d467a543::t_50a5c6a935f825 1-121
+docs/verification/perf/2026-11-10/unified-v2/raw/b978eaf61200.container.log
+  s_6d30f4d467a543::t_c5d75c6b41546a 1-9
+docs/verification/perf/2026-11-10/unified-v2/raw/eb0e829135c3.container.log
+  s_6d30f4d467a543::t_679363930bae36 1-23
+docs/verification/perf/2026-11-10/unified-v2/raw/eff6baf0cf3a.container.log
+  s_6d30f4d467a543::t_081e29b7c772be 1-30
+docs/verification/perf/2026-11-10/unified-v2/raw/f5967b335e02.container.log
+  s_6d30f4d467a543::t_e6dc277a5c7d6f 1
+docs/verification/perf/2026-11-10/unified-v2/raw/wire-json-bifrost-warm.json
+  s_6d30f4d467a543::t_cb2f3a81a2814d 1-144
+docs/verification/perf/2026-11-10/unified-v2/raw/wire-json-bifrost-warm.log
+  s_6d30f4d467a543::t_4c1f9037794418 1-48
+docs/verification/perf/2026-11-10/unified-v2/raw/wire-json-direct-r1.json
+  s_6d30f4d467a543::t_db502fcf1b6a11 1-144
+docs/verification/perf/2026-11-10/unified-v2/raw/wire-json-direct-r1.log
+  s_6d30f4d467a543::t_6dcf765d4e2e77 1-45
+docs/verification/perf/2026-11-10/unified-v2/raw/wire-json-direct-warm.json
+  s_6d30f4d467a543::t_2a050a41f318f2 1-144
+docs/verification/perf/2026-11-10/unified-v2/raw/wire-json-direct-warm.log
+  s_6d30f4d467a543::t_f6fed08424dde2 1-40
+docs/verification/perf/2026-11-10/unified-v2/raw/wire-json-litellm-warm.json
+  s_6d30f4d467a543::t_0b04945d671ab2 1-144
+docs/verification/perf/2026-11-10/unified-v2/raw/wire-json-litellm-warm.log
+  s_6d30f4d467a543::t_d7306bac1ba4fa 1-40
+docs/verification/perf/2026-11-10/unified-v2/raw/wire-json-llmgw-vt-proxy-r1.json
+  s_6d30f4d467a543::t_6c969a30743a49 1-144
+docs/verification/perf/2026-11-10/unified-v2/raw/wire-json-llmgw-vt-proxy-r1.log
+  s_6d30f4d467a543::t_d87fbbad98041b 1-40
+docs/verification/perf/2026-11-10/unified-v2/raw/wire-json-llmgw-vt-proxy-warm.json
+  s_6d30f4d467a543::t_d7401d735e14ff 1-144
+docs/verification/perf/2026-11-10/unified-v2/raw/wire-json-llmgw-vt-proxy-warm.log
+  s_6d30f4d467a543::t_fbd55022b763a7 1-40
+docs/verification/perf/2026-11-10/unified-v2/raw/wire-json-llmgw-webflux-before-warm.json
+  s_6d30f4d467a543::t_77d06aedf7a3b8 1-144
+docs/verification/perf/2026-11-10/unified-v2/raw/wire-json-llmgw-webflux-before-warm.log
+  s_6d30f4d467a543::t_fa8083202c1f18 1-43
+docs/verification/perf/2026-11-10/unified-v2/raw/wire-json-llmgw-webflux-proxy-r1.json
+  s_6d30f4d467a543::t_fab4ea7469e407 1-144
+docs/verification/perf/2026-11-10/unified-v2/raw/wire-json-llmgw-webflux-proxy-r1.log
+  s_6d30f4d467a543::t_d14da045d618f7 1-40
+docs/verification/perf/2026-11-10/unified-v2/raw/wire-json-llmgw-webflux-proxy-warm.json
+  s_6d30f4d467a543::t_08295b0f36dd83 1-144
+docs/verification/perf/2026-11-10/unified-v2/raw/wire-json-llmgw-webflux-proxy-warm.log
+  s_6d30f4d467a543::t_488e63509ec7a6 1-40
+docs/verification/perf/2026-11-10/unified-v2/raw/wire-json-portkey-warm.json
+  s_6d30f4d467a543::t_8db2b7ee03d184 1-144
+docs/verification/perf/2026-11-10/unified-v2/raw/wire-json-portkey-warm.log
+  s_6d30f4d467a543::t_1e3cdcca52deb1 1-40
+docs/verification/perf/2026-11-10/unified-v2/samples.json
+  s_6d30f4d467a543::t_60ca362b0c1c24 1-60
+docs/verification/perf/2026-11-10/unified-v3/manifest.json
+  s_6d30f4d467a543::t_5d478d21f6ea7a 1-136
+docs/verification/perf/2026-11-10/unified-v3/ranking.json
+  s_6d30f4d467a543::t_ced2a4aaa37ba7 1-313
+docs/verification/perf/2026-11-10/unified-v3/raw/114a6bdf94d0.container.log
+  s_6d30f4d467a543::t_6ee6c3783e9315 1-9
+docs/verification/perf/2026-11-10/unified-v3/raw/143402a9f1c4.container.log
+  s_6d30f4d467a543::t_4090b25d744af7 1-9
+docs/verification/perf/2026-11-10/unified-v3/raw/16e99ec88410.container.log
+  s_6d30f4d467a543::t_7be197f689a146 1-11
+docs/verification/perf/2026-11-10/unified-v3/raw/2361ba1ec025.container.log
+  s_6d30f4d467a543::t_17ee112f499411 1-21
+docs/verification/perf/2026-11-10/unified-v3/raw/34e21809e691.container.log
+  s_6d30f4d467a543::t_1636e90ca92d83 1-21
+docs/verification/perf/2026-11-10/unified-v3/raw/610cb31a6766.container.log
+  s_6d30f4d467a543::t_5005016e9174f0 1
+docs/verification/perf/2026-11-10/unified-v3/raw/77b6d40d3e86.container.log
+  s_6d30f4d467a543::t_fd55ef0454da68 1-22
+docs/verification/perf/2026-11-10/unified-v3/raw/7b13c797ac8c.container.log
+  s_6d30f4d467a543::t_be9962d54986cd 1-30
+docs/verification/perf/2026-11-10/unified-v3/raw/9ba4bb45459e.container.log
+  s_6d30f4d467a543::t_70ea5eabe45434 1-23
+docs/verification/perf/2026-11-10/unified-v3/raw/a662f07e069f.container.log
+  s_6d30f4d467a543::t_56a1429faf1def 1-26
+docs/verification/perf/2026-11-10/unified-v3/raw/b8a43d066b52.container.log
+  s_6d30f4d467a543::t_0c453e64a6321d 1-23
+docs/verification/perf/2026-11-10/unified-v3/raw/beaba872c3ff.container.log
+  s_6d30f4d467a543::t_641c832305f766 1-123
+docs/verification/perf/2026-11-10/unified-v3/raw/c1aa6484a3d3.container.log
+  s_6d30f4d467a543::t_307dfe0003c28b 1-9
+docs/verification/perf/2026-11-10/unified-v3/raw/d250a619c56f.container.log
+  s_6d30f4d467a543::t_114058cf877c41 1-21
+docs/verification/perf/2026-11-10/unified-v3/raw/d719cb045d50.container.log
+  s_6d30f4d467a543::t_cb3a4207b6aed0 1-21
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-json-bifrost-r1.json
+  s_6d30f4d467a543::t_d7ea13b5782b69 1-144
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-json-bifrost-r1.log
+  s_6d30f4d467a543::t_9ca59eb1b05b2f 1-40
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-json-bifrost-r2.json
+  s_6d30f4d467a543::t_c437430992dc04 1-144
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-json-bifrost-r2.log
+  s_6d30f4d467a543::t_c27ea87bd31069 1-40
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-json-bifrost-r3.json
+  s_6d30f4d467a543::t_b9e1817d827a27 1-144
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-json-bifrost-r3.log
+  s_6d30f4d467a543::t_cde862150794bf 1-40
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-json-bifrost-warm.json
+  s_6d30f4d467a543::t_5e2f82695eb752 1-144
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-json-bifrost-warm.log
+  s_6d30f4d467a543::t_cb28f618164f5c 1-40
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-json-direct-r1.json
+  s_6d30f4d467a543::t_0dbb4c5bf2141e 1-144
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-json-direct-r1.log
+  s_6d30f4d467a543::t_f6072dc1b1383f 1-40
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-json-direct-r2.json
+  s_6d30f4d467a543::t_8765924882b797 1-144
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-json-direct-r2.log
+  s_6d30f4d467a543::t_5801d25cd32adf 1-40
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-json-direct-r3.json
+  s_6d30f4d467a543::t_f2679a6ef561ee 1-144
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-json-direct-r3.log
+  s_6d30f4d467a543::t_759afbf42df02e 1-40
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-json-direct-warm.json
+  s_6d30f4d467a543::t_31d014da85847e 1-144
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-json-direct-warm.log
+  s_6d30f4d467a543::t_beefef11597fa4 1-40
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-json-litellm-r1.json
+  s_6d30f4d467a543::t_635abf1e244b09 1-144
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-json-litellm-r1.log
+  s_6d30f4d467a543::t_d9d1f5e7737182 1-40
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-json-litellm-r2.json
+  s_6d30f4d467a543::t_3f858757f870a5 1-144
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-json-litellm-r2.log
+  s_6d30f4d467a543::t_3a47ce4b3147d3 1-40
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-json-litellm-r3.json
+  s_6d30f4d467a543::t_de9f554948156d 1-144
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-json-litellm-r3.log
+  s_6d30f4d467a543::t_ec940acd6b8822 1-40
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-json-litellm-warm.json
+  s_6d30f4d467a543::t_ce82ab07702477 1-144
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-json-litellm-warm.log
+  s_6d30f4d467a543::t_ee68fba61be08f 1-40
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-json-llmgw-vt-proxy-r1.json
+  s_6d30f4d467a543::t_0592d4f9995712 1-144
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-json-llmgw-vt-proxy-r1.log
+  s_6d30f4d467a543::t_78e679027f19c6 1-40
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-json-llmgw-vt-proxy-r2.json
+  s_6d30f4d467a543::t_f6600dc22ed0da 1-144
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-json-llmgw-vt-proxy-r2.log
+  s_6d30f4d467a543::t_fbe7451af7e1e9 1-40
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-json-llmgw-vt-proxy-r3.json
+  s_6d30f4d467a543::t_db2d70b909f4c9 1-144
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-json-llmgw-vt-proxy-r3.log
+  s_6d30f4d467a543::t_b84867ec15b2c9 1-40
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-json-llmgw-vt-proxy-warm.json
+  s_6d30f4d467a543::t_3c341726f627f9 1-144
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-json-llmgw-vt-proxy-warm.log
+  s_6d30f4d467a543::t_5aac6ed7943783 1-40
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-json-llmgw-webflux-before-r1.json
+  s_6d30f4d467a543::t_de88681e1ff49b 1-144
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-json-llmgw-webflux-before-r1.log
+  s_6d30f4d467a543::t_7dfa1c98b13916 1-40
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-json-llmgw-webflux-before-r2.json
+  s_6d30f4d467a543::t_8574dcb267ac1d 1-144
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-json-llmgw-webflux-before-r2.log
+  s_6d30f4d467a543::t_2e3d39f6081012 1-40
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-json-llmgw-webflux-before-r3.json
+  s_6d30f4d467a543::t_6e611ae67a9bff 1-144
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-json-llmgw-webflux-before-r3.log
+  s_6d30f4d467a543::t_486dcb56064e48 1-40
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-json-llmgw-webflux-before-warm.json
+  s_6d30f4d467a543::t_81de1087814539 1-144
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-json-llmgw-webflux-before-warm.log
+  s_6d30f4d467a543::t_0cac39212c7bb8 1-40
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-json-llmgw-webflux-proxy-r1.json
+  s_6d30f4d467a543::t_392e04eee3a1f6 1-144
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-json-llmgw-webflux-proxy-r1.log
+  s_6d30f4d467a543::t_571f36db580e3a 1-40
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-json-llmgw-webflux-proxy-r2.json
+  s_6d30f4d467a543::t_5068027e8e8cc6 1-144
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-json-llmgw-webflux-proxy-r2.log
+  s_6d30f4d467a543::t_3c93b32882bd36 1-40
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-json-llmgw-webflux-proxy-r3.json
+  s_6d30f4d467a543::t_674dadf406b4d6 1-144
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-json-llmgw-webflux-proxy-r3.log
+  s_6d30f4d467a543::t_6ea8b64b738865 1-40
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-json-llmgw-webflux-proxy-warm.json
+  s_6d30f4d467a543::t_3bff6522ce9a39 1-144
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-json-llmgw-webflux-proxy-warm.log
+  s_6d30f4d467a543::t_312b5c610f4ee6 1-40
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-json-portkey-r1.json
+  s_6d30f4d467a543::t_8c64d55f31770b 1-144
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-json-portkey-r1.log
+  s_6d30f4d467a543::t_729c4e0ef73737 1-40
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-json-portkey-r2.json
+  s_6d30f4d467a543::t_9509169f5d2e92 1-144
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-json-portkey-r2.log
+  s_6d30f4d467a543::t_0769c2797a9247 1-40
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-json-portkey-r3.json
+  s_6d30f4d467a543::t_e3b188cfcb6976 1-144
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-json-portkey-r3.log
+  s_6d30f4d467a543::t_af6a7747b9893b 1-40
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-json-portkey-warm.json
+  s_6d30f4d467a543::t_e6ac6caaba65d1 1-144
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-json-portkey-warm.log
+  s_6d30f4d467a543::t_745e9796c72fbc 1-40
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-sse-bifrost-r1.json
+  s_6d30f4d467a543::t_72d756287c50a4 1-158
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-sse-bifrost-r1.log
+  s_6d30f4d467a543::t_27d29e25e56073 1-42
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-sse-bifrost-r2.json
+  s_6d30f4d467a543::t_30b4b4dfe88d33 1-158
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-sse-bifrost-r2.log
+  s_6d30f4d467a543::t_cb5e189ffdf0f8 1-42
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-sse-bifrost-r3.json
+  s_6d30f4d467a543::t_f1ff963a1d0fd8 1-158
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-sse-bifrost-r3.log
+  s_6d30f4d467a543::t_c58278a0aa544c 1-42
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-sse-bifrost-warm.json
+  s_6d30f4d467a543::t_2563b26e23b47b 1-158
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-sse-bifrost-warm.log
+  s_6d30f4d467a543::t_79dea5ffba6bc0 1-42
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-sse-direct-r1.json
+  s_6d30f4d467a543::t_865da53f805c49 1-158
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-sse-direct-r1.log
+  s_6d30f4d467a543::t_89aebc352790f1 1-42
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-sse-direct-r2.json
+  s_6d30f4d467a543::t_a000d03caa1c0d 1-158
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-sse-direct-r2.log
+  s_6d30f4d467a543::t_7819f2bc03ebd1 1-42
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-sse-direct-r3.json
+  s_6d30f4d467a543::t_91eebca064aa67 1-158
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-sse-direct-r3.log
+  s_6d30f4d467a543::t_73071b0617d378 1-42
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-sse-direct-warm.json
+  s_6d30f4d467a543::t_a53ebba5bc1faa 1-158
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-sse-direct-warm.log
+  s_6d30f4d467a543::t_929b0b0d62caa4 1-42
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-sse-litellm-r1.json
+  s_6d30f4d467a543::t_aa889378cd7d23 1-158
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-sse-litellm-r1.log
+  s_6d30f4d467a543::t_45d2de7534e82a 1-42
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-sse-litellm-r2.json
+  s_6d30f4d467a543::t_4df80730937679 1-158
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-sse-litellm-r2.log
+  s_6d30f4d467a543::t_0610ed5ff52689 1-42
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-sse-litellm-r3.json
+  s_6d30f4d467a543::t_51638311505dcc 1-158
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-sse-litellm-r3.log
+  s_6d30f4d467a543::t_659b1e0e43af46 1-42
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-sse-litellm-warm.json
+  s_6d30f4d467a543::t_3915b335bed4c5 1-158
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-sse-litellm-warm.log
+  s_6d30f4d467a543::t_4109db90c0d6f2 1-42
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-sse-llmgw-vt-proxy-r1.json
+  s_6d30f4d467a543::t_f3f14728742116 1-158
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-sse-llmgw-vt-proxy-r1.log
+  s_6d30f4d467a543::t_c8ed1a7a727c17 1-42
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-sse-llmgw-vt-proxy-r2.json
+  s_6d30f4d467a543::t_7bcceb3d9e26d2 1-158
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-sse-llmgw-vt-proxy-r2.log
+  s_6d30f4d467a543::t_85f990177bdf48 1-42
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-sse-llmgw-vt-proxy-r3.json
+  s_6d30f4d467a543::t_3a57665da291d3 1-158
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-sse-llmgw-vt-proxy-r3.log
+  s_6d30f4d467a543::t_dd0bb8387f980a 1-42
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-sse-llmgw-vt-proxy-warm.json
+  s_6d30f4d467a543::t_970a1cef26f197 1-158
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-sse-llmgw-vt-proxy-warm.log
+  s_6d30f4d467a543::t_8cd315b086e216 1-42
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-sse-llmgw-webflux-before-r1.json
+  s_6d30f4d467a543::t_e6c2aa09db2553 1-158
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-sse-llmgw-webflux-before-r1.log
+  s_6d30f4d467a543::t_3fde2a2477fd6c 1-42
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-sse-llmgw-webflux-before-r2.json
+  s_6d30f4d467a543::t_edf8b8a5aafbc3 1-158
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-sse-llmgw-webflux-before-r2.log
+  s_6d30f4d467a543::t_b08ff504fb1005 1-42
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-sse-llmgw-webflux-before-r3.json
+  s_6d30f4d467a543::t_64c305b652a9f8 1-158
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-sse-llmgw-webflux-before-r3.log
+  s_6d30f4d467a543::t_529f03cca92ee2 1-42
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-sse-llmgw-webflux-before-warm.json
+  s_6d30f4d467a543::t_516a8591335013 1-158
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-sse-llmgw-webflux-before-warm.log
+  s_6d30f4d467a543::t_5c1f829113b939 1-42
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-sse-llmgw-webflux-proxy-r1.json
+  s_6d30f4d467a543::t_fc0a21d5e3547a 1-158
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-sse-llmgw-webflux-proxy-r1.log
+  s_6d30f4d467a543::t_81a9e14ae013f0 1-42
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-sse-llmgw-webflux-proxy-r2.json
+  s_6d30f4d467a543::t_75893fc2d4fa5f 1-158
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-sse-llmgw-webflux-proxy-r2.log
+  s_6d30f4d467a543::t_5eff6cef395d3b 1-42
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-sse-llmgw-webflux-proxy-r3.json
+  s_6d30f4d467a543::t_a7bb1060923597 1-158
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-sse-llmgw-webflux-proxy-r3.log
+  s_6d30f4d467a543::t_2bd5630fdbdd61 1-42
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-sse-llmgw-webflux-proxy-warm.json
+  s_6d30f4d467a543::t_6b871a26a863a4 1-158
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-sse-llmgw-webflux-proxy-warm.log
+  s_6d30f4d467a543::t_d98edad83882ed 1-42
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-sse-portkey-r1.json
+  s_6d30f4d467a543::t_f7fbf589cd0907 1-158
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-sse-portkey-r1.log
+  s_6d30f4d467a543::t_4d186a39cdc486 1-42
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-sse-portkey-r2.json
+  s_6d30f4d467a543::t_8cf944dd1d52a2 1-158
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-sse-portkey-r2.log
+  s_6d30f4d467a543::t_9df3ee1b08dbf2 1-42
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-sse-portkey-r3.json
+  s_6d30f4d467a543::t_cc5ea090a853a7 1-158
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-sse-portkey-r3.log
+  s_6d30f4d467a543::t_105c96d9a42168 1-42
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-sse-portkey-warm.json
+  s_6d30f4d467a543::t_71cccad1c92848 1-158
+docs/verification/perf/2026-11-10/unified-v3/raw/inference-sse-portkey-warm.log
+  s_6d30f4d467a543::t_1e053dde15f2dc 1-42
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-json-bifrost-r1.json
+  s_6d30f4d467a543::t_f0c3de8dfc4c13 1-144
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-json-bifrost-r1.log
+  s_6d30f4d467a543::t_a408bf1f13cb05 1-40
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-json-bifrost-r2.json
+  s_6d30f4d467a543::t_366588dc043c41 1-144
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-json-bifrost-r2.log
+  s_6d30f4d467a543::t_8abba1c4c8217b 1-40
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-json-bifrost-r3.json
+  s_6d30f4d467a543::t_ed2a387508d7f2 1-144
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-json-bifrost-r3.log
+  s_6d30f4d467a543::t_ce41aa82d31cce 1-40
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-json-bifrost-warm.json
+  s_6d30f4d467a543::t_7e140287b1899f 1-144
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-json-bifrost-warm.log
+  s_6d30f4d467a543::t_f026e27f62b7ba 1-40
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-json-direct-r1.json
+  s_6d30f4d467a543::t_4907527522b435 1-144
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-json-direct-r1.log
+  s_6d30f4d467a543::t_c423b6fd5a3467 1-40
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-json-direct-r2.json
+  s_6d30f4d467a543::t_f18ce0bcfb324c 1-144
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-json-direct-r2.log
+  s_6d30f4d467a543::t_1e8268f9a68a28 1-40
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-json-direct-r3.json
+  s_6d30f4d467a543::t_d703f2278066ad 1-144
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-json-direct-r3.log
+  s_6d30f4d467a543::t_b8d447092e924f 1-40
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-json-direct-warm.json
+  s_6d30f4d467a543::t_36cbdcb75dcd9c 1-144
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-json-direct-warm.log
+  s_6d30f4d467a543::t_7a0e17b94bd4e7 1-40
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-json-litellm-r1.json
+  s_6d30f4d467a543::t_c9b46828c06f77 1-144
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-json-litellm-r1.log
+  s_6d30f4d467a543::t_38cf0dd4058072 1-40
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-json-litellm-r2.json
+  s_6d30f4d467a543::t_1bd883543ae406 1-144
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-json-litellm-r2.log
+  s_6d30f4d467a543::t_c2cba91af863cb 1-40
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-json-litellm-r3.json
+  s_6d30f4d467a543::t_21b46290ffb09c 1-144
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-json-litellm-r3.log
+  s_6d30f4d467a543::t_becf97e0f7f332 1-40
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-json-litellm-warm.json
+  s_6d30f4d467a543::t_b8b165314e5474 1-144
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-json-litellm-warm.log
+  s_6d30f4d467a543::t_05ec253f784449 1-40
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-json-llmgw-vt-proxy-r1.json
+  s_6d30f4d467a543::t_50b03a526e9489 1-144
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-json-llmgw-vt-proxy-r1.log
+  s_6d30f4d467a543::t_d1da52b8ee9f96 1-40
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-json-llmgw-vt-proxy-r2.json
+  s_6d30f4d467a543::t_4967ed097c3dc1 1-144
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-json-llmgw-vt-proxy-r2.log
+  s_6d30f4d467a543::t_af192b619fb0c1 1-40
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-json-llmgw-vt-proxy-r3.json
+  s_6d30f4d467a543::t_22bc2ca941151c 1-144
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-json-llmgw-vt-proxy-r3.log
+  s_6d30f4d467a543::t_fed6f64a9e0036 1-40
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-json-llmgw-vt-proxy-warm.json
+  s_6d30f4d467a543::t_98c37a8e9d5cbb 1-144
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-json-llmgw-vt-proxy-warm.log
+  s_6d30f4d467a543::t_075f83f9cdf1ce 1-40
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-json-llmgw-webflux-before-r1.json
+  s_6d30f4d467a543::t_7a41c7ae37f6e9 1-144
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-json-llmgw-webflux-before-r1.log
+  s_6d30f4d467a543::t_7e9164f7f134cd 1-40
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-json-llmgw-webflux-before-r2.json
+  s_6d30f4d467a543::t_c4219cc4544ae6 1-144
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-json-llmgw-webflux-before-r2.log
+  s_6d30f4d467a543::t_2e9bbe3e6a98da 1-40
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-json-llmgw-webflux-before-r3.json
+  s_6d30f4d467a543::t_e3d9458034e7bd 1-144
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-json-llmgw-webflux-before-r3.log
+  s_6d30f4d467a543::t_51c99d60657316 1-40
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-json-llmgw-webflux-before-warm.json
+  s_6d30f4d467a543::t_96ded1a1cc8f57 1-144
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-json-llmgw-webflux-before-warm.log
+  s_6d30f4d467a543::t_60d6d369f4fa98 1-40
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-json-llmgw-webflux-proxy-r1.json
+  s_6d30f4d467a543::t_12c7146e23d6bc 1-144
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-json-llmgw-webflux-proxy-r1.log
+  s_6d30f4d467a543::t_3fbaa87410180d 1-40
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-json-llmgw-webflux-proxy-r2.json
+  s_6d30f4d467a543::t_9fa716514b731d 1-144
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-json-llmgw-webflux-proxy-r2.log
+  s_6d30f4d467a543::t_3da09523c04ccb 1-40
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-json-llmgw-webflux-proxy-r3.json
+  s_6d30f4d467a543::t_90fee895a21f3b 1-144
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-json-llmgw-webflux-proxy-r3.log
+  s_6d30f4d467a543::t_05b0bbbb25f17e 1-40
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-json-llmgw-webflux-proxy-warm.json
+  s_6d30f4d467a543::t_8042ad44283db1 1-144
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-json-llmgw-webflux-proxy-warm.log
+  s_6d30f4d467a543::t_4e972f8f17d3e6 1-40
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-json-portkey-r1.json
+  s_6d30f4d467a543::t_31cf388c9862b2 1-144
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-json-portkey-r1.log
+  s_6d30f4d467a543::t_619b9222c91e78 1-40
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-json-portkey-r2.json
+  s_6d30f4d467a543::t_b39a6767abca08 1-144
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-json-portkey-r2.log
+  s_6d30f4d467a543::t_06d7c7328a8442 1-40
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-json-portkey-r3.json
+  s_6d30f4d467a543::t_6678f340f8a607 1-144
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-json-portkey-r3.log
+  s_6d30f4d467a543::t_f48870096516ff 1-40
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-json-portkey-warm.json
+  s_6d30f4d467a543::t_f0429226366621 1-144
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-json-portkey-warm.log
+  s_6d30f4d467a543::t_80d6e3e7d691d9 1-40
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-sse-bifrost-r1.json
+  s_6d30f4d467a543::t_69bdb4dc606e69 1-158
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-sse-bifrost-r1.log
+  s_6d30f4d467a543::t_5f29ac3ff62dfd 1-42
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-sse-bifrost-r2.json
+  s_6d30f4d467a543::t_cf9a858fdba451 1-158
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-sse-bifrost-r2.log
+  s_6d30f4d467a543::t_05ebad78cb9680 1-42
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-sse-bifrost-r3.json
+  s_6d30f4d467a543::t_aca5336fe45fcd 1-158
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-sse-bifrost-r3.log
+  s_6d30f4d467a543::t_fa6e820ee74b36 1-42
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-sse-bifrost-warm.json
+  s_6d30f4d467a543::t_f72359e385b877 1-158
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-sse-bifrost-warm.log
+  s_6d30f4d467a543::t_ddb5be64722251 1-42
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-sse-direct-r1.json
+  s_6d30f4d467a543::t_6cb14d3368ade9 1-158
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-sse-direct-r1.log
+  s_6d30f4d467a543::t_510e560c02ab3c 1-42
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-sse-direct-r2.json
+  s_6d30f4d467a543::t_257516678acf3e 1-158
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-sse-direct-r2.log
+  s_6d30f4d467a543::t_c0b8d0aaa7bfe0 1-42
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-sse-direct-r3.json
+  s_6d30f4d467a543::t_1dc1ee0c780585 1-158
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-sse-direct-r3.log
+  s_6d30f4d467a543::t_2636032cf989a2 1-42
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-sse-direct-warm.json
+  s_6d30f4d467a543::t_3a76570bcd3949 1-158
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-sse-direct-warm.log
+  s_6d30f4d467a543::t_9de4735daeaadf 1-42
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-sse-litellm-r1.json
+  s_6d30f4d467a543::t_d0f98e172223a0 1-158
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-sse-litellm-r1.log
+  s_6d30f4d467a543::t_cf06e7e238fb07 1-42
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-sse-litellm-r2.json
+  s_6d30f4d467a543::t_be5dd896b73f8c 1-158
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-sse-litellm-r2.log
+  s_6d30f4d467a543::t_ca7093928f5d96 1-42
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-sse-litellm-r3.json
+  s_6d30f4d467a543::t_834bbe2d6c1d91 1-158
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-sse-litellm-r3.log
+  s_6d30f4d467a543::t_c5a2be22608c7e 1-42
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-sse-litellm-warm.json
+  s_6d30f4d467a543::t_360f51ef30e428 1-158
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-sse-litellm-warm.log
+  s_6d30f4d467a543::t_c1cac34266b8a3 1-42
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-sse-llmgw-vt-proxy-r1.json
+  s_6d30f4d467a543::t_d369bf3cdf993d 1-158
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-sse-llmgw-vt-proxy-r1.log
+  s_6d30f4d467a543::t_a3c2f2530dacad 1-42
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-sse-llmgw-vt-proxy-r2.json
+  s_6d30f4d467a543::t_d367427f246a56 1-158
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-sse-llmgw-vt-proxy-r2.log
+  s_6d30f4d467a543::t_baa8896c82d1ff 1-42
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-sse-llmgw-vt-proxy-r3.json
+  s_6d30f4d467a543::t_427282d7abdd98 1-158
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-sse-llmgw-vt-proxy-r3.log
+  s_6d30f4d467a543::t_2e0c4eec946bea 1-42
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-sse-llmgw-vt-proxy-warm.json
+  s_6d30f4d467a543::t_99d36b3661d31e 1-158
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-sse-llmgw-vt-proxy-warm.log
+  s_6d30f4d467a543::t_871135eb4a7957 1-42
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-sse-llmgw-webflux-before-r1.json
+  s_6d30f4d467a543::t_5c4ccb76861075 1-158
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-sse-llmgw-webflux-before-r1.log
+  s_6d30f4d467a543::t_726207a689618b 1-42
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-sse-llmgw-webflux-before-r2.json
+  s_6d30f4d467a543::t_1cede643f17f98 1-158
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-sse-llmgw-webflux-before-r2.log
+  s_6d30f4d467a543::t_37148222475eeb 1-42
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-sse-llmgw-webflux-before-r3.json
+  s_6d30f4d467a543::t_6004772b6996c9 1-158
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-sse-llmgw-webflux-before-r3.log
+  s_6d30f4d467a543::t_cc9e3d1a25ec31 1-42
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-sse-llmgw-webflux-before-warm.json
+  s_6d30f4d467a543::t_094b28acc989f6 1-158
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-sse-llmgw-webflux-before-warm.log
+  s_6d30f4d467a543::t_dc739fc91c4cea 1-42
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-sse-llmgw-webflux-proxy-r1.json
+  s_6d30f4d467a543::t_b41a77c24f2e63 1-158
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-sse-llmgw-webflux-proxy-r1.log
+  s_6d30f4d467a543::t_e911cadb7ddc19 1-42
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-sse-llmgw-webflux-proxy-r2.json
+  s_6d30f4d467a543::t_866a8fdb28ba3a 1-158
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-sse-llmgw-webflux-proxy-r2.log
+  s_6d30f4d467a543::t_8c5f6605fe0396 1-42
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-sse-llmgw-webflux-proxy-r3.json
+  s_6d30f4d467a543::t_349c0f7a35b3c2 1-158
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-sse-llmgw-webflux-proxy-r3.log
+  s_6d30f4d467a543::t_98305519f565f2 1-42
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-sse-llmgw-webflux-proxy-warm.json
+  s_6d30f4d467a543::t_2c3589a4636dbd 1-158
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-sse-llmgw-webflux-proxy-warm.log
+  s_6d30f4d467a543::t_cda58e2a0e2a37 1-42
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-sse-portkey-r1.json
+  s_6d30f4d467a543::t_51bca53d7f5b76 1-158
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-sse-portkey-r1.log
+  s_6d30f4d467a543::t_bb55be3c0453de 1-42
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-sse-portkey-r2.json
+  s_6d30f4d467a543::t_1d67a3a856f8a3 1-158
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-sse-portkey-r2.log
+  s_6d30f4d467a543::t_c87b8d5a24653c 1-42
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-sse-portkey-r3.json
+  s_6d30f4d467a543::t_42f2b4e7b4c39d 1-158
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-sse-portkey-r3.log
+  s_6d30f4d467a543::t_52664bc7dbda8c 1-42
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-sse-portkey-warm.json
+  s_6d30f4d467a543::t_518884d8643d29 1-158
+docs/verification/perf/2026-11-10/unified-v3/raw/wire-sse-portkey-warm.log
+  s_6d30f4d467a543::t_838f43c9f9eeb2 1-42
+docs/verification/perf/2026-11-10/unified-v3/samples.json
+  s_6d30f4d467a543::t_cd4d231f6664e9 1-1598
+docs/verification/perf/2026-11-10/webflux-ab/manifest.json
+  s_6d30f4d467a543::t_bb657dc587e924 1-102
+docs/verification/perf/2026-11-10/webflux-ab/ranking.json
+  s_6d30f4d467a543::t_89fb87faf4c95b 1-27
+docs/verification/perf/2026-11-10/webflux-ab/raw/0623cf778f51.container.log
+  s_6d30f4d467a543::t_a876bdb9d0302d 1-21
+docs/verification/perf/2026-11-10/webflux-ab/raw/133571ee851b.container.log
+  s_6d30f4d467a543::t_d6e8224c7ff975 1-9
+docs/verification/perf/2026-11-10/webflux-ab/raw/181aee3043b1.container.log
+  s_6d30f4d467a543::t_40348d7b384bc5 1
+docs/verification/perf/2026-11-10/webflux-ab/raw/4276a51043b1.container.log
+  s_6d30f4d467a543::t_6485a00db18571 1-21
+docs/verification/perf/2026-11-10/webflux-ab/raw/707dce616ff3.container.log
+  s_6d30f4d467a543::t_6037eb925c7e99 1-21
+docs/verification/perf/2026-11-10/webflux-ab/raw/dd50ac51b4f8.container.log
+  s_6d30f4d467a543::t_e0aafbcaeebdeb 1-21
+docs/verification/perf/2026-11-10/webflux-ab/raw/wire-sse-llmgw-webflux-before-r1.json
+  s_6d30f4d467a543::t_35b4f4aea406be 1-158
+docs/verification/perf/2026-11-10/webflux-ab/raw/wire-sse-llmgw-webflux-before-r1.log
+  s_6d30f4d467a543::t_da7a77c1a098a5 1-42
+docs/verification/perf/2026-11-10/webflux-ab/raw/wire-sse-llmgw-webflux-before-r2.json
+  s_6d30f4d467a543::t_646df9af3ced75 1-158
+docs/verification/perf/2026-11-10/webflux-ab/raw/wire-sse-llmgw-webflux-before-r2.log
+  s_6d30f4d467a543::t_405aba6506d157 1-42
+docs/verification/perf/2026-11-10/webflux-ab/raw/wire-sse-llmgw-webflux-before-r3.json
+  s_6d30f4d467a543::t_84bd64838d7ffe 1-158
+docs/verification/perf/2026-11-10/webflux-ab/raw/wire-sse-llmgw-webflux-before-r3.log
+  s_6d30f4d467a543::t_fecd25edbf1b20 1-42
+docs/verification/perf/2026-11-10/webflux-ab/raw/wire-sse-llmgw-webflux-before-r4.json
+  s_6d30f4d467a543::t_c29c5b116ffd73 1-158
+docs/verification/perf/2026-11-10/webflux-ab/raw/wire-sse-llmgw-webflux-before-r4.log
+  s_6d30f4d467a543::t_0d34112b08ec6d 1-42
+docs/verification/perf/2026-11-10/webflux-ab/raw/wire-sse-llmgw-webflux-before-warm.json
+  s_6d30f4d467a543::t_f37eea7d9fd0db 1-158
+docs/verification/perf/2026-11-10/webflux-ab/raw/wire-sse-llmgw-webflux-before-warm.log
+  s_6d30f4d467a543::t_c74aaf9a1b5bcc 1-42
+docs/verification/perf/2026-11-10/webflux-ab/raw/wire-sse-llmgw-webflux-proxy-r1.json
+  s_6d30f4d467a543::t_d783a4b9aeed7d 1-158
+docs/verification/perf/2026-11-10/webflux-ab/raw/wire-sse-llmgw-webflux-proxy-r1.log
+  s_6d30f4d467a543::t_bf05a4e7f25bd9 1-42
+docs/verification/perf/2026-11-10/webflux-ab/raw/wire-sse-llmgw-webflux-proxy-r2.json
+  s_6d30f4d467a543::t_21447528ae785d 1-158
+docs/verification/perf/2026-11-10/webflux-ab/raw/wire-sse-llmgw-webflux-proxy-r2.log
+  s_6d30f4d467a543::t_9b15f686417796 1-42
+docs/verification/perf/2026-11-10/webflux-ab/raw/wire-sse-llmgw-webflux-proxy-r3.json
+  s_6d30f4d467a543::t_c9f010ea0ac568 1-158
+docs/verification/perf/2026-11-10/webflux-ab/raw/wire-sse-llmgw-webflux-proxy-r3.log
+  s_6d30f4d467a543::t_571ac2ca55ade9 1-42
+docs/verification/perf/2026-11-10/webflux-ab/raw/wire-sse-llmgw-webflux-proxy-r4.json
+  s_6d30f4d467a543::t_10c01f7802c056 1-158
+docs/verification/perf/2026-11-10/webflux-ab/raw/wire-sse-llmgw-webflux-proxy-r4.log
+  s_6d30f4d467a543::t_6d883990260b7d 1-42
+docs/verification/perf/2026-11-10/webflux-ab/raw/wire-sse-llmgw-webflux-proxy-warm.json
+  s_6d30f4d467a543::t_057ee12807e77b 1-158
+docs/verification/perf/2026-11-10/webflux-ab/raw/wire-sse-llmgw-webflux-proxy-warm.log
+  s_6d30f4d467a543::t_2600ff95620ba4 1-42
+docs/verification/perf/2026-11-10/webflux-ab/samples.json
+  s_6d30f4d467a543::t_e586269ccd85d2 1-154
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/AdminController.java
+  s_6d30f4d467a543::t_18418f6fa6ada9 99,101-107,501,504
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/JdkHttpUpstream.java
+  s_6d30f4d467a543::t_ce42b4424a7eb9 213,393,409,435,454
+llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/UpstreamResponseLimitTest.java
+  s_6d30f4d467a543::t_f46b77918766a0 1-30
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/GatewayDecision.java
+  s_6d30f4d467a543::t_eba78f33dacaf2 42-46
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/protocol/ChunkParser.java
+  s_6d30f4d467a543::t_b068115fa50bc6 62-63,191-202,204-205
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/routing/TaskRouteSticky.java
+  s_6d30f4d467a543::t_4a65868ef4956e 14-33
+llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/config/ProductionConfigurationTest.java
+  s_6d30f4d467a543::t_e811469db0e504 1-47
+llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/routing/TaskRouteIsolationTest.java
+  s_6d30f4d467a543::t_2c5158048b96ea 1-21
+llmgw-engine/llmgw-engine-api/src/test/java/io/github/leohou0430/llmgw/engine/FileReferencePolicyTest.java
+  s_6d30f4d467a543::t_7967f74da86def 1-30
+llmgw-engine/llmgw-engine-api/src/test/java/io/github/leohou0430/llmgw/engine/ForwardingPolicyTest.java
+  s_6d30f4d467a543::t_576336d9a71db9 100-101,103,111,117,124,130,134-144
+llmgw-governance/llmgw-governance-api/src/test/java/io/github/leohou0430/llmgw/governance/QuotaMathTest.java
+  s_6d30f4d467a543::t_458250996da9e7 41-47
+llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/InMemoryBudgetLedger.java
+  s_6d30f4d467a543::t_632c2c753ffe2b 18-19,35-36,39-40,49-55,62-64
+llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/InMemoryVectorStore.java
+  s_6d30f4d467a543::t_e3730f54ee1a05 17,29-32,43,55-58,65-67
+llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/JsonKeyStore.java
+  s_6d30f4d467a543::t_e7330cba1ce442 65-80,85,95-102,106-124,127-140,147,176,206-208,210-223
+llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/JwtTokenValidator.java
+  s_6d30f4d467a543::t_f0eb1174837abb 8-10,14,17,24,26,33-35,38-39,43-46,50-51,65,74-77,80-84,87-90,115-128,130
+llmgw-governance/llmgw-governance-default/src/test/java/io/github/leohou0430/llmgw/governance/inmemory/CacheIsolationTest.java
+  s_6d30f4d467a543::t_bfa654ce24d24d 1-36
+llmgw-governance/llmgw-governance-default/src/test/java/io/github/leohou0430/llmgw/governance/inmemory/GovernanceSafetyTest.java
+  s_6d30f4d467a543::t_aa4aed3ba430a0 1-71
+llmgw-governance/llmgw-governance-default/src/test/java/io/github/leohou0430/llmgw/governance/inmemory/HttpGuardrailTest.java
+  s_6d30f4d467a543::t_bf3926bb5d46a8 1-62
+llmgw-governance/llmgw-governance-default/src/test/java/io/github/leohou0430/llmgw/governance/inmemory/InMemoryBudgetLedgerTest.java
+  s_6d30f4d467a543::t_58f2fe3a34fd22 8,44-79
+llmgw-governance/llmgw-governance-default/src/test/java/io/github/leohou0430/llmgw/governance/inmemory/JwtTokenValidatorTest.java
+  s_6d30f4d467a543::t_a732c91c4cf4d8 103-194
+llmgw-governance/llmgw-governance-default/src/test/java/io/github/leohou0430/llmgw/governance/inmemory/ManagedApiKeyRegistryTest.java
+  s_6d30f4d467a543::t_03030f9f5771c3 106-205
+llmgw-governance/llmgw-governance-default/src/test/java/io/github/leohou0430/llmgw/governance/inmemory/ModelRateAccountingTest.java
+  s_6d30f4d467a543::t_305a4e1abbbb50 1-46
+llmgw-governance/llmgw-governance-redis/src/test/java/io/github/leohou0430/llmgw/governance/redis/RedisTokenLimiterTest.java
+  s_6d30f4d467a543::t_7af6b6cea4ebc8 1-38
+docs/verification/perf/2026-11-10/preflight-copied/manifest.json
+  s_6d30f4d467a543::t_bd40c078895d91 1-75
+docs/verification/perf/2026-11-10/preflight-copied/ranking.json
+  s_6d30f4d467a543::t_57242e9ddcbf9c 1-4
+docs/verification/perf/2026-11-10/preflight-copied/samples.json
+  s_6d30f4d467a543::t_3ad1fd0d28ca81 1
+docs/verification/perf/2026-11-10/preflight-final/ranking.json
+  s_6d30f4d467a543::t_7b4552f9e5d971 1-4
+docs/verification/perf/2026-11-10/preflight-final/raw/17dc784bfa39.container.log
+  s_6d30f4d467a543::t_bc797ffb3da5d4 1-22
+docs/verification/perf/2026-11-10/preflight-final/raw/21d91e424e58.container.log
+  s_6d30f4d467a543::t_22648daff4f54e 1-156
+docs/verification/perf/2026-11-10/preflight-final/raw/2c2e36804e2b.container.log
+  s_6d30f4d467a543::t_c045f9c1176300 1-23
+docs/verification/perf/2026-11-10/preflight-final/raw/2e93a7eca9a5.container.log
+  s_6d30f4d467a543::t_ce8cb773941594 1-25
+docs/verification/perf/2026-11-10/preflight-final/raw/3f3de76aba2f.container.log
+  s_6d30f4d467a543::t_59a64e1a3f9029 1
+docs/verification/perf/2026-11-10/preflight-final/raw/3faae5055a1a.container.log
+  s_6d30f4d467a543::t_9a82f8966a2b91 1-105
+docs/verification/perf/2026-11-10/preflight-final/raw/4ecf2b343a5e.container.log
+  s_6d30f4d467a543::t_b166806322ccc2 1-52
+docs/verification/perf/2026-11-10/preflight-final/raw/6439dc806aba.container.log
+  s_6d30f4d467a543::t_85fd895c1d6aad 1-9
+docs/verification/perf/2026-11-10/preflight-final/raw/68a20ccd1fe1.container.log
+  s_6d30f4d467a543::t_9b5745c3e2d9c6 1-21
+docs/verification/perf/2026-11-10/preflight-final/raw/7bf59f0981f4.container.log
+  s_6d30f4d467a543::t_4c2de95826ebf7 1-54
+docs/verification/perf/2026-11-10/preflight-final/raw/ad20170cc126.container.log
+  s_6d30f4d467a543::t_f03c34bac94de7 1-53
+docs/verification/perf/2026-11-10/preflight-final/raw/d66647875d20.container.log
+  s_6d30f4d467a543::t_e76aa7f611e4fc 1-9
+docs/verification/perf/2026-11-10/preflight-final/raw/f2c2b5d9ca51.container.log
+  s_6d30f4d467a543::t_ea3dbcbe58f780 1-30
+docs/verification/perf/2026-11-10/preflight-final/samples.json
+  s_6d30f4d467a543::t_1687ea03a0d782 1
+docs/verification/perf/2026-11-10/preflight-ipv4/manifest.json
+  s_6d30f4d467a543::t_63400448b5a014 1-89
+docs/verification/perf/2026-11-10/preflight-ipv4/ranking.json
+  s_6d30f4d467a543::t_165a2fbdb209a2 1-4
+docs/verification/perf/2026-11-10/preflight-ipv4/raw/22e25adbb18a.container.log
+  s_6d30f4d467a543::t_9efe466b99038c 1-10
+docs/verification/perf/2026-11-10/preflight-ipv4/raw/5a3fd7d63e4e.container.log
+  s_6d30f4d467a543::t_62610fd69e4dcf 1
+docs/verification/perf/2026-11-10/preflight-ipv4/raw/6b4b75ca0378.container.log
+  s_6d30f4d467a543::t_2370301c16367f 1-9
+docs/verification/perf/2026-11-10/preflight-ipv4/raw/74b282679ead.container.log
+  s_6d30f4d467a543::t_2e2c104f43184e 1-2
+docs/verification/perf/2026-11-10/preflight-ipv4/raw/b2bd20524cea.container.log
+  s_6d30f4d467a543::t_96a7e271841423 1-26
+docs/verification/perf/2026-11-10/preflight-ipv4/raw/fc9001702321.container.log
+  s_6d30f4d467a543::t_eae429153debca 1-9
+docs/verification/perf/2026-11-10/preflight-ipv4/samples.json
+  s_6d30f4d467a543::t_c7093f6df61ab0 1
+docs/verification/perf/2026-11-10/preflight-isolated/manifest.json
+  s_6d30f4d467a543::t_a5fae10b6a45c8 1-109
+docs/verification/perf/2026-11-10/preflight-isolated/ranking.json
+  s_6d30f4d467a543::t_f4a354e8660ee6 1-4
+docs/verification/perf/2026-11-10/preflight-isolated/raw/0c3883171bc7.container.log
+  s_6d30f4d467a543::t_4e181f8395e8f5 1-23
+docs/verification/perf/2026-11-10/preflight-isolated/raw/1afe069660ff.container.log
+  s_6d30f4d467a543::t_a5b3e10490ba10 1
+docs/verification/perf/2026-11-10/preflight-isolated/raw/1d4904fab52b.container.log
+  s_6d30f4d467a543::t_c4007650455b6b 1-52
+docs/verification/perf/2026-11-10/preflight-isolated/raw/2aaae7218f32.container.log
+  s_6d30f4d467a543::t_11f5b8d446ce79 1-284
+docs/verification/perf/2026-11-10/preflight-isolated/raw/2dc3ad5f2e6a.container.log
+  s_6d30f4d467a543::t_71a90880d72052 1-290
+docs/verification/perf/2026-11-10/preflight-isolated/raw/4b99232e4f77.container.log
+  s_6d30f4d467a543::t_61417f31cbf72d 1-22
+docs/verification/perf/2026-11-10/preflight-isolated/raw/4c662e550059.container.log
+  s_6d30f4d467a543::t_42c0891aa7c52f 1-9
+docs/verification/perf/2026-11-10/preflight-isolated/raw/5cf699c0f839.container.log
+  s_6d30f4d467a543::t_55c82f7182810d 1-55
+docs/verification/perf/2026-11-10/preflight-isolated/raw/8dfc2609613f.container.log
+  s_6d30f4d467a543::t_81a2dd5e085633 1-25
+docs/verification/perf/2026-11-10/preflight-isolated/raw/b22a8c65dcd6.container.log
+  s_6d30f4d467a543::t_2a6837614b976f 1-21
+docs/verification/perf/2026-11-10/preflight-isolated/raw/bba983e9d9d5.container.log
+  s_6d30f4d467a543::t_9cfbe86c8d6a29 1-1804
+docs/verification/perf/2026-11-10/preflight-isolated/raw/ee9c5846176e.container.log
+  s_6d30f4d467a543::t_4a6e31c430d06a 1-9
+docs/verification/perf/2026-11-10/preflight-isolated/raw/ef5ad00c8814.container.log
+  s_6d30f4d467a543::t_04912e10f3753d 1-55
+docs/verification/perf/2026-11-10/preflight-isolated/samples.json
+  s_6d30f4d467a543::t_9d23033e175fe0 1
+docs/verification/perf/2026-11-10/preflight-offline-final/manifest.json
+  s_6d30f4d467a543::t_50119c08fcf537 1-88
+docs/verification/perf/2026-11-10/preflight-offline-final/ranking.json
+  s_6d30f4d467a543::t_e9a313fc28857b 1-4
+docs/verification/perf/2026-11-10/preflight-offline-final/raw/30466a566e7e.container.log
+  s_6d30f4d467a543::t_2f3a9e837b48e7 1-9
+docs/verification/perf/2026-11-10/preflight-offline-final/raw/4c61d339f5d4.container.log
+  s_6d30f4d467a543::t_8467333b127389 1-14
+docs/verification/perf/2026-11-10/preflight-offline-final/raw/5f2741706367.container.log
+  s_6d30f4d467a543::t_efdc9a844250ab 1
+docs/verification/perf/2026-11-10/preflight-offline-final/raw/b564d1079220.container.log
+  s_6d30f4d467a543::t_e512e2cc0bfa4a 1-2
+docs/verification/perf/2026-11-10/preflight-offline-final/raw/cb548815ae74.container.log
+  s_6d30f4d467a543::t_dbfd7e5c79e89e 1-9
+docs/verification/perf/2026-11-10/preflight-offline-final/samples.json
+  s_6d30f4d467a543::t_7ba0c1ab9e956a 1
+docs/verification/perf/2026-11-10/preflight-offline/manifest.json
+  s_6d30f4d467a543::t_664deef37e2498 1-88
+docs/verification/perf/2026-11-10/preflight-offline/ranking.json
+  s_6d30f4d467a543::t_47072079e25e35 1-4
+docs/verification/perf/2026-11-10/preflight-offline/raw/2c30616c78d5.container.log
+  s_6d30f4d467a543::t_9a0561bf911188 1-9
+docs/verification/perf/2026-11-10/preflight-offline/raw/b1e2f8fc86b8.container.log
+  s_6d30f4d467a543::t_39b1dd1b4babbd 1-14
+docs/verification/perf/2026-11-10/preflight-offline/raw/c56045cf93ef.container.log
+  s_6d30f4d467a543::t_a7e7ec69989b6a 1
+docs/verification/perf/2026-11-10/preflight-offline/raw/e4b87b36f455.container.log
+  s_6d30f4d467a543::t_f6db4711f8f286 1-9
+docs/verification/perf/2026-11-10/preflight-offline/raw/e557dcdb022e.container.log
+  s_6d30f4d467a543::t_278db8f8cf730a 1-2
+docs/verification/perf/2026-11-10/preflight-offline/raw/fb7de6dfc09a.container.log
+  s_6d30f4d467a543::t_4779d876e9eaf3 1-52
+docs/verification/perf/2026-11-10/preflight-offline/samples.json
+  s_6d30f4d467a543::t_1f69c7a2c00990 1
+docs/verification/perf/2026-11-10/preflight/manifest.json
+  s_6d30f4d467a543::t_bb407f968a4327 1-75
+docs/verification/perf/2026-11-10/preflight/ranking.json
+  s_6d30f4d467a543::t_eddd322fc54807 1-4
+docs/verification/perf/2026-11-10/preflight/raw/2454321bbff4.container.log
+  s_6d30f4d467a543::t_bad4d4841dec32 1-2
+docs/verification/perf/2026-11-10/preflight/samples.json
+  s_6d30f4d467a543::t_2c6f8522337518 1
+docs/verification/perf/2026-11-10/unified/manifest.json
+  s_6d30f4d467a543::t_d27a4bbc791a7a 1-124
+docs/verification/perf/2026-11-10/unified/ranking.json
+  s_6d30f4d467a543::t_7c8e38c6a507b3 1-4
+docs/verification/perf/2026-11-10/unified/raw/1e3721d7321e.container.log
+  s_6d30f4d467a543::t_60aeff6f73db4a 1-9
+docs/verification/perf/2026-11-10/unified/raw/211c0d6aae44.container.log
+  s_6d30f4d467a543::t_877dfb9499df75 1-23
+docs/verification/perf/2026-11-10/unified/raw/3210518df760.container.log
+  s_6d30f4d467a543::t_4ba7ef6c776923 1-28
+docs/verification/perf/2026-11-10/unified/raw/390fa469d91e.container.log
+  s_6d30f4d467a543::t_77ccf6a5339a56 1
+docs/verification/perf/2026-11-10/unified/raw/3ca1230ecdf4.container.log
+  s_6d30f4d467a543::t_6d0a802071e542 1-9
+docs/verification/perf/2026-11-10/unified/raw/6050c28a537f.container.log
+  s_6d30f4d467a543::t_80c739dd930cbe 1-11
+docs/verification/perf/2026-11-10/unified/raw/788207ac879f.container.log
+  s_6d30f4d467a543::t_620e8b18d3c51d 1-22
+docs/verification/perf/2026-11-10/unified/raw/84a9652e41a2.container.log
+  s_6d30f4d467a543::t_4e67b16984982e 1-22
+docs/verification/perf/2026-11-10/unified/raw/a3ffcb937042.container.log
+  s_6d30f4d467a543::t_86859980b27dde 1-9
+docs/verification/perf/2026-11-10/unified/raw/a6fb63d1f0a8.container.log
+  s_6d30f4d467a543::t_848e12571ca84a 1-126
+docs/verification/perf/2026-11-10/unified/raw/ba779f79a26e.container.log
+  s_6d30f4d467a543::t_eea66279c8db9f 1-21
+docs/verification/perf/2026-11-10/unified/raw/c518b0b52902.container.log
+  s_6d30f4d467a543::t_9784d0ba6703e3 1-30
+docs/verification/perf/2026-11-10/unified/raw/cadf477b89a3.container.log
+  s_6d30f4d467a543::t_69e72ab04b5ed6 1-23
+docs/verification/perf/2026-11-10/unified/raw/d2b6edc540b1.container.log
+  s_6d30f4d467a543::t_77dfe1c31bb552 1-21
+docs/verification/perf/2026-11-10/unified/raw/ef271c2cc064.container.log
+  s_6d30f4d467a543::t_cbed49adb7fb16 1-23
+docs/verification/perf/2026-11-10/unified/raw/wire-json-bifrost-warm.json
+  s_6d30f4d467a543::t_b40f30ed077232 1-137
+docs/verification/perf/2026-11-10/unified/raw/wire-json-bifrost-warm.log
+  s_6d30f4d467a543::t_cf0174409aa23a 1-40
+docs/verification/perf/2026-11-10/unified/raw/wire-json-litellm-warm.json
+  s_6d30f4d467a543::t_1c5e31f52b55c6 1-137
+docs/verification/perf/2026-11-10/unified/raw/wire-json-litellm-warm.log
+  s_6d30f4d467a543::t_169e90e1d3b72b 1-39
+docs/verification/perf/2026-11-10/unified/samples.json
+  s_6d30f4d467a543::t_14f38b3d6a1546 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "c119ecfcabc98bfa2a1f7003353400bd72680b49",
+  "prompts": {},
+  "sessions": {
+    "s_6d30f4d467a543": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1c09a-e2db-7762-a873-2372a7cb9970",
+        "model": "gpt-6.1-sol"
+      },
+      "human_author": "leohou0430 <leohou0430@users.noreply.github.com>"
+    }
+  }
+}
