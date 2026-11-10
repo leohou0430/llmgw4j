@@ -1,0 +1,271 @@
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/extension/ExtensionModule.java
+  s_6d30f4d467a543::t_2e43d6ad6e194a 3,6
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/ProviderConfiguration.java
+  s_6d30f4d467a543::t_2e43d6ad6e194a 4,12
+docs/verification/architecture/native-extension-mechanism/java-inventory.json
+  s_6d30f4d467a543::t_b99132c975b7de 1-1597
+llmgw-provider/pom.xml
+  s_6d30f4d467a543::t_fee29c687fcf50 7
+  s_6d30f4d467a543::t_34a10eb5a35cb4 4
+docs/verification/architecture/native-extension-mechanism/contract-results.json
+  s_6d30f4d467a543::t_a734b4a05cbb7a 2,4-6,8-10,12-14,16-18,20-22,24-36
+  s_6d30f4d467a543::t_cbacc5f1f44400 1,3,7,11,15,19,23,37-38
+docs/EXTENSIONS.md
+  s_6d30f4d467a543::t_dbf2b7c774ea74 75
+  s_6d30f4d467a543::t_a24fc017d71ec9 1,3,5,7-9,16-27,29-32,34-38,40-46,48-50,54,56,58,61,65,73,77,82-83,88,90,92,94,96,98,114,116,118,120-125,127,129
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/extension/ExtensionPoint.java
+  s_6d30f4d467a543::t_2e43d6ad6e194a 1-13
+bin/test_native_boundaries.py
+  s_6d30f4d467a543::t_5f3aed0b4c104a 33,41-45
+  s_6d30f4d467a543::t_22288426b60741 46
+llmgw-governance/llmgw-governance-default/src/test/java/io/github/leohou0430/llmgw/governance/inmemory/NativeGovernanceModuleTest.java
+  s_6d30f4d467a543::t_fee29c687fcf50 18
+docs/verification/architecture/native-extension-mechanism/redis-lua-comparison.json
+  s_6d30f4d467a543::t_a734b4a05cbb7a 1-13
+AGENTS.md
+  s_6d30f4d467a543::t_5f3aed0b4c104a 8
+docs/releases/v0.3.1.md
+  s_6d30f4d467a543::t_a24fc017d71ec9 1-16
+llmgw-provider/llmgw-provider-http-jdk/src/main/java/io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream.java
+  s_6d30f4d467a543::t_5f3aed0b4c104a 68
+pom.xml
+  s_6d30f4d467a543::t_5f3aed0b4c104a 143-146,148-149
+  s_6d30f4d467a543::t_628011d2366201 147
+  s_6d30f4d467a543::t_6753c35fa7f8b8 16
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/extension/Extensions.java
+  s_6d30f4d467a543::t_2e43d6ad6e194a 1-118
+docs/verification/architecture/native-extension-mechanism/README.md
+  s_6d30f4d467a543::t_9f182e0a9f85c7 34-39
+  s_6d30f4d467a543::t_a24fc017d71ec9 1-8
+  s_6d30f4d467a543::t_e5d9dffcee61c6 9,22-33
+  s_6d30f4d467a543::t_2f44f33a694567 10-11
+  s_6d30f4d467a543::t_dbf2b7c774ea74 12-21
+docs/gap-analysis.md
+  s_6d30f4d467a543::t_071c4f499c9f6b 3
+llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/extension/ExtensionsTest.java
+  s_6d30f4d467a543::t_035040d952e065 1-86
+llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/DefaultGovernanceModule.java
+  s_6d30f4d467a543::t_5f3aed0b4c104a 22
+  s_6d30f4d467a543::t_e885b7e2fccd4d 16
+llmgw-provider/llmgw-provider-openai-sdk/src/test/java/io/github/leohou0430/llmgw/provider/openai/sdk/OpenAiVerifierDiscoveryTest.java
+  s_6d30f4d467a543::t_2e43d6ad6e194a 4,10
+llmgw-provider/llmgw-provider-api/src/main/java/io/github/leohou0430/llmgw/provider/ProviderVerifier.java
+  s_6d30f4d467a543::t_2e43d6ad6e194a 4,7
+bin/check-native-boundaries.py
+  s_6d30f4d467a543::t_5f3aed0b4c104a 41-48,75,84
+docs/performance-charts.html
+  s_6d30f4d467a543::t_071c4f499c9f6b 1
+llmgw-provider/llmgw-provider-api/src/main/java/io/github/leohou0430/llmgw/provider/UpstreamAuthenticator.java
+  s_6d30f4d467a543::t_2e43d6ad6e194a 17
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/protocol/Protocol.java
+  s_6d30f4d467a543::t_2e43d6ad6e194a 19
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/extension/ExtensionContext.java
+  s_6d30f4d467a543::t_2e43d6ad6e194a 8,64,86
+llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/ProviderDiscoveryTest.java
+  s_6d30f4d467a543::t_2e43d6ad6e194a 4,10
+llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/TokenizerSelectionTest.java
+  s_6d30f4d467a543::t_2e43d6ad6e194a 9,19
+llmgw-app/pom.xml
+  s_6d30f4d467a543::t_fee29c687fcf50 60
+  s_6d30f4d467a543::t_71b76895fbab51 9
+llmgw-app/src/main/resources/META-INF/native-image/llmgw/native-fixes/native-image.properties
+  s_6d30f4d467a543::t_2e43d6ad6e194a 2
+llmgw-tokenizer/llmgw-tokenizer-api/src/main/java/io/github/leohou0430/llmgw/tokenizer/TokenCounter.java
+  s_6d30f4d467a543::t_2e43d6ad6e194a 4,7
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/protocol/Protocols.java
+  s_6d30f4d467a543::t_5f3aed0b4c104a 36
+  s_6d30f4d467a543::t_ee279285270c95 7,40
+llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/ExtensionRuntimeHintsTest.java
+  s_6d30f4d467a543::t_2e43d6ad6e194a 19-20
+docs/verification/architecture/native-extension-mechanism/dependency-check.json
+  s_6d30f4d467a543::t_fee29c687fcf50 1-9
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/GatewayRuntimeHints.java
+  s_6d30f4d467a543::t_2e43d6ad6e194a 51,54,56,63,67,70,74,76
+  s_6d30f4d467a543::t_a33f5de0470e10 25,49
+README.en.md
+  s_6d30f4d467a543::t_fee29c687fcf50 23
+  s_6d30f4d467a543::t_2f44f33a694567 109
+  s_6d30f4d467a543::t_4a5ccd055ae8d0 63,89
+  s_6d30f4d467a543::t_4e12940fb72a2c 21,193
+docs/PERFORMANCE.md
+  s_6d30f4d467a543::t_071c4f499c9f6b 3,25
+docs/verification/architecture/native-extension-mechanism/native-results.json
+  s_6d30f4d467a543::t_9f182e0a9f85c7 1-14
+llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/protocol/ProtocolDiscoveryTest.java
+  s_6d30f4d467a543::t_fee29c687fcf50 8
+  s_6d30f4d467a543::t_2e43d6ad6e194a 3,9
+.github/workflows/release.yml
+  s_6d30f4d467a543::t_2cabe1ca633270 57,61-62,109,116
+CHANGELOG.md
+  s_6d30f4d467a543::t_fdfda2f84afbc4 7,9-13
+CONTRIBUTING.md
+  s_6d30f4d467a543::t_24c0c265b7892f 29,51,75,92-93,124
+Dockerfile
+  s_6d30f4d467a543::t_f46eeee288f215 13
+NOTICE
+  s_6d30f4d467a543::t_3c03e3fe16778d 7
+README.md
+  s_6d30f4d467a543::t_cd36f95e74e2ba 21,23,91,94,103,105,133,151,255,340,346,390
+SECURITY.md
+  s_6d30f4d467a543::t_3db9b9482633ed 20-21
+bench/README.md
+  s_6d30f4d467a543::t_a2f17ceedd49f1 3
+bench/cross-gateway/README.md
+  s_6d30f4d467a543::t_0a7b145451a8d0 7
+bench/cross-gateway/compare.py
+  s_6d30f4d467a543::t_9394c497b71de3 53
+bench/cross-gateway/cross-gateway-benchmark.sh
+  s_6d30f4d467a543::t_50f6edfd664a47 58
+bin/bench-matrix.sh
+  s_6d30f4d467a543::t_12891db5480360 5
+bin/bench-paired-ab.sh
+  s_6d30f4d467a543::t_9cea2de3848192 27
+bin/build.sh
+  s_6d30f4d467a543::t_6779d46da55868 5
+bin/run-vt.sh
+  s_6d30f4d467a543::t_e99733cfa6f90d 4
+bin/run-webflux.sh
+  s_6d30f4d467a543::t_a3495961737306 4
+bin/smoke-admin-auth.py
+  s_6d30f4d467a543::t_733b06ea8ab727 92
+bin/smoke-hot-reload.sh
+  s_6d30f4d467a543::t_93d9861a77619c 9
+bin/smoke-jwt-auth.py
+  s_6d30f4d467a543::t_e37a6a7f9453cb 35
+bin/smoke-multi-protocol.sh
+  s_6d30f4d467a543::t_784a9863d3102f 9
+bin/smoke-observability.sh
+  s_6d30f4d467a543::t_d736b076420146 10
+bin/smoke-redis-cluster.sh
+  s_6d30f4d467a543::t_2427dd82fd1cda 9
+bin/smoke-stream-errors.sh
+  s_6d30f4d467a543::t_a3759d927ec447 7
+bin/smoke-tenant-isolation.py
+  s_6d30f4d467a543::t_5206f9bf761f28 16
+bin/smoke-v13-extensions.sh
+  s_6d30f4d467a543::t_da1866580167bf 8
+bin/smoke-v13-hardening.sh
+  s_6d30f4d467a543::t_9390f252e66da4 9
+bin/smoke-v13-platform.sh
+  s_6d30f4d467a543::t_ac6d8df06d6b00 8
+bin/smoke-v13-provider.sh
+  s_6d30f4d467a543::t_aa5d073a3f9638 9
+docs/CONFIGURATION.md
+  s_6d30f4d467a543::t_9592fe2699d03d 3,11,45,459,666
+docs/DEPLOYMENT.md
+  s_6d30f4d467a543::t_edeab23fc54273 1,3,133,138-139,143
+docs/PRODUCTION_BEST_PRACTICES.md
+  s_6d30f4d467a543::t_9d25f342ca6b66 3,5,11,52
+docs/USER_GUIDE.md
+  s_6d30f4d467a543::t_79653a52728b46 1,3,13,36,84,109,122,145
+docs/openapi.yaml
+  s_6d30f4d467a543::t_98e86dd612fce8 4
+docs/plans/2026-11-10-native-dubbo-spi.md
+  s_6d30f4d467a543::t_102120edf5e54d 1,3,5,7,9
+docs/releases/v0.3.0.md
+  s_6d30f4d467a543::t_d876c0975b3c1a 1-2
+docs/verification/architecture/native-extension-mechanism/bench-java-compile.log
+  s_6d30f4d467a543::t_33ea9b91cfc3fa 1-4
+docs/verification/architecture/native-extension-mechanism/build-results.json
+  s_6d30f4d467a543::t_84ab8ae5d3f5fc 1-38
+docs/verification/architecture/native-extension-mechanism/enforcer-no-dubbo-negative.log
+  s_6d30f4d467a543::t_16156cf7f6d3b5 1-25
+docs/verification/architecture/native-extension-mechanism/extension-loader-green.log
+  s_6d30f4d467a543::t_ea8028328225d7 1-74
+docs/verification/architecture/native-extension-mechanism/extension-loader-red.log
+  s_6d30f4d467a543::t_7b3653964cd894 1-134
+docs/verification/architecture/native-extension-mechanism/native-webflux-build.log
+  s_6d30f4d467a543::t_3ba06800bcb63a 1-1166
+docs/verification/architecture/native-extension-mechanism/native-webflux-preflight.log
+  s_6d30f4d467a543::t_5961eaf5120204 1-19
+docs/verification/architecture/native-extension-mechanism/native-webflux-protocols.log
+  s_6d30f4d467a543::t_0bfbb9713a37d6 1-41
+docs/verification/architecture/native-extension-mechanism/native-webflux-stream.log
+  s_6d30f4d467a543::t_11eeb4eca53f34 1-54
+docs/verification/architecture/native-extension-mechanism/smoke-admin.log
+  s_6d30f4d467a543::t_a86009195255ef 1-6
+docs/verification/architecture/native-extension-mechanism/smoke-extensions.log
+  s_6d30f4d467a543::t_b21772b43e8539 1-61
+docs/verification/architecture/native-extension-mechanism/smoke-hardening.log
+  s_6d30f4d467a543::t_67b567ad88c23f 1-57
+docs/verification/architecture/native-extension-mechanism/smoke-jwt.log
+  s_6d30f4d467a543::t_5c85ccbfe4524c 1-2
+docs/verification/architecture/native-extension-mechanism/smoke-platform.log
+  s_6d30f4d467a543::t_a65d1087410b99 1-53
+docs/verification/architecture/native-extension-mechanism/smoke-protocols.log
+  s_6d30f4d467a543::t_6d4c0905196238 1-80
+docs/verification/architecture/native-extension-mechanism/smoke-provider.log
+  s_6d30f4d467a543::t_52b50dc7d2ea56 1-29
+docs/verification/architecture/native-extension-mechanism/smoke-stream.log
+  s_6d30f4d467a543::t_4f137a599f5853 1-104
+docs/verification/architecture/native-extension-mechanism/smoke-tenant.log
+  s_6d30f4d467a543::t_bde271b5691730 1-2
+docs/verification/architecture/native-extension-mechanism/validate-final.log
+  s_6d30f4d467a543::t_6e4b8f133d4213 1-286
+docs/verification/architecture/native-extension-mechanism/verify-combined.log
+  s_6d30f4d467a543::t_6bbe373b3a41a8 1-858
+docs/verification/architecture/native-extension-mechanism/verify-default.log
+  s_6d30f4d467a543::t_f34a6f97fbbd29 1-858
+docs/verification/architecture/native-extension-mechanism/verify-redis.log
+  s_6d30f4d467a543::t_8b7a8d3b2e387e 1-858
+docs/verification/architecture/native-spi/README.md
+  s_6d30f4d467a543::t_f9b1b274d33f0b 1-2
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/LlmGatewayApplication.java
+  s_6d30f4d467a543::t_907c12db365564 7
+llmgw-core/pom.xml
+  s_6d30f4d467a543::t_ef8f26616a5068 9
+llmgw-engine/llmgw-engine-api/pom.xml
+  s_6d30f4d467a543::t_80ab24a4652177 9
+llmgw-engine/llmgw-engine-vt/pom.xml
+  s_6d30f4d467a543::t_82af23405662c4 9
+llmgw-engine/llmgw-engine-webflux/pom.xml
+  s_6d30f4d467a543::t_7fb86ad73acad3 9
+llmgw-engine/pom.xml
+  s_6d30f4d467a543::t_33272cda3012a7 9
+llmgw-governance/llmgw-governance-api/pom.xml
+  s_6d30f4d467a543::t_72197a9a64441f 9
+llmgw-governance/llmgw-governance-api/src/main/java/io/github/leohou0430/llmgw/governance/GovernancePacks.java
+  s_6d30f4d467a543::t_4e5a20b2e03c32 3
+llmgw-governance/llmgw-governance-default/pom.xml
+  s_6d30f4d467a543::t_411e703619f9f0 9
+llmgw-governance/llmgw-governance-redis/pom.xml
+  s_6d30f4d467a543::t_a68bfe5a03e5d8 9
+llmgw-governance/pom.xml
+  s_6d30f4d467a543::t_8395002c47a926 9
+llmgw-provider/llmgw-provider-anthropic/pom.xml
+  s_6d30f4d467a543::t_6ddc9c47c433cd 9
+llmgw-provider/llmgw-provider-api/pom.xml
+  s_6d30f4d467a543::t_b0b341786a6beb 4
+llmgw-provider/llmgw-provider-http-jdk/pom.xml
+  s_6d30f4d467a543::t_94f2f1bc8dfb5d 3
+llmgw-provider/llmgw-provider-openai-sdk/pom.xml
+  s_6d30f4d467a543::t_e1d5c46a82f244 3
+llmgw-provider/llmgw-provider-openai/pom.xml
+  s_6d30f4d467a543::t_00c351779fbaf9 9
+llmgw-provider/llmgw-provider-openai/src/main/java/io/github/leohou0430/llmgw/provider/openai/OpenAiAuthenticator.java
+  s_6d30f4d467a543::t_9a6888ca077dfa 6
+llmgw-tokenizer/llmgw-tokenizer-api/pom.xml
+  s_6d30f4d467a543::t_f660f6ea0c157f 3
+llmgw-tokenizer/llmgw-tokenizer-heuristic/pom.xml
+  s_6d30f4d467a543::t_e4e5d3acd204b1 3
+llmgw-tokenizer/llmgw-tokenizer-jtokkit/pom.xml
+  s_6d30f4d467a543::t_42ffc0f3e700cc 9
+llmgw-tokenizer/pom.xml
+  s_6d30f4d467a543::t_01f5eed7cd38ca 3
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "a3f848b840060c99d0b0d4139b926773c206f11f",
+  "prompts": {},
+  "sessions": {
+    "s_6d30f4d467a543": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1c09a-e2db-7762-a873-2372a7cb9970",
+        "model": "gpt-6.1-sol"
+      },
+      "human_author": "leohou0430 <leohou0430@users.noreply.github.com>"
+    }
+  }
+}
