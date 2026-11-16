@@ -1,0 +1,21 @@
+docs/releases/v0.4.0-verification.md
+  s_5f251bc0a17928::t_5d31bebea2c40a 25-26
+llmgw-engine/llmgw-engine-webflux/src/test/java/io/github/leohou0430/llmgw/engine/webflux/CapacityAdmissionTest.java
+  s_5f251bc0a17928::t_f39e0153a82d2c 53-56
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "5d1608ce97557b7f9d0577cbec9777eef559384d",
+  "prompts": {},
+  "sessions": {
+    "s_5f251bc0a17928": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1e304-332e-7000-9e0e-b3015846561c",
+        "model": "gpt-6.1-sol"
+      },
+      "human_author": "leohou0430 <leohou0430@users.noreply.github.com>"
+    }
+  }
+}
