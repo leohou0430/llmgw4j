@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>io.github.leohou0430</groupId>
+    <artifactId>llmgw-control</artifactId>
+    <version>0.3.1</version>
+  </parent>
+
+  <artifactId>llmgw-control-default</artifactId>
+  <name>llmgw-control-default</name>
+  <description>Default control-plane helpers: AES-256-GCM at-rest secret cipher with an
+    externally injected root key. A foundation pack: no Spring, Reactor or HTTP framework.</description>
+
+  <dependencies>
+    <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-core</artifactId></dependency>
+    <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-control-api</artifactId></dependency>
+    <dependency><groupId>org.junit.jupiter</groupId><artifactId>junit-jupiter</artifactId><scope>test</scope></dependency>
+  </dependencies>
+</project>

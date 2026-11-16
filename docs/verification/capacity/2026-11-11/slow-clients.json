@@ -1,0 +1,35 @@
+{
+  "jar_sha256": "946c4d7baf2c70c8d03cb6324f7dbd59ca6332aec53f1d8c44d2be598358ae82",
+  "results": [
+    {
+      "engine": "webflux",
+      "clients": 8,
+      "offered_bytes_per_response": "~16 MiB",
+      "stats_after_cancel": {
+        "requests": 8,
+        "active": 0,
+        "completed": 0,
+        "cancelled": 8
+      },
+      "elapsed_seconds": 6.45252150692977,
+      "resources_before": "298168320\n298168320\nlow 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0\nsock_throttled 0\nusage_usec 26018182\nuser_usec 24664246\nsystem_usec 1353935\nnice_usec 0\nnr_periods 136\nnr_throttled 119\nthrottled_usec 4930196\nnr_bursts 0\nburst_usec 0",
+      "resources_after": "336568320\n336568320\nlow 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0\nsock_throttled 0\nusage_usec 37696070\nuser_usec 35794937\nsystem_usec 1901132\nnice_usec 0\nnr_periods 202\nnr_throttled 174\nthrottled_usec 26615767\nnr_bursts 0\nburst_usec 0",
+      "recovery": "200 ok"
+    },
+    {
+      "engine": "vt",
+      "clients": 8,
+      "offered_bytes_per_response": "~16 MiB",
+      "stats_after_cancel": {
+        "requests": 8,
+        "active": 0,
+        "completed": 2,
+        "cancelled": 6
+      },
+      "elapsed_seconds": 4.647222908912227,
+      "resources_before": "287903744\n290484224\nlow 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0\nsock_throttled 0\nusage_usec 19710745\nuser_usec 19145993\nsystem_usec 564751\nnice_usec 0\nnr_periods 102\nnr_throttled 89\nthrottled_usec 3889783\nnr_bursts 0\nburst_usec 0",
+      "resources_after": "388468736\n390778880\nlow 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0\nsock_throttled 0\nusage_usec 27641781\nuser_usec 25646626\nsystem_usec 1995155\nnice_usec 0\nnr_periods 151\nnr_throttled 125\nthrottled_usec 9243954\nnr_bursts 0\nburst_usec 0",
+      "recovery": "200 ok"
+    }
+  ]
+}

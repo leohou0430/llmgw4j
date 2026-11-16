@@ -1,0 +1,23 @@
+{
+  "default": {
+    "exit_code": 0,
+    "tests": 182,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "redis": {
+    "exit_code": 0,
+    "tests": 182,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "combined": {
+    "exit_code": 0,
+    "tests": 182,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  }
+}

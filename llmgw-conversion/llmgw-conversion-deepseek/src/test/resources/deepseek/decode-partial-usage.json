@@ -1,0 +1,9 @@
+{
+  "id": "resp-5",
+  "object": "chat.completion",
+  "model": "deepseek-flash",
+  "choices": [
+    {"index": 0, "message": {"role": "assistant", "content": "partial"}, "finish_reason": "length"}
+  ],
+  "usage": {"prompt_tokens": 10, "prompt_cache_hit_tokens": 4}
+}

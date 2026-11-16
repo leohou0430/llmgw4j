@@ -1,0 +1,108 @@
+
+Execution stacks inclusive (can include OS wait) total=888
+  63.51%	564	reactor.core.publisher.InternalMonoOperator.subscribe
+  59.23%	526	reactor.core.publisher.MonoFlatMap$FlatMapMain.onNext
+  56.76%	504	reactor.core.publisher.Mono.subscribe
+  51.80%	460	reactor.core.publisher.MonoDefer.subscribe
+  50.34%	447	java.lang.Thread.runWith
+  47.30%	420	reactor.core.publisher.MonoIgnoreThen$ThenIgnoreMain.subscribeNext
+  44.82%	398	reactor.core.publisher.MonoFlatMap$FlatMapMain.request
+  43.36%	385	reactor.core.publisher.Operators$ScalarSubscription.request
+  43.36%	385	reactor.core.publisher.MonoIgnoreThen.subscribe
+  42.57%	378	reactor.core.publisher.MonoFlatMap$FlatMapMain.onSubscribe
+  40.54%	360	reactor.core.publisher.MonoJust.subscribe
+  40.32%	358	reactor.core.publisher.MonoPeekTerminal$MonoTerminalPeekSubscriber.onNext
+  37.84%	336	reactor.core.publisher.Operators.complete
+  37.39%	332	java.lang.Thread.run
+  36.49%	324	reactor.core.publisher.MonoFlatMap$FlatMapMain.secondComplete
+  36.37%	323	reactor.core.publisher.MonoPeekTerminal$MonoTerminalPeekSubscriber.onSubscribe
+  35.47%	315	reactor.core.publisher.MonoPeekTerminal$MonoTerminalPeekSubscriber.request
+  31.53%	280	reactor.core.publisher.Operators$MultiSubscriptionSubscriber.set
+  31.31%	278	reactor.core.publisher.FluxMapFuseable$MapFuseableSubscriber.onNext
+  31.08%	276	reactor.core.publisher.FluxMapFuseable$MapFuseableSubscriber.onSubscribe
+  30.97%	275	reactor.core.publisher.FluxMapFuseable$MapFuseableSubscriber.request
+  30.97%	275	reactor.core.publisher.FluxPeekFuseable$PeekFuseableSubscriber.onNext
+  30.52%	271	reactor.core.publisher.FluxPeekFuseable$PeekFuseableSubscriber.request
+  30.18%	268	reactor.core.publisher.FluxOnErrorResume$ResumeSubscriber.onNext
+  29.84%	265	reactor.core.publisher.Operators$MultiSubscriptionSubscriber.onSubscribe
+
+Execution stacks first application frame total=888
+  77.36%	687	<framework-only stack>
+   3.27%	29	io.github.leohou0430.llmgw.provider.http.jdk.JdkHttpUpstream.lambda$mapResponse$0
+   2.70%	24	io.github.leohou0430.llmgw.provider.http.jdk.JdkHttpUpstream.completeRawAsync
+   1.46%	13	io.github.leohou0430.llmgw.core.protocol.ProtocolCodec.tryParse
+   1.13%	10	io.github.leohou0430.llmgw.engine.webflux.WebfluxGatewayController.firstValues
+   1.13%	10	io.github.leohou0430.llmgw.engine.webflux.WebfluxGatewayController.handleKindWithinCapacity
+   1.01%	9	io.github.leohou0430.llmgw.engine.webflux.WebfluxGatewayController.writeError
+   0.90%	8	io.github.leohou0430.llmgw.provider.http.jdk.JdkHttpUpstream.build
+   0.79%	7	io.github.leohou0430.llmgw.governance.inmemory.DefaultGovernanceChain.lambda$finish$0
+   0.68%	6	io.github.leohou0430.llmgw.governance.inmemory.CaffeineSemanticCache.put
+   0.56%	5	io.github.leohou0430.llmgw.governance.inmemory.InMemoryApiKeyRegistry.lookupKey
+   0.45%	4	io.github.leohou0430.llmgw.core.protocol.ProtocolCodec.escape
+   0.45%	4	io.github.leohou0430.llmgw.core.protocol.ProtocolCodec.lambda$static$0
+   0.34%	3	io.github.leohou0430.llmgw.engine.webflux.WebfluxGatewayController.lambda$handleKindWithinCapacity$0
+   0.34%	3	io.github.leohou0430.llmgw.engine.webflux.WebfluxGatewayController.lambda$handleKindWithinCapacity$1
+   0.34%	3	io.github.leohou0430.llmgw.governance.inmemory.WindowedCircuitBreaker.allow
+   0.34%	3	io.github.leohou0430.llmgw.core.protocol.ProtocolCodec.errorJson
+   0.34%	3	io.github.leohou0430.llmgw.core.protocol.ProtocolKind.wireName
+   0.34%	3	io.github.leohou0430.llmgw.provider.http.jdk.JdkHttpUpstream.lambda$withDeadline$1
+   0.34%	3	io.github.leohou0430.llmgw.core.protocol.ProtocolCodec.fingerprint
+   0.34%	3	io.github.leohou0430.llmgw.governance.inmemory.ManagedApiKeyRegistry.find
+   0.34%	3	io.github.leohou0430.llmgw.engine.webflux.WebfluxGatewayController.dispatch
+   0.34%	3	io.github.leohou0430.llmgw.governance.inmemory.GovernanceMetrics.count
+   0.23%	2	io.github.leohou0430.llmgw.governance.inmemory.DefaultGovernanceChain.enter
+   0.23%	2	io.github.leohou0430.llmgw.governance.inmemory.GovernanceMetrics.latencyNanos
+
+Allocation sampled bytes by class total=1483729880
+  12.17%	180546720	[B
+   9.96%	147851464	[Ljava.util.concurrent.ConcurrentHashMap$Node;
+   3.09%	45811016	[Ljava.lang.Object;
+   3.01%	44625600	java.lang.String
+   2.44%	36188880	reactor.core.publisher.MonoPeekTerminal$MonoTerminalPeekSubscriber
+   2.17%	32215488	io.micrometer.core.instrument.ImmutableTag
+   1.73%	25628864	org.springframework.web.util.pattern.PathPattern$MatchingContext
+   1.67%	24783424	java.util.concurrent.ConcurrentHashMap
+   1.58%	23389568	java.util.LinkedHashMap$Entry
+   1.57%	23232288	io.netty.handler.codec.DefaultHeaders$HeaderEntry
+   1.45%	21474296	org.springframework.validation.support.BindingAwareConcurrentModel
+   1.39%	20596504	jdk.internal.net.http.common.MinimalFuture
+   1.37%	20333752	[Ljava.util.HashMap$Node;
+   1.36%	20200760	reactor.core.publisher.FluxOnErrorResume$ResumeSubscriber
+   1.33%	19794240	java.util.concurrent.ConcurrentHashMap$Node
+   1.26%	18655840	java.nio.DirectByteBuffer
+   1.24%	18396280	reactor.netty.http.server.ServerCookies
+   1.17%	17367752	org.springframework.web.reactive.result.method.RequestMappingInfoHandlerMapping$$Lambda.0x000000006876b120
+   1.13%	16818752	reactor.core.publisher.MonoPeekTerminal
+   1.07%	15839272	reactor.core.publisher.MonoFlatMap$FlatMapMain
+   1.05%	15606136	[Lio.netty.handler.codec.DefaultHeaders$HeaderEntry;
+   0.91%	13555512	org.springframework.http.HttpHeaders$HeaderNamesIterator
+   0.85%	12627048	reactor.core.publisher.MonoIgnoreThen$ThenIgnoreMain
+   0.81%	11985392	reactor.core.publisher.MonoPeekFuseable
+   0.78%	11633992	reactor.core.publisher.Operators$ScalarSubscription
+
+Allocation sampled bytes by site total=1483729880
+   9.63%	142814608	<framework-only stack> :: java.util.concurrent.ConcurrentHashMap.initTable <- java.util.concurrent.ConcurrentHashMap.putVal <- java.util.concurrent.ConcurrentHashMap.put <- org.springframework.web.reactive.result.method.HandlerMethodArgumentResolverComposite.getArgumentResolver <- org.springframework.web.reactive.result.method.HandlerMethodArgumentResolverComposite.supportsParameter
+   1.76%	26086824	<framework-only stack> :: io.micrometer.core.instrument.Tag.of <- io.micrometer.core.instrument.observation.DefaultMeterObservationHandler.createTags <- io.micrometer.core.instrument.observation.DefaultMeterObservationHandler.onStart <- io.micrometer.observation.ObservationHandler$FirstMatchingCompositeObservationHandler.onStart <- io.micrometer.observation.SimpleObservation.notifyOnObservationStarted
+   1.50%	22306464	<framework-only stack> :: io.netty.handler.codec.DefaultHeaders.newHeaderEntry <- io.netty.handler.codec.DefaultHeaders.add0 <- io.netty.handler.codec.DefaultHeaders.add <- io.netty.handler.codec.DefaultHeaders.addObject <- io.netty.handler.codec.http.DefaultHttpHeaders.add
+   1.45%	21580232	<framework-only stack> :: org.springframework.web.util.pattern.PathPattern.matches <- org.springframework.web.reactive.result.condition.PatternsRequestCondition.getMatchingCondition <- org.springframework.web.reactive.result.method.RequestMappingInfoHandlerMapping$PartialMatchHelper.<init> <- org.springframework.web.reactive.result.method.RequestMappingInfoHandlerMapping.handleNoMatch <- org.springframework.web.reactive.result.method.AbstractHandlerMethodMapping.lookupHandlerMethod
+   1.45%	21474296	<framework-only stack> :: org.springframework.web.reactive.BindingContext.<init> <- org.springframework.web.reactive.result.method.annotation.InitBinderBindingContext.<init> <- org.springframework.web.reactive.result.method.annotation.RequestMappingHandlerAdapter.handle <- org.springframework.web.reactive.DispatcherHandler.handleRequestWith <- org.springframework.web.reactive.DispatcherHandler.lambda$handle$2
+   1.26%	18655840	<framework-only stack> :: java.nio.DirectByteBuffer.duplicate <- java.nio.DirectByteBuffer.duplicate <- io.netty.buffer.UnpooledDirectByteBuf.getBytes <- io.netty.buffer.UnpooledDirectByteBuf.getBytes <- io.netty.buffer.AdaptivePoolingAllocator$AdaptiveByteBuf.getBytes
+   1.24%	18396280	<framework-only stack> :: reactor.netty.http.server.ServerCookies.newServerRequestHolder <- reactor.netty.http.server.HttpServerOperations.<init> <- reactor.netty.http.server.HttpTrafficHandler.channelRead <- io.netty.channel.AbstractChannelHandlerContext.fireChannelRead <- io.netty.channel.CombinedChannelDuplexHandler$DelegatingChannelHandlerContext.fireChannelRead
+   1.17%	17367752	<framework-only stack> :: java.lang.invoke.DirectMethodHandle.allocateInstance <- java.lang.invoke.DirectMethodHandle$Holder.newInvokeSpecial <- java.lang.invoke.Invokers$Holder.linkToTargetMethod <- org.springframework.web.reactive.result.method.RequestMappingInfoHandlerMapping.handleMatch <- org.springframework.web.reactive.result.method.RequestMappingInfoHandlerMapping.handleMatch
+   1.16%	17214960	<framework-only stack> :: reactor.core.publisher.MonoPeekTerminal.subscribeOrReturn <- reactor.core.publisher.InternalMonoOperator.subscribe <- reactor.core.publisher.MonoFlatMap$FlatMapMain.onNext <- reactor.core.publisher.FluxPeekFuseable$PeekFuseableSubscriber.onNext <- reactor.core.publisher.Operators$ScalarSubscription.request
+   1.09%	16231288	<framework-only stack> :: java.util.Arrays.copyOf <- java.util.ArrayList.toArray <- java.util.ArrayList.addAll <- org.springframework.web.reactive.result.method.HandlerMethodArgumentResolverComposite.addResolvers <- org.springframework.web.reactive.result.method.InvocableHandlerMethod.setArgumentResolvers
+   1.09%	16164928	<framework-only stack> :: reactor.core.publisher.MonoOnErrorResume.subscribeOrReturn <- reactor.core.publisher.InternalMonoOperator.subscribe <- reactor.core.publisher.MonoFlatMap$FlatMapMain.onNext <- reactor.core.publisher.FluxOnErrorResume$ResumeSubscriber.onNext <- reactor.core.publisher.FluxSwitchIfEmpty$SwitchIfEmptySubscriber.onNext
+   1.08%	15984800	io.github.leohou0430.llmgw.engine.webflux.WebfluxGatewayController.firstValues :: java.lang.StringLatin1.toLowerCase <- java.lang.String.toLowerCase <- org.springframework.util.LinkedCaseInsensitiveMap.convertKey <- org.springframework.util.LinkedCaseInsensitiveMap.containsKey <- org.springframework.http.HttpHeaders$CaseInsensitiveHeaderNameSet.<init>
+   1.05%	15526320	<framework-only stack> :: java.lang.invoke.DirectMethodHandle.allocateInstance <- java.lang.invoke.DirectMethodHandle$Holder.newInvokeSpecial <- java.lang.invoke.Invokers$Holder.linkToTargetMethod <- org.springframework.web.server.adapter.HttpWebHandlerAdapter.handle <- org.springframework.boot.web.server.reactive.context.WebServerManager$DelayedInitializationHttpHandler.handle
+   1.05%	15512656	<framework-only stack> :: java.util.Arrays.copyOfRange <- java.lang.String.<init> <- io.netty.handler.codec.http.HttpObjectDecoder.langAsciiString <- io.netty.handler.codec.http.HttpObjectDecoder.splitSecondWordInitialLine <- io.netty.handler.codec.http.HttpObjectDecoder.splitInitialLine
+   0.99%	14686400	<framework-only stack> :: io.netty.handler.codec.DefaultHeaders.<init> <- io.netty.handler.codec.DefaultHeadersImpl.<init> <- io.netty.handler.codec.http.DefaultHttpHeaders.<init> <- io.netty.handler.codec.http.DefaultHttpHeaders.<init> <- io.netty.handler.codec.http.DefaultHttpHeadersFactory.newHeaders
+   0.93%	13748992	io.github.leohou0430.llmgw.engine.webflux.WebfluxGatewayController.firstValues :: java.util.HashMap.resize <- java.util.HashMap.putVal <- java.util.HashMap.put <- org.springframework.util.LinkedCaseInsensitiveMap.put <- org.springframework.util.LinkedCaseInsensitiveMap.put
+   0.91%	13555512	io.github.leohou0430.llmgw.engine.webflux.WebfluxGatewayController.firstValues :: org.springframework.http.HttpHeaders$CaseInsensitiveHeaderNameSet.iterator <- java.util.Collections$UnmodifiableCollection$1.<init> <- java.util.Collections$UnmodifiableCollection.iterator <- io.github.leohou0430.llmgw.engine.webflux.WebfluxGatewayController.firstValues <- io.github.leohou0430.llmgw.engine.webflux.WebfluxGatewayController.handleKindWithinCapacity
+   0.85%	12627048	<framework-only stack> :: reactor.core.publisher.MonoIgnoreThen.subscribe <- reactor.core.publisher.InternalMonoOperator.subscribe <- reactor.core.publisher.MonoFlatMap$FlatMapMain.onNext <- reactor.core.publisher.FluxOnErrorResume$ResumeSubscriber.onNext <- reactor.core.publisher.FluxSwitchIfEmpty$SwitchIfEmptySubscriber.onNext
+   0.77%	11428656	io.github.leohou0430.llmgw.provider.http.jdk.JdkHttpUpstream.build :: java.lang.String.encodeUTF8 <- java.lang.String.encode <- java.lang.String.getBytes <- jdk.internal.net.http.RequestPublishers$StringPublisher.<init> <- java.net.http.HttpRequest$BodyPublishers.ofString
+   0.75%	11062888	io.github.leohou0430.llmgw.provider.http.jdk.JdkHttpUpstream.completeRawAsync :: jdk.internal.net.http.HttpClientImpl.sendAsync <- jdk.internal.net.http.HttpClientImpl.sendAsync <- jdk.internal.net.http.HttpClientImpl.sendAsync <- jdk.internal.net.http.HttpClientFacade.sendAsync <- io.github.leohou0430.llmgw.provider.http.jdk.JdkHttpUpstream.completeRawAsync
+   0.73%	10821888	<framework-only stack> :: org.springframework.http.server.reactive.ReactorUriHelper.createUri <- org.springframework.http.server.reactive.ReactorServerHttpRequest.<init> <- org.springframework.http.server.reactive.ReactorHttpHandlerAdapter.apply <- org.springframework.http.server.reactive.ReactorHttpHandlerAdapter.apply <- reactor.netty.http.server.HttpServer$HttpServerHandle.onStateChange
+   0.72%	10700464	<framework-only stack> :: reactor.core.publisher.MonoZip.subscribe <- reactor.core.publisher.InternalMonoOperator.subscribe <- reactor.core.publisher.MonoDefer.subscribe <- reactor.core.publisher.MonoIgnoreThen$ThenIgnoreMain.subscribeNext <- reactor.core.publisher.MonoIgnoreThen$ThenIgnoreMain.onComplete
+   0.70%	10417864	<framework-only stack> :: reactor.core.publisher.Mono.flatMap <- org.springframework.web.reactive.handler.AbstractHandlerMapping.getHandler <- org.springframework.web.reactive.DispatcherHandler.lambda$handle$0 <- org.springframework.web.reactive.DispatcherHandler$$Lambda.0x0000000068763a68.apply <- reactor.core.publisher.FluxConcatMapNoPrefetch$FluxConcatMapNoPrefetchSubscriber.onNext
+   0.69%	10262728	<framework-only stack> :: io.micrometer.observation.Observation$Context.<init> <- io.micrometer.observation.transport.ReceiverContext.<init> <- io.micrometer.observation.transport.RequestReplyReceiverContext.<init> <- io.micrometer.observation.transport.RequestReplyReceiverContext.<init> <- org.springframework.http.server.reactive.observation.ServerRequestObservationContext.<init>
+   0.68%	10083160	<framework-only stack> :: java.util.ArrayList.spliterator <- java.util.Collections$UnmodifiableCollection.spliterator <- reactor.core.publisher.FluxIterable.subscribe <- reactor.core.publisher.InternalMonoOperator.subscribe <- reactor.core.publisher.MonoDefer.subscribe

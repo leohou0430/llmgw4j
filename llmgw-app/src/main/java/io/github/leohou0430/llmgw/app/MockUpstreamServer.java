@@ -17,8 +17,10 @@ import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HexFormat;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
@@ -73,6 +75,19 @@ public class MockUpstreamServer implements DisposableBean {
     private static final Logger log = LoggerFactory.getLogger(MockUpstreamServer.class);
     private static final String FAIL_MARKER = "mock-fail-after-";
     private static final String EOF_MARKER = "mock-eof-after-";
+    private static final String DEEPSEEK_MARKER = "mock-deepseek";
+    private static final String DEEPSEEK_TEXT = "Hello world";
+    private static final String DEEPSEEK_REASONING = "Let me think";
+    private static final String DEEPSEEK_TOOL_ID = "call_mock_1";
+    private static final String DEEPSEEK_TOOL_NAME = "get_weather";
+    private static final String DEEPSEEK_TOOL_ARGUMENTS = "{\"city\":\"SF\"}";
+    private static final int DEEPSEEK_PROMPT_TOKENS = 7;
+    private static final int DEEPSEEK_CACHED_TOKENS = 3;
+    private static final int DEEPSEEK_REASONING_TOKENS = 2;
+    /** Unterminated chunk JSON: the transport still completes, so the error must be caught in-band. */
+    private static final String DEEPSEEK_CORRUPT_CHUNK =
+            "{\"id\":\"chatcmpl-mock-deepseek\",\"object\":\"chat.completion.chunk\","
+                    + "\"choices\":[{\"index\":0,\"delta\":{\"content\":\"broken";
     private static final int MAX_IMAGES = 10;
     /** Task sits in "queued" for this long, then "in_progress", then completes. */
     private static final long QUEUED_MS = 400;
@@ -123,8 +138,11 @@ public class MockUpstreamServer implements DisposableBean {
             });
             server.setExecutor(Executors.newVirtualThreadPerTaskExecutor());
             server.start();
-            log.info("Mock upstream listening on port {}", properties.getMock().getPort());
+            log.info("Mock upstream listening on port {}", server.getAddress().getPort());
         } catch (IOException e) {
+            if (server != null) {
+                server.stop(0);
+            }
             throw new IllegalStateException("failed to start mock upstream", e);
         }
     }
@@ -308,6 +326,10 @@ public class MockUpstreamServer implements DisposableBean {
             return;
         }
         boolean stream = body.contains("\"stream\"") && body.contains("true");
+        if (body.contains(DEEPSEEK_MARKER)) {
+            handleDeepSeekChat(exchange, body, stream);
+            return;
+        }
         if (stream) {
             int chunks = Math.max(1, properties.getMock().getChunks());
             IntFunction<String> delta = i -> {
@@ -341,6 +363,161 @@ public class MockUpstreamServer implements DisposableBean {
                         ? ",\"echoApiKeyPresent\":true" : "")
                 + "}";
         writeJson(exchange, 200, json);
+    }
+
+    // ------------------------------------------------- deepseek chat mode
+
+    /**
+     * T1.13a: marker-gated DeepSeek Chat wire format for the three-protocol acceptance runs.
+     * Every payload without a {@code mock-deepseek*} marker keeps the legacy frames byte for
+     * byte, so smoke/benchmark behaviour is unchanged.
+     */
+    private void handleDeepSeekChat(HttpExchange exchange, String body, boolean stream) throws IOException {
+        boolean tools = body.contains(DEEPSEEK_MARKER + "-tools");
+        boolean thinking = body.contains(DEEPSEEK_MARKER + "-thinking");
+        int chunks = Math.max(1, properties.getMock().getChunks());
+        if (stream) {
+            int corruptAt = corruptChunkAt(body);
+            IntFunction<String> delta = i -> "data: "
+                    + (i == corruptAt ? DEEPSEEK_CORRUPT_CHUNK : deepSeekDeltaFrame(i, chunks, thinking, tools))
+                    + "\n\n";
+            // usage rides the FINAL chunk: once finish_reason is seen the decoder ignores later
+            // chunks, so a trailing usage-only frame would silently lose the billing numbers.
+            writeStream(exchange, body, delta, null, "data: [DONE]\n\n");
+            return;
+        }
+        writeJson(exchange, 200, deepSeekCompletion(thinking, tools));
+    }
+
+    private static String deepSeekDeltaFrame(int i, int chunks, boolean thinking, boolean tools) {
+        boolean last = i == chunks - 1;
+        String delta = tools ? deepSeekToolDelta(i, chunks, last)
+                : thinking ? deepSeekThinkingDelta(i, chunks, last)
+                : deepSeekTextDelta(i, chunks, last);
+        return deepSeekChunk(delta, last ? (tools ? "tool_calls" : "stop") : null,
+                last ? deepSeekUsage(chunks, thinking) : null);
+    }
+
+    private static String deepSeekTextDelta(int i, int chunks, boolean last) {
+        String content = chunks == 1 ? DEEPSEEK_TEXT
+                : last ? null : splitEvenly(DEEPSEEK_TEXT, chunks - 1).get(i);
+        return content == null ? "{}" : "{\"content\":" + jsonString(content) + "}";
+    }
+
+    private static String deepSeekThinkingDelta(int i, int chunks, boolean last) {
+        int contentFrames = chunks - 1;
+        // chunks==1 的唯一帧既是 last 又必须携带完整答案，故仅 contentFrames>0 时 last 才空帧。
+        if (last && contentFrames > 0) {
+            return "{}";
+        }
+        if (contentFrames <= 1) {
+            return "{\"reasoning_content\":" + jsonString(DEEPSEEK_REASONING)
+                    + ",\"content\":" + jsonString(DEEPSEEK_TEXT) + "}";
+        }
+        int reasoningFrames = Math.max(1, contentFrames / 2);
+        if (i < reasoningFrames) {
+            return "{\"reasoning_content\":"
+                    + jsonString(splitEvenly(DEEPSEEK_REASONING, reasoningFrames).get(i)) + "}";
+        }
+        return "{\"content\":" + jsonString(
+                splitEvenly(DEEPSEEK_TEXT, contentFrames - reasoningFrames).get(i - reasoningFrames)) + "}";
+    }
+
+    /** Opening fragment carries id/type/name; later fragments carry index + arguments only. */
+    private static String deepSeekToolDelta(int i, int chunks, boolean last) {
+        int argumentFrames = chunks - 2;
+        if (last) {
+            return chunks == 1 ? "{\"tool_calls\":[" + deepSeekToolCall(true, DEEPSEEK_TOOL_ARGUMENTS) + "]}" : "{}";
+        }
+        if (i == 0) {
+            return "{\"tool_calls\":[" + deepSeekToolCall(true,
+                    argumentFrames <= 0 ? DEEPSEEK_TOOL_ARGUMENTS : "") + "]}";
+        }
+        return "{\"tool_calls\":[" + deepSeekToolCall(false,
+                splitEvenly(DEEPSEEK_TOOL_ARGUMENTS, argumentFrames).get(i - 1)) + "]}";
+    }
+
+    private static String deepSeekToolCall(boolean opening, String arguments) {
+        return "{\"index\":0"
+                + (opening ? ",\"id\":\"" + DEEPSEEK_TOOL_ID + "\",\"type\":\"function\"" : "")
+                + ",\"function\":{" + (opening ? "\"name\":\"" + DEEPSEEK_TOOL_NAME + "\"," : "")
+                + "\"arguments\":" + jsonString(arguments) + "}}";
+    }
+
+    private static String deepSeekCompletion(boolean thinking, boolean tools) {
+        StringBuilder message = new StringBuilder("{\"role\":\"assistant\"");
+        if (thinking) {
+            message.append(",\"reasoning_content\":").append(jsonString(DEEPSEEK_REASONING));
+        }
+        if (tools) {
+            message.append(",\"content\":null,\"tool_calls\":[{\"id\":\"").append(DEEPSEEK_TOOL_ID)
+                    .append("\",\"type\":\"function\",\"function\":{\"name\":\"").append(DEEPSEEK_TOOL_NAME)
+                    .append("\",\"arguments\":").append(jsonString(DEEPSEEK_TOOL_ARGUMENTS)).append("}}]");
+        } else {
+            message.append(",\"content\":").append(jsonString(DEEPSEEK_TEXT));
+        }
+        message.append('}');
+        return deepSeekCompletion(message.toString(), tools ? "tool_calls" : "stop", thinking);
+    }
+
+    private static String deepSeekChunk(String deltaJson, String finishReason, String usageJson) {
+        return "{\"id\":\"chatcmpl-mock-deepseek\",\"object\":\"chat.completion.chunk\","
+                + "\"created\":1730000000,\"model\":\"deepseek-flash\","
+                + "\"choices\":[{\"index\":0,\"delta\":" + deltaJson + ",\"finish_reason\":"
+                + (finishReason == null ? "null" : jsonString(finishReason)) + "}]"
+                + (usageJson == null ? "" : ",\"usage\":" + usageJson) + "}";
+    }
+
+    private static String deepSeekCompletion(String messageJson, String finishReason, boolean thinking) {
+        return "{\"id\":\"chatcmpl-mock-deepseek\",\"object\":\"chat.completion\","
+                + "\"created\":1730000000,\"model\":\"deepseek-flash\","
+                + "\"choices\":[{\"index\":0,\"message\":" + messageJson + ",\"finish_reason\":"
+                + jsonString(finishReason) + "}],"
+                + "\"usage\":" + deepSeekUsage(1, thinking) + "}";
+    }
+
+    private static String deepSeekUsage(int completionTokens, boolean thinking) {
+        return "{\"prompt_tokens\":" + DEEPSEEK_PROMPT_TOKENS
+                + ",\"completion_tokens\":" + completionTokens
+                + ",\"total_tokens\":" + (DEEPSEEK_PROMPT_TOKENS + completionTokens)
+                + ",\"prompt_tokens_details\":{\"cached_tokens\":" + DEEPSEEK_CACHED_TOKENS + "}"
+                + (thinking ? ",\"completion_tokens_details\":{\"reasoning_tokens\":"
+                        + DEEPSEEK_REASONING_TOKENS + "}" : "")
+                + "}";
+    }
+
+    /** Even split so any configured chunk count reassembles to exactly the same text. */
+    private static List<String> splitEvenly(String value, int parts) {
+        List<String> pieces = new ArrayList<>(parts);
+        int previous = 0;
+        for (int i = 1; i <= parts; i++) {
+            int end = (int) Math.round((double) value.length() * i / parts);
+            pieces.add(value.substring(previous, end));
+            previous = end;
+        }
+        return pieces;
+    }
+
+    private static String jsonString(String value) {
+        StringBuilder out = new StringBuilder(value.length() + 2).append('"');
+        for (int i = 0; i < value.length(); i++) {
+            char c = value.charAt(i);
+            switch (c) {
+                case '"' -> out.append("\\\"");
+                case '\\' -> out.append("\\\\");
+                case '\n' -> out.append("\\n");
+                case '\r' -> out.append("\\r");
+                case '\t' -> out.append("\\t");
+                default -> {
+                    if (c < 0x20) {
+                        out.append(String.format(java.util.Locale.ROOT, "\\u%04x", (int) c));
+                    } else {
+                        out.append(c);
+                    }
+                }
+            }
+        }
+        return out.append('"').toString();
     }
 
     // ------------------------------------------------------------ responses
@@ -674,6 +851,19 @@ public class MockUpstreamServer implements DisposableBean {
         return markerCount(body, EOF_MARKER, -1);
     }
 
+    /**
+     * T1.13a corrupt-frame injection, deepseek mode only: {@code mock-corrupt-chunk} hits frame 0,
+     * {@code mock-corrupt-chunk-N} frame N. -1 = inert, so legacy payloads stay byte-identical.
+     */
+    private static int corruptChunkAt(String body) {
+        int at = markerCount(body, "mock-corrupt-chunk-", -1);
+        if (at >= 0) {
+            // N>=chunks 时 writeStream 的 i 循环永不命中故惰性；非数字/溢出后缀经 markerCount 回退到裸 marker→帧 0。
+            return at;
+        }
+        return body.contains("mock-corrupt-chunk") ? 0 : -1;
+    }
+
     private static int markerCount(String body, String marker, int absent) {
         int index = body.indexOf(marker);
         if (index < 0) {
@@ -734,6 +924,11 @@ public class MockUpstreamServer implements DisposableBean {
         private String model() {
             return model;
         }
+    }
+
+    /** The actual loopback port the mock bound (ephemeral when configured with port 0). */
+    public int port() {
+        return server != null ? server.getAddress().getPort() : properties.getMock().getPort();
     }
 
     @Override

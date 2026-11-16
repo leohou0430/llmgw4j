@@ -188,14 +188,37 @@ public final class ChunkParser {
         return found;
     }
 
-    /** Preserve String.trim's ASCII boundary rules while copying the payload only once. */
+    /**
+     * Preserve String.trim's ASCII boundary rules while copying the payload only once. The transport
+     * splits SSE field lines, but the conversion transcoder emits a whole event ("event: X\ndata: Y");
+     * take ONLY the first "data:" line's payload, stopping at the next LF/CR boundary, so the entry
+     * terminal and usage are accounted instead of mistaking a completed stream for a truncation. A
+     * fast path that ran to the global end would merge a following field line into the JSON payload.
+     */
     private static String dataPayload(String raw) {
         if (raw == null) return null;
         int start = 0, end = raw.length();
         while (start < end && raw.charAt(start) <= ' ') start++;
         while (end > start && raw.charAt(end - 1) <= ' ') end--;
-        if (end - start < 5 || !raw.startsWith("data:", start)) return null;
-        start += 5;
+        if (end - start < 5) return null;
+        int lineStart = start;
+        while (lineStart < end) {
+            if (raw.startsWith("data:", lineStart)) {
+                int lineEnd = lineStart + 5;
+                while (lineEnd < end && raw.charAt(lineEnd) != '\n' && raw.charAt(lineEnd) != '\r') lineEnd++;
+                while (lineEnd > lineStart + 5 && raw.charAt(lineEnd - 1) <= ' ') lineEnd--;
+                return payloadAfterPrefix(raw, lineStart + 5, lineEnd);
+            }
+            int next = lineStart;
+            while (next < end && raw.charAt(next) != '\n' && raw.charAt(next) != '\r') next++;
+            while (next < end && (raw.charAt(next) == '\n' || raw.charAt(next) == '\r')) next++;
+            while (next < end && raw.charAt(next) <= ' ') next++;
+            lineStart = next;
+        }
+        return null;
+    }
+
+    private static String payloadAfterPrefix(String raw, int start, int end) {
         while (start < end && raw.charAt(start) <= ' ') start++;
         return raw.substring(start, end);
     }

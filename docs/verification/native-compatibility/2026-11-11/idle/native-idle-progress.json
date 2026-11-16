@@ -1,0 +1,41 @@
+{
+  "binary_sha256": "d20b3bd6dd815e11a947a0cad83726188172b837d742f57f7cc639680e53c8d6",
+  "checks": [
+    {
+      "mode": "sse",
+      "status": 200,
+      "body": "data: [DONE]\n\n",
+      "seconds": 0.7720739350043004
+    },
+    {
+      "mode": "error",
+      "status": 502,
+      "body": "{\"error\":{\"message\":\"upstream: upstream status 503: unavailable\",\"type\":\"gateway_error\"}}",
+      "seconds": 0.6044203540004673
+    },
+    {
+      "mode": "stall",
+      "status": 502,
+      "body": "{\"error\":{\"message\":\"upstream: upstream idle read timeout\",\"type\":\"gateway_error\"}}",
+      "seconds": 0.27131396799813956
+    }
+  ],
+  "command": [
+    "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/native-compatibility-2026-11-11/llmgw-sdk-webflux",
+    "--spring.profiles.active=webflux",
+    "--server.port=56893",
+    "--gateway.mock.enabled=false",
+    "--gateway.upstream.base-url=http://127.0.0.1:56892/v1",
+    "--gateway.routes[0].target-url=http://127.0.0.1:56892/v1",
+    "--gateway.routes[0].api-key=idle-upstream",
+    "--gateway.api-keys[0].token=idle-client",
+    "--gateway.api-keys[0].quota-tokens=1000000000",
+    "--gateway.upstream.idle-read-timeout-ms=250",
+    "--gateway.upstream.heartbeat-interval-ms=0",
+    "--gateway.upstream.timeout-ms=5000",
+    "--gateway.keys-store-path=/var/folders/wx/9749nb1j7bbg_3n7kb15lbb80000gn/T/llmgw-native-idle-5pkglk0j/keys.json",
+    "--gateway.governance.snapshot-path=/var/folders/wx/9749nb1j7bbg_3n7kb15lbb80000gn/T/llmgw-native-idle-5pkglk0j/snapshot.json"
+  ],
+  "complete": true,
+  "gateway_exit": 143
+}

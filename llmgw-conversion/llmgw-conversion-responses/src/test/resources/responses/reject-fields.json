@@ -1,0 +1,14 @@
+{
+  "max_tool_calls": 4,
+  "previous_response_id": "resp_1",
+  "store": true,
+  "background": true,
+  "conversation": "conv_1",
+  "context_management": [{"type": "compaction", "compact_threshold": 1000}],
+  "prompt": {"id": "pmpt_1", "version": "2"},
+  "prompt_cache_options": {"mode": "auto"},
+  "truncation": "auto",
+  "moderation": {"model": "omni-moderation-latest"},
+  "image": {"model": "gpt-image-1"},
+  "access_programs": ["program-1"]
+}

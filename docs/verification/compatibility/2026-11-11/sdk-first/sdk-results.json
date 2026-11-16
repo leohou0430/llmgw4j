@@ -1,0 +1,206 @@
+{
+  "jar_sha256": "801baab0bb0bdf605ab43aedb075c41255d4eb8aa49c0c3152aa878150585304",
+  "versions": {
+    "openai": "3.49.0",
+    "anthropic": "2.8.0"
+  },
+  "checks": [
+    {
+      "engine": "webflux",
+      "name": "openai-chat-json",
+      "passed": true
+    },
+    {
+      "engine": "webflux",
+      "name": "openai-tools-and-extension",
+      "passed": true
+    },
+    {
+      "engine": "webflux",
+      "name": "openai-chat-sse-usage",
+      "passed": true
+    },
+    {
+      "engine": "webflux",
+      "name": "openai-responses-json",
+      "passed": true
+    },
+    {
+      "engine": "webflux",
+      "name": "openai-responses-sse",
+      "passed": true
+    },
+    {
+      "engine": "webflux",
+      "name": "anthropic-messages-json",
+      "passed": true
+    },
+    {
+      "engine": "webflux",
+      "name": "anthropic-messages-sse",
+      "passed": true
+    },
+    {
+      "engine": "webflux",
+      "name": "model-rewrite-and-upstream-credentials",
+      "passed": false,
+      "error": "AssertionError(('2026-10-21', '2023-06-01'))"
+    },
+    {
+      "engine": "webflux",
+      "name": "upstream-503-is-sdk-502-error",
+      "passed": true
+    },
+    {
+      "engine": "webflux",
+      "name": "sdk-one-retry-recovers",
+      "passed": true
+    },
+    {
+      "engine": "webflux",
+      "name": "openai-file-upload-content",
+      "passed": false,
+      "error": "InternalServerError('Error code: 502 - upstream: EOF reached while reading')"
+    },
+    {
+      "engine": "webflux",
+      "name": "file-list-explicit-501",
+      "passed": true
+    },
+    {
+      "engine": "webflux",
+      "name": "invalid-key-sdk-401",
+      "passed": true
+    },
+    {
+      "engine": "vt",
+      "name": "openai-chat-json",
+      "passed": true
+    },
+    {
+      "engine": "vt",
+      "name": "openai-tools-and-extension",
+      "passed": true
+    },
+    {
+      "engine": "vt",
+      "name": "openai-chat-sse-usage",
+      "passed": true
+    },
+    {
+      "engine": "vt",
+      "name": "openai-responses-json",
+      "passed": true
+    },
+    {
+      "engine": "vt",
+      "name": "openai-responses-sse",
+      "passed": true
+    },
+    {
+      "engine": "vt",
+      "name": "anthropic-messages-json",
+      "passed": true
+    },
+    {
+      "engine": "vt",
+      "name": "anthropic-messages-sse",
+      "passed": true
+    },
+    {
+      "engine": "vt",
+      "name": "model-rewrite-and-upstream-credentials",
+      "passed": false,
+      "error": "AssertionError(('2026-10-21', '2023-06-01'))"
+    },
+    {
+      "engine": "vt",
+      "name": "upstream-503-is-sdk-502-error",
+      "passed": true
+    },
+    {
+      "engine": "vt",
+      "name": "sdk-one-retry-recovers",
+      "passed": true
+    },
+    {
+      "engine": "vt",
+      "name": "openai-file-upload-content",
+      "passed": false,
+      "error": "InternalServerError('Error code: 502 - upstream: EOF reached while reading')"
+    },
+    {
+      "engine": "vt",
+      "name": "file-list-explicit-501",
+      "passed": true
+    },
+    {
+      "engine": "vt",
+      "name": "invalid-key-sdk-401",
+      "passed": true
+    }
+  ],
+  "commands": {
+    "webflux": [
+      "java",
+      "-jar",
+      "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/multi-replica-2026-11-11/default.jar",
+      "--spring.profiles.active=webflux",
+      "--server.port=62423",
+      "--server.address=127.0.0.1",
+      "--gateway.mock.enabled=false",
+      "--gateway.keys-store-path=",
+      "--gateway.governance.snapshot-path=",
+      "--gateway.api-keys[0].id=sdk",
+      "--gateway.api-keys[0].token=sdk-client",
+      "--gateway.api-keys[0].quota-tokens=1000000",
+      "--gateway.governance.rate-limit-tokens-per-second=1000000",
+      "--gateway.governance.rate-limit-burst=1000000",
+      "--gateway.routes[0].id=sdk-openai",
+      "--gateway.routes[0].protocol=*",
+      "--gateway.routes[0].model=*",
+      "--gateway.routes[0].target-model=upstream-model",
+      "--gateway.routes[0].target-url=http://127.0.0.1:62422/v1",
+      "--gateway.routes[0].api-key=sdk-upstream",
+      "--gateway.routes[0].provider=openai",
+      "--gateway.routes[1].id=sdk-anthropic",
+      "--gateway.routes[1].protocol=messages",
+      "--gateway.routes[1].model=*",
+      "--gateway.routes[1].target-model=upstream-model",
+      "--gateway.routes[1].target-url=http://127.0.0.1:62422/v1",
+      "--gateway.routes[1].api-key=sdk-upstream",
+      "--gateway.routes[1].provider=anthropic"
+    ],
+    "vt": [
+      "java",
+      "-jar",
+      "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/multi-replica-2026-11-11/default.jar",
+      "--spring.profiles.active=vt",
+      "--server.port=62475",
+      "--server.address=127.0.0.1",
+      "--gateway.mock.enabled=false",
+      "--gateway.keys-store-path=",
+      "--gateway.governance.snapshot-path=",
+      "--gateway.api-keys[0].id=sdk",
+      "--gateway.api-keys[0].token=sdk-client",
+      "--gateway.api-keys[0].quota-tokens=1000000",
+      "--gateway.governance.rate-limit-tokens-per-second=1000000",
+      "--gateway.governance.rate-limit-burst=1000000",
+      "--gateway.routes[0].id=sdk-openai",
+      "--gateway.routes[0].protocol=*",
+      "--gateway.routes[0].model=*",
+      "--gateway.routes[0].target-model=upstream-model",
+      "--gateway.routes[0].target-url=http://127.0.0.1:62422/v1",
+      "--gateway.routes[0].api-key=sdk-upstream",
+      "--gateway.routes[0].provider=openai",
+      "--gateway.routes[1].id=sdk-anthropic",
+      "--gateway.routes[1].protocol=messages",
+      "--gateway.routes[1].model=*",
+      "--gateway.routes[1].target-model=upstream-model",
+      "--gateway.routes[1].target-url=http://127.0.0.1:62422/v1",
+      "--gateway.routes[1].api-key=sdk-upstream",
+      "--gateway.routes[1].provider=anthropic"
+    ]
+  },
+  "complete": false
+}

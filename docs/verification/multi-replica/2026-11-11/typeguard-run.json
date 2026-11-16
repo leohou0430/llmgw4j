@@ -1,0 +1,17 @@
+{
+  "pid": 75365,
+  "port": 57728,
+  "process_identity_verified": true,
+  "command": [
+    "mvn",
+    "-B",
+    "-pl",
+    "llmgw-governance/llmgw-governance-redis",
+    "-am",
+    "-Dtest=RedisConsistencyTest",
+    "-Dsurefire.failIfNoSpecifiedTests=false",
+    "test"
+  ],
+  "test_exit_code": 1,
+  "redis_cleanup_exit_code": 0
+}

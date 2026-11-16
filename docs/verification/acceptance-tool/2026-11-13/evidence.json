@@ -1,0 +1,60 @@
+{
+  "task": "T1.16 real-acceptance driver (pure-local testable)",
+  "date": "2026-11-13",
+  "unittest": {
+    "ran": 36,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "result": "OK"
+  },
+  "mutation_proofs": [
+    {
+      "id": "M1",
+      "change": "ReservationLedger.reserve stops incrementing used",
+      "expected": "RED",
+      "observed": "3 failures (cap_blocks_fresh_reservation, result_record_does_not_reduce_used, dry_run used>0)",
+      "reverted": true
+    },
+    {
+      "id": "M2",
+      "change": "make_result_record skips _redact",
+      "expected": "RED",
+      "observed": "test_redact_scrubs_secret_from_any_field found secret in note",
+      "reverted": true
+    }
+  ],
+  "dry_run": {
+    "mode": "dry-run",
+    "scenario_count": 27,
+    "used": 27,
+    "cap": 60,
+    "window_seconds": 600,
+    "max_tokens": 1024,
+    "concurrency": 1,
+    "max_retries": 0,
+    "fallbacks": [],
+    "ledger_crash_resume_ok": true,
+    "secret_leak_in_outputs": false
+  },
+  "artifacts": {
+    "bin/acceptance-stage1.py": {
+      "bytes": 25539,
+      "sha256": "ed0c9a6656215eea557dfa34a61c61ed162b03599e41c793a2654775fa408324"
+    },
+    "bin/test_acceptance_stage1.py": {
+      "bytes": 17554,
+      "sha256": "fbc512503ffa7c1779a717068995e55bb9fcec3127b5f1397cea6dc017249115"
+    },
+    "tools/acceptance/stage1/scenarios.json": {
+      "bytes": 5346,
+      "sha256": "3c2fc5538b8e1b7ff3bdfb1f583759f5dba55f8a4d234a34543ce5e02725ee67"
+    }
+  },
+  "scope": "Pure logic + dry-run verified with system python3 (no SDKs, no network). live_send/run_live (real SDK send) NOT exercised here; reserved for the user-gated T1.18 10-minute window.",
+  "uncovered": [
+    "real provider send",
+    "live RSS/CPU sampling on Linux /proc",
+    "mid-stream cancel in live mode (covered by controlled ConversionContractTest T1.14c)"
+  ]
+}

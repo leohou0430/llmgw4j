@@ -1,0 +1,26 @@
+{
+  "complete": true,
+  "gates": {
+    "module_and_native_boundaries": true,
+    "three_clean_profiles": true,
+    "redis_consistency": true,
+    "dual_engine_http_contracts": true,
+    "contract_classes_apply_to_final": true,
+    "distributed_quota_and_recovery": true,
+    "capacity_and_resource_checks": true,
+    "latency_recheck_recorded": true,
+    "sources_unchanged": true,
+    "artifacts_unchanged": true
+  },
+  "artifacts": {
+    "bench/results/multi-replica-2026-11-11/redis-fixed.jar": "a3ce61f4adf7910e824e2feea98eb997ce66d10a9dd62857a55f26eca6580b01",
+    "bench/results/multi-replica-2026-11-11/default.jar": "801baab0bb0bdf605ab43aedb075c41255d4eb8aa49c0c3152aa878150585304"
+  },
+  "native_scope": "no new phase-2 native build; no AOT changes; phase-1 native remains historical",
+  "unsupported_scope": [
+    "financial durability and crash reconciliation",
+    "versioned distributed control plane",
+    "Redis Cluster/Sentinel",
+    "live supplier compatibility"
+  ]
+}

@@ -77,4 +77,14 @@ class QuotaMathTest {
         // Negative usage never creates credit.
         assertEquals(0, QuotaMath.costMicroUsd(-5, -5, price));
     }
+    @Test void largeProductsKeepTheCorrectCostWhenTheFinalAmountFits() {
+        var price=new io.github.leohou0430.llmgw.core.model.ModelCatalog.ModelInfo("m","p",0,1_000_000_000_000_000L,0);
+        assertEquals(2_000_000_000_000_000_000L,QuotaMath.costMicroUsd(2_000_000_000L,0,price));
+    }
+    @Test void unrepresentableCostsAndTokenTotalsFailInsteadOfCreatingCredit() {
+        var price=new io.github.leohou0430.llmgw.core.model.ModelCatalog.ModelInfo("m","p",0,Long.MAX_VALUE,Long.MAX_VALUE);
+        org.junit.jupiter.api.Assertions.assertThrows(ArithmeticException.class,()->QuotaMath.costMicroUsd(1_000_000,1_000_000,price));
+        org.junit.jupiter.api.Assertions.assertThrows(ArithmeticException.class,()->QuotaMath.billed(Long.MAX_VALUE,1));
+    }
+
 }

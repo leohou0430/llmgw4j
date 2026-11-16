@@ -50,7 +50,7 @@ public final class InMemoryRouteConfigSource implements RouteConfigSource {
             String key = def.getApiKey().isBlank() ? defaultKey : def.getApiKey();
             parsed.add(new Route(def.getId(), def.getProtocol(), def.getModel(), def.getTargetModel(),
                     url, key, def.getProvider(), Math.max(1, def.getWeight()),
-                    List.copyOf(def.getFallbacks())));
+                    List.copyOf(def.getFallbacks()), def.getUpstreamProtocol()));
         }
         if (parsed.isEmpty()) {
             parsed.add(new Route("default", "*", "*", "", defaultUrl, defaultKey, 1, List.of()));

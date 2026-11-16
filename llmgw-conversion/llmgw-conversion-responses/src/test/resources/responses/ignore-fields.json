@@ -1,0 +1,9 @@
+{
+  "parallel_tool_calls": false,
+  "prompt_cache_key": "cache-1",
+  "prompt_cache_retention": "24h",
+  "metadata": {"trace": "abc"},
+  "service_tier": "auto",
+  "top_logprobs": 3,
+  "temperature": 0.4
+}

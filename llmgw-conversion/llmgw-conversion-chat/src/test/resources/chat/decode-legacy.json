@@ -1,0 +1,12 @@
+{
+  "model": "client-model",
+  "messages": [
+    {"role": "user", "content": "weather?"},
+    {"role": "assistant", "content": null, "function_call": {"name": "get_weather", "arguments": "{\"city\":\"Paris\"}"}}
+  ],
+  "functions": [
+    {"name": "get_weather", "description": "Get weather", "parameters": {"type": "object"}}
+  ],
+  "function_call": {"name": "get_weather"},
+  "reasoning_effort": "none"
+}

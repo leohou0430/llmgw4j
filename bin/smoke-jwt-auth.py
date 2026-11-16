@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """Exercise HS256 JWT claim checks through both real data planes and a local mock."""
+import argparse
 import base64
 import hashlib
 import hmac
 import json
+import os
 from pathlib import Path
 import socket
 import subprocess
@@ -28,11 +30,13 @@ def token(claims):
     return (body + b'.' + base64.urlsafe_b64encode(hmac.new(SECRET, body, hashlib.sha256).digest()).rstrip(b'=')).decode()
 
 
-def verify(engine):
+def verify(engine, jar):
     gateway_port, mock_port = port(), port()
+    while mock_port == gateway_port:
+        mock_port = port()
     with tempfile.TemporaryDirectory(prefix='llmgw-jwt-auth-') as folder:
         log_path = Path(folder)/'gateway.log'
-        command = ['java', '-jar', str(ROOT/'llmgw-app/target/llmgw-app-0.3.1.jar'),
+        command = ['java', '-jar', str(jar),
             f'--spring.profiles.active={engine}', f'--server.port={gateway_port}',
             '--server.address=127.0.0.1', '--gateway.production=false',
             '--gateway.mock.enabled=true', f'--gateway.mock.port={mock_port}',
@@ -93,4 +97,8 @@ def verify(engine):
 
 
 if __name__=='__main__':
-    for engine in ['webflux','vt']:verify(engine)
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--jar', type=Path, default=Path(os.environ.get(
+        'LLMGW_TEST_JAR', ROOT/'llmgw-app/target/llmgw-app-0.3.1.jar')))
+    jar = parser.parse_args().jar.resolve()
+    for engine in ['webflux','vt']:verify(engine, jar)

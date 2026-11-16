@@ -1,0 +1,8 @@
+{
+  "model": "client-model",
+  "messages": [{"role": "user", "content": "json please"}],
+  "response_format": {
+    "type": "json_schema",
+    "json_schema": {"name": "answer", "schema": {"type": "object"}, "strict": true}
+  }
+}

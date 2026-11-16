@@ -1,0 +1,41 @@
+{
+  "before": {
+    "jar_sha256": "1b37d8c677d3f20e97236464e3032ce57226ebdad36ba6bef386b8bac6fea535",
+    "transport_classes": {
+      "io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream$LineSubscription$1.class": "d81ad3292b6ed3dc0ebd4be25fc32aadd8d461b187ec0947c7136a17f273e7f0",
+      "io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream.class": "54c4a77ce2092020ebbb59124ecfbdaec0bf0ba82603d47aba5707478e993816",
+      "io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream$DemandBridge.class": "9ca08285ee6dc3243f7c47e48f91d80e1e6b25db37a7be97e323c159ee4f5aa4",
+      "io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream$LineSubscription.class": "3d4fdfd6c3fae76c21514cc747dd4d5ed32caf411da9ddbd9b3bc0e05c62f083"
+    }
+  },
+  "after": {
+    "jar_sha256": "946c4d7baf2c70c8d03cb6324f7dbd59ca6332aec53f1d8c44d2be598358ae82",
+    "transport_classes": {
+      "io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream$LineSubscription$1.class": "fbc132ae5c5d7867ebc88e5b82450d54f5706e3230cb842beba1ae6ff1b45d77",
+      "io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream.class": "486c95a6cdb66ae7cbf6d99a26ca7eb8398dbf4dbdf3742491b4efd1b6a2f8cf",
+      "io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream$DemandBridge.class": "3228eacdc1a75600d61285c3943822bf7a49867025365f47ac588311ee57870c",
+      "io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream$BlockingDeadline.class": "684c532c19dd710fae671187ac90a38147370e32eb7b1c81995f47fa065eb4d2",
+      "io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream$LineSubscription.class": "1f4567933da255e6a8812f23689bd8694b0bd94e8c85fb81ad88016659df6d35"
+    }
+  },
+  "redis": {
+    "jar_sha256": "d5123bed9b4f7b21a9708007ca9ae2b2daa33d2ca978e4df960be12fae3262f6",
+    "transport_classes": {
+      "io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream$LineSubscription$1.class": "fbc132ae5c5d7867ebc88e5b82450d54f5706e3230cb842beba1ae6ff1b45d77",
+      "io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream.class": "486c95a6cdb66ae7cbf6d99a26ca7eb8398dbf4dbdf3742491b4efd1b6a2f8cf",
+      "io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream$DemandBridge.class": "3228eacdc1a75600d61285c3943822bf7a49867025365f47ac588311ee57870c",
+      "io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream$BlockingDeadline.class": "684c532c19dd710fae671187ac90a38147370e32eb7b1c81995f47fa065eb4d2",
+      "io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream$LineSubscription.class": "1f4567933da255e6a8812f23689bd8694b0bd94e8c85fb81ad88016659df6d35"
+    }
+  },
+  "combined": {
+    "jar_sha256": "f01841ffbc7c5cad5e829fc471e15b7d41367f760aa54486941301b11ee81448",
+    "transport_classes": {
+      "io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream$LineSubscription$1.class": "fbc132ae5c5d7867ebc88e5b82450d54f5706e3230cb842beba1ae6ff1b45d77",
+      "io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream.class": "486c95a6cdb66ae7cbf6d99a26ca7eb8398dbf4dbdf3742491b4efd1b6a2f8cf",
+      "io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream$DemandBridge.class": "3228eacdc1a75600d61285c3943822bf7a49867025365f47ac588311ee57870c",
+      "io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream$BlockingDeadline.class": "684c532c19dd710fae671187ac90a38147370e32eb7b1c81995f47fa065eb4d2",
+      "io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream$LineSubscription.class": "1f4567933da255e6a8812f23689bd8694b0bd94e8c85fb81ad88016659df6d35"
+    }
+  }
+}

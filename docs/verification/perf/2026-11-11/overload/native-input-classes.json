@@ -1,0 +1,6 @@
+{
+  "llmgw-engine-api": true,
+  "llmgw-engine-webflux": true,
+  "llmgw-engine-vt": true,
+  "llmgw-provider-http-jdk": true
+}

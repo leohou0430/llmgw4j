@@ -1,0 +1,7 @@
+[
+  {"id": "s-2", "object": "chat.completion.chunk", "model": "deepseek-flash",
+   "choices": [{"index": 0, "delta": {"role": "assistant", "content": "partial"}, "finish_reason": null}]},
+  {"id": "s-2", "object": "chat.completion.chunk", "model": "deepseek-flash",
+   "choices": [{"index": 0, "delta": {}, "finish_reason": "aborted"}],
+   "usage": {"prompt_tokens": 6, "completion_tokens": 1, "total_tokens": 7}}
+]

@@ -1,0 +1,172 @@
+{
+  "artifacts": {
+    "previous-sse": {
+      "path": "bench/results/sse-2026-11-11/after.jar",
+      "sha256": "b649b7fab0f1d8d94f07929664345bc8c6f1317de8028a73f0ca817a651c6d9c",
+      "module_class_digests": {
+        "llmgw-core": {
+          "classes": 96,
+          "sha256": "43325c2b3359cb4c919f8e8a8d204e41048e10b36a1b5f0e2d1e8558d8ef79e6"
+        },
+        "llmgw-engine-api": {
+          "classes": 11,
+          "sha256": "a2b8b55abe68667a9433f3488b24bcddbe2594cb861e40a1ff5a07bf9c25825e"
+        },
+        "llmgw-engine-webflux": {
+          "classes": 4,
+          "sha256": "ef0c7066b1cd90b5397adb65caeeb9900b8efc9d5740e0dfd41d0c77a2fa5ff3"
+        },
+        "llmgw-engine-vt": {
+          "classes": 4,
+          "sha256": "47b5d7b51f4f83ace1d9a8dc9e3966f7a13e06a395292a65cfa4663bd094f44d"
+        },
+        "llmgw-provider-http-jdk": {
+          "classes": 7,
+          "sha256": "d0e090511a85cc2d22dd78a4f808118239047ee78e67089d5c27edeadcb7247c"
+        }
+      }
+    },
+    "before-webflux": {
+      "path": "bench/results/backpressure-2026-11-11/before-webflux.jar",
+      "sha256": "43bcb738faba0b3e2ea2d349da9a7192f0cd1085d7db0ce2ea319d062e9618e8",
+      "module_class_digests": {
+        "llmgw-core": {
+          "classes": 96,
+          "sha256": "43325c2b3359cb4c919f8e8a8d204e41048e10b36a1b5f0e2d1e8558d8ef79e6"
+        },
+        "llmgw-engine-api": {
+          "classes": 11,
+          "sha256": "a2b8b55abe68667a9433f3488b24bcddbe2594cb861e40a1ff5a07bf9c25825e"
+        },
+        "llmgw-engine-webflux": {
+          "classes": 4,
+          "sha256": "ef0c7066b1cd90b5397adb65caeeb9900b8efc9d5740e0dfd41d0c77a2fa5ff3"
+        },
+        "llmgw-engine-vt": {
+          "classes": 4,
+          "sha256": "77a96728000ea72d26a99a2d8210d0107fe98dcd96ddf9338cbab3cb811adc85"
+        },
+        "llmgw-provider-http-jdk": {
+          "classes": 11,
+          "sha256": "602d1b9faf98cc49f5cf4f2ff43cd43011cdf3ecc9b756eeee3e1c96f0ccd565"
+        }
+      }
+    },
+    "after": {
+      "path": "bench/results/backpressure-2026-11-11/after.jar",
+      "sha256": "25222da82d0829f484b33326fb8922c5d55f5c4dcf1188a2fc5780c5e08ced90",
+      "module_class_digests": {
+        "llmgw-core": {
+          "classes": 96,
+          "sha256": "43325c2b3359cb4c919f8e8a8d204e41048e10b36a1b5f0e2d1e8558d8ef79e6"
+        },
+        "llmgw-engine-api": {
+          "classes": 11,
+          "sha256": "a2b8b55abe68667a9433f3488b24bcddbe2594cb861e40a1ff5a07bf9c25825e"
+        },
+        "llmgw-engine-webflux": {
+          "classes": 4,
+          "sha256": "04626df3b3c39ca7d84a635b9139453e796e8d9abbc3978f33645518688c5c45"
+        },
+        "llmgw-engine-vt": {
+          "classes": 4,
+          "sha256": "77a96728000ea72d26a99a2d8210d0107fe98dcd96ddf9338cbab3cb811adc85"
+        },
+        "llmgw-provider-http-jdk": {
+          "classes": 11,
+          "sha256": "602d1b9faf98cc49f5cf4f2ff43cd43011cdf3ecc9b756eeee3e1c96f0ccd565"
+        }
+      }
+    },
+    "verified-default": {
+      "path": "bench/results/backpressure-2026-11-11/verified-default.jar",
+      "sha256": "e29d60778ceca076a112ec4286ef78996c6778189ea1b603b774b9ea5f8bc60f",
+      "module_class_digests": {
+        "llmgw-core": {
+          "classes": 96,
+          "sha256": "43325c2b3359cb4c919f8e8a8d204e41048e10b36a1b5f0e2d1e8558d8ef79e6"
+        },
+        "llmgw-engine-api": {
+          "classes": 11,
+          "sha256": "a2b8b55abe68667a9433f3488b24bcddbe2594cb861e40a1ff5a07bf9c25825e"
+        },
+        "llmgw-engine-webflux": {
+          "classes": 4,
+          "sha256": "04626df3b3c39ca7d84a635b9139453e796e8d9abbc3978f33645518688c5c45"
+        },
+        "llmgw-engine-vt": {
+          "classes": 4,
+          "sha256": "77a96728000ea72d26a99a2d8210d0107fe98dcd96ddf9338cbab3cb811adc85"
+        },
+        "llmgw-provider-http-jdk": {
+          "classes": 11,
+          "sha256": "602d1b9faf98cc49f5cf4f2ff43cd43011cdf3ecc9b756eeee3e1c96f0ccd565"
+        }
+      }
+    },
+    "verified-redis": {
+      "path": "bench/results/backpressure-2026-11-11/verified-redis.jar",
+      "sha256": "dd6d753ede28f7139199f99dfc87f29a86ebf64b366e8c57557c07ad90afb942",
+      "module_class_digests": {
+        "llmgw-core": {
+          "classes": 96,
+          "sha256": "43325c2b3359cb4c919f8e8a8d204e41048e10b36a1b5f0e2d1e8558d8ef79e6"
+        },
+        "llmgw-engine-api": {
+          "classes": 11,
+          "sha256": "a2b8b55abe68667a9433f3488b24bcddbe2594cb861e40a1ff5a07bf9c25825e"
+        },
+        "llmgw-engine-webflux": {
+          "classes": 4,
+          "sha256": "04626df3b3c39ca7d84a635b9139453e796e8d9abbc3978f33645518688c5c45"
+        },
+        "llmgw-engine-vt": {
+          "classes": 4,
+          "sha256": "77a96728000ea72d26a99a2d8210d0107fe98dcd96ddf9338cbab3cb811adc85"
+        },
+        "llmgw-provider-http-jdk": {
+          "classes": 11,
+          "sha256": "602d1b9faf98cc49f5cf4f2ff43cd43011cdf3ecc9b756eeee3e1c96f0ccd565"
+        }
+      }
+    },
+    "verified-combined": {
+      "path": "bench/results/backpressure-2026-11-11/verified-combined.jar",
+      "sha256": "a3382f1d33a3a19c137902dd615a25c0fb151c6aeaa744a84e47401034e5d7a7",
+      "module_class_digests": {
+        "llmgw-core": {
+          "classes": 96,
+          "sha256": "43325c2b3359cb4c919f8e8a8d204e41048e10b36a1b5f0e2d1e8558d8ef79e6"
+        },
+        "llmgw-engine-api": {
+          "classes": 11,
+          "sha256": "a2b8b55abe68667a9433f3488b24bcddbe2594cb861e40a1ff5a07bf9c25825e"
+        },
+        "llmgw-engine-webflux": {
+          "classes": 4,
+          "sha256": "04626df3b3c39ca7d84a635b9139453e796e8d9abbc3978f33645518688c5c45"
+        },
+        "llmgw-engine-vt": {
+          "classes": 4,
+          "sha256": "77a96728000ea72d26a99a2d8210d0107fe98dcd96ddf9338cbab3cb811adc85"
+        },
+        "llmgw-provider-http-jdk": {
+          "classes": 11,
+          "sha256": "602d1b9faf98cc49f5cf4f2ff43cd43011cdf3ecc9b756eeee3e1c96f0ccd565"
+        }
+      }
+    }
+  },
+  "source_sha256": {
+    "llmgw-provider/llmgw-provider-http-jdk/src/main/java/io/github/leohou0430/llmgw/provider/http/jdk/SseLineLimitSubscriber.java": "6a328991738c8f5bd147256063cd34f4e8ee67d05b828174c57df0ad43d42054",
+    "llmgw-provider/llmgw-provider-http-jdk/src/main/java/io/github/leohou0430/llmgw/provider/http/jdk/BlockingSseBodySubscriber.java": "d7f02020064d4567f89d572543c869111ea8cf28693a74d37d3b2d6b278a93bf",
+    "llmgw-provider/llmgw-provider-http-jdk/src/main/java/io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpModule.java": "ddda8fa9ccce1cd9ee20acd94c0df85a8aef9663c01c166a5c22d2ec52363b60",
+    "llmgw-provider/llmgw-provider-http-jdk/src/main/java/io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream.java": "8c46546c9871306f4745788a3384e94247f72c47168b01894c2e1df03970d434",
+    "llmgw-provider/llmgw-provider-http-jdk/src/test/java/io/github/leohou0430/llmgw/provider/http/jdk/BlockingSseBodySubscriberTest.java": "1ddf87d5f045861a076b75a62c203ca39695832e7acdf55dac30efd2b1f46431",
+    "llmgw-provider/llmgw-provider-http-jdk/src/test/java/io/github/leohou0430/llmgw/provider/http/jdk/BlockingHeartbeatTest.java": "0d87573f8a1eb0682b16e8a0cd3ee6327cbac3c0fa1c12c5146d4c04c68d4abd",
+    "llmgw-engine/llmgw-engine-webflux/src/main/java/io/github/leohou0430/llmgw/engine/webflux/WebfluxGatewayController.java": "418e7a65a5ee022849f41e82d0951c5205ac287e89239f97dcdf6398075c056f",
+    "llmgw-engine/llmgw-engine-webflux/src/test/java/io/github/leohou0430/llmgw/engine/webflux/HeartbeatBackpressureTest.java": "bfbbc3ca2551c9862642760e0a46f6ac732e4018af944364c4cffe92d275da54",
+    "llmgw-engine/llmgw-engine-vt/src/main/java/io/github/leohou0430/llmgw/engine/vt/VirtualThreadGatewayController.java": "fe142eda1959c432487c91d89f0533193a235452560ee21149dc9be57bf1c3e6",
+    "bin/smoke-heartbeat-deadline.py": "4604f24def12fe537ebe23ce6accb48d3280c1eb56ba47004bc48706fbe53903"
+  }
+}

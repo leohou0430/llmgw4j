@@ -1,0 +1,70 @@
+[
+  {
+    "scenario": "bounded-slow-no-heartbeat",
+    "jar_sha256": "338884488c5615285e55b73eead9ea8152211aa98c84688d32f228efb50149e4",
+    "engine": "webflux",
+    "clients": 64,
+    "max_header_ms": 7851.503940997645,
+    "cgroup_memory_peak_bytes": 1227497472,
+    "stats_after_cancel": {
+      "requests": 64,
+      "active": 0,
+      "completed": 0,
+      "cancelled": 64
+    },
+    "recovery": "200 ok",
+    "OOMKilled": false,
+    "JVM_OOM_errors": 0
+  },
+  {
+    "scenario": "bounded-slow-no-heartbeat",
+    "jar_sha256": "338884488c5615285e55b73eead9ea8152211aa98c84688d32f228efb50149e4",
+    "engine": "vt",
+    "clients": 64,
+    "max_header_ms": 3296.213728001021,
+    "cgroup_memory_peak_bytes": 867635200,
+    "stats_after_cancel": {
+      "requests": 64,
+      "active": 0,
+      "completed": 0,
+      "cancelled": 64
+    },
+    "recovery": "200 ok",
+    "OOMKilled": false,
+    "JVM_OOM_errors": 0
+  },
+  {
+    "scenario": "bounded-slow-heartbeat",
+    "jar_sha256": "338884488c5615285e55b73eead9ea8152211aa98c84688d32f228efb50149e4",
+    "engine": "webflux",
+    "clients": 64,
+    "max_header_ms": 3006.103143998189,
+    "cgroup_memory_peak_bytes": 1373802496,
+    "stats_after_cancel": {
+      "requests": 64,
+      "active": 0,
+      "completed": 0,
+      "cancelled": 64
+    },
+    "recovery": "200 ok",
+    "OOMKilled": false,
+    "JVM_OOM_errors": 0
+  },
+  {
+    "scenario": "bounded-slow-heartbeat",
+    "jar_sha256": "338884488c5615285e55b73eead9ea8152211aa98c84688d32f228efb50149e4",
+    "engine": "vt",
+    "clients": 64,
+    "max_header_ms": 2911.361759001011,
+    "cgroup_memory_peak_bytes": 925241344,
+    "stats_after_cancel": {
+      "requests": 64,
+      "active": 0,
+      "completed": 0,
+      "cancelled": 64
+    },
+    "recovery": "200 ok",
+    "OOMKilled": false,
+    "JVM_OOM_errors": 0
+  }
+]

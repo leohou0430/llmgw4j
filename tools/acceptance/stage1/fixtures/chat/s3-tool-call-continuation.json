@@ -1,0 +1,218 @@
+{
+  "schema": "llmgw-acceptance-fixture/v1",
+  "id": "chat-s3-tool-call-continuation",
+  "entry": "chat",
+  "scenario": 3,
+  "slug": "tool-call-continuation",
+  "title": "工具调用→客户端执行→结果续轮",
+  "mock": {
+    "chunks": 4
+  },
+  "markers": [
+    "mock-deepseek-tools",
+    "mock-deepseek"
+  ],
+  "steps": [
+    {
+      "name": "initial",
+      "request": {
+        "model": "mock-model",
+        "messages": [
+          {
+            "role": "user",
+            "content": "mock-deepseek-tools: What is the weather in SF?"
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "get_weather",
+              "description": "Mock-fixed weather tool: the controlled upstream always calls it with {\"city\":\"SF\"}.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "city": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "city"
+                ],
+                "additionalProperties": false
+              },
+              "strict": false
+            }
+          },
+          {
+            "type": "function",
+            "function": {
+              "name": "add_numbers",
+              "description": "Deterministic integer addition for controlled acceptance runs.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "a": {
+                    "type": "integer"
+                  },
+                  "b": {
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "a",
+                  "b"
+                ],
+                "additionalProperties": false
+              },
+              "strict": false
+            }
+          }
+        ],
+        "tool_choice": "auto",
+        "reasoning_effort": "none",
+        "max_tokens": 1024,
+        "stream": false
+      },
+      "expected": {
+        "transport": "json",
+        "terminal": {
+          "object": "chat.completion",
+          "choices_len": 1,
+          "message_role": "assistant",
+          "finish_reason": "tool_calls",
+          "content_null": true
+        },
+        "tool_calls": [
+          {
+            "id": "call_mock_1",
+            "name": "get_weather",
+            "arguments": {
+              "city": "SF"
+            }
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 7,
+          "completion_tokens": 1,
+          "total_tokens": 8,
+          "prompt_tokens_details": {
+            "cached_tokens": 3
+          },
+          "absent_fields": [
+            "usage.completion_tokens_details"
+          ]
+        }
+      }
+    },
+    {
+      "name": "continuation",
+      "request": {
+        "model": "mock-model",
+        "messages": [
+          {
+            "role": "user",
+            "content": "What is the weather in SF?"
+          },
+          {
+            "role": "assistant",
+            "content": null,
+            "tool_calls": [
+              {
+                "id": "call_mock_1",
+                "type": "function",
+                "function": {
+                  "name": "get_weather",
+                  "arguments": "{\"city\":\"SF\"}"
+                }
+              }
+            ]
+          },
+          {
+            "role": "tool",
+            "tool_call_id": "call_mock_1",
+            "content": "{\"city\":\"SF\",\"temperature_c\":18,\"condition\":\"sunny\"}"
+          },
+          {
+            "role": "user",
+            "content": "mock-deepseek: Answer using the tool result."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "get_weather",
+              "description": "Mock-fixed weather tool: the controlled upstream always calls it with {\"city\":\"SF\"}.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "city": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "city"
+                ],
+                "additionalProperties": false
+              },
+              "strict": false
+            }
+          },
+          {
+            "type": "function",
+            "function": {
+              "name": "add_numbers",
+              "description": "Deterministic integer addition for controlled acceptance runs.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "a": {
+                    "type": "integer"
+                  },
+                  "b": {
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "a",
+                  "b"
+                ],
+                "additionalProperties": false
+              },
+              "strict": false
+            }
+          }
+        ],
+        "tool_choice": "auto",
+        "reasoning_effort": "none",
+        "max_tokens": 1024,
+        "stream": false
+      },
+      "expected": {
+        "transport": "json",
+        "terminal": {
+          "object": "chat.completion",
+          "choices_len": 1,
+          "message_role": "assistant",
+          "finish_reason": "stop"
+        },
+        "text": {
+          "equals": "Hello world"
+        },
+        "usage": {
+          "prompt_tokens": 7,
+          "completion_tokens": 1,
+          "total_tokens": 8,
+          "prompt_tokens_details": {
+            "cached_tokens": 3
+          },
+          "absent_fields": [
+            "usage.completion_tokens_details"
+          ]
+        }
+      }
+    }
+  ],
+  "notes": "Marker hygiene: the continuation history carries no mock-deepseek-tools marker so the controlled upstream answers text after the tool result; the plain mock-deepseek marker lives only in the active turn. Responses continuation uses input items (function_call + function_call_output); previous_response_id is rejected by the gateway (no conversation storage)."
+}

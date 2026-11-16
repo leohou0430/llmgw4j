@@ -1,0 +1,70 @@
+[
+  {
+    "scenario": "idle-slow-no-heartbeat",
+    "engine": "webflux",
+    "jar_sha256": "34425d57569f47690b11dd6748d1410477076dd2f442f8c55323ff3e829a9482",
+    "clients": 64,
+    "header_max_ms": 4607.185680000839,
+    "memory_peak_bytes": 1315328000,
+    "after_cancel": {
+      "requests": 64,
+      "active": 0,
+      "completed": 0,
+      "cancelled": 64
+    },
+    "recovery": "200 ok",
+    "oom_killed": false,
+    "jvm_oom_errors": 0
+  },
+  {
+    "scenario": "idle-slow-no-heartbeat",
+    "engine": "vt",
+    "jar_sha256": "34425d57569f47690b11dd6748d1410477076dd2f442f8c55323ff3e829a9482",
+    "clients": 64,
+    "header_max_ms": 5345.565561001422,
+    "memory_peak_bytes": 930791424,
+    "after_cancel": {
+      "requests": 64,
+      "active": 0,
+      "completed": 0,
+      "cancelled": 64
+    },
+    "recovery": "200 ok",
+    "oom_killed": false,
+    "jvm_oom_errors": 0
+  },
+  {
+    "scenario": "idle-slow-heartbeat",
+    "engine": "webflux",
+    "jar_sha256": "34425d57569f47690b11dd6748d1410477076dd2f442f8c55323ff3e829a9482",
+    "clients": 64,
+    "header_max_ms": 2222.0718050011783,
+    "memory_peak_bytes": 1276055552,
+    "after_cancel": {
+      "requests": 64,
+      "active": 0,
+      "completed": 0,
+      "cancelled": 64
+    },
+    "recovery": "200 ok",
+    "oom_killed": false,
+    "jvm_oom_errors": 0
+  },
+  {
+    "scenario": "idle-slow-heartbeat",
+    "engine": "vt",
+    "jar_sha256": "34425d57569f47690b11dd6748d1410477076dd2f442f8c55323ff3e829a9482",
+    "clients": 64,
+    "header_max_ms": 1931.9959390013537,
+    "memory_peak_bytes": 916611072,
+    "after_cancel": {
+      "requests": 64,
+      "active": 0,
+      "completed": 0,
+      "cancelled": 64
+    },
+    "recovery": "200 ok",
+    "oom_killed": false,
+    "jvm_oom_errors": 0
+  }
+]

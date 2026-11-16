@@ -1,0 +1,283 @@
+{
+  "jars": {
+    "before": {
+      "path": "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/eof-2026-11-11/after.jar",
+      "sha256": "0485fc98599c117939b8ea0b5cf00e4ecacd1abc1f1b55b813629eef5fe191a5"
+    },
+    "after": {
+      "path": "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/lifecycle-2026-11-11/idle-output.jar",
+      "sha256": "34425d57569f47690b11dd6748d1410477076dd2f442f8c55323ff3e829a9482"
+    }
+  },
+  "trial_count": 62,
+  "regular_trial_count": 48,
+  "long_trial_count": 4,
+  "load": {
+    "rounds": 3,
+    "duration": "6s",
+    "vus": [
+      64,
+      96
+    ],
+    "retry_after_respected": true
+  },
+  "groups": [
+    {
+      "label": "after-vt",
+      "mode": "json",
+      "vus": 64,
+      "rounds": 3,
+      "successes": 27174,
+      "capacity_rejections": 0,
+      "median_success_per_second": 1436.1123020272225,
+      "median_p99_ms": 84.42935999999995,
+      "median_container_cpu_ms_per_success": 1.408445610797093,
+      "peak_cgroup_memory_bytes": 367435776
+    },
+    {
+      "label": "after-vt",
+      "mode": "json",
+      "vus": 96,
+      "rounds": 3,
+      "successes": 44770,
+      "capacity_rejections": 567,
+      "median_success_per_second": 2588.619604364002,
+      "median_p99_ms": 33.08059999999998,
+      "median_container_cpu_ms_per_success": 0.5138189597212884,
+      "peak_cgroup_memory_bytes": 380985344
+    },
+    {
+      "label": "after-vt",
+      "mode": "sse",
+      "vus": 64,
+      "rounds": 3,
+      "successes": 10469,
+      "capacity_rejections": 0,
+      "median_success_per_second": 571.6775273940408,
+      "median_p99_ms": 122.74919999999997,
+      "median_container_cpu_ms_per_success": 1.4346184659090908,
+      "peak_cgroup_memory_bytes": 380985344
+    },
+    {
+      "label": "after-vt",
+      "mode": "sse",
+      "vus": 96,
+      "rounds": 3,
+      "successes": 10531,
+      "capacity_rejections": 569,
+      "median_success_per_second": 571.4202278166973,
+      "median_p99_ms": 120.75048,
+      "median_container_cpu_ms_per_success": 1.1351017573696145,
+      "peak_cgroup_memory_bytes": 380985344
+    },
+    {
+      "label": "after-webflux",
+      "mode": "json",
+      "vus": 64,
+      "rounds": 3,
+      "successes": 17185,
+      "capacity_rejections": 2,
+      "median_success_per_second": 973.7180635472005,
+      "median_p99_ms": 108.36075,
+      "median_container_cpu_ms_per_success": 2.1338534717494895,
+      "peak_cgroup_memory_bytes": 348401664
+    },
+    {
+      "label": "after-webflux",
+      "mode": "json",
+      "vus": 96,
+      "rounds": 3,
+      "successes": 37076,
+      "capacity_rejections": 577,
+      "median_success_per_second": 1839.7136110546294,
+      "median_p99_ms": 70.46372999999998,
+      "median_container_cpu_ms_per_success": 0.9238049472191587,
+      "peak_cgroup_memory_bytes": 368848896
+    },
+    {
+      "label": "after-webflux",
+      "mode": "sse",
+      "vus": 64,
+      "rounds": 3,
+      "successes": 10244,
+      "capacity_rejections": 0,
+      "median_success_per_second": 556.7027702855958,
+      "median_p99_ms": 129.44232,
+      "median_container_cpu_ms_per_success": 1.471219929245283,
+      "peak_cgroup_memory_bytes": 378290176
+    },
+    {
+      "label": "after-webflux",
+      "mode": "sse",
+      "vus": 96,
+      "rounds": 3,
+      "successes": 10432,
+      "capacity_rejections": 567,
+      "median_success_per_second": 564.7773412745034,
+      "median_p99_ms": 130.91031,
+      "median_container_cpu_ms_per_success": 1.2740496474735605,
+      "peak_cgroup_memory_bytes": 378290176
+    },
+    {
+      "label": "before-vt",
+      "mode": "json",
+      "vus": 64,
+      "rounds": 3,
+      "successes": 28055,
+      "capacity_rejections": 0,
+      "median_success_per_second": 1487.9595625107129,
+      "median_p99_ms": 79.86275,
+      "median_container_cpu_ms_per_success": 1.3726561942959001,
+      "peak_cgroup_memory_bytes": 359182336
+    },
+    {
+      "label": "before-vt",
+      "mode": "json",
+      "vus": 96,
+      "rounds": 3,
+      "successes": 46760,
+      "capacity_rejections": 575,
+      "median_success_per_second": 2683.5022215267636,
+      "median_p99_ms": 34.10627999999998,
+      "median_container_cpu_ms_per_success": 0.5348058558280314,
+      "peak_cgroup_memory_bytes": 360796160
+    },
+    {
+      "label": "before-vt",
+      "mode": "sse",
+      "vus": 64,
+      "rounds": 3,
+      "successes": 10543,
+      "capacity_rejections": 0,
+      "median_success_per_second": 577.6390278818575,
+      "median_p99_ms": 122.06085999999998,
+      "median_container_cpu_ms_per_success": 1.4837747284162377,
+      "peak_cgroup_memory_bytes": 376168448
+    },
+    {
+      "label": "before-vt",
+      "mode": "sse",
+      "vus": 96,
+      "rounds": 3,
+      "successes": 10422,
+      "capacity_rejections": 557,
+      "median_success_per_second": 554.6605448576901,
+      "median_p99_ms": 119.77547,
+      "median_container_cpu_ms_per_success": 1.1997822626492325,
+      "peak_cgroup_memory_bytes": 376168448
+    },
+    {
+      "label": "before-webflux",
+      "mode": "json",
+      "vus": 64,
+      "rounds": 3,
+      "successes": 17230,
+      "capacity_rejections": 5,
+      "median_success_per_second": 988.6784103873975,
+      "median_p99_ms": 109.8969,
+      "median_container_cpu_ms_per_success": 2.1286998997995994,
+      "peak_cgroup_memory_bytes": 347320320
+    },
+    {
+      "label": "before-webflux",
+      "mode": "json",
+      "vus": 96,
+      "rounds": 3,
+      "successes": 34083,
+      "capacity_rejections": 570,
+      "median_success_per_second": 1688.1086161044568,
+      "median_p99_ms": 77.06052,
+      "median_container_cpu_ms_per_success": 1.1591446034303041,
+      "peak_cgroup_memory_bytes": 356265984
+    },
+    {
+      "label": "before-webflux",
+      "mode": "sse",
+      "vus": 64,
+      "rounds": 3,
+      "successes": 10419,
+      "capacity_rejections": 0,
+      "median_success_per_second": 569.9845699491815,
+      "median_p99_ms": 123.84859999999999,
+      "median_container_cpu_ms_per_success": 1.5765854862119015,
+      "peak_cgroup_memory_bytes": 372572160
+    },
+    {
+      "label": "before-webflux",
+      "mode": "sse",
+      "vus": 96,
+      "rounds": 3,
+      "successes": 10414,
+      "capacity_rejections": 538,
+      "median_success_per_second": 557.6939619477786,
+      "median_p99_ms": 139.1351999999998,
+      "median_container_cpu_ms_per_success": 1.3295045281916449,
+      "peak_cgroup_memory_bytes": 380780544
+    }
+  ],
+  "comparisons": [
+    {
+      "engine": "webflux",
+      "mode": "json",
+      "vus": 64,
+      "success_per_second_percent": -1.5131661299587873,
+      "cpu_per_success_percent": 0.24209950638769406
+    },
+    {
+      "engine": "webflux",
+      "mode": "json",
+      "vus": 96,
+      "success_per_second_percent": 8.9807606870713,
+      "cpu_per_success_percent": -20.302872956031116
+    },
+    {
+      "engine": "webflux",
+      "mode": "sse",
+      "vus": 64,
+      "success_per_second_percent": -2.330203371078954,
+      "cpu_per_success_percent": -6.683148987993215
+    },
+    {
+      "engine": "webflux",
+      "mode": "sse",
+      "vus": 96,
+      "success_per_second_percent": 1.2701194221263812,
+      "cpu_per_success_percent": -4.171093782848001
+    },
+    {
+      "engine": "vt",
+      "mode": "json",
+      "vus": 64,
+      "success_per_second_percent": -3.484453596037629,
+      "cpu_per_success_percent": 2.6073110404423616
+    },
+    {
+      "engine": "vt",
+      "mode": "json",
+      "vus": 96,
+      "success_per_second_percent": -3.535775614479597,
+      "cpu_per_success_percent": -3.924208360480519
+    },
+    {
+      "engine": "vt",
+      "mode": "sse",
+      "vus": 64,
+      "success_per_second_percent": -1.0320460010600163,
+      "cpu_per_success_percent": -3.3129195130325195
+    },
+    {
+      "engine": "vt",
+      "mode": "sse",
+      "vus": 96,
+      "success_per_second_percent": 3.02161080581409,
+      "cpu_per_success_percent": -5.391020295365701
+    }
+  ],
+  "failed_assertions": [],
+  "limitations": [
+    "local controlled upstream; not production/vendor maximum QPS",
+    "p99 is median of three per-trial p99s, not a pooled percentile",
+    "container CPU/success includes refusals and sampling/drain work; 64 VUs are at the admission ceiling, not a refusal-free SLO",
+    "45s near-limit slow-reader matrix is a separate experiment"
+  ]
+}

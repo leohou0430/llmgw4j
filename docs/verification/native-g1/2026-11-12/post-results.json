@@ -1,0 +1,83 @@
+{
+  "checks": [
+    {
+      "name": "summary",
+      "command": [
+        "python3",
+        "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/docs/verification/native-g1/2026-11-12/summarize.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "slow-webflux-h0",
+      "command": [
+        "python3",
+        "bench/capacity/slow_clients.py",
+        "--jar",
+        "bench/results/linux-native-2026-11-11/evidence/jvm-default.jar",
+        "--native-dir",
+        "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/native-g1-2026-11-12/perf-bin",
+        "--engine",
+        "webflux",
+        "--output",
+        "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/native-g1-2026-11-12/slow-webflux-h0",
+        "--clients",
+        "64",
+        "--padding",
+        "1048400",
+        "--chunks",
+        "4096",
+        "--hold-seconds",
+        "45",
+        "--header-timeout",
+        "10",
+        "--heartbeat-ms",
+        "0"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "slow-webflux-h50",
+      "command": [
+        "python3",
+        "bench/capacity/slow_clients.py",
+        "--jar",
+        "bench/results/linux-native-2026-11-11/evidence/jvm-default.jar",
+        "--native-dir",
+        "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/native-g1-2026-11-12/perf-bin",
+        "--engine",
+        "webflux",
+        "--output",
+        "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/native-g1-2026-11-12/slow-webflux-h50",
+        "--clients",
+        "64",
+        "--padding",
+        "1048400",
+        "--chunks",
+        "4096",
+        "--hold-seconds",
+        "45",
+        "--header-timeout",
+        "10",
+        "--heartbeat-ms",
+        "50"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "tls",
+      "command": [
+        "docker",
+        "exec",
+        "43aae6aa9a74efe835038bb2b2ef6d5e568327bbb211eeb98e0599980a3e17ba",
+        "python3",
+        "/audit/tls-g1.py"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "supplier_requests": 0,
+  "tls_container": "43aae6aa9a74efe835038bb2b2ef6d5e568327bbb211eeb98e0599980a3e17ba",
+  "tls_container_cleaned": true,
+  "complete": true
+}

@@ -1,0 +1,14 @@
+{
+  "default": {
+    "path": "bench/results/sse-2026-11-11/verified-default.jar",
+    "sha256": "76136ec8de28d9ad3bef05c3827e149f20b114301d4ab958f3d41248ecde7f2a"
+  },
+  "redis": {
+    "path": "bench/results/sse-2026-11-11/verified-redis.jar",
+    "sha256": "51c339960c887be976e2875201ab16ba498402ca8b0518e72492bdabf546d4ff"
+  },
+  "combined": {
+    "path": "bench/results/sse-2026-11-11/verified-combined.jar",
+    "sha256": "ec0c4b32f0bb7273c106863467bc4596e233f8a89a5064b49e58437d1d43b136"
+  }
+}

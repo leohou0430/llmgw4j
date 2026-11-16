@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent><groupId>io.github.leohou0430</groupId><artifactId>llmgw-conversion</artifactId><version>0.3.1</version><relativePath>../pom.xml</relativePath></parent>
+  <artifactId>llmgw-conversion-module</artifactId>
+  <name>llmgw-conversion-module</name>
+  <description>Named conversion ExtensionModule: discovers the entry/upstream codecs by SPI and orchestrates them behind ConversionService</description>
+  <properties><llmgw.foundation.enforcer.skip>false</llmgw.foundation.enforcer.skip></properties>
+  <dependencies>
+    <!-- Compiles against the api SPI only. The codec impl jars are supplied at runtime by
+         llmgw-app's classpath and reached through named discovery, never a sibling dependency. -->
+    <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-conversion-api</artifactId></dependency>
+    <dependency><groupId>org.junit.jupiter</groupId><artifactId>junit-jupiter</artifactId><scope>test</scope></dependency>
+  </dependencies>
+</project>

@@ -1,0 +1,112 @@
+{
+  "binary_sha256": "d20b3bd6dd815e11a947a0cad83726188172b837d742f57f7cc639680e53c8d6",
+  "jvm_jar_sha256": "cd7980dd63e2e3150e366a22bbfaaf3043bd3ccae56897087ea892534d19cf24",
+  "engine": "webflux",
+  "checks": [
+    {
+      "name": "native-sdk",
+      "command": [
+        "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/compatibility-2026-11-11/sdk-venv/bin/python",
+        "bin/smoke-sdk-compatibility.py",
+        "--binary",
+        "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/native-compatibility-2026-11-11/llmgw-sdk-webflux",
+        "--engine",
+        "webflux",
+        "--out",
+        "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/docs/verification/native-compatibility/2026-11-11/native-sdk"
+      ],
+      "exit_code": 0,
+      "seconds": 10.57663452700217
+    },
+    {
+      "name": "native-smoke-stream-errors",
+      "command": [
+        "bash",
+        "bin/smoke-stream-errors.sh",
+        "webflux"
+      ],
+      "exit_code": 0,
+      "seconds": 75.91491110900097
+    },
+    {
+      "name": "native-smoke-multi-protocol",
+      "command": [
+        "bash",
+        "bin/smoke-multi-protocol.sh",
+        "webflux"
+      ],
+      "exit_code": 0,
+      "seconds": 32.69999416700011
+    },
+    {
+      "name": "native-tenant",
+      "command": [
+        "python3",
+        "bin/smoke-tenant-isolation.py"
+      ],
+      "exit_code": 0,
+      "seconds": 3.514628659002483
+    },
+    {
+      "name": "native-idle-progress",
+      "command": [
+        "python3",
+        "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/docs/verification/lifecycle/2026-11-11/native-idle-progress.py",
+        "--binary",
+        "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/native-compatibility-2026-11-11/llmgw-sdk-webflux",
+        "--out",
+        "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/docs/verification/native-compatibility/2026-11-11/idle"
+      ],
+      "exit_code": 0,
+      "seconds": 5.263743167000939
+    },
+    {
+      "name": "module-layout",
+      "command": [
+        "bash",
+        "bin/check-module-layout.sh"
+      ],
+      "exit_code": 0,
+      "seconds": 0.36327136299951235
+    },
+    {
+      "name": "native-boundaries",
+      "command": [
+        "python3",
+        "bin/check-native-boundaries.py"
+      ],
+      "exit_code": 0,
+      "seconds": 1.1782186900018132
+    },
+    {
+      "name": "native-rule-tests",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "bin",
+        "-p",
+        "test_native_*.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.17438796900387388
+    },
+    {
+      "name": "diff-check",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "seconds": 0.037267148996761534
+    }
+  ],
+  "paid_calls": 0,
+  "source_mismatches": [],
+  "compared_jvm_classes": 174,
+  "class_mismatches": [],
+  "complete": true
+}

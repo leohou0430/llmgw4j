@@ -1,0 +1,29 @@
+{
+  "task": "T1.12 two-engine conversion seam - slice 6 boundary trio",
+  "date": "2026-11-13",
+  "checks": [
+    {
+      "name": "module-layout",
+      "command": "bash bin/check-module-layout.sh",
+      "exit_code": 0,
+      "result": "PASS=114 FAIL=0",
+      "log": "module-layout.log"
+    },
+    {
+      "name": "native-boundaries",
+      "command": "python3 bin/check-native-boundaries.py",
+      "exit_code": 0,
+      "result": "PASS native boundaries: 247 module Java files, 27 modules, 14 descriptors, 26 named extensions",
+      "log": "native-boundaries.log"
+    },
+    {
+      "name": "native-unittest",
+      "command": "python3 -m unittest discover -s bin -p 'test_native_*.py'",
+      "exit_code": 0,
+      "result": "Ran 6 tests in 0.021s - OK",
+      "log": "native-unittest.log"
+    }
+  ],
+  "foundation_enforcer": "All foundation jars inherit llmgw.foundation.enforcer.skip=false; Maven Enforcer transitive-dependency check ran inside every profile build (BUILD SUCCESS). No Spring/Boot/Reactor/Dubbo leaked into foundation modules; HTTP frameworks confined to app/engine-webflux/engine-vt.",
+  "redis_isolation": "Dedicated redis-server on port 6390 for this task only; shutdown nosave after the redis profile; post-shutdown ping fails to connect (resource self-cleaned)."
+}

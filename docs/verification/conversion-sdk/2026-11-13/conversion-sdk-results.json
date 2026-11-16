@@ -1,0 +1,269 @@
+{
+  "jar_sha256": "a95cb47e07c4324ada34b0ba29635bbb2e76d0eaede1306d3e31408d6b4097d9",
+  "harness_sha256": "ab11551368e73d1bd4885c2b0487936dd66f7d5fa101aa7a3b2493bed9035a6a",
+  "versions": {
+    "openai": "3.49.0",
+    "anthropic": "2.8.0"
+  },
+  "checks": [
+    {
+      "engine": "webflux",
+      "name": "chat-s1-text-multiturn",
+      "passed": true
+    },
+    {
+      "engine": "webflux",
+      "name": "chat-s2-stream-usage",
+      "passed": true
+    },
+    {
+      "engine": "webflux",
+      "name": "chat-s3-tool-continuation",
+      "passed": true
+    },
+    {
+      "engine": "webflux",
+      "name": "chat-s4-thinking-continuation",
+      "passed": true
+    },
+    {
+      "engine": "webflux",
+      "name": "chat-s5-image",
+      "passed": true
+    },
+    {
+      "engine": "webflux",
+      "name": "chat-s6-cancel-recover",
+      "passed": true
+    },
+    {
+      "engine": "webflux",
+      "name": "responses-s1-text",
+      "passed": true
+    },
+    {
+      "engine": "webflux",
+      "name": "responses-s2-stream",
+      "passed": true
+    },
+    {
+      "engine": "webflux",
+      "name": "responses-s3-tool-continuation",
+      "passed": true
+    },
+    {
+      "engine": "webflux",
+      "name": "responses-s4-thinking",
+      "passed": true
+    },
+    {
+      "engine": "webflux",
+      "name": "responses-s5-image",
+      "passed": true
+    },
+    {
+      "engine": "webflux",
+      "name": "responses-s6-cancel-recover",
+      "passed": true
+    },
+    {
+      "engine": "webflux",
+      "name": "messages-s1-text",
+      "passed": true
+    },
+    {
+      "engine": "webflux",
+      "name": "messages-s2-stream-usage",
+      "passed": true
+    },
+    {
+      "engine": "webflux",
+      "name": "messages-s3-tool-continuation",
+      "passed": true
+    },
+    {
+      "engine": "webflux",
+      "name": "messages-s4-thinking",
+      "passed": true
+    },
+    {
+      "engine": "webflux",
+      "name": "messages-s5-image",
+      "passed": true
+    },
+    {
+      "engine": "webflux",
+      "name": "messages-s6-cancel-recover",
+      "passed": true
+    },
+    {
+      "engine": "vt",
+      "name": "chat-s1-text-multiturn",
+      "passed": true
+    },
+    {
+      "engine": "vt",
+      "name": "chat-s2-stream-usage",
+      "passed": true
+    },
+    {
+      "engine": "vt",
+      "name": "chat-s3-tool-continuation",
+      "passed": true
+    },
+    {
+      "engine": "vt",
+      "name": "chat-s4-thinking-continuation",
+      "passed": true
+    },
+    {
+      "engine": "vt",
+      "name": "chat-s5-image",
+      "passed": true
+    },
+    {
+      "engine": "vt",
+      "name": "chat-s6-cancel-recover",
+      "passed": true
+    },
+    {
+      "engine": "vt",
+      "name": "responses-s1-text",
+      "passed": true
+    },
+    {
+      "engine": "vt",
+      "name": "responses-s2-stream",
+      "passed": true
+    },
+    {
+      "engine": "vt",
+      "name": "responses-s3-tool-continuation",
+      "passed": true
+    },
+    {
+      "engine": "vt",
+      "name": "responses-s4-thinking",
+      "passed": true
+    },
+    {
+      "engine": "vt",
+      "name": "responses-s5-image",
+      "passed": true
+    },
+    {
+      "engine": "vt",
+      "name": "responses-s6-cancel-recover",
+      "passed": true
+    },
+    {
+      "engine": "vt",
+      "name": "messages-s1-text",
+      "passed": true
+    },
+    {
+      "engine": "vt",
+      "name": "messages-s2-stream-usage",
+      "passed": true
+    },
+    {
+      "engine": "vt",
+      "name": "messages-s3-tool-continuation",
+      "passed": true
+    },
+    {
+      "engine": "vt",
+      "name": "messages-s4-thinking",
+      "passed": true
+    },
+    {
+      "engine": "vt",
+      "name": "messages-s5-image",
+      "passed": true
+    },
+    {
+      "engine": "vt",
+      "name": "messages-s6-cancel-recover",
+      "passed": true
+    }
+  ],
+  "commands": {
+    "webflux": [
+      "java",
+      "-jar",
+      "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/llmgw-app-0.3.1.jar",
+      "--spring.profiles.active=webflux",
+      "--server.port=61142",
+      "--server.address=127.0.0.1",
+      "--gateway.mock.enabled=false",
+      "--gateway.keys-store-path=",
+      "--gateway.governance.snapshot-path=",
+      "--gateway.api-keys[0].id=sdk",
+      "--gateway.api-keys[0].token=sdk-client",
+      "--gateway.api-keys[0].quota-tokens=1000000",
+      "--gateway.governance.rate-limit-tokens-per-second=1000000",
+      "--gateway.governance.rate-limit-burst=1000000",
+      "--gateway.routes[0].id=conv",
+      "--gateway.routes[0].protocol=*",
+      "--gateway.routes[0].model=*",
+      "--gateway.routes[0].target-model=deepseek-chat",
+      "--gateway.routes[0].target-url=http://127.0.0.1:61141/v1",
+      "--gateway.routes[0].api-key=sdk-upstream",
+      "--gateway.routes[0].provider=openai",
+      "--gateway.routes[0].upstream-protocol=chat"
+    ],
+    "vt": [
+      "java",
+      "-jar",
+      "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/llmgw-app/target/llmgw-app-0.3.1.jar",
+      "--spring.profiles.active=vt",
+      "--server.port=61214",
+      "--server.address=127.0.0.1",
+      "--gateway.mock.enabled=false",
+      "--gateway.keys-store-path=",
+      "--gateway.governance.snapshot-path=",
+      "--gateway.api-keys[0].id=sdk",
+      "--gateway.api-keys[0].token=sdk-client",
+      "--gateway.api-keys[0].quota-tokens=1000000",
+      "--gateway.governance.rate-limit-tokens-per-second=1000000",
+      "--gateway.governance.rate-limit-burst=1000000",
+      "--gateway.routes[0].id=conv",
+      "--gateway.routes[0].protocol=*",
+      "--gateway.routes[0].model=*",
+      "--gateway.routes[0].target-model=deepseek-chat",
+      "--gateway.routes[0].target-url=http://127.0.0.1:61141/v1",
+      "--gateway.routes[0].api-key=sdk-upstream",
+      "--gateway.routes[0].provider=openai",
+      "--gateway.routes[0].upstream-protocol=chat"
+    ]
+  },
+  "upstream_samples": {
+    "webflux": {
+      "path": "/v1/chat/completions",
+      "body_keys": [
+        "max_tokens",
+        "messages",
+        "model",
+        "stream"
+      ],
+      "model": "deepseek-chat",
+      "authorization": "Bearer sdk-upstream",
+      "has_messages": true,
+      "upstream_requests": 25
+    },
+    "vt": {
+      "path": "/v1/chat/completions",
+      "body_keys": [
+        "max_tokens",
+        "messages",
+        "model",
+        "stream"
+      ],
+      "model": "deepseek-chat",
+      "authorization": "Bearer sdk-upstream",
+      "has_messages": true,
+      "upstream_requests": 25
+    }
+  },
+  "complete": true
+}

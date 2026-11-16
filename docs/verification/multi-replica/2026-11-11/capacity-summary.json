@@ -1,0 +1,158 @@
+{
+  "jars": {
+    "before": {
+      "path": "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/lifecycle-2026-11-11/idle-output.jar",
+      "sha256": "34425d57569f47690b11dd6748d1410477076dd2f442f8c55323ff3e829a9482"
+    },
+    "after": {
+      "path": "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/multi-replica-2026-11-11/default.jar",
+      "sha256": "801baab0bb0bdf605ab43aedb075c41255d4eb8aa49c0c3152aa878150585304"
+    }
+  },
+  "trial_count": 34,
+  "regular_trial_count": 24,
+  "long_trial_count": 0,
+  "load": {
+    "rounds": 3,
+    "duration": "6s",
+    "vus": [
+      64
+    ],
+    "retry_after_respected": true
+  },
+  "groups": [
+    {
+      "label": "after-vt",
+      "mode": "json",
+      "vus": 64,
+      "rounds": 3,
+      "successes": 28366,
+      "capacity_rejections": 0,
+      "median_success_per_second": 1499.6375475868815,
+      "median_p99_ms": 80.21414,
+      "median_container_cpu_ms_per_success": 1.3436635390219671,
+      "peak_cgroup_memory_bytes": 351199232
+    },
+    {
+      "label": "after-vt",
+      "mode": "sse",
+      "vus": 64,
+      "rounds": 3,
+      "successes": 10233,
+      "capacity_rejections": 0,
+      "median_success_per_second": 562.6200187594762,
+      "median_p99_ms": 125.3874,
+      "median_container_cpu_ms_per_success": 1.5916688515246509,
+      "peak_cgroup_memory_bytes": 363032576
+    },
+    {
+      "label": "after-webflux",
+      "mode": "json",
+      "vus": 64,
+      "rounds": 3,
+      "successes": 14989,
+      "capacity_rejections": 2,
+      "median_success_per_second": 873.3305561133968,
+      "median_p99_ms": 177.19631000000012,
+      "median_container_cpu_ms_per_success": 2.3248023565184344,
+      "peak_cgroup_memory_bytes": 354029568
+    },
+    {
+      "label": "after-webflux",
+      "mode": "sse",
+      "vus": 64,
+      "rounds": 3,
+      "successes": 10263,
+      "capacity_rejections": 0,
+      "median_success_per_second": 560.5647954731749,
+      "median_p99_ms": 131.60895999999997,
+      "median_container_cpu_ms_per_success": 2.210486733490566,
+      "peak_cgroup_memory_bytes": 379183104
+    },
+    {
+      "label": "before-vt",
+      "mode": "json",
+      "vus": 64,
+      "rounds": 3,
+      "successes": 27356,
+      "capacity_rejections": 0,
+      "median_success_per_second": 1503.953127731331,
+      "median_p99_ms": 78.31797999999999,
+      "median_container_cpu_ms_per_success": 1.3825504728392348,
+      "peak_cgroup_memory_bytes": 365780992
+    },
+    {
+      "label": "before-vt",
+      "mode": "sse",
+      "vus": 64,
+      "rounds": 3,
+      "successes": 10395,
+      "capacity_rejections": 0,
+      "median_success_per_second": 570.8505673453445,
+      "median_p99_ms": 124.12514000000002,
+      "median_container_cpu_ms_per_success": 1.5672968476357267,
+      "peak_cgroup_memory_bytes": 375058432
+    },
+    {
+      "label": "before-webflux",
+      "mode": "json",
+      "vus": 64,
+      "rounds": 3,
+      "successes": 15507,
+      "capacity_rejections": 1,
+      "median_success_per_second": 899.0844781498943,
+      "median_p99_ms": 116.94624999999999,
+      "median_container_cpu_ms_per_success": 2.282832473276815,
+      "peak_cgroup_memory_bytes": 353439744
+    },
+    {
+      "label": "before-webflux",
+      "mode": "sse",
+      "vus": 64,
+      "rounds": 3,
+      "successes": 10210,
+      "capacity_rejections": 0,
+      "median_success_per_second": 553.9055410342285,
+      "median_p99_ms": 149.25584,
+      "median_container_cpu_ms_per_success": 2.2372964275169767,
+      "peak_cgroup_memory_bytes": 362299392
+    }
+  ],
+  "comparisons": [
+    {
+      "engine": "webflux",
+      "mode": "json",
+      "vus": 64,
+      "success_per_second_percent": -2.8644607556225443,
+      "cpu_per_success_percent": 1.8385003600976058
+    },
+    {
+      "engine": "webflux",
+      "mode": "sse",
+      "vus": 64,
+      "success_per_second_percent": 1.2022364727589663,
+      "cpu_per_success_percent": -1.1983076402694137
+    },
+    {
+      "engine": "vt",
+      "mode": "json",
+      "vus": 64,
+      "success_per_second_percent": -0.28694911196863737,
+      "cpu_per_success_percent": -2.8126954191703857
+    },
+    {
+      "engine": "vt",
+      "mode": "sse",
+      "vus": 64,
+      "success_per_second_percent": -1.4418043979781303,
+      "cpu_per_success_percent": 1.5550343207599404
+    }
+  ],
+  "failed_assertions": [],
+  "limitations": [
+    "local controlled upstream; not production/vendor maximum QPS",
+    "p99 is median of three per-trial p99s, not a pooled percentile",
+    "container CPU/success includes refusals and sampling/drain work; 64 VUs are at the admission ceiling, not a refusal-free SLO",
+    "compares phase-1 frozen JVM with stage-2 default JVM; no new native or 45s slow-reader validation in this comparison"
+  ]
+}

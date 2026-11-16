@@ -1,0 +1,73 @@
+{
+  "schema": "llmgw-acceptance-fixture/v1",
+  "id": "messages-s5-image-understanding",
+  "entry": "messages",
+  "scenario": 5,
+  "slug": "image-understanding",
+  "title": "图片理解（内联）",
+  "mock": {
+    "chunks": 4
+  },
+  "markers": [
+    "mock-deepseek"
+  ],
+  "steps": [
+    {
+      "name": "initial",
+      "request": {
+        "model": "mock-model",
+        "messages": [
+          {
+            "role": "user",
+            "content": [
+              {
+                "type": "text",
+                "text": "mock-deepseek: Describe the probe image."
+              },
+              {
+                "type": "image",
+                "source": {
+                  "type": "base64",
+                  "media_type": "image/png",
+                  "data": "iVBORw0KGgoAAAANSUhEUgAAAIQAAAAsCAIAAAAraYdzAAAArUlEQVR42u3bSw6AIAwFQC7jyTy+h9CtGw0EKh/npStCauMsUBPTth9qkEpuAQwFYyKMUz4PDBgCYwWMdEvNxXr1ydmfMhI9DwwYMGDAiO3z1LN0T838MGDAgAFjvgO81XqvBwoYMGDAgDEfRukLYKt1GDBgwIAx7oEZ3QcGDBgwYMCo/SgJAwYMGH/BKE10n1Z4I8wDAwYMGCtgyDeBAUNgzIqh/O2qYMBQL3UBgEWIVMaFMTEAAAAASUVORK5CYII="
+                }
+              }
+            ]
+          }
+        ],
+        "max_tokens": 1024,
+        "stream": false
+      },
+      "expected": {
+        "transport": "json",
+        "terminal": {
+          "type": "message",
+          "role": "assistant",
+          "stop_reason": "end_turn",
+          "stop_sequence_null": true,
+          "content_block_types": [
+            "text"
+          ]
+        },
+        "text": {
+          "equals": "Hello world"
+        },
+        "usage": {
+          "input_tokens": 4,
+          "cache_read_input_tokens": 3,
+          "cache_creation_input_tokens": 0,
+          "output_tokens": 1,
+          "absent_fields": [
+            "usage.total_tokens",
+            "usage.output_tokens_details"
+          ]
+        },
+        "image": {
+          "accepted": true,
+          "media_type": "image/png",
+          "sha256": "f24b0899ce1bb9147836beb6812c9ab7778a864f39c44b14d32548e4d91228d9"
+        }
+      }
+    }
+  ]
+}

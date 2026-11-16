@@ -1,0 +1,90 @@
+{
+  "schema": "llmgw-acceptance-tool/v1",
+  "name": "get_weather",
+  "description": "Mock-fixed weather tool: the controlled upstream always calls it with {\"city\":\"SF\"}.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "city": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "city"
+    ],
+    "additionalProperties": false
+  },
+  "mock_fixed_call": {
+    "id": "call_mock_1",
+    "arguments": {
+      "city": "SF"
+    }
+  },
+  "known_result": {
+    "arguments": {
+      "city": "SF"
+    },
+    "result": {
+      "city": "SF",
+      "temperature_c": 18,
+      "condition": "sunny"
+    },
+    "result_text": "{\"city\":\"SF\",\"temperature_c\":18,\"condition\":\"sunny\"}"
+  },
+  "wire": {
+    "chat": {
+      "type": "function",
+      "function": {
+        "name": "get_weather",
+        "description": "Mock-fixed weather tool: the controlled upstream always calls it with {\"city\":\"SF\"}.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "city": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "city"
+          ],
+          "additionalProperties": false
+        },
+        "strict": false
+      }
+    },
+    "responses": {
+      "type": "function",
+      "name": "get_weather",
+      "description": "Mock-fixed weather tool: the controlled upstream always calls it with {\"city\":\"SF\"}.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "city": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "city"
+        ],
+        "additionalProperties": false
+      },
+      "strict": false
+    },
+    "messages": {
+      "name": "get_weather",
+      "description": "Mock-fixed weather tool: the controlled upstream always calls it with {\"city\":\"SF\"}.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "city": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "city"
+        ],
+        "additionalProperties": false
+      }
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "median_cpu_ns_per_line": {
+    "16384": 34700.0,
+    "65536": 163900.0,
+    "262144": 589300.0,
+    "1048448": 2403000.0
+  },
+  "scope": "local decoder probe; not gateway throughput"
+}

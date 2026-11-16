@@ -1,0 +1,33 @@
+[
+  {
+    "name": "openapi-ci-yaml",
+    "command": [
+      "/usr/local/bin/python3.14",
+      "bin/check-openapi.py",
+      "docs/openapi.yaml",
+      ".github/workflows/ci.yml",
+      ".github/workflows/release.yml",
+      "docker-compose.yml",
+      "docker-compose.redis.yml"
+    ],
+    "exit_code": 0
+  },
+  {
+    "name": "git-diff-check",
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit_code": 0
+  },
+  {
+    "name": "shell-syntax",
+    "command": [
+      "bash",
+      "-n",
+      "bin/smoke-stream-errors.sh"
+    ],
+    "exit_code": 0
+  }
+]

@@ -1,0 +1,11 @@
+{
+  "model": "deepseek-flash",
+  "messages": [
+    {"role": "user", "content": [
+      {"type": "text", "text": "look"},
+      {"type": "image_url", "image_url": {"url": "data:image/png;base64,QUJD", "detail": "high"}},
+      {"type": "image_url", "image_url": {"url": "data:image/jpeg;base64,REVG"}}
+    ]}
+  ],
+  "stream": false
+}

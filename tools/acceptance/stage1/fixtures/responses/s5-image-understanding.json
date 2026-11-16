@@ -1,0 +1,70 @@
+{
+  "schema": "llmgw-acceptance-fixture/v1",
+  "id": "responses-s5-image-understanding",
+  "entry": "responses",
+  "scenario": 5,
+  "slug": "image-understanding",
+  "title": "图片理解（内联）",
+  "mock": {
+    "chunks": 4
+  },
+  "markers": [
+    "mock-deepseek"
+  ],
+  "steps": [
+    {
+      "name": "initial",
+      "request": {
+        "model": "mock-model",
+        "input": [
+          {
+            "type": "message",
+            "role": "user",
+            "content": [
+              {
+                "type": "input_text",
+                "text": "mock-deepseek: Describe the probe image."
+              },
+              {
+                "type": "input_image",
+                "image_url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIQAAAAsCAIAAAAraYdzAAAArUlEQVR42u3bSw6AIAwFQC7jyTy+h9CtGw0EKh/npStCauMsUBPTth9qkEpuAQwFYyKMUz4PDBgCYwWMdEvNxXr1ydmfMhI9DwwYMGDAiO3z1LN0T838MGDAgAFjvgO81XqvBwoYMGDAgDEfRukLYKt1GDBgwIAx7oEZ3QcGDBgwYMCo/SgJAwYMGH/BKE10n1Z4I8wDAwYMGCtgyDeBAUNgzIqh/O2qYMBQL3UBgEWIVMaFMTEAAAAASUVORK5CYII=",
+                "detail": "auto"
+              }
+            ]
+          }
+        ],
+        "max_output_tokens": 1024,
+        "stream": false
+      },
+      "expected": {
+        "transport": "json",
+        "terminal": {
+          "object": "response",
+          "status": "completed",
+          "output_item_types": [
+            "message"
+          ]
+        },
+        "text": {
+          "equals": "Hello world"
+        },
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 1,
+          "total_tokens": 8,
+          "input_tokens_details": {
+            "cached_tokens": 3
+          },
+          "absent_fields": [
+            "usage.output_tokens_details"
+          ]
+        },
+        "image": {
+          "accepted": true,
+          "media_type": "image/png",
+          "sha256": "f24b0899ce1bb9147836beb6812c9ab7778a864f39c44b14d32548e4d91228d9"
+        }
+      }
+    }
+  ]
+}

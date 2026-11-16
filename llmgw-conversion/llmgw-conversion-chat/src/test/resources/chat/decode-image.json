@@ -1,0 +1,13 @@
+{
+  "model": "client-model",
+  "messages": [
+    {
+      "role": "user",
+      "content": [
+        {"type": "text", "text": "look"},
+        {"type": "image_url", "image_url": {"url": "data:image/png;base64,iVBORw0KGgo=", "detail": "high"}},
+        {"type": "image_url", "image_url": {"url": "data:image/jpeg;base64,/9j/4AAQSkZJRg=="}}
+      ]
+    }
+  ]
+}

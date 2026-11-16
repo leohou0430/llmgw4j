@@ -1,0 +1,108 @@
+
+Execution stacks inclusive (can include OS wait) total=818
+  64.43%	527	java.lang.Thread.runWith
+  44.74%	366	reactor.core.publisher.MonoFlatMap$FlatMapMain.onNext
+  44.38%	363	java.lang.Thread.run
+  40.59%	332	reactor.core.publisher.InternalMonoOperator.subscribe
+  30.07%	246	reactor.core.publisher.Mono.subscribe
+  28.97%	237	reactor.core.publisher.MonoDefer.subscribe
+  28.12%	230	io.netty.channel.SingleThreadIoEventLoop.run
+  28.12%	230	io.netty.util.internal.ThreadExecutorMap$2.run
+  28.12%	230	io.netty.util.concurrent.FastThreadLocalRunnable.run
+  28.12%	230	io.netty.util.concurrent.SingleThreadEventExecutor$5.run
+  25.79%	211	reactor.core.publisher.MonoPeekTerminal$MonoTerminalPeekSubscriber.onNext
+  24.33%	199	reactor.core.publisher.FluxOnErrorResume$ResumeSubscriber.onNext
+  23.72%	194	java.util.concurrent.CompletableFuture.postComplete
+  21.76%	178	reactor.core.publisher.MonoIgnoreThen$ThenIgnoreMain.subscribeNext
+  21.15%	173	io.netty.channel.AbstractChannelHandlerContext.fireChannelRead
+  21.15%	173	reactor.core.publisher.MonoFlatMap$FlatMapMain.secondComplete
+  20.66%	169	io.netty.channel.SingleThreadIoEventLoop.runIo
+  20.66%	169	io.netty.channel.epoll.EpollIoHandler.run
+  20.54%	168	reactor.core.publisher.MonoIgnoreThen.subscribe
+  20.17%	165	io.netty.channel.epoll.EpollIoHandler.processReady
+  20.05%	164	io.netty.channel.epoll.EpollIoHandler$DefaultEpollIoRegistration.handle
+  20.05%	164	jdk.internal.vm.Continuation.enterSpecial
+  20.05%	164	jdk.internal.vm.Continuation.enter0
+  20.05%	164	jdk.internal.vm.Continuation.enter
+  20.05%	164	java.lang.VirtualThread$VThreadContinuation$1.run
+
+Execution stacks first application frame total=818
+  64.67%	529	<framework-only stack>
+   8.19%	67	io.github.leohou0430.llmgw.provider.http.jdk.JdkHttpUpstream.lambda$mapResponse$0
+   4.77%	39	io.github.leohou0430.llmgw.provider.http.jdk.JdkHttpUpstream.completeRawAsync
+   2.08%	17	io.github.leohou0430.llmgw.engine.webflux.WebfluxGatewayController.handleKindWithinCapacity
+   1.83%	15	io.github.leohou0430.llmgw.provider.http.jdk.JdkHttpUpstream.build
+   1.71%	14	io.github.leohou0430.llmgw.core.protocol.ProtocolCodec.tryParse
+   0.98%	8	io.github.leohou0430.llmgw.engine.webflux.WebfluxGatewayController.firstValues
+   0.98%	8	io.github.leohou0430.llmgw.governance.inmemory.GovernanceMetrics.count
+   0.86%	7	io.github.leohou0430.llmgw.governance.inmemory.DefaultGovernanceChain.lambda$finish$0
+   0.86%	7	io.github.leohou0430.llmgw.governance.inmemory.GovernanceMetrics.latency
+   0.73%	6	io.github.leohou0430.llmgw.governance.inmemory.GovernanceMetrics.latencyNanos
+   0.73%	6	io.github.leohou0430.llmgw.core.protocol.ProtocolCodec.parse
+   0.61%	5	io.github.leohou0430.llmgw.engine.webflux.WebfluxGatewayController.lambda$handleKindWithinCapacity$0
+   0.61%	5	io.github.leohou0430.llmgw.core.protocol.ProtocolCodec.lambda$static$0
+   0.61%	5	io.github.leohou0430.llmgw.engine.webflux.WebfluxGatewayController.writeJson
+   0.61%	5	io.github.leohou0430.llmgw.engine.webflux.WebfluxGatewayController.dispatch
+   0.49%	4	io.github.leohou0430.llmgw.engine.webflux.WebfluxGatewayController.lambda$completeAttempts$0
+   0.49%	4	io.github.leohou0430.llmgw.governance.inmemory.InMemoryAuditSink.emit
+   0.49%	4	io.github.leohou0430.llmgw.core.protocol.ProtocolCodec.fingerprint
+   0.37%	3	io.github.leohou0430.llmgw.governance.inmemory.CaffeineSemanticCache.put
+   0.37%	3	io.github.leohou0430.llmgw.governance.inmemory.InMemoryRequestLog.log
+   0.37%	3	io.github.leohou0430.llmgw.core.protocol.ProtocolKind.wireName
+   0.37%	3	io.github.leohou0430.llmgw.provider.http.jdk.JdkHttpUpstream.withDeadline
+   0.37%	3	io.github.leohou0430.llmgw.governance.inmemory.AllowListHeaderPolicy.toUpstream
+   0.24%	2	io.github.leohou0430.llmgw.provider.http.jdk.JdkHttpUpstream.targetUri
+
+Allocation sampled bytes by class total=938940648
+  13.67%	128348296	[B
+   4.39%	41242152	[Ljava.util.concurrent.ConcurrentHashMap$Node;
+   3.04%	28583824	[Ljava.lang.Object;
+   2.91%	27280664	java.lang.String
+   2.53%	23784584	java.util.TreeMap$Entry
+   2.48%	23247512	jdk.internal.net.http.common.MinimalFuture
+   2.44%	22925832	java.util.ArrayList
+   1.59%	14883608	reactor.core.publisher.MonoPeekTerminal
+   1.55%	14521568	java.util.LinkedHashMap$Entry
+   1.33%	12530840	reactor.core.publisher.MonoFlatMap
+   1.28%	12021632	java.util.concurrent.ConcurrentHashMap$Node
+   1.15%	10812952	java.util.LinkedHashMap
+   1.12%	10533688	java.util.ArrayList$Itr
+   1.12%	10491432	java.lang.StringBuilder
+   1.08%	10151936	tools.jackson.core.json.JsonReadContext
+   1.05%	9886808	reactor.core.publisher.FluxOnErrorResume$ResumeSubscriber
+   1.04%	9806240	reactor.core.publisher.MonoPeekTerminal$MonoTerminalPeekSubscriber
+   1.03%	9624784	java.nio.DirectByteBuffer
+   1.00%	9359568	tools.jackson.core.json.ReaderBasedJsonParser
+   0.94%	8867448	java.util.stream.ReferencePipeline$Head
+   0.93%	8758080	java.nio.HeapByteBuffer
+   0.93%	8700160	java.net.http.HttpHeaders$$Lambda.0x00000000684ce750
+   0.89%	8333112	[Ljava.lang.String;
+   0.87%	8130352	java.util.concurrent.CompletableFuture$UniWhenComplete
+   0.86%	8077032	java.util.TreeMap
+
+Allocation sampled bytes by site total=938940648
+   3.92%	36839048	<framework-only stack> :: java.util.concurrent.ConcurrentHashMap.initTable <- java.util.concurrent.ConcurrentHashMap.putVal <- java.util.concurrent.ConcurrentHashMap.put <- org.springframework.web.reactive.result.method.HandlerMethodArgumentResolverComposite.getArgumentResolver <- org.springframework.web.reactive.result.method.HandlerMethodArgumentResolverComposite.supportsParameter
+   1.13%	10647856	io.github.leohou0430.llmgw.engine.webflux.WebfluxGatewayController.firstValues :: java.lang.StringLatin1.toLowerCase <- java.lang.String.toLowerCase <- org.springframework.util.LinkedCaseInsensitiveMap.convertKey <- org.springframework.util.LinkedCaseInsensitiveMap.containsKey <- org.springframework.http.HttpHeaders$CaseInsensitiveHeaderNameSet.<init>
+   1.03%	9624784	<framework-only stack> :: java.nio.DirectByteBuffer.duplicate <- java.nio.DirectByteBuffer.duplicate <- io.netty.buffer.UnpooledDirectByteBuf.getBytes <- io.netty.buffer.UnpooledDirectByteBuf.getBytes <- io.netty.buffer.AdaptivePoolingAllocator$AdaptiveByteBuf.getBytes
+   0.95%	8885528	io.github.leohou0430.llmgw.core.protocol.ProtocolCodec.fingerprint :: sun.security.provider.DigestBase.engineDigest <- java.security.MessageDigest$Delegate.engineDigest <- java.security.MessageDigest.digest <- java.security.MessageDigest.digest <- io.github.leohou0430.llmgw.core.protocol.ProtocolCodec.fingerprint
+   0.86%	8076576	io.github.leohou0430.llmgw.provider.http.jdk.JdkHttpUpstream.build :: java.util.TreeMap.addEntry <- java.util.TreeMap.computeIfAbsent <- jdk.internal.net.http.common.HttpHeadersBuilder.addHeader <- jdk.internal.net.http.HttpRequestBuilderImpl.header <- jdk.internal.net.http.HttpRequestBuilderImpl.header
+   0.80%	7508672	<framework-only stack> :: org.springframework.web.reactive.result.method.AbstractHandlerMethodMapping.lookupHandlerMethod <- org.springframework.web.reactive.result.method.AbstractHandlerMethodMapping.getHandlerInternal <- org.springframework.web.reactive.result.method.RequestMappingInfoHandlerMapping.getHandlerInternal <- org.springframework.web.reactive.handler.AbstractHandlerMapping.lambda$getHandler$0 <- org.springframework.web.reactive.handler.AbstractHandlerMapping$$Lambda.0x0000000068765cc0.apply
+   0.79%	7379632	io.github.leohou0430.llmgw.core.protocol.ProtocolCodec.parse :: tools.jackson.core.json.JsonFactory._createParser <- tools.jackson.core.base.TextualTSFactory.createParser <- tools.jackson.core.TokenStreamFactory.createParser <- io.github.leohou0430.llmgw.core.protocol.ProtocolCodec.parse <- io.github.leohou0430.llmgw.core.protocol.DefaultProtocols$Chat.parse
+   0.77%	7276272	io.github.leohou0430.llmgw.core.protocol.ProtocolCodec.tryParse :: tools.jackson.databind.node.ObjectNode.<init> <- tools.jackson.databind.node.JsonNodeFactory.objectNode <- tools.jackson.databind.deser.jackson.BaseNodeDeserializer._deserializeContainerNoRecursion <- tools.jackson.databind.deser.jackson.JsonNodeDeserializer.deserialize <- tools.jackson.databind.deser.jackson.JsonNodeDeserializer.deserialize
+   0.77%	7205688	<framework-only stack> :: org.springframework.http.server.reactive.ReactorHttpHandlerAdapter.apply <- org.springframework.http.server.reactive.ReactorHttpHandlerAdapter.apply <- reactor.netty.http.server.HttpServer$HttpServerHandle.onStateChange <- reactor.netty.ReactorNetty$CompositeConnectionObserver.onStateChange <- reactor.netty.transport.ServerTransport$ChildObserver.onStateChange
+   0.74%	6993264	<framework-only stack> :: reactor.core.publisher.MonoOnErrorResume.subscribeOrReturn <- reactor.core.publisher.Mono.subscribe <- reactor.core.publisher.MonoIgnoreThen$ThenIgnoreMain.subscribeNext <- reactor.core.publisher.MonoIgnoreThen.subscribe <- reactor.core.publisher.InternalMonoOperator.subscribe
+   0.73%	6829040	io.github.leohou0430.llmgw.engine.webflux.WebfluxGatewayController.lambda$handleKindWithinCapacity$0 :: java.util.Arrays.copyOfRange <- java.lang.String.<init> <- java.lang.String.<init> <- io.netty.buffer.ByteBufUtil.decodeString <- io.netty.buffer.AbstractByteBuf.toString
+   0.69%	6506336	<framework-only stack> :: java.lang.invoke.DirectMethodHandle.allocateInstance <- java.lang.invoke.DirectMethodHandle$Holder.newInvokeSpecial <- java.lang.invoke.Invokers$Holder.linkToTargetMethod <- org.springframework.web.reactive.handler.AbstractHandlerMapping.getHandler <- org.springframework.web.reactive.DispatcherHandler.lambda$handle$0
+   0.68%	6408536	<framework-only stack> :: java.util.Arrays.copyOf <- java.lang.AbstractStringBuilder.ensureCapacityNewCoder <- java.lang.AbstractStringBuilder.append <- java.lang.StringBuilder.append <- jdk.internal.net.http.Http1Request.collectHeaders1
+   0.68%	6406888	<framework-only stack> :: reactor.core.publisher.Operators.scalarSubscription <- reactor.core.publisher.MonoJust.subscribe <- reactor.core.publisher.Mono.subscribe <- reactor.core.publisher.FluxConcatMapNoPrefetch$FluxConcatMapNoPrefetchSubscriber.onNext <- reactor.core.publisher.FluxIterable$IterableSubscription.slowPath
+   0.66%	6168384	<framework-only stack> :: java.util.TreeMap.addEntry <- java.util.TreeMap.put <- java.util.TreeMap.put <- java.net.http.HttpHeaders.lambda$headersOf$0 <- java.net.http.HttpHeaders$$Lambda.0x00000000684ce750.accept
+   0.65%	6095168	<framework-only stack> :: java.util.Arrays.copyOfRange <- java.lang.String.<init> <- java.lang.StringBuilder.toString <- jdk.internal.net.http.Http1Request.headers <- jdk.internal.net.http.Http1Exchange.lambda$sendHeadersAsync$2
+   0.61%	5688912	<framework-only stack> :: java.util.Arrays.copyOf <- java.util.ArrayList.toArray <- java.util.ImmutableCollections.listCopy <- java.util.List.copyOf <- java.net.http.HttpHeaders.lambda$headersOf$0
+   0.60%	5675096	io.github.leohou0430.llmgw.core.protocol.ProtocolCodec.fingerprint :: java.lang.String.encodeUTF8 <- java.lang.String.encode <- java.lang.String.getBytes <- io.github.leohou0430.llmgw.core.protocol.ProtocolCodec.fingerprint <- io.github.leohou0430.llmgw.governance.inmemory.DefaultGovernanceChain.cacheKey
+   0.60%	5661016	io.github.leohou0430.llmgw.governance.inmemory.DefaultGovernanceChain.lambda$finish$0 :: io.github.leohou0430.llmgw.governance.inmemory.DefaultGovernanceChain.lambda$finish$0 <- io.github.leohou0430.llmgw.governance.inmemory.DefaultGovernanceChain$$Lambda.0x0000000068866670.run <- java.util.concurrent.Executors$RunnableAdapter.call <- java.util.concurrent.FutureTask.run <- java.util.concurrent.ThreadPerTaskExecutor$ThreadBoundFuture.run
+   0.59%	5581048	io.github.leohou0430.llmgw.governance.inmemory.GovernanceMetrics.latencyNanos :: jdk.internal.misc.Unsafe.allocateUninitializedArray <- java.lang.StringConcatHelper.newArray <- java.lang.StringConcatHelper.newArray <- java.lang.String.join <- java.lang.String.join
+   0.58%	5441120	<framework-only stack> :: java.lang.ThreadBuilders.newVirtualThread <- java.lang.ThreadBuilders$VirtualThreadFactory.newThread <- reactor.core.scheduler.BoundedElasticThreadPerTaskScheduler$SchedulerTask.start <- reactor.core.scheduler.BoundedElasticThreadPerTaskScheduler$SequentialThreadPerTaskExecutor.drain <- reactor.core.scheduler.BoundedElasticThreadPerTaskScheduler$SequentialThreadPerTaskExecutor.trySchedule
+   0.58%	5409360	io.github.leohou0430.llmgw.engine.webflux.WebfluxGatewayController.handleKindWithinCapacity :: jdk.internal.misc.Unsafe.allocateInstance <- java.lang.invoke.DirectMethodHandle.allocateInstance <- java.lang.invoke.DirectMethodHandle$Holder.newInvokeSpecial <- java.lang.invoke.Invokers$Holder.linkToTargetMethod <- org.springframework.http.server.reactive.ReactorServerHttpRequest.getBody
+   0.57%	5370760	io.github.leohou0430.llmgw.engine.webflux.WebfluxGatewayController.writeJson :: reactor.core.publisher.Mono.flatMap <- org.springframework.http.server.reactive.AbstractServerHttpResponse.writeWith <- io.github.leohou0430.llmgw.engine.webflux.WebfluxGatewayController.writeJson <- io.github.leohou0430.llmgw.engine.webflux.WebfluxGatewayController.lambda$dispatch$0 <- io.github.leohou0430.llmgw.engine.webflux.WebfluxGatewayController$$Lambda.0x000000006880da58.apply
+   0.57%	5322040	<framework-only stack> :: io.netty.channel.DefaultChannelPipeline.<init> <- io.netty.channel.AbstractChannel.newChannelPipeline <- io.netty.channel.AbstractChannel.<init> <- reactor.netty.channel.ChannelOperations$DisposedChannel.<init> <- reactor.netty.channel.ChannelOperations$DisposedConnection.<init>
+   0.57%	5315056	io.github.leohou0430.llmgw.engine.webflux.WebfluxGatewayController.firstValues :: java.util.LinkedHashMap.newNode <- java.util.HashMap.putVal <- java.util.HashMap.put <- java.util.HashSet.add <- io.netty.handler.codec.DefaultHeaders.names

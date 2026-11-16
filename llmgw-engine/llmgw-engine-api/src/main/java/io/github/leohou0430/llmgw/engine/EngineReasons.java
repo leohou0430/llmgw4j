@@ -10,6 +10,7 @@ import io.github.leohou0430.llmgw.core.protocol.ProtocolCodec;
  */
 public final class EngineReasons {
 
+    public static final String CAPACITY_EXCEEDED = "gateway request capacity exceeded";
     public static final String REQUEST_TOO_LARGE = "request body too large";
     public static final String NO_UPSTREAM_ROUTE = "no upstream route";
 

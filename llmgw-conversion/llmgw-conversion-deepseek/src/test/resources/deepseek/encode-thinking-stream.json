@@ -1,0 +1,10 @@
+{
+  "model": "deepseek-flash",
+  "messages": [
+    {"role": "user", "content": "think"}
+  ],
+  "thinking": {"type": "enabled"},
+  "reasoning_effort": "high",
+  "stream": true,
+  "stream_options": {"include_usage": true}
+}

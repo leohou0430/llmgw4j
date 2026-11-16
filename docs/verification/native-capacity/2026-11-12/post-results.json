@@ -1,0 +1,131 @@
+{
+  "checks": [
+    {
+      "name": "slow-webflux-h0",
+      "command": [
+        "python3",
+        "bench/capacity/slow_clients.py",
+        "--jar",
+        "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/linux-native-2026-11-11/evidence/jvm-default.jar",
+        "--native-dir",
+        "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/linux-native-2026-11-11/evidence",
+        "--engine",
+        "webflux",
+        "--output",
+        "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/native-capacity-2026-11-12/slow-webflux-h0",
+        "--clients",
+        "64",
+        "--padding",
+        "1048400",
+        "--chunks",
+        "4096",
+        "--hold-seconds",
+        "45",
+        "--header-timeout",
+        "10",
+        "--heartbeat-ms",
+        "0"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "slow-webflux-h50",
+      "command": [
+        "python3",
+        "bench/capacity/slow_clients.py",
+        "--jar",
+        "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/linux-native-2026-11-11/evidence/jvm-default.jar",
+        "--native-dir",
+        "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/linux-native-2026-11-11/evidence",
+        "--engine",
+        "webflux",
+        "--output",
+        "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/native-capacity-2026-11-12/slow-webflux-h50",
+        "--clients",
+        "64",
+        "--padding",
+        "1048400",
+        "--chunks",
+        "4096",
+        "--hold-seconds",
+        "45",
+        "--header-timeout",
+        "10",
+        "--heartbeat-ms",
+        "50"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "slow-vt-h0",
+      "command": [
+        "python3",
+        "bench/capacity/slow_clients.py",
+        "--jar",
+        "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/linux-native-2026-11-11/evidence/jvm-default.jar",
+        "--native-dir",
+        "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/linux-native-2026-11-11/evidence",
+        "--engine",
+        "vt",
+        "--output",
+        "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/native-capacity-2026-11-12/slow-vt-h0",
+        "--clients",
+        "64",
+        "--padding",
+        "1048400",
+        "--chunks",
+        "4096",
+        "--hold-seconds",
+        "45",
+        "--header-timeout",
+        "10",
+        "--heartbeat-ms",
+        "0"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "slow-vt-h50",
+      "command": [
+        "python3",
+        "bench/capacity/slow_clients.py",
+        "--jar",
+        "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/linux-native-2026-11-11/evidence/jvm-default.jar",
+        "--native-dir",
+        "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/linux-native-2026-11-11/evidence",
+        "--engine",
+        "vt",
+        "--output",
+        "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/native-capacity-2026-11-12/slow-vt-h50",
+        "--clients",
+        "64",
+        "--padding",
+        "1048400",
+        "--chunks",
+        "4096",
+        "--hold-seconds",
+        "45",
+        "--header-timeout",
+        "10",
+        "--heartbeat-ms",
+        "50"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "tls",
+      "command": [
+        "docker",
+        "exec",
+        "1282a4fe444b6b10a356b1030ae2fb62b572bd41d86737a2427e13f16f6a95ed",
+        "python3",
+        "/audit/tls-check.py"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "paid_calls": 0,
+  "tls_container": "1282a4fe444b6b10a356b1030ae2fb62b572bd41d86737a2427e13f16f6a95ed",
+  "tls_container_cleaned": true,
+  "complete": true
+}

@@ -1,0 +1,105 @@
+{
+  "schema": "llmgw-acceptance-fixture/v1",
+  "id": "chat-s6-cancel-recover",
+  "entry": "chat",
+  "scenario": 6,
+  "slug": "cancel-recover",
+  "title": "取消后释放并恢复",
+  "mock": {
+    "chunks": 4
+  },
+  "markers": [
+    "mock-deepseek",
+    "mock-stall-mid-30000"
+  ],
+  "steps": [
+    {
+      "name": "cancel",
+      "request": {
+        "model": "mock-model",
+        "messages": [
+          {
+            "role": "user",
+            "content": "mock-deepseek mock-stall-mid-30000: cancel probe."
+          }
+        ],
+        "max_tokens": 1024,
+        "stream": true
+      },
+      "expected": {
+        "transport": "sse",
+        "cancel": {
+          "trigger": "after_first_content_frame",
+          "stall_marker": "mock-stall-mid-30000",
+          "assertions": {
+            "first_frame_received": true,
+            "active_permits_after_cancel": 0,
+            "no_success_terminal_after_cancel": true,
+            "upstream_connection_released": true
+          }
+        }
+      }
+    },
+    {
+      "name": "recovery",
+      "request": {
+        "model": "mock-model",
+        "messages": [
+          {
+            "role": "user",
+            "content": "mock-deepseek: recovery probe."
+          }
+        ],
+        "max_tokens": 1024,
+        "stream": true,
+        "stream_options": {
+          "include_usage": true
+        }
+      },
+      "expected": {
+        "transport": "sse",
+        "terminal": {
+          "object": "chat.completion.chunk",
+          "finish_reason": "stop",
+          "done_literal": "data: [DONE]",
+          "done_count": 1,
+          "usage_chunk_after_terminal": true,
+          "usage_chunk_choices_len": 0
+        },
+        "text": {
+          "equals": "Hello world"
+        },
+        "usage": {
+          "prompt_tokens": 7,
+          "completion_tokens": 4,
+          "total_tokens": 11,
+          "prompt_tokens_details": {
+            "cached_tokens": 3
+          },
+          "absent_fields": [
+            "usage.completion_tokens_details"
+          ]
+        },
+        "sse": {
+          "framing": "data-only",
+          "first_delta_role": "assistant",
+          "content_delta_concat": "Hello world",
+          "terminal_chunk": {
+            "finish_reason": "stop",
+            "delta_empty": true
+          },
+          "usage_chunk": {
+            "after_terminal": true,
+            "choices_len": 0
+          },
+          "done": {
+            "literal": "data: [DONE]",
+            "count": 1,
+            "last": true
+          }
+        }
+      }
+    }
+  ],
+  "notes": "mock-stall-mid-30000 silences the upstream after the first frame so the client cancel is deterministic; the recovery step proves permits released and the route healthy."
+}

@@ -1,0 +1,90 @@
+{
+  "frozen_jar_sha256": "4ac5ac7777c3ed5bfd3be9c680cde7fd0c3197d512452f68cbb34f593b7afaaa",
+  "checks": [
+    {
+      "name": "module-layout",
+      "command": [
+        "bash",
+        "bin/check-module-layout.sh"
+      ],
+      "started": 1794384459.2682319,
+      "exit_code": 0,
+      "seconds": 0.3799102306365967
+    },
+    {
+      "name": "native-boundaries",
+      "command": [
+        "python3",
+        "bin/check-native-boundaries.py"
+      ],
+      "started": 1794384459.648622,
+      "exit_code": 0,
+      "seconds": 0.282696008682251
+    },
+    {
+      "name": "native-boundary-tests",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "bin",
+        "-p",
+        "test_native_*.py"
+      ],
+      "started": 1794384459.9318058,
+      "exit_code": 0,
+      "seconds": 0.19217205047607422
+    },
+    {
+      "name": "openapi",
+      "command": [
+        "/usr/local/bin/python3.14",
+        "bin/check-openapi.py"
+      ],
+      "started": 1794384460.1245718,
+      "exit_code": 0,
+      "seconds": 0.23938417434692383
+    },
+    {
+      "name": "final-default",
+      "command": [
+        "mvn",
+        "-B",
+        "verify"
+      ],
+      "started": 1794384460.443923,
+      "exit_code": 0,
+      "seconds": 35.92673897743225,
+      "junit": {
+        "tests": 204,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "module_classes": {
+        "BOOT-INF/lib/llmgw-provider-http-jdk-0.3.1.jar": "3708b03119a9d20667c2c5f391bece3d3d87b63c90c6c639343a9256c23d99ea",
+        "BOOT-INF/lib/llmgw-core-0.3.1.jar": "75a311b205de059ab5189f773f36bd1402e987d65087adf4e39051b5efb74ffb",
+        "BOOT-INF/lib/llmgw-engine-webflux-0.3.1.jar": "810a8a5561f300a9fab8db93a6c80e8fe3e38fc140ed91d9e5055927108c341a",
+        "BOOT-INF/lib/llmgw-engine-api-0.3.1.jar": "22e79e722ea1fee8c7602011bf632fae04c34f25aefc9fee684b56cc6874f389",
+        "BOOT-INF/lib/llmgw-engine-vt-0.3.1.jar": "76dce41cdb70bf7ffa610fe0cbd0d84572294da18e1855bfe40e84a2afe5c760"
+      },
+      "matches_frozen_modules": false
+    }
+  ],
+  "frozen_module_classes": {
+    "BOOT-INF/lib/llmgw-provider-http-jdk-0.3.1.jar": "393f13d30593c32d019a7743f10ac956ba4754b0780fe9c1147f5dccb882e222",
+    "BOOT-INF/lib/llmgw-core-0.3.1.jar": "75a311b205de059ab5189f773f36bd1402e987d65087adf4e39051b5efb74ffb",
+    "BOOT-INF/lib/llmgw-engine-webflux-0.3.1.jar": "87dcea6e5b3158dd660d296adde64945132b5776cd82f650bd7e9d79eb418023",
+    "BOOT-INF/lib/llmgw-engine-api-0.3.1.jar": "22e79e722ea1fee8c7602011bf632fae04c34f25aefc9fee684b56cc6874f389",
+    "BOOT-INF/lib/llmgw-engine-vt-0.3.1.jar": "76dce41cdb70bf7ffa610fe0cbd0d84572294da18e1855bfe40e84a2afe5c760"
+  },
+  "redis": {
+    "pid": 5119,
+    "port": 53073,
+    "process_identity_verified": true,
+    "cleanup_exit_code": 0
+  },
+  "failure": "RuntimeError('profile class mismatch')"
+}

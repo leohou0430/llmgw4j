@@ -19,8 +19,24 @@
     <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-configuration-processor</artifactId><optional>true</optional></dependency>
     <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-provider-api</artifactId></dependency>
     <dependency><groupId>org.junit.jupiter</groupId><artifactId>junit-jupiter</artifactId><scope>test</scope></dependency>
+    <!-- T1.12 slice 5: real-codec dual-engine integration test drives the WebFlux data plane with
+         MockServer* request/response (test-only; the engine module already uses the same artifact). -->
+    <dependency><groupId>org.springframework</groupId><artifactId>spring-test</artifactId><scope>test</scope></dependency>
     <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-core</artifactId></dependency>
     <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-governance-default</artifactId></dependency>
+    <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-identity-default</artifactId></dependency>
+    <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-control-default</artifactId></dependency>
+    <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-persistence-sqlite</artifactId></dependency>
+    <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-catalog-api</artifactId></dependency>
+    <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-catalog-default</artifactId></dependency>
+    <!-- T1.11 protocol conversion: the assembly module plus every codec it discovers by name at
+         runtime. The assembly compiles against conversion-api only; the impl jars are supplied here. -->
+    <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-conversion-api</artifactId></dependency>
+    <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-conversion-module</artifactId></dependency>
+    <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-conversion-chat</artifactId></dependency>
+    <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-conversion-responses</artifactId></dependency>
+    <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-conversion-messages</artifactId></dependency>
+    <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-conversion-deepseek</artifactId></dependency>
     <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-engine-webflux</artifactId></dependency>
     <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-engine-vt</artifactId></dependency>
     <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-provider-openai</artifactId></dependency>

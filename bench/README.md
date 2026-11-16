@@ -1,5 +1,11 @@
 # 压测口径
 
+最新未发布的[生命周期/大帧复验](../docs/verification/lifecycle/2026-11-11/capacity-results.md)含冻结JAR三轮64/96VU比较、真实64慢读/45秒、取消恢复和长流；局部解码CPU、网关CPU、成功吞吐与拒绝分别解释，native验收另记。
+
+后续 [过载审查](../docs/verification/perf/2026-11-11/overload/README.md)包含真实拒绝链路微基准、无收益的闭环、因丢弃迭代而无效的固定到达率尝试，以及独立的客户端合作实验；各批不混算。
+
+当前未发布工作区的最新结果见 [2C2G 单副本容量审查](../docs/verification/capacity/2026-11-11/README.md)；包含受控正常矩阵、保留的连接关闭失败批次和独立尾延迟复核，不与下文历史 4 CPU 批次混算。
+
 > v0.3.1 当前结果与限制见 [性能说明](../docs/PERFORMANCE.md)和[最新 A/B](../docs/verification/perf/2026-11-10/perf-review/README.md)。下文 v1–v13 数字是历史记录，不能当作当前发布性能。
 
 目标：**单变量对照实验**，不是跑个好看的数字。
@@ -372,3 +378,9 @@ v4 起 SSE 的 `error_rate` 额外包含「真实 `data: [DONE]` 行 / 无 `even
   `summary-20261106-152012.csv` 是并发取消缺陷修复前的单组短跑（SSE `error_rate=16%`）；
   `summary-20261106-152417.csv` 是修复后的单组 12s 验证冒烟。
   以上均**不作性能结论**，保留未删。
+
+最新 Linux native 与同源码 JVM 的2C2G对照见[2026-11-12报告](../docs/verification/native-capacity/2026-11-12/README.md)：62组样本、严格慢客户端矩阵、本地TLS及授权的两次真实调用分别记录，native不是全面提速。`bench/capacity/run.py`与`slow_clients.py`可用`--native-dir`指定双引擎Linux二进制。
+
+容量脚本默认在宿主1分钟负载/逻辑核心数大于1.5时停止，运行中超限样本保留但性能无效；`--max-host-load-ratio 0`仅显式用于诊断。该门槛不替代空闲宿主。详见[性能复查](../docs/verification/native-sse/2026-11-12/README.md)。
+
+[最新Linux WebFlux G1三方对照](../docs/verification/native-g1/2026-11-12/README.md)使用连续5分钟低负载启动门槛、`--warmup 60s --duration 60s --rounds 3 --vus 64 --modes sse --max-host-load-ratio 0.75`，13样本含9正式。既有8/12秒诊断批次保留，不替代此稳态结果；G1降低SSE尾延迟但增加CPU与内存，默认GC未变。

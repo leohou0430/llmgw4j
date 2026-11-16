@@ -1,0 +1,42 @@
+{
+  "checked_at": "2026-11-11T14:38:29.259663+00:00",
+  "objective": "优先完成第一步的细节审查工作，完成后再开始第2、3步的工作",
+  "complete": true,
+  "phases": [
+    {
+      "phase": 1,
+      "complete": true,
+      "gates": 9,
+      "evidence": "docs/verification/lifecycle/2026-11-11/phase-1-completion.json"
+    },
+    {
+      "phase": 2,
+      "complete": true,
+      "gates": 10,
+      "evidence": "docs/verification/multi-replica/2026-11-11/phase-2-completion.json"
+    },
+    {
+      "phase": 3,
+      "complete": true,
+      "gates": 11,
+      "evidence": "docs/verification/compatibility/2026-11-11/phase-3-completion.json"
+    }
+  ],
+  "latest_jvm_artifacts": {
+    "bench/results/compatibility-2026-11-11/sdk-final-default.jar": "cd7980dd63e2e3150e366a22bbfaaf3043bd3ccae56897087ea892534d19cf24",
+    "bench/results/compatibility-2026-11-11/sdk-final-redis.jar": "84ac6b09ca0a8a667bc121c64c4b01293a694adf51d3af6e9669c39720fb3a16"
+  },
+  "scope": "bounded three-stage audit, reproduced existing-capability fixes and documented unsupported/untested boundaries; each performance/native claim remains tied to its original artifact",
+  "no_new_native_or_live_supplier_claim": true,
+  "remote_ci_triggered": false,
+  "committed_pushed_released": false,
+  "subsequent_evidence": {
+    "native": "docs/verification/native-compatibility/2026-11-11/completion.json",
+    "live_provider": "docs/verification/live-provider/2026-11-11/live-results.json",
+    "note": "Original audit flags describe its completion time; follow-up evidence is separate.",
+    "linux_native": "docs/verification/linux-native/2026-11-11/completion.json",
+    "native_capacity_tls": "docs/verification/native-capacity/2026-11-12/completion.json",
+    "steady_sse": "docs/verification/native-sse-steady/2026-11-12/results-summary.json",
+    "native_g1": "docs/verification/native-g1/2026-11-12/completion.json"
+  }
+}

@@ -55,7 +55,7 @@ public final class RedisTokenLimiter implements TokenLimiter {
     private boolean acquire(String keyId, int tokens, long bucketCapacity, double bucketRate) {
         Long allowed = scripts.execute(redis, scripts.acquire, List.of(key(keyId)),
                 Long.toString(bucketCapacity), Double.toString(bucketRate),
-                Long.toString(System.currentTimeMillis()),
+                "0", // Legacy clock argument: refill time comes from Redis.
                 Integer.toString(Math.max(1, tokens)));
         return allowed != null && allowed == 1L;
     }

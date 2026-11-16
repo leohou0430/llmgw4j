@@ -1,0 +1,35 @@
+{
+  "complete": true,
+  "checks": [
+    {
+      "name": "slow-webflux-h0",
+      "clients": 64,
+      "cancelled": 64,
+      "active_after_cancel": 0,
+      "max_header_ms": 1265.073520000442,
+      "peak_cgroup_memory_bytes": 847499264,
+      "recovery_status": 200,
+      "native_binaries": {
+        "webflux": {
+          "path": "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/native-g1-2026-11-12/evidence/llmgw-webflux-g1-linux",
+          "sha256": "35a2069407ebc823cf04fef464633eaf4b480aa2ad7179b1355254283e1b6eca"
+        }
+      }
+    },
+    {
+      "name": "slow-webflux-h50",
+      "clients": 64,
+      "cancelled": 64,
+      "active_after_cancel": 0,
+      "max_header_ms": 457.7815910015488,
+      "peak_cgroup_memory_bytes": 1130459136,
+      "recovery_status": 200,
+      "native_binaries": {
+        "webflux": {
+          "path": "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/native-g1-2026-11-12/evidence/llmgw-webflux-g1-linux",
+          "sha256": "35a2069407ebc823cf04fef464633eaf4b480aa2ad7179b1355254283e1b6eca"
+        }
+      }
+    }
+  ]
+}

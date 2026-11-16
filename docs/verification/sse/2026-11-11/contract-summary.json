@@ -1,0 +1,47 @@
+{
+  "smoke-stream-errors.sh": {
+    "exit_code": 0,
+    "pass": 67,
+    "passed_groups": 0
+  },
+  "smoke-v13-extensions.sh": {
+    "exit_code": 0,
+    "pass": 54,
+    "passed_groups": 0
+  },
+  "smoke-v13-hardening.sh": {
+    "exit_code": 0,
+    "pass": 46,
+    "passed_groups": 0
+  },
+  "smoke-multi-protocol.sh": {
+    "exit_code": 0,
+    "pass": 56,
+    "passed_groups": 0
+  },
+  "smoke-v13-provider.sh": {
+    "exit_code": 0,
+    "pass": 24,
+    "passed_groups": 0
+  },
+  "smoke-v13-platform.sh": {
+    "exit_code": 0,
+    "pass": 48,
+    "passed_groups": 0
+  },
+  "smoke-tenant-isolation.py": {
+    "exit_code": 0,
+    "pass": null,
+    "passed_groups": 2
+  },
+  "smoke-admin-auth.py": {
+    "exit_code": 0,
+    "pass": null,
+    "passed_groups": 6
+  },
+  "smoke-jwt-auth.py": {
+    "exit_code": 0,
+    "pass": null,
+    "passed_groups": 2
+  }
+}

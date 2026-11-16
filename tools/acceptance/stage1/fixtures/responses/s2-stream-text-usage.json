@@ -1,0 +1,81 @@
+{
+  "schema": "llmgw-acceptance-fixture/v1",
+  "id": "responses-s2-stream-text-usage",
+  "entry": "responses",
+  "scenario": 2,
+  "slug": "stream-text-usage",
+  "title": "流式文本+usage",
+  "mock": {
+    "chunks": 4
+  },
+  "markers": [
+    "mock-deepseek"
+  ],
+  "steps": [
+    {
+      "name": "initial",
+      "request": {
+        "model": "mock-model",
+        "input": [
+          {
+            "type": "message",
+            "role": "user",
+            "content": "mock-deepseek: Tell me about the probe."
+          }
+        ],
+        "max_output_tokens": 1024,
+        "stream": true
+      },
+      "expected": {
+        "transport": "sse",
+        "terminal": {
+          "event": "response.completed",
+          "count": 1,
+          "response_status": "completed",
+          "output_item_types": [
+            "message"
+          ],
+          "sequence_number": "monotonic_from_0",
+          "done_marker": false,
+          "usage_location": "response.usage"
+        },
+        "text": {
+          "equals": "Hello world"
+        },
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 4,
+          "total_tokens": 11,
+          "input_tokens_details": {
+            "cached_tokens": 3
+          },
+          "absent_fields": [
+            "usage.output_tokens_details"
+          ]
+        },
+        "sse": {
+          "framing": "event+data",
+          "event_type_equals_data_type": true,
+          "sequence_number": "monotonic_from_0",
+          "preamble": [
+            "response.created",
+            "response.in_progress"
+          ],
+          "message_item": {
+            "open": "response.output_item.added",
+            "delta_event": "response.output_text.delta",
+            "done_text": "Hello world",
+            "close": "response.output_item.done"
+          },
+          "terminal": {
+            "event": "response.completed",
+            "count": 1,
+            "response_status": "completed",
+            "usage_location": "response.usage"
+          },
+          "done_marker": false
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "diff-whitespace": {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit_code": 0,
+    "output": ""
+  },
+  "shell-syntax": {
+    "command": [
+      "bash",
+      "-n",
+      "bin/smoke-redis-cluster.sh"
+    ],
+    "exit_code": 0,
+    "output": ""
+  },
+  "openapi": {
+    "command": [
+      "/usr/local/bin/python3.14",
+      "bin/check-openapi.py",
+      "docs/openapi.yaml",
+      ".github/workflows/ci.yml",
+      ".github/workflows/release.yml",
+      "docker-compose.yml"
+    ],
+    "exit_code": 0,
+    "output": "PASS docs/openapi.yaml\nPASS .github/workflows/ci.yml\nPASS .github/workflows/release.yml\nPASS docker-compose.yml\n"
+  },
+  "python-syntax": {
+    "result": "PASS"
+  },
+  "checked_at": "2026-11-11T01:51:13.068021+00:00",
+  "markdown-links": {
+    "files": 40,
+    "broken": []
+  }
+}

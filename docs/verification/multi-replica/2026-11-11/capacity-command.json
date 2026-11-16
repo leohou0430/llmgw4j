@@ -1,0 +1,20 @@
+[
+  "python3",
+  "bench/capacity/run.py",
+  "--before",
+  "bench/results/lifecycle-2026-11-11/idle-output.jar",
+  "--after",
+  "bench/results/multi-replica-2026-11-11/default.jar",
+  "--output",
+  "bench/results/multi-replica-2026-11-11/capacity",
+  "--rounds",
+  "3",
+  "--duration",
+  "6s",
+  "--warmup",
+  "3s",
+  "--vus",
+  "64",
+  "--respect-retry-after",
+  "--skip-long"
+]

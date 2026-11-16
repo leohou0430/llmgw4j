@@ -1,0 +1,61 @@
+{
+  "checks": [
+    {
+      "name": "slow-vt-h0",
+      "maximum_header_ms": 4440.989925002214,
+      "cancelled": 64,
+      "active_after_cancel": 0,
+      "recovery": 200,
+      "elapsed_seconds": 49.99151528099901,
+      "sha256": {
+        "vt": {
+          "path": "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/linux-native-2026-11-11/evidence/llmgw-vt-linux",
+          "sha256": "a966913fe96f6f0c684bc68dbe7c9453d2c3eb7e596153f43cc6e1f859912d1a"
+        }
+      }
+    },
+    {
+      "name": "slow-vt-h50",
+      "maximum_header_ms": 5688.957623999158,
+      "cancelled": 64,
+      "active_after_cancel": 0,
+      "recovery": 200,
+      "elapsed_seconds": 51.36885691600037,
+      "sha256": {
+        "vt": {
+          "path": "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/linux-native-2026-11-11/evidence/llmgw-vt-linux",
+          "sha256": "a966913fe96f6f0c684bc68dbe7c9453d2c3eb7e596153f43cc6e1f859912d1a"
+        }
+      }
+    },
+    {
+      "name": "slow-webflux-h0",
+      "maximum_header_ms": 5736.4035900027375,
+      "cancelled": 64,
+      "active_after_cancel": 0,
+      "recovery": 200,
+      "elapsed_seconds": 51.650997454999015,
+      "sha256": {
+        "webflux": {
+          "path": "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/linux-native-2026-11-11/evidence/llmgw-webflux-linux",
+          "sha256": "e3de8eb77261b694fc541cecefd8ee0c03e7ce66e481f793305b3757b20d696d"
+        }
+      }
+    },
+    {
+      "name": "slow-webflux-h50",
+      "maximum_header_ms": 1398.7322640023194,
+      "cancelled": 64,
+      "active_after_cancel": 0,
+      "recovery": 200,
+      "elapsed_seconds": 47.00646057200356,
+      "sha256": {
+        "webflux": {
+          "path": "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/linux-native-2026-11-11/evidence/llmgw-webflux-linux",
+          "sha256": "e3de8eb77261b694fc541cecefd8ee0c03e7ce66e481f793305b3757b20d696d"
+        }
+      }
+    }
+  ],
+  "complete": true
+}

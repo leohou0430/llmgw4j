@@ -1,0 +1,30 @@
+{
+  "task": "T1.12 two-engine conversion seam - slice 6",
+  "date": "2026-11-13",
+  "digest_algorithm": "SHA-256",
+  "note": "Digests of the actual working-tree files verified in this run. Conversion-module sources are new (untracked) files; the 5 tracked engine/core files carry the T1.12 seam modifications.",
+  "source_files": {
+    "llmgw-engine/llmgw-engine-vt/src/main/java/io/github/leohou0430/llmgw/engine/vt/VirtualThreadGatewayController.java": "22f3bd283c1b43e87144194581937ec78e5b0f2f01e634943d3df0977ebcd0f2",
+    "llmgw-engine/llmgw-engine-webflux/src/main/java/io/github/leohou0430/llmgw/engine/webflux/WebfluxGatewayController.java": "f71056680d96b83d2a115d453cdcb053a189d31d1d1af03e83446ec0d10bdc04",
+    "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/routing/RouteTable.java": "3dcf264ee3da38a68e782b96f10ff7d2b33ae3c13dd808175ad1007bf4fab90b",
+    "llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/protocol/ChunkParser.java": "af91c84c3a316083393a8edbf637a13073a2db6e16b8a224cef5826caa2ac45b",
+    "llmgw-engine/llmgw-engine-api/src/main/java/io/github/leohou0430/llmgw/engine/EngineRoutes.java": "fd4c3a16a6aae65355161fbb3a59c59a99e5c30ce883d5b1f5663511e44ce4da",
+    "llmgw-conversion/llmgw-conversion-module/src/main/java/io/github/leohou0430/llmgw/conversion/module/DefaultStreamTranscoder.java": "9c00e9fc35faed7108150468988ff47fb4cb14a89af7a8ac893549b93140837f"
+  },
+  "test_files": {
+    "llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/ConversionEngineIntegrationTest.java": "45dc073fbeb241f2fb81d9e454fd7f48e4afbad0ecfef13609c9c53f1bce9a7b",
+    "llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/routing/RouteTableTest.java": "b31eed2c8dcddf55f1f33091182d197363ff73a3063e50c46aef7f05bf84f38f",
+    "llmgw-engine/llmgw-engine-webflux/src/test/java/io/github/leohou0430/llmgw/engine/webflux/WebfluxConversionTest.java": "5fea6490fea2e3cf0bbbe2ffbd7ce8e905819ab830595a9eb4dbdc72bf3b7003"
+  },
+  "run_evidence": {
+    "slice6-console.log": "fba641060e5df4a6dcecbac7914308f62423cb6a5c44fe20310e725e94ad262f"
+  },
+  "tracked_diff_stat": {
+    "ChunkParser.java": "29 changed",
+    "RouteTable.java": "44 changed",
+    "EngineRoutes.java": "20 changed",
+    "VirtualThreadGatewayController.java": "302 changed",
+    "WebfluxGatewayController.java": "425 changed",
+    "total": "5 files changed, 715 insertions(+), 105 deletions(-)"
+  }
+}

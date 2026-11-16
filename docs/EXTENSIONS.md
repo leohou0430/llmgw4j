@@ -89,7 +89,7 @@ public final class CompanyRules implements ExtensionModule {
 
 ## 上游、tokenizer 与 Redis
 
-UpstreamProvider 公开 JDK Flow.Publisher、CompletableFuture 和阻塞接口。流为冷源，订阅独立管理需求、取消及 watchdog；正常结束不取消 transport，取消/超时传到真实 HTTP future/body subscription。Reactor 转换与异步心跳只在 WebFlux，VT 使用阻塞 JDK HTTP。
+UpstreamProvider 公开 JDK Flow.Publisher、CompletableFuture 和阻塞接口。流为冷源，订阅独立管理需求、取消及 watchdog；正常结束不取消 transport，取消/超时传到真实 HTTP future/body subscription。Reactor 转换与异步心跳只在 WebFlux，VT 使用阻塞 JDK HTTP。当前工作区每个 transport 有独立惰性 watchdog；正常结束/取消移除定时任务，整体 deadline 覆盖响应正文。关闭 transport 同时释放其定时器与专用 HTTP executor。
 
 认证实现按 route.provider 选择；空 provider 是 OpenAI 默认方言，未知显式名字在 IO 前失败，即使没有配置密钥。认证实现不保存运行凭据。OpenAI SDK 仅用于显式校验/连通性路径。
 

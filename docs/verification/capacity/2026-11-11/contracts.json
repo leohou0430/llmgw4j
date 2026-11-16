@@ -1,0 +1,11 @@
+{
+  "smoke-stream-errors.sh": 0,
+  "smoke-v13-extensions.sh": 0,
+  "smoke-v13-hardening.sh": 0,
+  "smoke-multi-protocol.sh": 0,
+  "smoke-v13-provider.sh": 0,
+  "smoke-v13-platform.sh": 0,
+  "smoke-tenant-isolation.py": 0,
+  "smoke-admin-auth.py": 0,
+  "smoke-jwt-auth.py": 0
+}

@@ -1,0 +1,25 @@
+{
+  "image": "sha256:194dca284068f64c9bb6f0c672d204ffd0a76c9401c61040c0f028fb93846962",
+  "builder": "714f9ccca6f782109c627e22a9680937ac1f0c2129ff9989cfed6ddcbd1809bf",
+  "redis": "0e75391a128c611c5d7b93d9472f84986a4f07e30a07baadfe91b1928e6b6a4d",
+  "source_mount": false,
+  "reused_checkpoint": "attempt-1",
+  "exit_code": 0,
+  "container_state": {
+    "Status": "running",
+    "Running": true,
+    "Paused": false,
+    "Restarting": false,
+    "OOMKilled": false,
+    "Dead": false,
+    "Pid": 19201,
+    "ExitCode": 0,
+    "Error": "",
+    "StartedAt": "2026-11-11T15:53:49.245671092Z",
+    "FinishedAt": "0001-01-01T00:00:00Z"
+  },
+  "cleaned_container_ids": [
+    "0e75391a128c611c5d7b93d9472f84986a4f07e30a07baadfe91b1928e6b6a4d",
+    "714f9ccca6f782109c627e22a9680937ac1f0c2129ff9989cfed6ddcbd1809bf"
+  ]
+}

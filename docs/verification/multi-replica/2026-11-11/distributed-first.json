@@ -1,0 +1,22 @@
+{
+  "jars": {
+    "bench/results/multi-replica-2026-11-11/redis-fixed.jar": "a3ce61f4adf7910e824e2feea98eb997ce66d10a9dd62857a55f26eca6580b01",
+    "bench/results/multi-replica-2026-11-11/default.jar": "a3ce61f4adf7910e824e2feea98eb997ce66d10a9dd62857a55f26eca6580b01"
+  },
+  "ports": {
+    "REDIS_PORT": "52152",
+    "P1": "52153",
+    "P2": "52154",
+    "MOCK_PORT": "52155"
+  },
+  "checks": [
+    {
+      "name": "cluster",
+      "command": [
+        "bash",
+        "bin/smoke-redis-cluster.sh"
+      ],
+      "exit_code": 1
+    }
+  ]
+}

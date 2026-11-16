@@ -1,0 +1,65 @@
+[
+  {
+    "trial": 0,
+    "ready_seconds": 4.697931744995003,
+    "status": 413,
+    "command": [
+      "java",
+      "-jar",
+      "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/compatibility-2026-11-11/sdk-final-default.jar",
+      "--spring.profiles.active=vt",
+      "--server.port=52387",
+      "--gateway.mock.port=52388",
+      "--gateway.governance-enabled=true",
+      "--gateway.max-request-bytes=128",
+      "--gateway.governance.default-quota-tokens=2000000000",
+      "--gateway.governance.rate-limit-tokens-per-second=2000000000",
+      "--gateway.governance.rate-limit-burst=2000000000",
+      "--gateway.api-keys[0].quota-tokens=1000000000000",
+      "--gateway.keys-store-path=",
+      "--gateway.governance.snapshot-path=/var/folders/wx/9749nb1j7bbg_3n7kb15lbb80000gn/T/llmgw-vt-413-ktsp6sce/snapshot.json"
+    ]
+  },
+  {
+    "trial": 1,
+    "ready_seconds": 4.529015510997851,
+    "status": 413,
+    "command": [
+      "java",
+      "-jar",
+      "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/compatibility-2026-11-11/sdk-final-default.jar",
+      "--spring.profiles.active=vt",
+      "--server.port=52480",
+      "--gateway.mock.port=52481",
+      "--gateway.governance-enabled=true",
+      "--gateway.max-request-bytes=128",
+      "--gateway.governance.default-quota-tokens=2000000000",
+      "--gateway.governance.rate-limit-tokens-per-second=2000000000",
+      "--gateway.governance.rate-limit-burst=2000000000",
+      "--gateway.api-keys[0].quota-tokens=1000000000000",
+      "--gateway.keys-store-path=",
+      "--gateway.governance.snapshot-path=/var/folders/wx/9749nb1j7bbg_3n7kb15lbb80000gn/T/llmgw-vt-413-ktsp6sce/snapshot.json"
+    ]
+  },
+  {
+    "trial": 2,
+    "ready_seconds": 4.543406586999481,
+    "status": 413,
+    "command": [
+      "java",
+      "-jar",
+      "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/compatibility-2026-11-11/sdk-final-default.jar",
+      "--spring.profiles.active=vt",
+      "--server.port=52554",
+      "--gateway.mock.port=52555",
+      "--gateway.governance-enabled=true",
+      "--gateway.max-request-bytes=128",
+      "--gateway.governance.default-quota-tokens=2000000000",
+      "--gateway.governance.rate-limit-tokens-per-second=2000000000",
+      "--gateway.governance.rate-limit-burst=2000000000",
+      "--gateway.api-keys[0].quota-tokens=1000000000000",
+      "--gateway.keys-store-path=",
+      "--gateway.governance.snapshot-path=/var/folders/wx/9749nb1j7bbg_3n7kb15lbb80000gn/T/llmgw-vt-413-ktsp6sce/snapshot.json"
+    ]
+  }
+]

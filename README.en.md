@@ -22,6 +22,14 @@ Current release: **v0.3.1**. See [release notes](docs/releases/v0.3.1.md) and [p
 
 Version 0.3.1: foundation discovery uses a project-owned named SPI inspired by Dubbo, without a Dubbo dependency. Services use explicit Java construction. Provider and tokenizer use aggregator/api/implementation modules; Spring/Reactor remain at HTTP adapters. See [extension and migration guide](docs/EXTENSIONS.md). Internal Java extension APIs changed since v0.2.0; HTTP routes remain compatible.
 
+Unreleased work is tracked in the [three-stage audit](docs/plans/2026-11-11-three-stage-review.md), [multi-replica review](docs/verification/multi-replica/2026-11-11/README.md) and [official SDK matrix](docs/verification/compatibility/2026-11-11/README.md). Existing plaintext Redis credential stores require coordinated migration. New JVM function checks do not imply a new native or performance result.
+
+Follow-up checks passed for the [current host WebFlux native](docs/verification/native-compatibility/2026-11-11/README.md) and [two live DeepSeek calls](docs/verification/live-provider/2026-11-11/README.md). Native checks use a controlled local upstream; live calls use the JVM engines. Neither is a new throughput benchmark.
+
+Linux amd64 native checks now pass for both engines; see the [Linux/VT report](docs/verification/linux-native/2026-11-11/README.md). This is functional verification, not a capacity benchmark.
+
+The [Linux WebFlux G1 follow-up](docs/verification/native-g1/2026-11-12/README.md) passed a three-way 2 CPU / 2 GiB SSE comparison, slow-reader checks and local TLS tests. G1 reduced end-to-end p99 by 16.7% versus Serial native in this batch, using more CPU and memory. The existing opt-in profile is validated for this scope; defaults are unchanged. Earlier [capacity evidence](docs/verification/native-capacity/2026-11-12/README.md) remains tied to its own artifacts.
+
 ## Capability overview (parity gaps vs mainstream gateways, see docs/gap-analysis.md)
 
 - **Forwarding governance**: same-route retry + exponential backoff, three-tier
@@ -45,7 +53,7 @@ Version 0.3.1: foundation discovery uses a project-owned named SPI inspired by D
   cache (Embedder SPI + bucketed vector keys), exact cache
 - **Multi-replica**: `-Predis` (Lua-atomic limiter/quota/breaker + shared key
   table, response cache and task stickiness)
-- **Engineering**: 117 JUnit tests (including real Redis verification) + both-engine contract, isolation and authentication regressions + Docker/compose + TLS front-proxy deployment guide
+- **Engineering**: module-level JUnit tests (including real Redis verification; current counts are in the audit evidence) + both-engine contract, isolation and authentication regressions + Docker/compose + TLS front-proxy deployment guide
 
 It was designed to answer one question properly: *for a streaming LLM proxy,
 does a reactive data plane actually beat a virtual-thread data plane?*
@@ -192,7 +200,9 @@ The latest frozen-artifact A/B contains 64 samples and 4,217,770 requests, all e
 
 See the [full report](docs/verification/perf/2026-11-10/perf-review/README.md) for JFR, ranges, raw evidence and limitations. Historical cross-gateway results describe older fixed artifacts, not a new v0.3.1 ranking. Native performance, public TLS and remote governance latency were not remeasured. The SPI/Flow refactor in v0.3.1 has not been benchmarked; benchmark JAR hashes remain explicitly recorded.
 
-The URI cache remains unbounded for high-cardinality dynamic paths. Default concurrency is 64 and non-streaming response size is capped at 4 MiB; uploads and downloads still buffer whole bodies. See [benchmark instructions](bench/cross-gateway/README.md).
+The unreleased [lifecycle and large-frame review](docs/verification/lifecycle/2026-11-11/README.md) adds linear line decoding, bounded WebFlux response buffers, correct client-disconnect classification, and byte-level idle-read progress. Three profiles pass 211 tests each; frozen-JAR contracts and the 2C2G/one-instance slow-reader and capacity scenarios pass. The fresh WebFlux native build and functional contracts also pass. [Measurements](docs/verification/lifecycle/2026-11-11/capacity-results.md) show mixed throughput/latency changes, not a general speedup.
+
+See the [current 2C2G capacity audit](docs/verification/capacity/2026-11-11/README.md) for unreleased changes and verification. The unreleased [overload review](docs/verification/perf/2026-11-11/overload/README.md) moves WebFlux admission before argument resolution and adds `Retry-After: 1` to capacity rejections on both engines; client cooperation is measured separately from server execution cost. The unreleased [heartbeat review](docs/verification/backpressure/2026-11-11/README.md) preserves error status before successful upstream headers, isolates blocking heartbeats from shared deadlines, and drops excess heartbeat ticks under WebFlux backpressure. The unreleased [SSE line boundary](docs/verification/sse/2026-11-11/README.md) caps each upstream line at 1 MiB by default before decoding, with a configurable limit and no total size cap for valid streams. The working-tree transport now caps URI caching at 1,024 entries; once full, new paths are resolved without retention. Default concurrency is 64 and non-streaming response size is capped at 4 MiB; uploads and downloads still buffer whole bodies. See [benchmark instructions](bench/cross-gateway/README.md).
 
 ## Regression suite
 

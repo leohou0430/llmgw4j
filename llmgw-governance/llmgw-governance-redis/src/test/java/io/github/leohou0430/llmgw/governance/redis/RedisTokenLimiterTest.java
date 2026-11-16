@@ -61,7 +61,7 @@ class RedisTokenLimiterTest {
         assertNull(b.resolve("tenant-b","files","same-id"));
         assertNull(b.resolve("tenant-a","batches","same-id"));
     }
-    @Test void nativeRedisModuleLoadsWithoutSpringAndOwnsItsConnectionPool() {
+    @Test void nativeRedisModuleLoadsWithoutSpringAndOwnsItsConnectionPool() throws Exception {
         assertThrows(ClassNotFoundException.class, () -> Class.forName("org.springframework.data.redis.core.StringRedisTemplate"));
         var p = new io.github.leohou0430.llmgw.core.config.GatewayProperties();
         p.getRedis().setPort(Integer.parseInt(System.getenv("LLMGW_TEST_REDIS_PORT")));
@@ -87,6 +87,6 @@ class RedisTokenLimiterTest {
             var pool = c.get(JedisPooled.class);assertEquals("PONG",pool.ping());
             c.close();assertThrows(RuntimeException.class,pool::ping);
             assertEquals("PONG",redis.ping());
-        } finally { c.close();redis.hdel("llmgw:keys",token); }
+        } finally { c.close();redis.hdel("llmgw:keys:sha256", java.util.HexFormat.of().formatHex(java.security.MessageDigest.getInstance("SHA-256").digest(token.getBytes(java.nio.charset.StandardCharsets.UTF_8)))); }
     }
 }

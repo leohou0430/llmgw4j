@@ -1,0 +1,21 @@
+{
+  "model": "client-model",
+  "input": "hi",
+  "reasoning": { "effort": "none" },
+  "tools": [
+    {
+      "type": "function",
+      "name": "get_weather",
+      "description": "查询天气",
+      "parameters": {
+        "type": "object",
+        "properties": { "city": { "type": "string" } },
+        "required": ["city"]
+      },
+      "strict": false
+    },
+    { "type": "function", "name": "ping" }
+  ],
+  "tool_choice": { "type": "function", "name": "get_weather" },
+  "parallel_tool_calls": true
+}

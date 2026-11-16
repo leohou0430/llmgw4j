@@ -1,0 +1,78 @@
+{
+  "schema": "llmgw-acceptance-fixture/v1",
+  "id": "messages-s2-stream-text-usage",
+  "entry": "messages",
+  "scenario": 2,
+  "slug": "stream-text-usage",
+  "title": "流式文本+usage",
+  "mock": {
+    "chunks": 4
+  },
+  "markers": [
+    "mock-deepseek"
+  ],
+  "steps": [
+    {
+      "name": "initial",
+      "request": {
+        "model": "mock-model",
+        "messages": [
+          {
+            "role": "user",
+            "content": "mock-deepseek: Tell me about the probe."
+          }
+        ],
+        "max_tokens": 1024,
+        "stream": true
+      },
+      "expected": {
+        "transport": "sse",
+        "terminal": {
+          "message_stop_count": 1,
+          "stop_reason_event": "message_delta",
+          "stop_reason": "end_turn",
+          "done_marker": false,
+          "usage_location": "message_delta.usage",
+          "block_indices": "contiguous_from_0"
+        },
+        "text": {
+          "equals": "Hello world"
+        },
+        "usage": {
+          "input_tokens": 4,
+          "cache_read_input_tokens": 3,
+          "cache_creation_input_tokens": 0,
+          "output_tokens": 4,
+          "absent_fields": [
+            "usage.total_tokens",
+            "usage.output_tokens_details"
+          ]
+        },
+        "sse": {
+          "framing": "event+data",
+          "event_type_equals_data_type": true,
+          "preamble": [
+            "message_start"
+          ],
+          "message_start_usage": {
+            "input_tokens": 0,
+            "output_tokens": 0
+          },
+          "block_indices": "contiguous_from_0",
+          "text_block": {
+            "start_type": "text",
+            "delta_type": "text_delta",
+            "delta_concat": "Hello world",
+            "closed": true
+          },
+          "terminal": {
+            "message_delta_stop_reason": "end_turn",
+            "message_stop_count": 1,
+            "usage_location": "message_delta.usage"
+          },
+          "done_marker": false
+        }
+      }
+    }
+  ]
+}

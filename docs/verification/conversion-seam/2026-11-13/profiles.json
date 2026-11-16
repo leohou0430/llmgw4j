@@ -1,0 +1,88 @@
+{
+  "task": "T1.12 two-engine conversion seam - slice 6 full verification",
+  "date": "2026-11-13",
+  "runner": "/tmp/llmgw-slice6-run.sh (background id b0n56wgtv, exit 0)",
+  "command_prefix": "mvn -o [-P<profile>] test",
+  "java_home": "/Users/leo/Library/Java/JavaVirtualMachines/graalvm-jdk-25/Contents/Home",
+  "maven": "/Users/leo/work/maven/apache-maven-3.9.16",
+  "note": "All numbers below are THIS run's actual measurements, not copied from historical reports. Surefire XML on disk reflects the last run (redis profile = superset). default/jtokkit/otel skip the 26 redis-gated tests; redis profile executes them.",
+  "profiles": [
+    {
+      "profile": "default",
+      "command": "mvn -o test",
+      "exit_code": 0,
+      "build": "BUILD SUCCESS",
+      "tests_run": 749,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 26,
+      "executed": 723,
+      "skipped_reason": "llmgw-governance-redis 26 tests gated by LLMGW_TEST_REDIS_PORT (unset in default profile)"
+    },
+    {
+      "profile": "jtokkit",
+      "command": "mvn -o -Pjtokkit test",
+      "exit_code": 0,
+      "build": "BUILD SUCCESS",
+      "tests_run": 749,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 26,
+      "executed": 723
+    },
+    {
+      "profile": "otel",
+      "command": "mvn -o -Potel test",
+      "exit_code": 0,
+      "build": "BUILD SUCCESS",
+      "tests_run": 749,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 26,
+      "executed": 723
+    },
+    {
+      "profile": "redis",
+      "command": "LLMGW_TEST_REDIS_PORT=6390 mvn -o -Predis test",
+      "exit_code": 0,
+      "build": "BUILD SUCCESS",
+      "tests_run": 749,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "executed": 749,
+      "isolated_instance": {
+        "port": 6390,
+        "ping_before": "PONG",
+        "shutdown": "redis-cli -p 6390 shutdown nosave",
+        "ping_after": "Could not connect to Redis at 127.0.0.1:6390 (self-cleaned)"
+      }
+    }
+  ],
+  "per_module_redis_superset": {
+    "llmgw-app": 68,
+    "llmgw-conversion/llmgw-conversion-api": 84,
+    "llmgw-conversion/llmgw-conversion-chat": 68,
+    "llmgw-conversion/llmgw-conversion-deepseek": 42,
+    "llmgw-conversion/llmgw-conversion-messages": 118,
+    "llmgw-conversion/llmgw-conversion-responses": 88,
+    "llmgw-core": 53,
+    "llmgw-engine/llmgw-engine-api": 15,
+    "llmgw-engine/llmgw-engine-vt": 20,
+    "llmgw-engine/llmgw-engine-webflux": 28,
+    "llmgw-governance/llmgw-governance-api": 9,
+    "llmgw-governance/llmgw-governance-default": 64,
+    "llmgw-governance/llmgw-governance-redis": 26,
+    "llmgw-provider/llmgw-provider-anthropic": 3,
+    "llmgw-provider/llmgw-provider-http-jdk": 58,
+    "llmgw-provider/llmgw-provider-openai-sdk": 1,
+    "llmgw-tokenizer/llmgw-tokenizer-jtokkit": 4,
+    "total": 749,
+    "surefire_xml_files": 73
+  },
+  "t1_12_focused_suites": {
+    "ConversionEngineIntegrationTest (llmgw-app, real codec dual-engine)": 9,
+    "RouteTableTest (llmgw-core, fallback protocol guard)": 14,
+    "engine-vt + engine-webflux (VT 20 + WEBFLUX 28)": 48
+  }
+}

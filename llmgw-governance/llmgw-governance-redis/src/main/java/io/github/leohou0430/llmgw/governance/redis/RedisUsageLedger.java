@@ -32,7 +32,12 @@ public final class RedisUsageLedger implements UsageLedger {
         this.prefix = prefix;
     }
 
+    static void validateKeyId(String keyId) {
+        if ("keys".equals(keyId)) throw new IllegalArgumentException("Redis usage key id is reserved for its internal index: keys");
+    }
+
     private String usageKey(String keyId) {
+        validateKeyId(keyId);
         return prefix + "usage:" + keyId;
     }
 
@@ -74,34 +79,29 @@ public final class RedisUsageLedger implements UsageLedger {
 
     @Override
     public boolean tryReserve(String keyId, long tokens, long quota) {
+        if (quota > UsageSummaries.MAX_EXACT_COUNTER) throw new IllegalArgumentException("Redis quota exceeds exact integer range");
         Long allowed = scripts.execute(redis, scripts.reserve,
                 List.of(usageKey(keyId), keysKey()),
                 Long.toString(QuotaMath.normalize(tokens)), Long.toString(quota), keyId);
         return allowed != null && allowed == 1L;
     }
 
-    /** REPLACE semantics, matching InMemoryUsageLedger.load(). */
-    @Override
-    public void load(Map<String, UsageSummary> data) {
-        Set<String> ids = redis.smembers(keysKey());
-        if (ids != null) {
-            for (String id : ids) {
-                redis.del(usageKey(id));
-            }
-        }
-        redis.del(keysKey());
-        for (Map.Entry<String, UsageSummary> entry : data.entrySet()) {
-            UsageSummary summary = entry.getValue();
-            String key = usageKey(entry.getKey());
-            redis.hset(key, Map.of(
-                    "requests", Long.toString(summary.requests()),
-                    "prompt", Long.toString(summary.promptTokens()),
-                    "completion", Long.toString(summary.completionTokens()),
-                    "errors", Long.toString(summary.errors()),
-                    "used", Long.toString(UsageSummaries.billed(summary)),
-                    "reserved", "0"));
-            redis.sadd(keysKey(), entry.getKey());
+    /** Replace supplied IDs atomically, preserving unrelated IDs and rejecting active reservations. */
+    @Override public void load(Map<String, UsageSummary> data) {
+        Map<String, UsageSummary> supplied = Map.copyOf(data);
+        UsageSummaries.validateSnapshot(supplied);
+        if (supplied.isEmpty()) return;
+        var keys = new java.util.ArrayList<String>(); keys.add(keysKey());
+        var args = new java.util.ArrayList<String>();
+        supplied.forEach((id, value) -> {
+            keys.add(usageKey(id)); args.add(id); args.add(Long.toString(value.requests()));
+            args.add(Long.toString(value.promptTokens())); args.add(Long.toString(value.completionTokens()));
+            args.add(Long.toString(value.errors())); args.add(Long.toString(UsageSummaries.billed(value)));
+        });
+        Long restored = scripts.execute(redis, scripts.restore, keys, args.toArray(String[]::new));
+        if (restored == null || restored != 1L) {
+            throw new IllegalStateException(restored != null && restored == 0L
+                    ? "cannot restore usage with active reservations" : "invalid Redis usage state for restore");
         }
     }
-
 }

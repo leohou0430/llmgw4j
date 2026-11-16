@@ -1,0 +1,43 @@
+{
+  "model": "client-model",
+  "input": [
+    {
+      "type": "message",
+      "role": "user",
+      "content": "weather in Paris?"
+    },
+    {
+      "type": "reasoning",
+      "id": "rs_1",
+      "summary": [],
+      "status": "completed",
+      "content": [
+        {
+          "type": "reasoning_text",
+          "text": "need the weather tool"
+        }
+      ],
+      "encrypted_content": "llmgw1:eyJwIjoicHJvai0xIn0.c2ln"
+    },
+    {
+      "type": "function_call",
+      "id": "fc_1",
+      "call_id": "call_1",
+      "name": "get_weather",
+      "arguments": "{\"city\":\"Paris\"}",
+      "status": "completed"
+    },
+    {
+      "type": "function_call_output",
+      "id": "fco_1",
+      "call_id": "call_1",
+      "output": "{\"temp\":21}",
+      "status": "completed"
+    },
+    {
+      "type": "message",
+      "role": "user",
+      "content": "and in Tokyo?"
+    }
+  ]
+}

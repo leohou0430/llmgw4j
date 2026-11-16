@@ -2,6 +2,8 @@
 
 > v0.3.1 使用项目内原生 SPI。内部 API、模块及 Redis 配置升级方式见 [扩展与迁移说明](EXTENSIONS.md)。
 
+当前未发布工作区的 [2C2G 单副本审查](verification/capacity/2026-11-11/README.md)记录默认 64 并发保护下的容量与恢复边界。正文整体超时等修复尚不属于 v0.3.1 发布资产；长生成应按 [配置说明](CONFIGURATION.md)显式设置尝试期限。
+
 ## TLS 立场
 
 llmgw4j 与 LiteLLM、OneAPI 等应用级网关采取相同立场：**网关进程本身保持纯 HTTP，
@@ -80,7 +82,8 @@ docker build --build-arg MAVEN_PROFILES=-Predis -t llmgw4j:redis .
 Redis 包替换 `TokenLimiter` / `UsageLedger` / `CircuitBreaker` / `ApiKeyRegistry` /
 `SemanticCache` / `TaskRouteSticky`，任务归属与路由绑定可跨副本共享。
 Redis 服务使用 AOF 数据卷，但仍需自行定义备份、故障恢复和一致性验证方案。
-**金额 `BudgetLedger`、请求日志与快照仍为本地实现，不提供分布式财务级预算。**
+**金额 `BudgetLedger`、请求日志与快照文件仍为本地实现，不提供分布式财务级预算。**
+未发布工作区已收紧凭据初始化与存储模式：升级既有 Redis 部署前，请先阅读[哈希模式迁移、ID 和快照限制](CONFIGURATION.md#38-redis-分布式状态可选仅--predis-产物)。所有副本必须统一配置；路由、策略、模型目录等管理变更不会自动传播，Redis key CRUD 仍返回 501。
 基础 compose 使用固定演示端口；实际扩容应由部署平台分配实例端口并在内网负载均衡，
 不能直接对基础 compose 执行 `--scale gateway=2` 而继续共用一个宿主端口。
 
@@ -150,3 +153,7 @@ gh run list --workflow release.yml
 默认 `gateway.max-response-bytes=4194304`、`gateway.max-concurrent-requests=64`；响应整包缓冲，超过大小上限报上游错误，超过并发上限报 503。
 这两项限制同样作用于演示/压测，增加压测 VU 前应显式调整并检查错误率，历史吞吐数据不代表本次修复后的性能。
 JSON 密钥文件仅支持单进程写入。Redis 包的运行时密钥管理接口暂返回 501；不能用共享 JSON 文件补成分布式密钥管理。
+
+## Linux WebFlux G1 可选构建
+
+在Linux Oracle GraalVM环境，可用已有命令`NATIVE_GC=g1 ./bin/build-native.sh webflux`显式选择G1。默认GC不变。[2C2G验收报告](verification/native-g1/2026-11-12/README.md)中G1相较Serial native的SSE端到端p99降低16.7%，CPU/成功请求与峰值内存增加；两组64连接慢读、恢复与本地TLS通过。该证据只覆盖Linux amd64 WebFlux/default组合的本地SSE，不代表G1 VT/Redis或JSON性能已验收。

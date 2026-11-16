@@ -1,0 +1,163 @@
+{
+  "updated_at": "2026-11-12T08:43:30.571494+08:00",
+  "goal_phase": 3,
+  "phase_2_or_3_started": true,
+  "production_candidate": "bench/results/compatibility-2026-11-11/sdk-final-default.jar",
+  "candidate_sha256": "cd7980dd63e2e3150e366a22bbfaaf3043bd3ccae56897087ea892534d19cf24",
+  "completed_this_turn": [
+    "Phase 2 consistency, recovery, performance-cost and migration audit complete",
+    "Phase 3 three reproduced compatibility fixes; 52 official SDK checks",
+    "Final three clean profiles: 246 each, zero failures/errors/skips; nine HTTP suites and additional provider/Redis recovery checks",
+    "Docs and CI regression entry updated; first startup failure retained with unknown cause and passing isolated/full rechecks"
+  ],
+  "pending": [],
+  "evidence": {
+    "first_cold_stress": "bench/results/lifecycle-2026-11-11/candidate-slow-near-limit/slow-clients.json",
+    "profiled_stress": "bench/results/lifecycle-2026-11-11/candidate-slow-profile/slow-clients.json",
+    "same_10s_recheck": "bench/results/lifecycle-2026-11-11/candidate-slow-recheck/slow-clients.json",
+    "jfr_summary": "docs/verification/lifecycle/2026-11-11/slow-profile-summary.txt",
+    "final_slow_summary": "docs/verification/lifecycle/2026-11-11/bounded-slow-summary.json",
+    "idle_slow_summary": "docs/verification/lifecycle/2026-11-11/idle-slow-summary.json"
+  },
+  "observations": {
+    "recheck_completed": 60,
+    "recheck_header_timeouts": 4,
+    "recheck_clients": 64,
+    "out_of_memory_errors": 0,
+    "profiled_test_completed": 64,
+    "profiled_cancelled_upstreams": 64,
+    "profiled_recovery": "200 ok",
+    "profiled_max_header_ms": 4661.333669999294,
+    "execution_samples_in_endOfLine_percent": 70.55
+  },
+  "permission": "OrbStack startup and owned container tests authorized; no commit/push/release authorization",
+  "running_tool_sessions": [],
+  "next_action": "Bounded SSE runtime investigation complete: opt-in Linux WebFlux G1 validated with latency/resource tradeoffs. Defaults unchanged; no automatic commit/push/release.",
+  "line_scaling": {
+    "rows": [
+      {
+        "decoder": "jdk",
+        "round": 0,
+        "line_bytes": 16384,
+        "iterations": 10,
+        "cpu_ns_per_line": 103800.0,
+        "wall_ns_per_line": 105170.1
+      },
+      {
+        "decoder": "jdk",
+        "round": 0,
+        "line_bytes": 65536,
+        "iterations": 10,
+        "cpu_ns_per_line": 1139700.0,
+        "wall_ns_per_line": 1155878.1
+      },
+      {
+        "decoder": "jdk",
+        "round": 0,
+        "line_bytes": 262144,
+        "iterations": 10,
+        "cpu_ns_per_line": 16228400.0,
+        "wall_ns_per_line": 16382113.6
+      },
+      {
+        "decoder": "jdk",
+        "round": 0,
+        "line_bytes": 1048448,
+        "iterations": 10,
+        "cpu_ns_per_line": 341171200.0,
+        "wall_ns_per_line": 343406250.3
+      },
+      {
+        "decoder": "jdk",
+        "round": 1,
+        "line_bytes": 1048448,
+        "iterations": 10,
+        "cpu_ns_per_line": 369238200.0,
+        "wall_ns_per_line": 371587029.2
+      },
+      {
+        "decoder": "jdk",
+        "round": 1,
+        "line_bytes": 262144,
+        "iterations": 10,
+        "cpu_ns_per_line": 23015800.0,
+        "wall_ns_per_line": 23153532.1
+      },
+      {
+        "decoder": "jdk",
+        "round": 1,
+        "line_bytes": 65536,
+        "iterations": 10,
+        "cpu_ns_per_line": 1646100.0,
+        "wall_ns_per_line": 1649442.4
+      },
+      {
+        "decoder": "jdk",
+        "round": 1,
+        "line_bytes": 16384,
+        "iterations": 10,
+        "cpu_ns_per_line": 134700.0,
+        "wall_ns_per_line": 135936.4
+      },
+      {
+        "decoder": "jdk",
+        "round": 2,
+        "line_bytes": 16384,
+        "iterations": 10,
+        "cpu_ns_per_line": 136900.0,
+        "wall_ns_per_line": 137331.8
+      },
+      {
+        "decoder": "jdk",
+        "round": 2,
+        "line_bytes": 65536,
+        "iterations": 10,
+        "cpu_ns_per_line": 1635700.0,
+        "wall_ns_per_line": 1656531.3
+      },
+      {
+        "decoder": "jdk",
+        "round": 2,
+        "line_bytes": 262144,
+        "iterations": 10,
+        "cpu_ns_per_line": 23691000.0,
+        "wall_ns_per_line": 23837926.1
+      },
+      {
+        "decoder": "jdk",
+        "round": 2,
+        "line_bytes": 1048448,
+        "iterations": 10,
+        "cpu_ns_per_line": 369556700.0,
+        "wall_ns_per_line": 371868478.7
+      }
+    ],
+    "cpu_median_ns_by_line_bytes": {
+      "16384": 134700.0,
+      "65536": 1635700.0,
+      "262144": 23015800.0,
+      "1048448": 369238200.0
+    },
+    "bytes_ratio": 63.9921875,
+    "cpu_ratio": 2741.1893095768373
+  },
+  "candidate_source_sha256": "4f42bad3686a0ca6953ec4c5a3701214f82bae546a3d358529a0a366a09a279c",
+  "after_sha256": "4ac5ac7777c3ed5bfd3be9c680cde7fd0c3197d512452f68cbb34f593b7afaaa",
+  "final_candidate_sha256": "cd7980dd63e2e3150e366a22bbfaaf3043bd3ccae56897087ea892534d19cf24",
+  "phase_1_complete": true,
+  "phase_3_started": true,
+  "phase_2_status": "../../multi-replica/2026-11-11/status.json",
+  "phase_2_complete": true,
+  "status": "complete",
+  "phase_3_complete": true,
+  "completion_audit": "docs/verification/2026-11-11-three-stage-completion.json",
+  "historical_measurement_note": "Existing line-scaling/slow-reader observations below belong to phase-1 frozen artifacts; not new measurements of phase-3 JVM/native.",
+  "latest_native_verification": "docs/verification/native-compatibility/2026-11-11/completion.json",
+  "latest_live_provider_verification": "docs/verification/live-provider/2026-11-11/live-results.json",
+  "latest_linux_native_verification": "docs/verification/linux-native/2026-11-11/completion.json",
+  "latest_native_capacity_tls_verification": "docs/verification/native-capacity/2026-11-12/completion.json",
+  "native_sse_followup": "docs/verification/native-sse/2026-11-12/status.json",
+  "latest_steady_sse_verification": "docs/verification/native-sse-steady/2026-11-12/results-summary.json",
+  "native_g1_followup": "docs/verification/native-g1/2026-11-12/run.json",
+  "latest_native_g1_verification": "docs/verification/native-g1/2026-11-12/completion.json"
+}

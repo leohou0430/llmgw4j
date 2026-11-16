@@ -1,0 +1,108 @@
+{
+  "frozen_jar_sha256": "34425d57569f47690b11dd6748d1410477076dd2f442f8c55323ff3e829a9482",
+  "stage": "contracts",
+  "checks": [
+    {
+      "name": "final-smoke-heartbeat-deadline",
+      "command": [
+        "python3",
+        "bin/smoke-heartbeat-deadline.py"
+      ],
+      "started": 1794388002.2056699,
+      "exit_code": 0,
+      "seconds": 15.504959344863892
+    },
+    {
+      "name": "final-smoke-sse-line-limit",
+      "command": [
+        "python3",
+        "bin/smoke-sse-line-limit.py"
+      ],
+      "started": 1794388017.711195,
+      "exit_code": 0,
+      "seconds": 12.754098176956177
+    },
+    {
+      "name": "final-smoke-stream-errors",
+      "command": [
+        "bash",
+        "bin/smoke-stream-errors.sh"
+      ],
+      "started": 1794388030.465874,
+      "exit_code": 0,
+      "seconds": 307.0119700431824
+    },
+    {
+      "name": "final-smoke-v13-extensions",
+      "command": [
+        "bash",
+        "bin/smoke-v13-extensions.sh"
+      ],
+      "started": 1794388337.478722,
+      "exit_code": 0,
+      "seconds": 33.722424030303955
+    },
+    {
+      "name": "final-smoke-v13-hardening",
+      "command": [
+        "bash",
+        "bin/smoke-v13-hardening.sh"
+      ],
+      "started": 1794388371.201608,
+      "exit_code": 0,
+      "seconds": 72.97482705116272
+    },
+    {
+      "name": "final-smoke-multi-protocol",
+      "command": [
+        "bash",
+        "bin/smoke-multi-protocol.sh"
+      ],
+      "started": 1794388444.176908,
+      "exit_code": 0,
+      "seconds": 119.71888899803162
+    },
+    {
+      "name": "final-smoke-tenant-isolation",
+      "command": [
+        "python3",
+        "bin/smoke-tenant-isolation.py"
+      ],
+      "started": 1794388563.896296,
+      "exit_code": 0,
+      "seconds": 15.938683986663818
+    },
+    {
+      "name": "final-smoke-admin-auth",
+      "command": [
+        "python3",
+        "bin/smoke-admin-auth.py",
+        "--jar",
+        "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/lifecycle-2026-11-11/idle-output.jar"
+      ],
+      "started": 1794388579.835614,
+      "exit_code": 0,
+      "seconds": 34.354568004608154
+    },
+    {
+      "name": "final-smoke-jwt-auth",
+      "command": [
+        "python3",
+        "bin/smoke-jwt-auth.py",
+        "--jar",
+        "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/lifecycle-2026-11-11/idle-output.jar"
+      ],
+      "started": 1794388614.190751,
+      "exit_code": 0,
+      "seconds": 12.438544034957886
+    }
+  ],
+  "frozen_module_classes": {
+    "BOOT-INF/lib/llmgw-provider-http-jdk-0.3.1.jar": "461f9d1285c590d3616c47139df9935798d4a5035b4fcf3e78e24e6eef36a52d",
+    "BOOT-INF/lib/llmgw-core-0.3.1.jar": "75a311b205de059ab5189f773f36bd1402e987d65087adf4e39051b5efb74ffb",
+    "BOOT-INF/lib/llmgw-engine-webflux-0.3.1.jar": "810a8a5561f300a9fab8db93a6c80e8fe3e38fc140ed91d9e5055927108c341a",
+    "BOOT-INF/lib/llmgw-engine-api-0.3.1.jar": "22e79e722ea1fee8c7602011bf632fae04c34f25aefc9fee684b56cc6874f389",
+    "BOOT-INF/lib/llmgw-engine-vt-0.3.1.jar": "76dce41cdb70bf7ffa610fe0cbd0d84572294da18e1855bfe40e84a2afe5c760"
+  },
+  "complete": true
+}

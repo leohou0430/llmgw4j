@@ -18,6 +18,12 @@ public interface ApiKeyRegistry {
                   long expiresAtEpochMs, String group, long budgetMicroUsd,
                   Map<String, String> metadata) {
 
+        public ApiKey {
+            if (id != null && (id.startsWith("model:") || id.startsWith("group:"))) {
+                throw new IllegalArgumentException("API key id overlaps a reserved model/group governance namespace");
+            }
+        }
+
         public ApiKey(String id, String name, long quotaTokens, Set<String> allowedModels) {
             this(id, name, quotaTokens, allowedModels, 0, "", 0, Map.of());
         }

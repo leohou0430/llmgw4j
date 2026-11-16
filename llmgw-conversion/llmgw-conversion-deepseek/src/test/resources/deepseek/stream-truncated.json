@@ -1,0 +1,10 @@
+[
+  {"id": "s-4", "object": "chat.completion.chunk", "model": "deepseek-flash",
+   "choices": [{"index": 0, "delta": {"role": "assistant", "content": "partial "}, "finish_reason": null}]},
+  {"id": "s-4", "object": "chat.completion.chunk", "model": "deepseek-flash",
+   "choices": [{"index": 0, "delta": {"content": "answer"}, "finish_reason": null}]},
+  {"id": "s-4", "object": "chat.completion.chunk", "model": "deepseek-flash",
+   "choices": [{"index": 0, "delta": {"tool_calls": [
+     {"index": 0, "id": "call_1", "type": "function", "function": {"name": "ping", "arguments": "{\"a\":"}}
+   ]}, "finish_reason": null}]}
+]

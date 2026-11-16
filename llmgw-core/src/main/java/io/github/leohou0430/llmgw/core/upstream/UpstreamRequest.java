@@ -17,10 +17,13 @@ import java.util.stream.Collectors;
  * @param provider    the route's upstream dialect ("" / "openai" = Bearer,
  *                    "anthropic" = x-api-key); resolved to credential headers
  *                    by UpstreamAuthenticator implementations.
- * @param rawBody     W4.3: binary request body (multipart uploads). When
- *                    non-null it REPLACES rawJson on the wire and the
- *                    target-model rewrite is skipped (bytes pass through
- *                    untouched; rewriting a multipart body is not defined).
+ * @param body        T2.1: binary request body (multipart uploads) as a cold,
+ *                    single-subscription byte stream. When non-null it REPLACES
+ *                    rawJson on the wire and the target-model rewrite is skipped
+ *                    (bytes pass through untouched; rewriting a multipart body is
+ *                    not defined).
+ * @param bodyLength  exact byte count of {@code body}, used as the HTTP
+ *                    Content-Length for the streaming publisher; 0 when body is null.
  */
 public record UpstreamRequest(
         String rawJson,
@@ -33,13 +36,14 @@ public record UpstreamRequest(
         String path,
         UpstreamMethod method,
         Map<String, String> passHeaders,
-        byte[] rawBody) {
+        ByteStream body,
+        long bodyLength) {
 
     public UpstreamRequest(String rawJson, String targetUrl, String apiKey, String provider,
                            String model, boolean stream, int timeoutMs, String path,
                            UpstreamMethod method, Map<String, String> passHeaders) {
         this(rawJson, targetUrl, apiKey, provider, model, stream, timeoutMs, path, method,
-                passHeaders, null);
+                passHeaders, null, 0);
     }
 
     public UpstreamRequest(String rawJson, String targetUrl, String apiKey, String model,
@@ -67,7 +71,7 @@ public record UpstreamRequest(
             // W4.3: a BINARY body (multipart upload) NEEDS its original
             // Content-Type — the multipart boundary lives in it. JSON bodies
             // keep the strict strip (the gateway owns that header).
-            boolean binaryBody = rawBody != null;
+            boolean binaryBody = body != null;
             passHeaders = passHeaders.entrySet().stream()
                     .filter(e -> {
                         String name = e.getKey() == null ? "" : e.getKey().toLowerCase();
@@ -88,14 +92,15 @@ public record UpstreamRequest(
 
     public UpstreamRequest forRoute(io.github.leohou0430.llmgw.core.routing.Route route) {
         String json = rawJson;
-        if (rawBody == null && !route.targetModel().isBlank() && !route.targetModel().equals(model)) {
+        if (body == null && !route.targetModel().isBlank() && !route.targetModel().equals(model)
+                && !ProtocolKind.BATCHES.upstreamPath().equals(path)) {
             // Tree rewrite instead of a regex replace: only the TOP-LEVEL model
             // node changes, and "$"/"\" in the target model are safe. All
-            // vendor extension fields survive. Binary bodies skip the rewrite.
+            // vendor extension fields survive. Uploads and batch envelopes have no rewritable model.
             json = ProtocolCodec.withModel(rawJson, route.targetModel());
         }
         return new UpstreamRequest(json, route.targetUrl(), route.apiKey(), route.provider(),
                 route.targetModel().isBlank() ? model : route.targetModel(), stream,
-                timeoutMs, path, method, passHeaders, rawBody);
+                timeoutMs, path, method, passHeaders, body, bodyLength);
     }
 }

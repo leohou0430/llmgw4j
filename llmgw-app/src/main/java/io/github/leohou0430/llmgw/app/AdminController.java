@@ -111,10 +111,12 @@ public class AdminController {
      * Write shape for POST /admin/routes/reload. apiKey is optional and is
      * NEVER echoed back (it can be the upstream provider's secret). protocol
      * pins the route to one endpoint protocol; ""/"*" match every protocol.
+     * upstreamProtocol (T1.10) is optional: "" = passthrough, "chat" = convert
+     * to the DeepSeek Chat upstream.
      */
     public record RouteSpec(String id, String protocol, String model, String targetModel,
                             String targetUrl, String apiKey, String provider, Integer weight,
-                            List<String> fallbacks) {
+                            List<String> fallbacks, String upstreamProtocol) {
     }
 
     @GetMapping("/snapshot")
@@ -195,6 +197,11 @@ public class AdminController {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                         "protocol must be chat|responses|messages|images|videos|*: " + spec.id());
             }
+            String upstreamProtocol = spec.upstreamProtocol() == null ? "" : spec.upstreamProtocol().trim();
+            if (!upstreamProtocol.isEmpty() && !"chat".equals(upstreamProtocol)) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                        "upstreamProtocol must be \"\" or chat: " + spec.id());
+            }
             String url = spec.targetUrl() == null || spec.targetUrl().isBlank()
                     ? defaultUrl : spec.targetUrl();
             if (!url.startsWith("http://") && !url.startsWith("https://")) {
@@ -210,7 +217,7 @@ public class AdminController {
                     protocol.isBlank() ? "*" : protocol, model,
                     spec.targetModel() == null ? "" : spec.targetModel(),
                     url, key, spec.provider() == null ? "" : spec.provider(),
-                    weight, fallbacks));
+                    weight, fallbacks, upstreamProtocol));
         }
         for (Route route : routes) {
             for (String id : route.fallbackIds()) {
@@ -244,6 +251,7 @@ public class AdminController {
             item.put("targetUrl", route.targetUrl());
             item.put("weight", route.weight());
             item.put("provider", route.provider());
+            item.put("upstreamProtocol", route.upstreamProtocol());
             item.put("fallbackIds", route.fallbackIds());
             item.put("apiKeyConfigured", configured(route.apiKey()));
             safe.add(item);

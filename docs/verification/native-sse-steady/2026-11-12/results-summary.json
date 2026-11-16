@@ -1,0 +1,93 @@
+{
+  "complete": true,
+  "groups": {
+    "before-webflux": {
+      "runtime": "JVM",
+      "p99_ms": [
+        122.4908,
+        122.50326,
+        119.86204000000001
+      ],
+      "p99_median_ms": 122.4908,
+      "success_rates": [
+        581.3577676300973,
+        575.40393828997,
+        580.059823558618
+      ],
+      "success_rate_median": 580.059823558618,
+      "container_cpu_ms_per_success": [
+        1.4591388912738616,
+        1.4410400485787813,
+        1.4760212051649928
+      ],
+      "container_cpu_ms_per_success_median": 1.4591388912738616,
+      "process_cgroup_peak_bytes": 400326656,
+      "capacity_rejections": 0,
+      "success_count": 104374,
+      "throttled_periods": [
+        2,
+        0,
+        0
+      ]
+    },
+    "after-webflux": {
+      "runtime": "native Serial",
+      "p99_ms": [
+        144.02939999999995,
+        141.22460000000007,
+        137.52536
+      ],
+      "p99_median_ms": 141.22460000000007,
+      "success_rates": [
+        564.7697997131208,
+        562.3336856266889,
+        568.6065798942417
+      ],
+      "success_rate_median": 564.7697997131208,
+      "container_cpu_ms_per_success": [
+        1.772925729442971,
+        1.8182374264510215,
+        1.8172430565717463
+      ],
+      "container_cpu_ms_per_success_median": 1.8172430565717463,
+      "process_cgroup_peak_bytes": 268722176,
+      "capacity_rejections": 0,
+      "success_count": 101920,
+      "throttled_periods": [
+        0,
+        1,
+        0
+      ]
+    }
+  },
+  "p99_native_to_jvm_ratio": 1.1529404657329372,
+  "throughput_native_to_jvm_ratio": 0.9736406087363643,
+  "artifacts": {
+    "jars": {
+      "before": {
+        "path": "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/linux-native-2026-11-11/evidence/jvm-default.jar",
+        "sha256": "09c706770b61535d96960841dbf83dca4282fd229579da7337bb27086786cea0"
+      },
+      "after": {
+        "path": "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/linux-native-2026-11-11/evidence/jvm-default.jar",
+        "sha256": "09c706770b61535d96960841dbf83dca4282fd229579da7337bb27086786cea0"
+      }
+    },
+    "native_binaries": {
+      "webflux": {
+        "path": "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/linux-native-2026-11-11/evidence/llmgw-webflux-linux",
+        "sha256": "e3de8eb77261b694fc541cecefd8ee0c03e7ce66e481f793305b3757b20d696d"
+      }
+    }
+  },
+  "samples": 9,
+  "duration": "60s",
+  "warmup": "60s",
+  "raw_path": "bench/results/native-sse-steady-2026-11-12/serial-vs-jvm-stable-window",
+  "limitations": [
+    "Local controlled upstream, closed-loop 64 VUs, not production/vendor maximum QPS",
+    "p99 is median of per-trial p99s, not a pooled percentile",
+    "cgroup memory.peak accumulates across the lifetime of each process",
+    "Host load guard is a coarse filter and does not isolate thermal/scheduling effects"
+  ]
+}

@@ -1,0 +1,2591 @@
+[
+  {
+    "time": 1794417244.118465,
+    "label": "before-webflux",
+    "metrics": {
+      "system.cpu.count": {
+        "availableTags": [],
+        "description": "The number of processors available to the Java virtual machine",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 2.0
+          }
+        ],
+        "name": "system.cpu.count"
+      },
+      "jvm.gc.pause": {
+        "availableTags": [
+          {
+            "tag": "cause",
+            "values": [
+              "G1 Evacuation Pause",
+              "Metadata GC Threshold"
+            ]
+          },
+          {
+            "tag": "action",
+            "values": [
+              "end of minor GC"
+            ]
+          },
+          {
+            "tag": "gc",
+            "values": [
+              "G1 Young Generation"
+            ]
+          }
+        ],
+        "baseUnit": "seconds",
+        "description": "Time spent in GC pause",
+        "measurements": [
+          {
+            "statistic": "COUNT",
+            "value": 4.0
+          },
+          {
+            "statistic": "TOTAL_TIME",
+            "value": 0.363
+          },
+          {
+            "statistic": "MAX",
+            "value": 0.109
+          }
+        ],
+        "name": "jvm.gc.pause"
+      },
+      "jvm.gc.memory.allocated": {
+        "availableTags": [],
+        "baseUnit": "bytes",
+        "description": "Incremented for an increase in the size of the (young) heap memory pool after one GC to before the next",
+        "measurements": [
+          {
+            "statistic": "COUNT",
+            "value": 235929600.0
+          }
+        ],
+        "name": "jvm.gc.memory.allocated"
+      },
+      "jvm.threads.live": {
+        "availableTags": [],
+        "baseUnit": "threads",
+        "description": "The current number of live threads including both daemon and non-daemon threads",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 52.0
+          }
+        ],
+        "name": "jvm.threads.live"
+      },
+      "process.cpu.usage": {
+        "availableTags": [],
+        "description": "The \"recent cpu usage\" for the Java Virtual Machine process",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 0.7958003169572108
+          }
+        ],
+        "name": "process.cpu.usage"
+      }
+    }
+  },
+  {
+    "time": 1794417244.435456,
+    "label": "after-webflux",
+    "metrics": {
+      "system.cpu.count": {
+        "availableTags": [],
+        "description": "The number of processors available to the Java virtual machine",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 2.0
+          }
+        ],
+        "name": "system.cpu.count"
+      },
+      "jvm.gc.pause": {
+        "error": "HTTP Error 404: Not Found"
+      },
+      "jvm.gc.memory.allocated": {
+        "error": "HTTP Error 404: Not Found"
+      },
+      "jvm.threads.live": {
+        "availableTags": [],
+        "baseUnit": "threads",
+        "description": "The current number of live threads including both daemon and non-daemon threads",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 47.0
+          }
+        ],
+        "name": "jvm.threads.live"
+      },
+      "process.cpu.usage": {
+        "availableTags": [],
+        "description": "The \"recent cpu usage\" for the Java Virtual Machine process",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 0.40789473684210525
+          }
+        ],
+        "name": "process.cpu.usage"
+      }
+    }
+  },
+  {
+    "time": 1794417248.014696,
+    "label": "before-webflux",
+    "metrics": {
+      "system.cpu.count": {
+        "availableTags": [],
+        "description": "The number of processors available to the Java virtual machine",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 2.0
+          }
+        ],
+        "name": "system.cpu.count"
+      },
+      "jvm.gc.pause": {
+        "availableTags": [
+          {
+            "tag": "cause",
+            "values": [
+              "G1 Evacuation Pause",
+              "Metadata GC Threshold"
+            ]
+          },
+          {
+            "tag": "action",
+            "values": [
+              "end of minor GC"
+            ]
+          },
+          {
+            "tag": "gc",
+            "values": [
+              "G1 Young Generation"
+            ]
+          }
+        ],
+        "baseUnit": "seconds",
+        "description": "Time spent in GC pause",
+        "measurements": [
+          {
+            "statistic": "COUNT",
+            "value": 4.0
+          },
+          {
+            "statistic": "TOTAL_TIME",
+            "value": 0.363
+          },
+          {
+            "statistic": "MAX",
+            "value": 0.109
+          }
+        ],
+        "name": "jvm.gc.pause"
+      },
+      "jvm.gc.memory.allocated": {
+        "availableTags": [],
+        "baseUnit": "bytes",
+        "description": "Incremented for an increase in the size of the (young) heap memory pool after one GC to before the next",
+        "measurements": [
+          {
+            "statistic": "COUNT",
+            "value": 235929600.0
+          }
+        ],
+        "name": "jvm.gc.memory.allocated"
+      },
+      "jvm.threads.live": {
+        "availableTags": [],
+        "baseUnit": "threads",
+        "description": "The current number of live threads including both daemon and non-daemon threads",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 52.0
+          }
+        ],
+        "name": "jvm.threads.live"
+      },
+      "process.cpu.usage": {
+        "availableTags": [],
+        "description": "The \"recent cpu usage\" for the Java Virtual Machine process",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 0.1375
+          }
+        ],
+        "name": "process.cpu.usage"
+      }
+    }
+  },
+  {
+    "time": 1794417248.811755,
+    "label": "after-webflux",
+    "metrics": {
+      "system.cpu.count": {
+        "availableTags": [],
+        "description": "The number of processors available to the Java virtual machine",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 2.0
+          }
+        ],
+        "name": "system.cpu.count"
+      },
+      "jvm.gc.pause": {
+        "error": "HTTP Error 404: Not Found"
+      },
+      "jvm.gc.memory.allocated": {
+        "error": "HTTP Error 404: Not Found"
+      },
+      "jvm.threads.live": {
+        "availableTags": [],
+        "baseUnit": "threads",
+        "description": "The current number of live threads including both daemon and non-daemon threads",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 47.0
+          }
+        ],
+        "name": "jvm.threads.live"
+      },
+      "process.cpu.usage": {
+        "availableTags": [],
+        "description": "The \"recent cpu usage\" for the Java Virtual Machine process",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 0.9443181818181818
+          }
+        ],
+        "name": "process.cpu.usage"
+      }
+    }
+  },
+  {
+    "time": 1794417252.548052,
+    "label": "before-webflux",
+    "metrics": {
+      "system.cpu.count": {
+        "availableTags": [],
+        "description": "The number of processors available to the Java virtual machine",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 2.0
+          }
+        ],
+        "name": "system.cpu.count"
+      },
+      "jvm.gc.pause": {
+        "availableTags": [
+          {
+            "tag": "cause",
+            "values": [
+              "G1 Evacuation Pause",
+              "Metadata GC Threshold"
+            ]
+          },
+          {
+            "tag": "action",
+            "values": [
+              "end of minor GC"
+            ]
+          },
+          {
+            "tag": "gc",
+            "values": [
+              "G1 Young Generation"
+            ]
+          }
+        ],
+        "baseUnit": "seconds",
+        "description": "Time spent in GC pause",
+        "measurements": [
+          {
+            "statistic": "COUNT",
+            "value": 4.0
+          },
+          {
+            "statistic": "TOTAL_TIME",
+            "value": 0.363
+          },
+          {
+            "statistic": "MAX",
+            "value": 0.109
+          }
+        ],
+        "name": "jvm.gc.pause"
+      },
+      "jvm.gc.memory.allocated": {
+        "availableTags": [],
+        "baseUnit": "bytes",
+        "description": "Incremented for an increase in the size of the (young) heap memory pool after one GC to before the next",
+        "measurements": [
+          {
+            "statistic": "COUNT",
+            "value": 235929600.0
+          }
+        ],
+        "name": "jvm.gc.memory.allocated"
+      },
+      "jvm.threads.live": {
+        "availableTags": [],
+        "baseUnit": "threads",
+        "description": "The current number of live threads including both daemon and non-daemon threads",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 52.0
+          }
+        ],
+        "name": "jvm.threads.live"
+      },
+      "process.cpu.usage": {
+        "availableTags": [],
+        "description": "The \"recent cpu usage\" for the Java Virtual Machine process",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 0.08333333333333333
+          }
+        ],
+        "name": "process.cpu.usage"
+      }
+    }
+  },
+  {
+    "time": 1794417252.904702,
+    "label": "after-webflux",
+    "metrics": {
+      "system.cpu.count": {
+        "availableTags": [],
+        "description": "The number of processors available to the Java virtual machine",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 2.0
+          }
+        ],
+        "name": "system.cpu.count"
+      },
+      "jvm.gc.pause": {
+        "error": "HTTP Error 404: Not Found"
+      },
+      "jvm.gc.memory.allocated": {
+        "error": "HTTP Error 404: Not Found"
+      },
+      "jvm.threads.live": {
+        "availableTags": [],
+        "baseUnit": "threads",
+        "description": "The current number of live threads including both daemon and non-daemon threads",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 47.0
+          }
+        ],
+        "name": "jvm.threads.live"
+      },
+      "process.cpu.usage": {
+        "availableTags": [],
+        "description": "The \"recent cpu usage\" for the Java Virtual Machine process",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 0.99375
+          }
+        ],
+        "name": "process.cpu.usage"
+      }
+    }
+  },
+  {
+    "time": 1794417256.483489,
+    "label": "before-webflux",
+    "metrics": {
+      "system.cpu.count": {
+        "availableTags": [],
+        "description": "The number of processors available to the Java virtual machine",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 2.0
+          }
+        ],
+        "name": "system.cpu.count"
+      },
+      "jvm.gc.pause": {
+        "availableTags": [
+          {
+            "tag": "cause",
+            "values": [
+              "G1 Evacuation Pause",
+              "Metadata GC Threshold"
+            ]
+          },
+          {
+            "tag": "action",
+            "values": [
+              "end of minor GC"
+            ]
+          },
+          {
+            "tag": "gc",
+            "values": [
+              "G1 Young Generation"
+            ]
+          }
+        ],
+        "baseUnit": "seconds",
+        "description": "Time spent in GC pause",
+        "measurements": [
+          {
+            "statistic": "COUNT",
+            "value": 4.0
+          },
+          {
+            "statistic": "TOTAL_TIME",
+            "value": 0.363
+          },
+          {
+            "statistic": "MAX",
+            "value": 0.109
+          }
+        ],
+        "name": "jvm.gc.pause"
+      },
+      "jvm.gc.memory.allocated": {
+        "availableTags": [],
+        "baseUnit": "bytes",
+        "description": "Incremented for an increase in the size of the (young) heap memory pool after one GC to before the next",
+        "measurements": [
+          {
+            "statistic": "COUNT",
+            "value": 235929600.0
+          }
+        ],
+        "name": "jvm.gc.memory.allocated"
+      },
+      "jvm.threads.live": {
+        "availableTags": [],
+        "baseUnit": "threads",
+        "description": "The current number of live threads including both daemon and non-daemon threads",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 52.0
+          }
+        ],
+        "name": "jvm.threads.live"
+      },
+      "process.cpu.usage": {
+        "availableTags": [],
+        "description": "The \"recent cpu usage\" for the Java Virtual Machine process",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 0.08846153846153847
+          }
+        ],
+        "name": "process.cpu.usage"
+      }
+    }
+  },
+  {
+    "time": 1794417256.749162,
+    "label": "after-webflux",
+    "metrics": {
+      "system.cpu.count": {
+        "availableTags": [],
+        "description": "The number of processors available to the Java virtual machine",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 2.0
+          }
+        ],
+        "name": "system.cpu.count"
+      },
+      "jvm.gc.pause": {
+        "error": "HTTP Error 404: Not Found"
+      },
+      "jvm.gc.memory.allocated": {
+        "error": "HTTP Error 404: Not Found"
+      },
+      "jvm.threads.live": {
+        "availableTags": [],
+        "baseUnit": "threads",
+        "description": "The current number of live threads including both daemon and non-daemon threads",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 47.0
+          }
+        ],
+        "name": "jvm.threads.live"
+      },
+      "process.cpu.usage": {
+        "availableTags": [],
+        "description": "The \"recent cpu usage\" for the Java Virtual Machine process",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 0.9423076923076923
+          }
+        ],
+        "name": "process.cpu.usage"
+      }
+    }
+  },
+  {
+    "time": 1794417260.281613,
+    "label": "before-webflux",
+    "metrics": {
+      "system.cpu.count": {
+        "availableTags": [],
+        "description": "The number of processors available to the Java virtual machine",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 2.0
+          }
+        ],
+        "name": "system.cpu.count"
+      },
+      "jvm.gc.pause": {
+        "availableTags": [
+          {
+            "tag": "cause",
+            "values": [
+              "G1 Evacuation Pause",
+              "Metadata GC Threshold"
+            ]
+          },
+          {
+            "tag": "action",
+            "values": [
+              "end of minor GC"
+            ]
+          },
+          {
+            "tag": "gc",
+            "values": [
+              "G1 Young Generation"
+            ]
+          }
+        ],
+        "baseUnit": "seconds",
+        "description": "Time spent in GC pause",
+        "measurements": [
+          {
+            "statistic": "COUNT",
+            "value": 4.0
+          },
+          {
+            "statistic": "TOTAL_TIME",
+            "value": 0.363
+          },
+          {
+            "statistic": "MAX",
+            "value": 0.109
+          }
+        ],
+        "name": "jvm.gc.pause"
+      },
+      "jvm.gc.memory.allocated": {
+        "availableTags": [],
+        "baseUnit": "bytes",
+        "description": "Incremented for an increase in the size of the (young) heap memory pool after one GC to before the next",
+        "measurements": [
+          {
+            "statistic": "COUNT",
+            "value": 235929600.0
+          }
+        ],
+        "name": "jvm.gc.memory.allocated"
+      },
+      "jvm.threads.live": {
+        "availableTags": [],
+        "baseUnit": "threads",
+        "description": "The current number of live threads including both daemon and non-daemon threads",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 52.0
+          }
+        ],
+        "name": "jvm.threads.live"
+      },
+      "process.cpu.usage": {
+        "availableTags": [],
+        "description": "The \"recent cpu usage\" for the Java Virtual Machine process",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 0.16538461538461538
+          }
+        ],
+        "name": "process.cpu.usage"
+      }
+    }
+  },
+  {
+    "time": 1794417260.50652,
+    "label": "after-webflux",
+    "metrics": {
+      "system.cpu.count": {
+        "availableTags": [],
+        "description": "The number of processors available to the Java virtual machine",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 2.0
+          }
+        ],
+        "name": "system.cpu.count"
+      },
+      "jvm.gc.pause": {
+        "error": "HTTP Error 404: Not Found"
+      },
+      "jvm.gc.memory.allocated": {
+        "error": "HTTP Error 404: Not Found"
+      },
+      "jvm.threads.live": {
+        "availableTags": [],
+        "baseUnit": "threads",
+        "description": "The current number of live threads including both daemon and non-daemon threads",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 47.0
+          }
+        ],
+        "name": "jvm.threads.live"
+      },
+      "process.cpu.usage": {
+        "availableTags": [],
+        "description": "The \"recent cpu usage\" for the Java Virtual Machine process",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 0.559375
+          }
+        ],
+        "name": "process.cpu.usage"
+      }
+    }
+  },
+  {
+    "time": 1794417268.3698728,
+    "label": "before-webflux",
+    "metrics": {
+      "system.cpu.count": {
+        "error": "timed out"
+      },
+      "jvm.gc.pause": {
+        "availableTags": [
+          {
+            "tag": "cause",
+            "values": [
+              "G1 Evacuation Pause",
+              "Metadata GC Threshold"
+            ]
+          },
+          {
+            "tag": "action",
+            "values": [
+              "end of minor GC"
+            ]
+          },
+          {
+            "tag": "gc",
+            "values": [
+              "G1 Young Generation"
+            ]
+          }
+        ],
+        "baseUnit": "seconds",
+        "description": "Time spent in GC pause",
+        "measurements": [
+          {
+            "statistic": "COUNT",
+            "value": 5.0
+          },
+          {
+            "statistic": "TOTAL_TIME",
+            "value": 0.483
+          },
+          {
+            "statistic": "MAX",
+            "value": 0.12
+          }
+        ],
+        "name": "jvm.gc.pause"
+      },
+      "jvm.gc.memory.allocated": {
+        "availableTags": [],
+        "baseUnit": "bytes",
+        "description": "Incremented for an increase in the size of the (young) heap memory pool after one GC to before the next",
+        "measurements": [
+          {
+            "statistic": "COUNT",
+            "value": 306184192.0
+          }
+        ],
+        "name": "jvm.gc.memory.allocated"
+      },
+      "jvm.threads.live": {
+        "availableTags": [],
+        "baseUnit": "threads",
+        "description": "The current number of live threads including both daemon and non-daemon threads",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 52.0
+          }
+        ],
+        "name": "jvm.threads.live"
+      },
+      "process.cpu.usage": {
+        "availableTags": [],
+        "description": "The \"recent cpu usage\" for the Java Virtual Machine process",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 0.9192307692307692
+          }
+        ],
+        "name": "process.cpu.usage"
+      }
+    }
+  },
+  {
+    "time": 1794417268.614654,
+    "label": "after-webflux",
+    "metrics": {
+      "system.cpu.count": {
+        "availableTags": [],
+        "description": "The number of processors available to the Java virtual machine",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 2.0
+          }
+        ],
+        "name": "system.cpu.count"
+      },
+      "jvm.gc.pause": {
+        "error": "HTTP Error 404: Not Found"
+      },
+      "jvm.gc.memory.allocated": {
+        "error": "HTTP Error 404: Not Found"
+      },
+      "jvm.threads.live": {
+        "availableTags": [],
+        "baseUnit": "threads",
+        "description": "The current number of live threads including both daemon and non-daemon threads",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 47.0
+          }
+        ],
+        "name": "jvm.threads.live"
+      },
+      "process.cpu.usage": {
+        "availableTags": [],
+        "description": "The \"recent cpu usage\" for the Java Virtual Machine process",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 0.01
+          }
+        ],
+        "name": "process.cpu.usage"
+      }
+    }
+  },
+  {
+    "time": 1794417273.4764931,
+    "label": "before-webflux",
+    "metrics": {
+      "system.cpu.count": {
+        "availableTags": [],
+        "description": "The number of processors available to the Java virtual machine",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 2.0
+          }
+        ],
+        "name": "system.cpu.count"
+      },
+      "jvm.gc.pause": {
+        "availableTags": [
+          {
+            "tag": "cause",
+            "values": [
+              "G1 Evacuation Pause",
+              "Metadata GC Threshold"
+            ]
+          },
+          {
+            "tag": "action",
+            "values": [
+              "end of minor GC"
+            ]
+          },
+          {
+            "tag": "gc",
+            "values": [
+              "G1 Young Generation"
+            ]
+          }
+        ],
+        "baseUnit": "seconds",
+        "description": "Time spent in GC pause",
+        "measurements": [
+          {
+            "statistic": "COUNT",
+            "value": 6.0
+          },
+          {
+            "statistic": "TOTAL_TIME",
+            "value": 0.514
+          },
+          {
+            "statistic": "MAX",
+            "value": 0.12
+          }
+        ],
+        "name": "jvm.gc.pause"
+      },
+      "jvm.gc.memory.allocated": {
+        "availableTags": [],
+        "baseUnit": "bytes",
+        "description": "Incremented for an increase in the size of the (young) heap memory pool after one GC to before the next",
+        "measurements": [
+          {
+            "statistic": "COUNT",
+            "value": 379584512.0
+          }
+        ],
+        "name": "jvm.gc.memory.allocated"
+      },
+      "jvm.threads.live": {
+        "availableTags": [],
+        "baseUnit": "threads",
+        "description": "The current number of live threads including both daemon and non-daemon threads",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 52.0
+          }
+        ],
+        "name": "jvm.threads.live"
+      },
+      "process.cpu.usage": {
+        "availableTags": [],
+        "description": "The \"recent cpu usage\" for the Java Virtual Machine process",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 1.0
+          }
+        ],
+        "name": "process.cpu.usage"
+      }
+    }
+  },
+  {
+    "time": 1794417273.7322052,
+    "label": "after-webflux",
+    "metrics": {
+      "system.cpu.count": {
+        "availableTags": [],
+        "description": "The number of processors available to the Java virtual machine",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 2.0
+          }
+        ],
+        "name": "system.cpu.count"
+      },
+      "jvm.gc.pause": {
+        "error": "HTTP Error 404: Not Found"
+      },
+      "jvm.gc.memory.allocated": {
+        "error": "HTTP Error 404: Not Found"
+      },
+      "jvm.threads.live": {
+        "availableTags": [],
+        "baseUnit": "threads",
+        "description": "The current number of live threads including both daemon and non-daemon threads",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 47.0
+          }
+        ],
+        "name": "jvm.threads.live"
+      },
+      "process.cpu.usage": {
+        "availableTags": [],
+        "description": "The \"recent cpu usage\" for the Java Virtual Machine process",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 0.025
+          }
+        ],
+        "name": "process.cpu.usage"
+      }
+    }
+  },
+  {
+    "time": 1794417277.210478,
+    "label": "before-webflux",
+    "metrics": {
+      "system.cpu.count": {
+        "availableTags": [],
+        "description": "The number of processors available to the Java virtual machine",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 2.0
+          }
+        ],
+        "name": "system.cpu.count"
+      },
+      "jvm.gc.pause": {
+        "availableTags": [
+          {
+            "tag": "cause",
+            "values": [
+              "G1 Evacuation Pause",
+              "Metadata GC Threshold"
+            ]
+          },
+          {
+            "tag": "action",
+            "values": [
+              "end of minor GC"
+            ]
+          },
+          {
+            "tag": "gc",
+            "values": [
+              "G1 Young Generation"
+            ]
+          }
+        ],
+        "baseUnit": "seconds",
+        "description": "Time spent in GC pause",
+        "measurements": [
+          {
+            "statistic": "COUNT",
+            "value": 6.0
+          },
+          {
+            "statistic": "TOTAL_TIME",
+            "value": 0.514
+          },
+          {
+            "statistic": "MAX",
+            "value": 0.12
+          }
+        ],
+        "name": "jvm.gc.pause"
+      },
+      "jvm.gc.memory.allocated": {
+        "availableTags": [],
+        "baseUnit": "bytes",
+        "description": "Incremented for an increase in the size of the (young) heap memory pool after one GC to before the next",
+        "measurements": [
+          {
+            "statistic": "COUNT",
+            "value": 379584512.0
+          }
+        ],
+        "name": "jvm.gc.memory.allocated"
+      },
+      "jvm.threads.live": {
+        "availableTags": [],
+        "baseUnit": "threads",
+        "description": "The current number of live threads including both daemon and non-daemon threads",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 52.0
+          }
+        ],
+        "name": "jvm.threads.live"
+      },
+      "process.cpu.usage": {
+        "availableTags": [],
+        "description": "The \"recent cpu usage\" for the Java Virtual Machine process",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 0.49482758620689654
+          }
+        ],
+        "name": "process.cpu.usage"
+      }
+    }
+  },
+  {
+    "time": 1794417277.4674041,
+    "label": "after-webflux",
+    "metrics": {
+      "system.cpu.count": {
+        "availableTags": [],
+        "description": "The number of processors available to the Java virtual machine",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 2.0
+          }
+        ],
+        "name": "system.cpu.count"
+      },
+      "jvm.gc.pause": {
+        "error": "HTTP Error 404: Not Found"
+      },
+      "jvm.gc.memory.allocated": {
+        "error": "HTTP Error 404: Not Found"
+      },
+      "jvm.threads.live": {
+        "availableTags": [],
+        "baseUnit": "threads",
+        "description": "The current number of live threads including both daemon and non-daemon threads",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 47.0
+          }
+        ],
+        "name": "jvm.threads.live"
+      },
+      "process.cpu.usage": {
+        "availableTags": [],
+        "description": "The \"recent cpu usage\" for the Java Virtual Machine process",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 0.578125
+          }
+        ],
+        "name": "process.cpu.usage"
+      }
+    }
+  },
+  {
+    "time": 1794417281.002856,
+    "label": "before-webflux",
+    "metrics": {
+      "system.cpu.count": {
+        "availableTags": [],
+        "description": "The number of processors available to the Java virtual machine",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 2.0
+          }
+        ],
+        "name": "system.cpu.count"
+      },
+      "jvm.gc.pause": {
+        "availableTags": [
+          {
+            "tag": "cause",
+            "values": [
+              "G1 Evacuation Pause",
+              "Metadata GC Threshold"
+            ]
+          },
+          {
+            "tag": "action",
+            "values": [
+              "end of minor GC"
+            ]
+          },
+          {
+            "tag": "gc",
+            "values": [
+              "G1 Young Generation"
+            ]
+          }
+        ],
+        "baseUnit": "seconds",
+        "description": "Time spent in GC pause",
+        "measurements": [
+          {
+            "statistic": "COUNT",
+            "value": 6.0
+          },
+          {
+            "statistic": "TOTAL_TIME",
+            "value": 0.514
+          },
+          {
+            "statistic": "MAX",
+            "value": 0.12
+          }
+        ],
+        "name": "jvm.gc.pause"
+      },
+      "jvm.gc.memory.allocated": {
+        "availableTags": [],
+        "baseUnit": "bytes",
+        "description": "Incremented for an increase in the size of the (young) heap memory pool after one GC to before the next",
+        "measurements": [
+          {
+            "statistic": "COUNT",
+            "value": 379584512.0
+          }
+        ],
+        "name": "jvm.gc.memory.allocated"
+      },
+      "jvm.threads.live": {
+        "availableTags": [],
+        "baseUnit": "threads",
+        "description": "The current number of live threads including both daemon and non-daemon threads",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 52.0
+          }
+        ],
+        "name": "jvm.threads.live"
+      },
+      "process.cpu.usage": {
+        "availableTags": [],
+        "description": "The \"recent cpu usage\" for the Java Virtual Machine process",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 0.5092105263157894
+          }
+        ],
+        "name": "process.cpu.usage"
+      }
+    }
+  },
+  {
+    "time": 1794417281.5339441,
+    "label": "after-webflux",
+    "metrics": {
+      "system.cpu.count": {
+        "availableTags": [],
+        "description": "The number of processors available to the Java virtual machine",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 2.0
+          }
+        ],
+        "name": "system.cpu.count"
+      },
+      "jvm.gc.pause": {
+        "error": "HTTP Error 404: Not Found"
+      },
+      "jvm.gc.memory.allocated": {
+        "error": "HTTP Error 404: Not Found"
+      },
+      "jvm.threads.live": {
+        "availableTags": [],
+        "baseUnit": "threads",
+        "description": "The current number of live threads including both daemon and non-daemon threads",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 47.0
+          }
+        ],
+        "name": "jvm.threads.live"
+      },
+      "process.cpu.usage": {
+        "availableTags": [],
+        "description": "The \"recent cpu usage\" for the Java Virtual Machine process",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 0.9792682926829268
+          }
+        ],
+        "name": "process.cpu.usage"
+      }
+    }
+  },
+  {
+    "time": 1794417285.066099,
+    "label": "before-webflux",
+    "metrics": {
+      "system.cpu.count": {
+        "availableTags": [],
+        "description": "The number of processors available to the Java virtual machine",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 2.0
+          }
+        ],
+        "name": "system.cpu.count"
+      },
+      "jvm.gc.pause": {
+        "availableTags": [
+          {
+            "tag": "cause",
+            "values": [
+              "G1 Evacuation Pause",
+              "Metadata GC Threshold"
+            ]
+          },
+          {
+            "tag": "action",
+            "values": [
+              "end of minor GC"
+            ]
+          },
+          {
+            "tag": "gc",
+            "values": [
+              "G1 Young Generation"
+            ]
+          }
+        ],
+        "baseUnit": "seconds",
+        "description": "Time spent in GC pause",
+        "measurements": [
+          {
+            "statistic": "COUNT",
+            "value": 6.0
+          },
+          {
+            "statistic": "TOTAL_TIME",
+            "value": 0.514
+          },
+          {
+            "statistic": "MAX",
+            "value": 0.12
+          }
+        ],
+        "name": "jvm.gc.pause"
+      },
+      "jvm.gc.memory.allocated": {
+        "availableTags": [],
+        "baseUnit": "bytes",
+        "description": "Incremented for an increase in the size of the (young) heap memory pool after one GC to before the next",
+        "measurements": [
+          {
+            "statistic": "COUNT",
+            "value": 379584512.0
+          }
+        ],
+        "name": "jvm.gc.memory.allocated"
+      },
+      "jvm.threads.live": {
+        "availableTags": [],
+        "baseUnit": "threads",
+        "description": "The current number of live threads including both daemon and non-daemon threads",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 52.0
+          }
+        ],
+        "name": "jvm.threads.live"
+      },
+      "process.cpu.usage": {
+        "availableTags": [],
+        "description": "The \"recent cpu usage\" for the Java Virtual Machine process",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 0.2904761904761905
+          }
+        ],
+        "name": "process.cpu.usage"
+      }
+    }
+  },
+  {
+    "time": 1794417285.334095,
+    "label": "after-webflux",
+    "metrics": {
+      "system.cpu.count": {
+        "availableTags": [],
+        "description": "The number of processors available to the Java virtual machine",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 2.0
+          }
+        ],
+        "name": "system.cpu.count"
+      },
+      "jvm.gc.pause": {
+        "error": "HTTP Error 404: Not Found"
+      },
+      "jvm.gc.memory.allocated": {
+        "error": "HTTP Error 404: Not Found"
+      },
+      "jvm.threads.live": {
+        "availableTags": [],
+        "baseUnit": "threads",
+        "description": "The current number of live threads including both daemon and non-daemon threads",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 47.0
+          }
+        ],
+        "name": "jvm.threads.live"
+      },
+      "process.cpu.usage": {
+        "availableTags": [],
+        "description": "The \"recent cpu usage\" for the Java Virtual Machine process",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 0.9618421052631579
+          }
+        ],
+        "name": "process.cpu.usage"
+      }
+    }
+  },
+  {
+    "time": 1794417288.806772,
+    "label": "before-webflux",
+    "metrics": {
+      "system.cpu.count": {
+        "availableTags": [],
+        "description": "The number of processors available to the Java virtual machine",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 2.0
+          }
+        ],
+        "name": "system.cpu.count"
+      },
+      "jvm.gc.pause": {
+        "availableTags": [
+          {
+            "tag": "cause",
+            "values": [
+              "G1 Evacuation Pause",
+              "Metadata GC Threshold"
+            ]
+          },
+          {
+            "tag": "action",
+            "values": [
+              "end of minor GC"
+            ]
+          },
+          {
+            "tag": "gc",
+            "values": [
+              "G1 Young Generation"
+            ]
+          }
+        ],
+        "baseUnit": "seconds",
+        "description": "Time spent in GC pause",
+        "measurements": [
+          {
+            "statistic": "COUNT",
+            "value": 6.0
+          },
+          {
+            "statistic": "TOTAL_TIME",
+            "value": 0.514
+          },
+          {
+            "statistic": "MAX",
+            "value": 0.12
+          }
+        ],
+        "name": "jvm.gc.pause"
+      },
+      "jvm.gc.memory.allocated": {
+        "availableTags": [],
+        "baseUnit": "bytes",
+        "description": "Incremented for an increase in the size of the (young) heap memory pool after one GC to before the next",
+        "measurements": [
+          {
+            "statistic": "COUNT",
+            "value": 379584512.0
+          }
+        ],
+        "name": "jvm.gc.memory.allocated"
+      },
+      "jvm.threads.live": {
+        "availableTags": [],
+        "baseUnit": "threads",
+        "description": "The current number of live threads including both daemon and non-daemon threads",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 52.0
+          }
+        ],
+        "name": "jvm.threads.live"
+      },
+      "process.cpu.usage": {
+        "availableTags": [],
+        "description": "The \"recent cpu usage\" for the Java Virtual Machine process",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 0.2318181818181818
+          }
+        ],
+        "name": "process.cpu.usage"
+      }
+    }
+  },
+  {
+    "time": 1794417289.021495,
+    "label": "after-webflux",
+    "metrics": {
+      "system.cpu.count": {
+        "availableTags": [],
+        "description": "The number of processors available to the Java virtual machine",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 2.0
+          }
+        ],
+        "name": "system.cpu.count"
+      },
+      "jvm.gc.pause": {
+        "error": "HTTP Error 404: Not Found"
+      },
+      "jvm.gc.memory.allocated": {
+        "error": "HTTP Error 404: Not Found"
+      },
+      "jvm.threads.live": {
+        "availableTags": [],
+        "baseUnit": "threads",
+        "description": "The current number of live threads including both daemon and non-daemon threads",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 47.0
+          }
+        ],
+        "name": "jvm.threads.live"
+      },
+      "process.cpu.usage": {
+        "availableTags": [],
+        "description": "The \"recent cpu usage\" for the Java Virtual Machine process",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 0.8371428571428572
+          }
+        ],
+        "name": "process.cpu.usage"
+      }
+    }
+  },
+  {
+    "time": 1794417292.496448,
+    "label": "before-webflux",
+    "metrics": {
+      "system.cpu.count": {
+        "availableTags": [],
+        "description": "The number of processors available to the Java virtual machine",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 2.0
+          }
+        ],
+        "name": "system.cpu.count"
+      },
+      "jvm.gc.pause": {
+        "availableTags": [
+          {
+            "tag": "cause",
+            "values": [
+              "G1 Evacuation Pause",
+              "Metadata GC Threshold"
+            ]
+          },
+          {
+            "tag": "action",
+            "values": [
+              "end of minor GC"
+            ]
+          },
+          {
+            "tag": "gc",
+            "values": [
+              "G1 Young Generation"
+            ]
+          }
+        ],
+        "baseUnit": "seconds",
+        "description": "Time spent in GC pause",
+        "measurements": [
+          {
+            "statistic": "COUNT",
+            "value": 6.0
+          },
+          {
+            "statistic": "TOTAL_TIME",
+            "value": 0.514
+          },
+          {
+            "statistic": "MAX",
+            "value": 0.12
+          }
+        ],
+        "name": "jvm.gc.pause"
+      },
+      "jvm.gc.memory.allocated": {
+        "availableTags": [],
+        "baseUnit": "bytes",
+        "description": "Incremented for an increase in the size of the (young) heap memory pool after one GC to before the next",
+        "measurements": [
+          {
+            "statistic": "COUNT",
+            "value": 379584512.0
+          }
+        ],
+        "name": "jvm.gc.memory.allocated"
+      },
+      "jvm.threads.live": {
+        "availableTags": [],
+        "baseUnit": "threads",
+        "description": "The current number of live threads including both daemon and non-daemon threads",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 52.0
+          }
+        ],
+        "name": "jvm.threads.live"
+      },
+      "process.cpu.usage": {
+        "availableTags": [],
+        "description": "The \"recent cpu usage\" for the Java Virtual Machine process",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 0.10833333333333334
+          }
+        ],
+        "name": "process.cpu.usage"
+      }
+    }
+  },
+  {
+    "time": 1794417292.945178,
+    "label": "after-webflux",
+    "metrics": {
+      "system.cpu.count": {
+        "availableTags": [],
+        "description": "The number of processors available to the Java virtual machine",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 2.0
+          }
+        ],
+        "name": "system.cpu.count"
+      },
+      "jvm.gc.pause": {
+        "error": "HTTP Error 404: Not Found"
+      },
+      "jvm.gc.memory.allocated": {
+        "error": "HTTP Error 404: Not Found"
+      },
+      "jvm.threads.live": {
+        "availableTags": [],
+        "baseUnit": "threads",
+        "description": "The current number of live threads including both daemon and non-daemon threads",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 47.0
+          }
+        ],
+        "name": "jvm.threads.live"
+      },
+      "process.cpu.usage": {
+        "availableTags": [],
+        "description": "The \"recent cpu usage\" for the Java Virtual Machine process",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 0.45
+          }
+        ],
+        "name": "process.cpu.usage"
+      }
+    }
+  },
+  {
+    "time": 1794417296.459765,
+    "label": "before-webflux",
+    "metrics": {
+      "system.cpu.count": {
+        "availableTags": [],
+        "description": "The number of processors available to the Java virtual machine",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 2.0
+          }
+        ],
+        "name": "system.cpu.count"
+      },
+      "jvm.gc.pause": {
+        "availableTags": [
+          {
+            "tag": "cause",
+            "values": [
+              "G1 Evacuation Pause",
+              "Metadata GC Threshold"
+            ]
+          },
+          {
+            "tag": "action",
+            "values": [
+              "end of minor GC"
+            ]
+          },
+          {
+            "tag": "gc",
+            "values": [
+              "G1 Young Generation"
+            ]
+          }
+        ],
+        "baseUnit": "seconds",
+        "description": "Time spent in GC pause",
+        "measurements": [
+          {
+            "statistic": "COUNT",
+            "value": 6.0
+          },
+          {
+            "statistic": "TOTAL_TIME",
+            "value": 0.514
+          },
+          {
+            "statistic": "MAX",
+            "value": 0.12
+          }
+        ],
+        "name": "jvm.gc.pause"
+      },
+      "jvm.gc.memory.allocated": {
+        "availableTags": [],
+        "baseUnit": "bytes",
+        "description": "Incremented for an increase in the size of the (young) heap memory pool after one GC to before the next",
+        "measurements": [
+          {
+            "statistic": "COUNT",
+            "value": 379584512.0
+          }
+        ],
+        "name": "jvm.gc.memory.allocated"
+      },
+      "jvm.threads.live": {
+        "availableTags": [],
+        "baseUnit": "threads",
+        "description": "The current number of live threads including both daemon and non-daemon threads",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 52.0
+          }
+        ],
+        "name": "jvm.threads.live"
+      },
+      "process.cpu.usage": {
+        "availableTags": [],
+        "description": "The \"recent cpu usage\" for the Java Virtual Machine process",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 0.2633333333333333
+          }
+        ],
+        "name": "process.cpu.usage"
+      }
+    }
+  },
+  {
+    "time": 1794417296.747693,
+    "label": "after-webflux",
+    "metrics": {
+      "system.cpu.count": {
+        "availableTags": [],
+        "description": "The number of processors available to the Java virtual machine",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 2.0
+          }
+        ],
+        "name": "system.cpu.count"
+      },
+      "jvm.gc.pause": {
+        "error": "HTTP Error 404: Not Found"
+      },
+      "jvm.gc.memory.allocated": {
+        "error": "HTTP Error 404: Not Found"
+      },
+      "jvm.threads.live": {
+        "availableTags": [],
+        "baseUnit": "threads",
+        "description": "The current number of live threads including both daemon and non-daemon threads",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 47.0
+          }
+        ],
+        "name": "jvm.threads.live"
+      },
+      "process.cpu.usage": {
+        "availableTags": [],
+        "description": "The \"recent cpu usage\" for the Java Virtual Machine process",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 0.9802631578947368
+          }
+        ],
+        "name": "process.cpu.usage"
+      }
+    }
+  },
+  {
+    "time": 1794417300.4604049,
+    "label": "before-webflux",
+    "metrics": {
+      "system.cpu.count": {
+        "availableTags": [],
+        "description": "The number of processors available to the Java virtual machine",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 2.0
+          }
+        ],
+        "name": "system.cpu.count"
+      },
+      "jvm.gc.pause": {
+        "availableTags": [
+          {
+            "tag": "cause",
+            "values": [
+              "G1 Evacuation Pause",
+              "Metadata GC Threshold"
+            ]
+          },
+          {
+            "tag": "action",
+            "values": [
+              "end of minor GC"
+            ]
+          },
+          {
+            "tag": "gc",
+            "values": [
+              "G1 Young Generation"
+            ]
+          }
+        ],
+        "baseUnit": "seconds",
+        "description": "Time spent in GC pause",
+        "measurements": [
+          {
+            "statistic": "COUNT",
+            "value": 6.0
+          },
+          {
+            "statistic": "TOTAL_TIME",
+            "value": 0.514
+          },
+          {
+            "statistic": "MAX",
+            "value": 0.12
+          }
+        ],
+        "name": "jvm.gc.pause"
+      },
+      "jvm.gc.memory.allocated": {
+        "availableTags": [],
+        "baseUnit": "bytes",
+        "description": "Incremented for an increase in the size of the (young) heap memory pool after one GC to before the next",
+        "measurements": [
+          {
+            "statistic": "COUNT",
+            "value": 379584512.0
+          }
+        ],
+        "name": "jvm.gc.memory.allocated"
+      },
+      "jvm.threads.live": {
+        "availableTags": [],
+        "baseUnit": "threads",
+        "description": "The current number of live threads including both daemon and non-daemon threads",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 52.0
+          }
+        ],
+        "name": "jvm.threads.live"
+      },
+      "process.cpu.usage": {
+        "availableTags": [],
+        "description": "The \"recent cpu usage\" for the Java Virtual Machine process",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 0.065
+          }
+        ],
+        "name": "process.cpu.usage"
+      }
+    }
+  },
+  {
+    "time": 1794417300.9045131,
+    "label": "after-webflux",
+    "metrics": {
+      "system.cpu.count": {
+        "availableTags": [],
+        "description": "The number of processors available to the Java virtual machine",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 2.0
+          }
+        ],
+        "name": "system.cpu.count"
+      },
+      "jvm.gc.pause": {
+        "error": "HTTP Error 404: Not Found"
+      },
+      "jvm.gc.memory.allocated": {
+        "error": "HTTP Error 404: Not Found"
+      },
+      "jvm.threads.live": {
+        "availableTags": [],
+        "baseUnit": "threads",
+        "description": "The current number of live threads including both daemon and non-daemon threads",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 47.0
+          }
+        ],
+        "name": "jvm.threads.live"
+      },
+      "process.cpu.usage": {
+        "availableTags": [],
+        "description": "The \"recent cpu usage\" for the Java Virtual Machine process",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 0.9214285714285714
+          }
+        ],
+        "name": "process.cpu.usage"
+      }
+    }
+  },
+  {
+    "time": 1794417304.3702762,
+    "label": "before-webflux",
+    "metrics": {
+      "system.cpu.count": {
+        "availableTags": [],
+        "description": "The number of processors available to the Java virtual machine",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 2.0
+          }
+        ],
+        "name": "system.cpu.count"
+      },
+      "jvm.gc.pause": {
+        "availableTags": [
+          {
+            "tag": "cause",
+            "values": [
+              "G1 Evacuation Pause",
+              "Metadata GC Threshold"
+            ]
+          },
+          {
+            "tag": "action",
+            "values": [
+              "end of minor GC"
+            ]
+          },
+          {
+            "tag": "gc",
+            "values": [
+              "G1 Young Generation"
+            ]
+          }
+        ],
+        "baseUnit": "seconds",
+        "description": "Time spent in GC pause",
+        "measurements": [
+          {
+            "statistic": "COUNT",
+            "value": 6.0
+          },
+          {
+            "statistic": "TOTAL_TIME",
+            "value": 0.514
+          },
+          {
+            "statistic": "MAX",
+            "value": 0.12
+          }
+        ],
+        "name": "jvm.gc.pause"
+      },
+      "jvm.gc.memory.allocated": {
+        "availableTags": [],
+        "baseUnit": "bytes",
+        "description": "Incremented for an increase in the size of the (young) heap memory pool after one GC to before the next",
+        "measurements": [
+          {
+            "statistic": "COUNT",
+            "value": 379584512.0
+          }
+        ],
+        "name": "jvm.gc.memory.allocated"
+      },
+      "jvm.threads.live": {
+        "availableTags": [],
+        "baseUnit": "threads",
+        "description": "The current number of live threads including both daemon and non-daemon threads",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 52.0
+          }
+        ],
+        "name": "jvm.threads.live"
+      },
+      "process.cpu.usage": {
+        "availableTags": [],
+        "description": "The \"recent cpu usage\" for the Java Virtual Machine process",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 0.11764705882352941
+          }
+        ],
+        "name": "process.cpu.usage"
+      }
+    }
+  },
+  {
+    "time": 1794417304.587289,
+    "label": "after-webflux",
+    "metrics": {
+      "system.cpu.count": {
+        "availableTags": [],
+        "description": "The number of processors available to the Java virtual machine",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 2.0
+          }
+        ],
+        "name": "system.cpu.count"
+      },
+      "jvm.gc.pause": {
+        "error": "HTTP Error 404: Not Found"
+      },
+      "jvm.gc.memory.allocated": {
+        "error": "HTTP Error 404: Not Found"
+      },
+      "jvm.threads.live": {
+        "availableTags": [],
+        "baseUnit": "threads",
+        "description": "The current number of live threads including both daemon and non-daemon threads",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 47.0
+          }
+        ],
+        "name": "jvm.threads.live"
+      },
+      "process.cpu.usage": {
+        "availableTags": [],
+        "description": "The \"recent cpu usage\" for the Java Virtual Machine process",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 0.8771428571428571
+          }
+        ],
+        "name": "process.cpu.usage"
+      }
+    }
+  },
+  {
+    "time": 1794417310.2576299,
+    "label": "before-webflux",
+    "metrics": {
+      "system.cpu.count": {
+        "availableTags": [],
+        "description": "The number of processors available to the Java virtual machine",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 2.0
+          }
+        ],
+        "name": "system.cpu.count"
+      },
+      "jvm.gc.pause": {
+        "availableTags": [
+          {
+            "tag": "cause",
+            "values": [
+              "G1 Evacuation Pause",
+              "Metadata GC Threshold"
+            ]
+          },
+          {
+            "tag": "action",
+            "values": [
+              "end of minor GC"
+            ]
+          },
+          {
+            "tag": "gc",
+            "values": [
+              "G1 Young Generation"
+            ]
+          }
+        ],
+        "baseUnit": "seconds",
+        "description": "Time spent in GC pause",
+        "measurements": [
+          {
+            "statistic": "COUNT",
+            "value": 6.0
+          },
+          {
+            "statistic": "TOTAL_TIME",
+            "value": 0.514
+          },
+          {
+            "statistic": "MAX",
+            "value": 0.12
+          }
+        ],
+        "name": "jvm.gc.pause"
+      },
+      "jvm.gc.memory.allocated": {
+        "availableTags": [],
+        "baseUnit": "bytes",
+        "description": "Incremented for an increase in the size of the (young) heap memory pool after one GC to before the next",
+        "measurements": [
+          {
+            "statistic": "COUNT",
+            "value": 449839104.0
+          }
+        ],
+        "name": "jvm.gc.memory.allocated"
+      },
+      "jvm.threads.live": {
+        "availableTags": [],
+        "baseUnit": "threads",
+        "description": "The current number of live threads including both daemon and non-daemon threads",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 53.0
+          }
+        ],
+        "name": "jvm.threads.live"
+      },
+      "process.cpu.usage": {
+        "availableTags": [],
+        "description": "The \"recent cpu usage\" for the Java Virtual Machine process",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 0.8216981132075472
+          }
+        ],
+        "name": "process.cpu.usage"
+      }
+    }
+  },
+  {
+    "time": 1794417310.501893,
+    "label": "after-webflux",
+    "metrics": {
+      "system.cpu.count": {
+        "availableTags": [],
+        "description": "The number of processors available to the Java virtual machine",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 2.0
+          }
+        ],
+        "name": "system.cpu.count"
+      },
+      "jvm.gc.pause": {
+        "error": "HTTP Error 404: Not Found"
+      },
+      "jvm.gc.memory.allocated": {
+        "error": "HTTP Error 404: Not Found"
+      },
+      "jvm.threads.live": {
+        "availableTags": [],
+        "baseUnit": "threads",
+        "description": "The current number of live threads including both daemon and non-daemon threads",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 47.0
+          }
+        ],
+        "name": "jvm.threads.live"
+      },
+      "process.cpu.usage": {
+        "availableTags": [],
+        "description": "The \"recent cpu usage\" for the Java Virtual Machine process",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 0.02142857142857143
+          }
+        ],
+        "name": "process.cpu.usage"
+      }
+    }
+  },
+  {
+    "time": 1794417315.76581,
+    "label": "before-webflux",
+    "metrics": {
+      "system.cpu.count": {
+        "availableTags": [],
+        "description": "The number of processors available to the Java virtual machine",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 2.0
+          }
+        ],
+        "name": "system.cpu.count"
+      },
+      "jvm.gc.pause": {
+        "availableTags": [
+          {
+            "tag": "cause",
+            "values": [
+              "G1 Evacuation Pause",
+              "Metadata GC Threshold"
+            ]
+          },
+          {
+            "tag": "action",
+            "values": [
+              "end of minor GC"
+            ]
+          },
+          {
+            "tag": "gc",
+            "values": [
+              "G1 Young Generation"
+            ]
+          }
+        ],
+        "baseUnit": "seconds",
+        "description": "Time spent in GC pause",
+        "measurements": [
+          {
+            "statistic": "COUNT",
+            "value": 8.0
+          },
+          {
+            "statistic": "TOTAL_TIME",
+            "value": 0.612
+          },
+          {
+            "statistic": "MAX",
+            "value": 0.12
+          }
+        ],
+        "name": "jvm.gc.pause"
+      },
+      "jvm.gc.memory.allocated": {
+        "availableTags": [],
+        "baseUnit": "bytes",
+        "description": "Incremented for an increase in the size of the (young) heap memory pool after one GC to before the next",
+        "measurements": [
+          {
+            "statistic": "COUNT",
+            "value": 521142272.0
+          }
+        ],
+        "name": "jvm.gc.memory.allocated"
+      },
+      "jvm.threads.live": {
+        "availableTags": [],
+        "baseUnit": "threads",
+        "description": "The current number of live threads including both daemon and non-daemon threads",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 53.0
+          }
+        ],
+        "name": "jvm.threads.live"
+      },
+      "process.cpu.usage": {
+        "availableTags": [],
+        "description": "The \"recent cpu usage\" for the Java Virtual Machine process",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 1.0
+          }
+        ],
+        "name": "process.cpu.usage"
+      }
+    }
+  },
+  {
+    "time": 1794417316.021455,
+    "label": "after-webflux",
+    "metrics": {
+      "system.cpu.count": {
+        "availableTags": [],
+        "description": "The number of processors available to the Java virtual machine",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 2.0
+          }
+        ],
+        "name": "system.cpu.count"
+      },
+      "jvm.gc.pause": {
+        "error": "HTTP Error 404: Not Found"
+      },
+      "jvm.gc.memory.allocated": {
+        "error": "HTTP Error 404: Not Found"
+      },
+      "jvm.threads.live": {
+        "availableTags": [],
+        "baseUnit": "threads",
+        "description": "The current number of live threads including both daemon and non-daemon threads",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 47.0
+          }
+        ],
+        "name": "jvm.threads.live"
+      },
+      "process.cpu.usage": {
+        "availableTags": [],
+        "description": "The \"recent cpu usage\" for the Java Virtual Machine process",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 0.0125
+          }
+        ],
+        "name": "process.cpu.usage"
+      }
+    }
+  },
+  {
+    "time": 1794417319.4780889,
+    "label": "before-webflux",
+    "metrics": {
+      "system.cpu.count": {
+        "availableTags": [],
+        "description": "The number of processors available to the Java virtual machine",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 2.0
+          }
+        ],
+        "name": "system.cpu.count"
+      },
+      "jvm.gc.pause": {
+        "availableTags": [
+          {
+            "tag": "cause",
+            "values": [
+              "G1 Evacuation Pause",
+              "Metadata GC Threshold"
+            ]
+          },
+          {
+            "tag": "action",
+            "values": [
+              "end of minor GC"
+            ]
+          },
+          {
+            "tag": "gc",
+            "values": [
+              "G1 Young Generation"
+            ]
+          }
+        ],
+        "baseUnit": "seconds",
+        "description": "Time spent in GC pause",
+        "measurements": [
+          {
+            "statistic": "COUNT",
+            "value": 8.0
+          },
+          {
+            "statistic": "TOTAL_TIME",
+            "value": 0.612
+          },
+          {
+            "statistic": "MAX",
+            "value": 0.12
+          }
+        ],
+        "name": "jvm.gc.pause"
+      },
+      "jvm.gc.memory.allocated": {
+        "availableTags": [],
+        "baseUnit": "bytes",
+        "description": "Incremented for an increase in the size of the (young) heap memory pool after one GC to before the next",
+        "measurements": [
+          {
+            "statistic": "COUNT",
+            "value": 546308096.0
+          }
+        ],
+        "name": "jvm.gc.memory.allocated"
+      },
+      "jvm.threads.live": {
+        "availableTags": [],
+        "baseUnit": "threads",
+        "description": "The current number of live threads including both daemon and non-daemon threads",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 53.0
+          }
+        ],
+        "name": "jvm.threads.live"
+      },
+      "process.cpu.usage": {
+        "availableTags": [],
+        "description": "The \"recent cpu usage\" for the Java Virtual Machine process",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 0.8364864864864865
+          }
+        ],
+        "name": "process.cpu.usage"
+      }
+    }
+  },
+  {
+    "time": 1794417319.69899,
+    "label": "after-webflux",
+    "metrics": {
+      "system.cpu.count": {
+        "availableTags": [],
+        "description": "The number of processors available to the Java virtual machine",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 2.0
+          }
+        ],
+        "name": "system.cpu.count"
+      },
+      "jvm.gc.pause": {
+        "error": "HTTP Error 404: Not Found"
+      },
+      "jvm.gc.memory.allocated": {
+        "error": "HTTP Error 404: Not Found"
+      },
+      "jvm.threads.live": {
+        "availableTags": [],
+        "baseUnit": "threads",
+        "description": "The current number of live threads including both daemon and non-daemon threads",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 47.0
+          }
+        ],
+        "name": "jvm.threads.live"
+      },
+      "process.cpu.usage": {
+        "availableTags": [],
+        "description": "The \"recent cpu usage\" for the Java Virtual Machine process",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 0.025
+          }
+        ],
+        "name": "process.cpu.usage"
+      }
+    }
+  },
+  {
+    "time": 1794417323.598995,
+    "label": "before-webflux",
+    "metrics": {
+      "system.cpu.count": {
+        "availableTags": [],
+        "description": "The number of processors available to the Java virtual machine",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 2.0
+          }
+        ],
+        "name": "system.cpu.count"
+      },
+      "jvm.gc.pause": {
+        "availableTags": [
+          {
+            "tag": "cause",
+            "values": [
+              "G1 Evacuation Pause",
+              "Metadata GC Threshold"
+            ]
+          },
+          {
+            "tag": "action",
+            "values": [
+              "end of minor GC"
+            ]
+          },
+          {
+            "tag": "gc",
+            "values": [
+              "G1 Young Generation"
+            ]
+          }
+        ],
+        "baseUnit": "seconds",
+        "description": "Time spent in GC pause",
+        "measurements": [
+          {
+            "statistic": "COUNT",
+            "value": 9.0
+          },
+          {
+            "statistic": "TOTAL_TIME",
+            "value": 0.641
+          },
+          {
+            "statistic": "MAX",
+            "value": 0.12
+          }
+        ],
+        "name": "jvm.gc.pause"
+      },
+      "jvm.gc.memory.allocated": {
+        "availableTags": [],
+        "baseUnit": "bytes",
+        "description": "Incremented for an increase in the size of the (young) heap memory pool after one GC to before the next",
+        "measurements": [
+          {
+            "statistic": "COUNT",
+            "value": 593494016.0
+          }
+        ],
+        "name": "jvm.gc.memory.allocated"
+      },
+      "jvm.threads.live": {
+        "availableTags": [],
+        "baseUnit": "threads",
+        "description": "The current number of live threads including both daemon and non-daemon threads",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 53.0
+          }
+        ],
+        "name": "jvm.threads.live"
+      },
+      "process.cpu.usage": {
+        "availableTags": [],
+        "description": "The \"recent cpu usage\" for the Java Virtual Machine process",
+        "measurements": [
+          {
+            "statistic": "VALUE",
+            "value": 0.8939024390243903
+          }
+        ],
+        "name": "process.cpu.usage"
+      }
+    }
+  },
+  {
+    "time": 1794417323.9575198,
+    "label": "after-webflux",
+    "metrics": {
+      "system.cpu.count": {
+        "error": "Remote end closed connection without response"
+      },
+      "jvm.gc.pause": {
+        "error": "Remote end closed connection without response"
+      },
+      "jvm.gc.memory.allocated": {
+        "error": "Remote end closed connection without response"
+      },
+      "jvm.threads.live": {
+        "error": "Remote end closed connection without response"
+      },
+      "process.cpu.usage": {
+        "error": "Remote end closed connection without response"
+      }
+    }
+  }
+]

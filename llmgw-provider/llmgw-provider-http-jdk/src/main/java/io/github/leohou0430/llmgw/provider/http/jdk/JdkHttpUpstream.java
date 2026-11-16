@@ -1,6 +1,8 @@
 package io.github.leohou0430.llmgw.provider.http.jdk;
 
 import io.github.leohou0430.llmgw.core.config.GatewayProperties;
+import io.github.leohou0430.llmgw.core.upstream.ByteChunk;
+import io.github.leohou0430.llmgw.core.upstream.ByteStream;
 import io.github.leohou0430.llmgw.core.upstream.ChunkSink;
 import io.github.leohou0430.llmgw.core.upstream.HeaderListener;
 import io.github.leohou0430.llmgw.core.upstream.UpstreamMethod;
@@ -12,10 +14,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -46,21 +50,18 @@ public class JdkHttpUpstream implements UpstreamProvider, AutoCloseable {
 
     private static final Logger log = LoggerFactory.getLogger(JdkHttpUpstream.class);
 
-    private static final String HEARTBEAT_FRAME = ": keep-alive\n\n";
-
     private final HttpClient client;
     private final GatewayProperties properties;
-    /** Target URLs come from static route config; build() used to compile a regex
-     * and re-parse a URI on EVERY request. Resolve once per distinct URL. */
+    private static final int TARGET_URI_CACHE_LIMIT = 1024;
+    /** Fixed admission cache: keep hot endpoints, but never retain every file/task ID. */
     private final ConcurrentMap<String, URI> targetUris = new ConcurrentHashMap<>();
     /** Only non-null when we created a dedicated executor (executor-threads > 0). */
     private final java.util.concurrent.ExecutorService ownedExecutor;
-    /**
-     * Shared watchdog for first-byte/idle timeouts and blocking-path heartbeats.
-     * Created only when any of them is enabled, so the default config pays for
-     * exactly zero extra threads or scheduled tasks.
-     */
+    /** One lazy deadline scheduler per transport; blocking heartbeats stay on the requesting thread. */
     private final ScheduledThreadPoolExecutor watchdog;
+    /** Only terminal timeout work uses these per-operation virtual threads. */
+    private final java.util.concurrent.ExecutorService timeoutSignals = java.util.concurrent.Executors.newThreadPerTaskExecutor(
+            Thread.ofVirtual().name("llmgw-upstream-timeout-", 0).factory());
     private final Map<String, io.github.leohou0430.llmgw.provider.UpstreamAuthenticator> authenticators;
 
     public JdkHttpUpstream(GatewayProperties properties) {
@@ -86,24 +87,20 @@ public class JdkHttpUpstream implements UpstreamProvider, AutoCloseable {
             this.ownedExecutor = null;
         }
         this.client = builder.build();
-        boolean needsWatchdog = properties.getUpstream().getFirstByteTimeoutMs() > 0
-                || properties.getUpstream().getIdleReadTimeoutMs() > 0
-                || properties.getUpstream().getHeartbeatIntervalMs() > 0;
-        if (needsWatchdog) {
-            this.watchdog = new ScheduledThreadPoolExecutor(1, r -> {
-                Thread t = new Thread(r, "llmgw-upstream-watchdog");
-                t.setDaemon(true);
-                return t;
-            });
-            this.watchdog.setRemoveOnCancelPolicy(true);
-        } else {
-            this.watchdog = null;
-        }
+        this.watchdog = new ScheduledThreadPoolExecutor(1, r -> {
+            Thread t = new Thread(r, "llmgw-upstream-watchdog");
+            t.setDaemon(true);
+            return t;
+        });
+        this.watchdog.setRemoveOnCancelPolicy(true);
     }
 
     @Override public void close() {
         client.close();
-        if (watchdog != null) watchdog.shutdownNow();
+        watchdog.shutdownNow();
+        // Drain dispatches before retiring their executor; never await a user callback here.
+        watchdog.close();
+        timeoutSignals.shutdownNow();
         if (ownedExecutor != null) ownedExecutor.close();
     }
 
@@ -130,6 +127,8 @@ public class JdkHttpUpstream implements UpstreamProvider, AutoCloseable {
         private final AtomicBoolean terminated = new AtomicBoolean();
         private final AtomicBoolean aborted = new AtomicBoolean();
         private final AtomicBoolean headersArrived = new AtomicBoolean();
+        private final AtomicBoolean linesCompleted = new AtomicBoolean();
+        private final AtomicBoolean httpCompleted = new AtomicBoolean();
         private final AtomicLong lastActivity = new AtomicLong(System.nanoTime());
         private final AtomicReference<CompletableFuture<?>> future = new AtomicReference<>();
         private final Object signals = new Object();
@@ -157,8 +156,10 @@ public class JdkHttpUpstream implements UpstreamProvider, AutoCloseable {
 
         private void abortTransport() {
             aborted.set(true);
-            demand.cancel();
             CompletableFuture<?> active = future.get();
+            // A queued timeout may run after HTTP completion and connection reuse.
+            if (active != null && active.isDone() && !active.isCompletedExceptionally()) return;
+            demand.cancel();
             if (active != null && !active.isDone()) active.cancel(true);
         }
 
@@ -173,6 +174,19 @@ public class JdkHttpUpstream implements UpstreamProvider, AutoCloseable {
             if (!terminated.compareAndSet(false, true)) return;
             cancelWatches(watches);
             synchronized (signals) { downstream.onComplete(); }
+        }
+
+        private void completeIfReady() {
+            if (linesCompleted.get() && httpCompleted.get()) complete();
+        }
+
+        private void timeout(Throwable error) {
+            if (!terminated.compareAndSet(false, true)) return;
+            cancelWatches(watches);
+            timeoutSignals.execute(() -> {
+                abortTransport();
+                synchronized (signals) { downstream.onError(asRuntimeException(error)); }
+            });
         }
 
         private void next(String line) {
@@ -200,18 +214,26 @@ public class JdkHttpUpstream implements UpstreamProvider, AutoCloseable {
             if (terminated.get()) return;
             try {
                 HttpRequest http = build(request, true);
+                watch(watchdog.schedule(() -> timeout(new UpstreamTimeoutException("upstream request timeout")),
+                        Math.max(1, request.timeoutMs()), TimeUnit.MILLISECONDS));
                 var lines = new Flow.Subscriber<String>() {
                     @Override public void onSubscribe(Flow.Subscription s) { demand.onSubscribe(s); }
                     @Override public void onNext(String line) { next(line); }
-                    @Override public void onError(Throwable error) { fail(error, false); }
-                    @Override public void onComplete() { complete(); }
+                    // The HTTP future delivers terminal signals after body completion.
+                    @Override public void onError(Throwable error) {}
+                    @Override public void onComplete() { linesCompleted.set(true); completeIfReady(); }
                 };
+                int idleMs = properties.getUpstream().getIdleReadTimeoutMs();
                 HttpResponse.BodyHandler<String> handler = info -> {
+                    lastActivity.set(System.nanoTime());
                     headersArrived.set(true);
                     listener.onHeaders(info.statusCode(), info.headers().map());
-                    return info.statusCode() >= 300
+                    HttpResponse.BodySubscriber<String> body = info.statusCode() >= 300
                             ? HttpResponse.BodySubscribers.limiting(HttpResponse.BodySubscribers.ofString(StandardCharsets.UTF_8), properties.getMaxResponseBytes())
-                            : HttpResponse.BodySubscribers.mapping(HttpResponse.BodySubscribers.fromLineSubscriber(lines), ignored -> "");
+                            : new SseLineLimitSubscriber<>(HttpResponse.BodySubscribers.mapping(
+                                    new SseLineDecoder(lines), ignored -> ""),
+                                    properties.getUpstream().getMaxSseLineBytes());
+                    return idleMs > 0 ? new ReadActivitySubscriber<>(body, lastActivity) : body;
                 };
                 var active = client.sendAsync(http, handler);
                 future.set(active);
@@ -221,18 +243,18 @@ public class JdkHttpUpstream implements UpstreamProvider, AutoCloseable {
                     if (error != null) fail(error, false);
                     else if (response.statusCode() >= 300) fail(new UpstreamStatusException(
                             response.statusCode(), response.body(), retryAfterMs(response)), false);
+                    else { httpCompleted.set(true); completeIfReady(); }
                 });
                 int firstByteMs = properties.getUpstream().getFirstByteTimeoutMs();
                 if (firstByteMs > 0 && watchdog != null) {
                     watch(watchdog.schedule(() -> {
-                        if (!headersArrived.get()) fail(new UpstreamTimeoutException("upstream first-byte timeout"), true);
+                        if (!headersArrived.get()) timeout(new UpstreamTimeoutException("upstream first-byte timeout"));
                     }, firstByteMs, TimeUnit.MILLISECONDS));
                 }
-                int idleMs = properties.getUpstream().getIdleReadTimeoutMs();
                 if (idleMs > 0 && watchdog != null) {
                     watch(watchdog.scheduleAtFixedRate(() -> {
                         if (headersArrived.get() && System.nanoTime() - lastActivity.get() > TimeUnit.MILLISECONDS.toNanos(idleMs)) {
-                            fail(new UpstreamTimeoutException("upstream idle read timeout"), true);
+                            timeout(new UpstreamTimeoutException("upstream idle read timeout"));
                         }
                     }, idleMs, Math.max(50, idleMs / 2), TimeUnit.MILLISECONDS));
                 }
@@ -250,45 +272,34 @@ public class JdkHttpUpstream implements UpstreamProvider, AutoCloseable {
         int idleMs = properties.getUpstream().getIdleReadTimeoutMs();
         AtomicBoolean headersArrived = new AtomicBoolean(false);
         AtomicLong lastActivity = new AtomicLong(System.nanoTime());
-        List<ScheduledFuture<?>> watches = new ArrayList<>(3);
-        // The watchdog can only reach a blocking send/read by interrupting the
-        // virtual thread that is blocked on it. The flag converts the resulting
-        // InterruptedException/IOException back into the precise timeout reason
-        // the reactive engine reports.
-        AtomicBoolean watchdogFired = new AtomicBoolean(false);
-        AtomicReference<String> timeoutReason = new AtomicReference<>(null);
-        Thread caller = Thread.currentThread();
-        try {
+        var deadline = new BlockingDeadline(request.timeoutMs());
+        try (deadline) {
             if (watchdog != null && firstByteMs > 0) {
-                watches.add(watchdog.schedule(() -> {
+                deadline.watch(watchdog.schedule(() -> {
                     if (!headersArrived.get()) {
-                        timeoutReason.set("upstream first-byte timeout");
-                        watchdogFired.set(true);
-                        caller.interrupt();
+                        deadline.expire("upstream first-byte timeout");
                     }
                 }, firstByteMs, TimeUnit.MILLISECONDS));
             }
             if (watchdog != null && idleMs > 0) {
-                watches.add(watchdog.scheduleAtFixedRate(() -> {
+                deadline.watch(watchdog.scheduleAtFixedRate(() -> {
                     long idleNanos = TimeUnit.MILLISECONDS.toNanos(idleMs);
                     if (headersArrived.get()
                             && System.nanoTime() - lastActivity.get() > idleNanos) {
-                        timeoutReason.set("upstream idle read timeout");
-                        watchdogFired.set(true);
-                        caller.interrupt();
+                        deadline.expire("upstream idle read timeout");
                     }
                 }, idleMs, Math.max(50, idleMs / 2), TimeUnit.MILLISECONDS));
             }
-            if (watchdog != null && heartbeatMs > 0) {
-                watches.add(watchdog.scheduleAtFixedRate(() -> {
-                    // StreamSink.write is synchronized; a comment frame written
-                    // between upstream chunks is what keeps proxies patient.
-                    sink.onChunk(HEARTBEAT_FRAME);
-                }, heartbeatMs, heartbeatMs, TimeUnit.MILLISECONDS));
-            }
-
-            HttpResponse<Stream<String>> response = client.send(http, HttpResponse.BodyHandlers.ofLines());
-            headersArrived.set(true);
+            HttpResponse<Stream<String>> response = client.send(http, info -> {
+                lastActivity.set(System.nanoTime());
+                headersArrived.set(true);
+                HttpResponse.BodySubscriber<Stream<String>> body = info.statusCode() >= 300
+                        ? HttpResponse.BodySubscribers.mapping(HttpResponse.BodySubscribers.limiting(
+                                HttpResponse.BodySubscribers.ofString(StandardCharsets.UTF_8), properties.getMaxResponseBytes()), Stream::of)
+                        : new SseLineLimitSubscriber<>(new BlockingSseBodySubscriber(heartbeatMs, sink),
+                                properties.getUpstream().getMaxSseLineBytes());
+                return idleMs > 0 ? new ReadActivitySubscriber<>(body, lastActivity) : body;
+            });
             sink.onHeaders(response.statusCode(), response.headers().map());
             // try-with-resources ALWAYS closes the body stream -- including the
             // >=300 branch that used to leak the connection forever.
@@ -308,93 +319,259 @@ public class JdkHttpUpstream implements UpstreamProvider, AutoCloseable {
             sink.onDone();
         } catch (IOException e) {
             sink.onError(e);
-            throw asTimeoutOrWrapped(watchdogFired, timeoutReason, e);
+            throw deadline.failure(e);
         } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
+            if (!deadline.expired()) Thread.currentThread().interrupt();
             sink.onError(e);
-            throw asTimeoutOrWrapped(watchdogFired, timeoutReason, e);
+            throw deadline.failure(e);
         } catch (RuntimeException e) {
-            // The JDK's ofLines stream surfaces a watchdog interrupt as an
-            // UncheckedIOException(IOException(InterruptedException)) -- a
-            // RuntimeException that would bypass the two catches above and
-            // report a bare "InterruptedException" instead of the tier reason.
+            // The blocking line reader surfaces interruption through a runtime
+            // exception; preserve the watchdog's tier-specific timeout reason.
             sink.onError(e);
-            throw asTimeoutOrWrapped(watchdogFired, timeoutReason, e);
-        } finally {
-            cancelWatches(watches);
-            // A watchdog interrupt may land between the last chunk and the
-            // finally block; a lingering flag would poison the next request
-            // served by this virtual thread, so clear it deliberately.
-            Thread.interrupted();
+            throw deadline.failure(e);
         }
     }
 
-    /** Watchdog interrupts must surface as UpstreamTimeoutException, not a raw wrapped cause. */
-    private static IllegalStateException asTimeoutOrWrapped(AtomicBoolean watchdogFired,
-                                                            AtomicReference<String> reason,
-                                                            Throwable cause) {
-        if (watchdogFired.get()) {
-            return new UpstreamTimeoutException(reason.get());
+    /** Prevent late watchdog interrupts from escaping into the caller's next operation. */
+    private final class BlockingDeadline implements AutoCloseable {
+        private final Thread caller = Thread.currentThread();
+        private final List<ScheduledFuture<?>> tasks = new ArrayList<>(3);
+        private String reason;
+        private boolean closed;
+        BlockingDeadline(int timeoutMs) {
+            watch(watchdog.schedule(() -> expire("upstream request timeout"), Math.max(1, timeoutMs), TimeUnit.MILLISECONDS));
         }
-        return new IllegalStateException(cause);
+        synchronized void watch(ScheduledFuture<?> task) {
+            if (closed) task.cancel(false); else tasks.add(task);
+        }
+        synchronized void expire(String message) {
+            if (!closed && reason == null) { reason = message;caller.interrupt(); }
+        }
+        synchronized boolean expired() { return reason != null; }
+        synchronized IllegalStateException failure(Throwable error) {
+            return reason != null ? new UpstreamTimeoutException(reason) : new IllegalStateException(error);
+        }
+        @Override public synchronized void close() {
+            closed = true;
+            for (var task : tasks) task.cancel(false);
+            tasks.clear();
+            if (reason != null) Thread.interrupted();
+        }
+    }
+
+    private <T> HttpResponse<T> sendBlocking(HttpRequest request, HttpResponse.BodyHandler<T> handler, int timeoutMs) {
+        var deadline = new BlockingDeadline(timeoutMs);
+        try (deadline) {
+            return client.send(request, handler);
+        } catch (IOException error) {
+            throw deadline.failure(error);
+        } catch (InterruptedException error) {
+            if (!deadline.expired()) Thread.currentThread().interrupt();
+            throw deadline.failure(error);
+        }
     }
 
     @Override
     public String completeRaw(UpstreamRequest request, HeaderListener listener) {
-        HttpRequest http = build(request, false);
-        try {
-            HttpResponse<String> response = client.send(http,
-                    HttpResponse.BodyHandlers.limiting(HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8), properties.getMaxResponseBytes()));
-            listener.onHeaders(response.statusCode(), response.headers().map());
-            return bodyOrThrow(response);
-        } catch (IOException e) {
-            throw new IllegalStateException(e);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new IllegalStateException(e);
-        }
+        HttpResponse<String> response = sendBlocking(build(request, false), HttpResponse.BodyHandlers.limiting(
+                HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8), properties.getMaxResponseBytes()), request.timeoutMs());
+        listener.onHeaders(response.statusCode(), response.headers().map());
+        return bodyOrThrow(response);
     }
 
-    /** Blocking GET (video poll/content). Raw bytes so binaries pass through. */
+    /** Blocking GET: bounded bytes, with a deadline that includes the response body. */
     @Override
     public byte[] fetchRaw(UpstreamRequest request) {
-        HttpRequest http = build(request, false);
-        try {
-            HttpResponse<byte[]> response = client.send(http, HttpResponse.BodyHandlers.limiting(HttpResponse.BodyHandlers.ofByteArray(), properties.getMaxResponseBytes()));
-            return bytesOrThrow(response);
-        } catch (IOException e) {
-            throw new IllegalStateException(e);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new IllegalStateException(e);
-        }
+        return bytesOrThrow(sendBlocking(build(request, false), HttpResponse.BodyHandlers.limiting(
+                HttpResponse.BodyHandlers.ofByteArray(), properties.getMaxResponseBytes()), request.timeoutMs()));
     }
 
     /** Native asynchronous operations start on invocation; adapters defer invocation until subscription. */
     @Override public CompletableFuture<String> completeRawAsync(UpstreamRequest request, HeaderListener listener) {
-        return mapResponse(client.sendAsync(build(request, false), HttpResponse.BodyHandlers.limiting(
-                HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8), properties.getMaxResponseBytes())), response -> {
+        return mapResponse(withDeadline(client.sendAsync(build(request, false), HttpResponse.BodyHandlers.limiting(
+                HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8), properties.getMaxResponseBytes())), request.timeoutMs()), response -> {
             listener.onHeaders(response.statusCode(), response.headers().map());
             return bodyOrThrow(response);
         });
     }
 
     @Override public CompletableFuture<byte[]> fetchRawAsync(UpstreamRequest request) {
-        return mapResponse(client.sendAsync(build(request, false), HttpResponse.BodyHandlers.limiting(
-                HttpResponse.BodyHandlers.ofByteArray(), properties.getMaxResponseBytes())), JdkHttpUpstream::bytesOrThrow);
+        return mapResponse(withDeadline(client.sendAsync(build(request, false), HttpResponse.BodyHandlers.limiting(
+                HttpResponse.BodyHandlers.ofByteArray(), properties.getMaxResponseBytes())), request.timeoutMs()), JdkHttpUpstream::bytesOrThrow);
+    }
+
+    private static final int DOWNLOAD_CHUNK_BYTES = 16 * 1024;
+
+    /**
+     * T2.1/T2.2 streaming download. Cold: the exchange starts on first demand, not on
+     * call. {@code BodyHandlers.ofInputStream()} is a BodySubscribers-backed streaming
+     * handler — the body is read in bounded chunks, never buffered whole. Cumulative
+     * bytes are capped at maxResponseBytes (exceed closes the upstream and errors);
+     * cancel/close/EOF/error all release the response InputStream exactly once.
+     * T2.8: each blocking body read is bounded by the idle-read timeout — a
+     * stalled upstream closes the stream and surfaces {@code upstream idle read
+     * timeout}; the request timeout still bounds the exchange start.
+     */
+    @Override
+    public Flow.Publisher<ByteBuffer> fetchStream(UpstreamRequest request) {
+        return ByteStream.of(new ByteStream.Source() {
+            private volatile InputStream body;
+            private final AtomicBoolean closed = new AtomicBoolean();
+            private volatile boolean idleTimedOut;
+            private boolean started;
+            private long counted;
+
+            private void start() {
+                if (started) {
+                    return;
+                }
+                started = true;
+                HttpResponse<InputStream> response = sendBlocking(build(request, false),
+                        HttpResponse.BodyHandlers.ofInputStream(), request.timeoutMs());
+                if (response.statusCode() >= 300) {
+                    InputStream err = response.body();
+                    byte[] msg;
+                    try {
+                        msg = err.readNBytes((int) Math.min(properties.getMaxResponseBytes(), 64 * 1024));
+                    } catch (IOException e) {
+                        msg = new byte[0];
+                    } finally {
+                        closeQuietly(err);
+                    }
+                    throw new UpstreamStatusException(response.statusCode(),
+                            new String(msg, StandardCharsets.UTF_8), retryAfterMs(response));
+                }
+                body = response.body();
+            }
+
+            @Override
+            public ByteChunk next() throws Exception {
+                start();
+                byte[] buf = new byte[DOWNLOAD_CHUNK_BYTES];
+                int idleMs = properties.getUpstream().getIdleReadTimeoutMs();
+                var readDone = new AtomicBoolean();
+                ScheduledFuture<?> idleTimer = null;
+                if (idleMs > 0) {
+                    idleTimer = watchdog.schedule(() -> {
+                        if (readDone.compareAndSet(false, true)) {
+                            idleTimedOut = true;
+                            close();
+                        }
+                    }, idleMs, TimeUnit.MILLISECONDS);
+                }
+                int n;
+                try {
+                    n = body.read(buf);
+                } catch (IOException e) {
+                    if (idleTimedOut) {
+                        throw new UpstreamTimeoutException("upstream idle read timeout");
+                    }
+                    throw e;
+                } finally {
+                    readDone.set(true);
+                    if (idleTimer != null) {
+                        idleTimer.cancel(false);
+                    }
+                }
+                if (idleTimedOut) {
+                    throw new UpstreamTimeoutException("upstream idle read timeout");
+                }
+                if (n < 0) {
+                    return null;
+                }
+                counted += n;
+                if (counted > properties.getMaxResponseBytes()) {
+                    close();
+                    throw new IOException("upstream response exceeds maxResponseBytes");
+                }
+                return new ByteChunk(ByteBuffer.wrap(buf, 0, n));
+            }
+
+            @Override
+            public void close() {
+                if (closed.compareAndSet(false, true)) {
+                    closeQuietly(body);
+                }
+            }
+        });
+    }
+
+    private static void closeQuietly(InputStream in) {
+        if (in != null) {
+            try {
+                in.close();
+            } catch (IOException ignored) {
+                // releasing the response body; nothing actionable on close failure
+            }
+        }
+    }
+
+    private <T> CompletableFuture<T> withDeadline(CompletableFuture<T> source, int timeoutMs) {
+        var decided = new AtomicBoolean();
+        var timerRef = new AtomicReference<ScheduledFuture<?>>();
+        var result = new LinkedFuture<T>(source, () -> {
+            decided.set(true);
+            ScheduledFuture<?> timer = timerRef.get();
+            if (timer != null) timer.cancel(false);
+        });
+        var timer = watchdog.schedule(() -> {
+            if (decided.compareAndSet(false, true)) timeoutSignals.execute(() -> {
+                source.cancel(true);
+                result.completeExceptionally(new UpstreamTimeoutException("upstream request timeout"));
+            });
+        }, Math.max(1, timeoutMs), TimeUnit.MILLISECONDS);
+        timerRef.set(timer);
+        source.whenComplete((response, error) -> {
+            timer.cancel(false);
+            if (!decided.compareAndSet(false, true)) return;
+            if (error == null) result.complete(response); else result.completeExceptionally(error);
+        });
+        return result;
     }
 
     private static <T,R> CompletableFuture<R> mapResponse(CompletableFuture<T> source, java.util.function.Function<T,R> mapper) {
-        var result = new CompletableFuture<R>();
+        var result = new LinkedFuture<R>(source, null);
         source.whenComplete((response, error) -> {
+            if (result.cancelling) return;
             if (error != null) result.completeExceptionally(asRuntimeException(error));
             else {
                 try { result.complete(mapper.apply(response)); }
                 catch (Throwable failure) { result.completeExceptionally(failure); }
             }
         });
-        result.whenComplete((value, error) -> { if (result.isCancelled()) source.cancel(true); });
         return result;
+    }
+
+    /** Abort the private parent before CompletableFuture runs caller cancellation callbacks. */
+    private static final class LinkedFuture<T> extends CompletableFuture<T> {
+        private final Object cancellation = new Object();
+        private volatile CompletableFuture<?> source;
+        private volatile Runnable beforeCancel;
+        private volatile boolean cancelling;
+        LinkedFuture(CompletableFuture<?> source, Runnable beforeCancel) {
+            this.source = source;
+            this.beforeCancel = beforeCancel;
+        }
+        @Override public boolean cancel(boolean interrupt) {
+            synchronized (cancellation) {
+                if (isDone()) return isCancelled();
+                cancelling = true;
+                Runnable prepare = beforeCancel;
+                CompletableFuture<?> parent = source;
+                beforeCancel = null; source = null;
+                if (prepare != null) prepare.run();
+                if (parent != null) parent.cancel(true);
+            }
+            return super.cancel(interrupt);
+        }
+        @Override public boolean complete(T value) {
+            beforeCancel = null; source = null;
+            return super.complete(value);
+        }
+        @Override public boolean completeExceptionally(Throwable error) {
+            beforeCancel = null; source = null;
+            return super.completeExceptionally(error);
+        }
     }
 
     /**
@@ -469,7 +646,11 @@ public class JdkHttpUpstream implements UpstreamProvider, AutoCloseable {
                 ? base
                 : stripTrailingSlashes(base) + suffix;
         URI uri = URI.create(url);
-        targetUris.putIfAbsent(key, uri);
+        if (targetUris.size() < TARGET_URI_CACHE_LIMIT) {
+            synchronized (targetUris) {
+                if (targetUris.size() < TARGET_URI_CACHE_LIMIT) targetUris.putIfAbsent(key, uri);
+            }
+        }
         return uri;
     }
 
@@ -489,11 +670,12 @@ public class JdkHttpUpstream implements UpstreamProvider, AutoCloseable {
             builder.GET();
         } else if (request.method() == UpstreamMethod.DELETE) {
             builder.DELETE();
-        } else if (request.rawBody() != null) {
-            // W4.3 binary body (multipart upload): byte-faithful, no charset
-            // round-trip. The caller sets the multipart Content-Type via the
-            // header policy pass-through; the gateway never re-encodes it.
-            builder.POST(HttpRequest.BodyPublishers.ofByteArray(request.rawBody()));
+        } else if (request.body() != null) {
+            // T2.1/T2.2 binary body (multipart upload): streamed byte-faithful via
+            // the native ByteStream contract (BodyPublishers.fromPublisher), never
+            // a whole-byte[] publisher. The caller sets the multipart Content-Type
+            // via the header policy pass-through; the gateway never re-encodes it.
+            builder.POST(HttpRequest.BodyPublishers.fromPublisher(request.body(), request.bodyLength()));
         } else {
             builder.header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(request.rawJson(), StandardCharsets.UTF_8));
@@ -516,7 +698,7 @@ public class JdkHttpUpstream implements UpstreamProvider, AutoCloseable {
         // constructor already stripped the protected names; skip blank values.
         for (Map.Entry<String, String> pass : request.passHeaders().entrySet()) {
             if (pass.getValue() != null && !pass.getValue().isBlank()) {
-                builder.header(pass.getKey(), pass.getValue());
+                builder.setHeader(pass.getKey(), pass.getValue());
             }
         }
         return builder.build();

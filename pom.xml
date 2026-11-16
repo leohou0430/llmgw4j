@@ -62,6 +62,20 @@
     <module>llmgw-engine</module>
     <module>llmgw-provider</module>
     <module>llmgw-tokenizer</module>
+    <!-- Protocol conversion subsystem: llmgw-conversion-api + one module per
+         entry/upstream codec implementation. llmgw-conversion is both the
+         aggregator and the parent POM of its children. -->
+    <module>llmgw-conversion</module>
+    <!-- Persistence subsystem: llmgw-persistence-api + one module per engine
+         pack (SQLite). llmgw-persistence is both the aggregator and the parent
+         POM of its children; foundation packs carry no Spring/Reactor/HTTP. -->
+    <module>llmgw-persistence</module>
+    <!-- Project resource catalog: llmgw-catalog-api + a local implementation. -->
+    <module>llmgw-catalog</module>
+    <!-- Control-plane identity: llmgw-identity-api + default implementation. -->
+    <module>llmgw-identity</module>
+    <!-- Control-plane helpers: llmgw-control-api + default (at-rest secret cipher). -->
+    <module>llmgw-control</module>
     <module>llmgw-app</module>
   </modules>
 
@@ -121,6 +135,12 @@
       <dependency>
         <groupId>io.github.leohou0430</groupId><artifactId>llmgw-provider-anthropic</artifactId><version>${project.version}</version>
       </dependency>
+      <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-conversion-api</artifactId><version>${project.version}</version></dependency>
+      <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-conversion-chat</artifactId><version>${project.version}</version></dependency>
+      <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-conversion-responses</artifactId><version>${project.version}</version></dependency>
+      <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-conversion-messages</artifactId><version>${project.version}</version></dependency>
+      <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-conversion-deepseek</artifactId><version>${project.version}</version></dependency>
+      <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-conversion-module</artifactId><version>${project.version}</version></dependency>
       <dependency>
         <groupId>io.github.leohou0430</groupId><artifactId>llmgw-tokenizer-jtokkit</artifactId><version>${project.version}</version>
       </dependency>
@@ -130,6 +150,14 @@
       <dependency>
         <groupId>io.github.leohou0430</groupId><artifactId>llmgw-governance-redis</artifactId><version>${project.version}</version>
       </dependency>
+      <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-persistence-api</artifactId><version>${project.version}</version></dependency>
+      <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-persistence-sqlite</artifactId><version>${project.version}</version></dependency>
+      <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-catalog-api</artifactId><version>${project.version}</version></dependency>
+      <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-catalog-default</artifactId><version>${project.version}</version></dependency>
+      <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-identity-api</artifactId><version>${project.version}</version></dependency>
+      <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-identity-default</artifactId><version>${project.version}</version></dependency>
+      <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-control-api</artifactId><version>${project.version}</version></dependency>
+      <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-control-default</artifactId><version>${project.version}</version></dependency>
     </dependencies>
   </dependencyManagement>
 

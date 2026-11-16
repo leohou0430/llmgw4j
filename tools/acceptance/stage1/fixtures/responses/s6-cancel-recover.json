@@ -1,0 +1,111 @@
+{
+  "schema": "llmgw-acceptance-fixture/v1",
+  "id": "responses-s6-cancel-recover",
+  "entry": "responses",
+  "scenario": 6,
+  "slug": "cancel-recover",
+  "title": "取消后释放并恢复",
+  "mock": {
+    "chunks": 4
+  },
+  "markers": [
+    "mock-deepseek",
+    "mock-stall-mid-30000"
+  ],
+  "steps": [
+    {
+      "name": "cancel",
+      "request": {
+        "model": "mock-model",
+        "input": [
+          {
+            "type": "message",
+            "role": "user",
+            "content": "mock-deepseek mock-stall-mid-30000: cancel probe."
+          }
+        ],
+        "max_output_tokens": 1024,
+        "stream": true
+      },
+      "expected": {
+        "transport": "sse",
+        "cancel": {
+          "trigger": "after_first_content_frame",
+          "stall_marker": "mock-stall-mid-30000",
+          "assertions": {
+            "first_frame_received": true,
+            "active_permits_after_cancel": 0,
+            "no_success_terminal_after_cancel": true,
+            "upstream_connection_released": true
+          }
+        }
+      }
+    },
+    {
+      "name": "recovery",
+      "request": {
+        "model": "mock-model",
+        "input": [
+          {
+            "type": "message",
+            "role": "user",
+            "content": "mock-deepseek: recovery probe."
+          }
+        ],
+        "max_output_tokens": 1024,
+        "stream": true
+      },
+      "expected": {
+        "transport": "sse",
+        "terminal": {
+          "event": "response.completed",
+          "count": 1,
+          "response_status": "completed",
+          "output_item_types": [
+            "message"
+          ],
+          "sequence_number": "monotonic_from_0",
+          "done_marker": false,
+          "usage_location": "response.usage"
+        },
+        "text": {
+          "equals": "Hello world"
+        },
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 4,
+          "total_tokens": 11,
+          "input_tokens_details": {
+            "cached_tokens": 3
+          },
+          "absent_fields": [
+            "usage.output_tokens_details"
+          ]
+        },
+        "sse": {
+          "framing": "event+data",
+          "event_type_equals_data_type": true,
+          "sequence_number": "monotonic_from_0",
+          "preamble": [
+            "response.created",
+            "response.in_progress"
+          ],
+          "message_item": {
+            "open": "response.output_item.added",
+            "delta_event": "response.output_text.delta",
+            "done_text": "Hello world",
+            "close": "response.output_item.done"
+          },
+          "terminal": {
+            "event": "response.completed",
+            "count": 1,
+            "response_status": "completed",
+            "usage_location": "response.usage"
+          },
+          "done_marker": false
+        }
+      }
+    }
+  ],
+  "notes": "mock-stall-mid-30000 silences the upstream after the first frame so the client cancel is deterministic; the recovery step proves permits released and the route healthy."
+}

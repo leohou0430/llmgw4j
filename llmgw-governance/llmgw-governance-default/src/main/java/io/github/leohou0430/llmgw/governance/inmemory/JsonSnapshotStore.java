@@ -53,44 +53,53 @@ public class JsonSnapshotStore implements SnapshotStore {
 
     @Override
     public void importJson(String json) {
+        JsonNode root;
+        try { root = MAPPER.readTree(json); }
+        catch (RuntimeException invalid) { throw new IllegalArgumentException("invalid snapshot JSON", invalid); }
+        if (root == null || !root.isObject() || !root.path("usage").isObject()) {
+            throw new IllegalArgumentException("snapshot requires a usage object");
+        }
+        Map<String, UsageLedger.UsageSummary> data = new HashMap<>();
+        for (Map.Entry<String, JsonNode> entry : root.get("usage").properties()) {
+            JsonNode item = entry.getValue();
+            if (!item.isObject()) throw new IllegalArgumentException("snapshot usage entry must be an object");
+            data.put(entry.getKey(), UsageSummaries.of(counter(item, "requests"), counter(item, "promptTokens"),
+                    counter(item, "completionTokens"), counter(item, "errors")));
+        }
+        UsageSummaries.validateSnapshot(data);
+        ledger.load(data);
+    }
+
+    private static long counter(JsonNode item, String name) {
+        JsonNode value = item.path(name);
+        if (!value.isIntegralNumber() || !value.canConvertToLong() || value.longValue() < 0) {
+            throw new IllegalArgumentException("snapshot counter must be a nonnegative long: " + name);
+        }
+        return value.longValue();
+    }
+
+    @Override public void save() {
+        Path pending = null;
         try {
-            JsonNode usage = MAPPER.readTree(json).get("usage");
-            if (usage == null) {
-                return;
+            Path target = path.toAbsolutePath();
+            Files.createDirectories(target.getParent());
+            pending = Files.createTempFile(target.getParent(), "llmgw-snapshot-", ".tmp");
+            Files.writeString(pending, exportJson());
+            Files.move(pending, target, java.nio.file.StandardCopyOption.ATOMIC_MOVE,
+                    java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+        } catch (java.io.IOException error) {
+            throw new java.io.UncheckedIOException("failed to save snapshot", error);
+        } finally {
+            if (pending != null) {
+                try { Files.deleteIfExists(pending); }
+                catch (java.io.IOException cleanup) { log.warn("Failed to remove temporary snapshot: {}", cleanup.getMessage()); }
             }
-            Map<String, UsageLedger.UsageSummary> data = new HashMap<>();
-            for (Map.Entry<String, JsonNode> entry : usage.properties()) {
-                JsonNode item = entry.getValue();
-                data.put(entry.getKey(), UsageSummaries.of(
-                        item.path("requests").asLong(),
-                        item.path("promptTokens").asLong(),
-                        item.path("completionTokens").asLong(),
-                        item.path("errors").asLong()));
-            }
-            ledger.load(data);
-        } catch (RuntimeException e) {
-            log.warn("Failed to import snapshot: {}", e.getMessage());
         }
     }
 
-    @Override
-    public void save() {
-        try {
-            Files.createDirectories(path.toAbsolutePath().getParent());
-            Files.writeString(path, exportJson());
-        } catch (Exception e) {
-            log.warn("Failed to save snapshot to {}: {}", path, e.getMessage());
-        }
+    @Override public void load() {
+        try { importJson(Files.readString(path)); }
+        catch (java.io.IOException error) { throw new java.io.UncheckedIOException("failed to load snapshot", error); }
     }
 
-    @Override
-    public void load() {
-        try {
-            if (Files.isReadable(path)) {
-                importJson(Files.readString(path));
-            }
-        } catch (Exception e) {
-            log.warn("Failed to load snapshot from {}: {}", path, e.getMessage());
-        }
-    }
 }

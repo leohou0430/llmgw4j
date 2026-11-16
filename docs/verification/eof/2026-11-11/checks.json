@@ -1,0 +1,9 @@
+{
+  "checked_at": "2026-11-11T06:27:28.761516+00:00",
+  "markdown_links": {
+    "files": 13,
+    "broken": []
+  },
+  "yaml": "PASS docs/openapi.yaml\nPASS .github/workflows/ci.yml\nPASS .github/workflows/release.yml\nPASS docker-compose.yml\n",
+  "diff_check": 0
+}

@@ -1,0 +1,446 @@
+{
+  "schema": "llmgw-acceptance-manifest/v1",
+  "description": "T1.13b/T1.14e versioned acceptance fixtures: 3 entries x 7 scenarios, deterministic, no personal information. Controlled upstream only; not real acceptance.",
+  "fixture_schema": "llmgw-acceptance-fixture/v1",
+  "entries": [
+    "chat",
+    "responses",
+    "messages"
+  ],
+  "scenarios": [
+    {
+      "index": 1,
+      "slug": "text-multiturn",
+      "title": "非流式文本+多轮"
+    },
+    {
+      "index": 2,
+      "slug": "stream-text-usage",
+      "title": "流式文本+usage"
+    },
+    {
+      "index": 3,
+      "slug": "tool-call-continuation",
+      "title": "工具调用→客户端执行→结果续轮"
+    },
+    {
+      "index": 4,
+      "slug": "thinking-continuation",
+      "title": "思考输出+携带状态续轮"
+    },
+    {
+      "index": 5,
+      "slug": "image-understanding",
+      "title": "图片理解（内联）"
+    },
+    {
+      "index": 6,
+      "slug": "cancel-recover",
+      "title": "取消后释放并恢复"
+    },
+    {
+      "index": 7,
+      "slug": "contract-negatives",
+      "title": "受控合同反例+授权降级正例"
+    }
+  ],
+  "index": [
+    {
+      "entry": "chat",
+      "scenario": 1,
+      "file": "chat/s1-text-multiturn.json",
+      "steps": [
+        "initial"
+      ]
+    },
+    {
+      "entry": "chat",
+      "scenario": 2,
+      "file": "chat/s2-stream-text-usage.json",
+      "steps": [
+        "initial"
+      ]
+    },
+    {
+      "entry": "chat",
+      "scenario": 3,
+      "file": "chat/s3-tool-call-continuation.json",
+      "steps": [
+        "initial",
+        "continuation"
+      ]
+    },
+    {
+      "entry": "chat",
+      "scenario": 4,
+      "file": "chat/s4-thinking-continuation.json",
+      "steps": [
+        "initial",
+        "continuation"
+      ]
+    },
+    {
+      "entry": "chat",
+      "scenario": 5,
+      "file": "chat/s5-image-understanding.json",
+      "steps": [
+        "initial"
+      ]
+    },
+    {
+      "entry": "chat",
+      "scenario": 6,
+      "file": "chat/s6-cancel-recover.json",
+      "steps": [
+        "cancel",
+        "recovery"
+      ]
+    },
+    {
+      "entry": "chat",
+      "scenario": 7,
+      "file": "chat/s7-contract-negatives.json",
+      "steps": [
+        "unknown-field",
+        "not-supported-store",
+        "not-supported-builtin-tool",
+        "expected-unsupported-external-image",
+        "invalid-image-media-type",
+        "degradation-unauthorized",
+        "degradation-authorized"
+      ]
+    },
+    {
+      "entry": "responses",
+      "scenario": 1,
+      "file": "responses/s1-text-multiturn.json",
+      "steps": [
+        "initial"
+      ]
+    },
+    {
+      "entry": "responses",
+      "scenario": 2,
+      "file": "responses/s2-stream-text-usage.json",
+      "steps": [
+        "initial"
+      ]
+    },
+    {
+      "entry": "responses",
+      "scenario": 3,
+      "file": "responses/s3-tool-call-continuation.json",
+      "steps": [
+        "initial",
+        "continuation"
+      ]
+    },
+    {
+      "entry": "responses",
+      "scenario": 4,
+      "file": "responses/s4-thinking-continuation.json",
+      "steps": [
+        "initial",
+        "continuation"
+      ]
+    },
+    {
+      "entry": "responses",
+      "scenario": 5,
+      "file": "responses/s5-image-understanding.json",
+      "steps": [
+        "initial"
+      ]
+    },
+    {
+      "entry": "responses",
+      "scenario": 6,
+      "file": "responses/s6-cancel-recover.json",
+      "steps": [
+        "cancel",
+        "recovery"
+      ]
+    },
+    {
+      "entry": "responses",
+      "scenario": 7,
+      "file": "responses/s7-contract-negatives.json",
+      "steps": [
+        "unknown-field",
+        "previous-response-id",
+        "store",
+        "background",
+        "builtin-tool",
+        "expected-unsupported-external-image",
+        "invalid-image-media-type",
+        "input-file",
+        "file-id",
+        "cross-project-continuation",
+        "degradation-unauthorized",
+        "degradation-authorized"
+      ]
+    },
+    {
+      "entry": "messages",
+      "scenario": 1,
+      "file": "messages/s1-text-multiturn.json",
+      "steps": [
+        "initial"
+      ]
+    },
+    {
+      "entry": "messages",
+      "scenario": 2,
+      "file": "messages/s2-stream-text-usage.json",
+      "steps": [
+        "initial"
+      ]
+    },
+    {
+      "entry": "messages",
+      "scenario": 3,
+      "file": "messages/s3-tool-call-continuation.json",
+      "steps": [
+        "initial",
+        "continuation"
+      ]
+    },
+    {
+      "entry": "messages",
+      "scenario": 4,
+      "file": "messages/s4-thinking-continuation.json",
+      "steps": [
+        "initial",
+        "continuation"
+      ]
+    },
+    {
+      "entry": "messages",
+      "scenario": 5,
+      "file": "messages/s5-image-understanding.json",
+      "steps": [
+        "initial"
+      ]
+    },
+    {
+      "entry": "messages",
+      "scenario": 6,
+      "file": "messages/s6-cancel-recover.json",
+      "steps": [
+        "cancel",
+        "recovery"
+      ]
+    },
+    {
+      "entry": "messages",
+      "scenario": 7,
+      "file": "messages/s7-contract-negatives.json",
+      "steps": [
+        "unknown-field",
+        "redacted-thinking",
+        "server-tool",
+        "private-block",
+        "expected-unsupported-external-image",
+        "invalid-image-media-type",
+        "file-id",
+        "cross-project-signature",
+        "degradation-unauthorized",
+        "degradation-authorized"
+      ]
+    }
+  ],
+  "tools": [
+    "tools/add-numbers.json",
+    "tools/get-weather.json"
+  ],
+  "images_manifest": "images/manifest.json",
+  "continuation_envelope": {
+    "key_utf8": "llmgw-acceptance-fixture-key",
+    "tenant_id": "fixture-tenant",
+    "project_id": "fixture-project",
+    "reasoning_text": "Let me think",
+    "item_ids": {
+      "responses": "rs_fixture_1",
+      "messages": "th_fixture_1"
+    },
+    "drive_key_utf8": "contract-test-continuation-key",
+    "drive_project_id": "fixture-tenant",
+    "cross_project_id": "other-project",
+    "cross_item_ids": {
+      "responses": "rs_cross_project_1",
+      "messages": "th_cross_project_1"
+    }
+  },
+  "mock_constants": {
+    "text": "Hello world",
+    "reasoning": "Let me think",
+    "tool": {
+      "id": "call_mock_1",
+      "name": "get_weather",
+      "arguments": {
+        "city": "SF"
+      }
+    },
+    "usage": {
+      "prompt_tokens": 7,
+      "cached_tokens": 3,
+      "reasoning_tokens": 2
+    },
+    "tool_result": {
+      "city": "SF",
+      "temperature_c": 18,
+      "condition": "sunny"
+    }
+  },
+  "assertion_vocabulary": {
+    "transport": "json = non-streaming body; sse = streaming frames",
+    "terminal": "entry-specific terminal shape pins (object/status/finish_reason/stop_reason/event counts)",
+    "text.equals / thinking.equals": "fixed controlled-upstream text, never random wording",
+    "tool_calls": "expected tool call id/name/arguments (arguments is a JSON object)",
+    "usage": "exact token values from the controlled upstream; absent_fields lists paths that MUST be absent (unknown != 0)",
+    "sse": "framing and event-lifecycle pins; done_marker false means no data:[DONE] terminator",
+    "cancel": "cancel trigger and post-cancel release/recovery assertions",
+    "image": "inline image acceptance pin with the probe sha256",
+    "mock.chunks": "required controlled-upstream chunk count for streaming usage values",
+    "error": "s7 pre-header rejection pins: status + stable capability code + param (field path) + reason; error_type is the OpenAI-shaped wire type (chat/responses only); finished is the governance ledger ([false] = one FAILED finish), active_permits must return to 0 and upstream_requests must be 0 (the transport is never touched). No success terminal may appear.",
+    "headers": "optional per-step inbound headers; s7 uses the degradation grant header. Absent means the production default: an EMPTY grant.",
+    "degradation": "s7 authorized-positive pins: the degradation id, its audited field path, the grant header name and the outbound field/value that proves the degradation really happened"
+  },
+  "files": [
+    {
+      "path": "chat/s1-text-multiturn.json",
+      "bytes": 1489,
+      "sha256": "8e959774dc11169eedad43d3af2f229cff7974f9658d77895b036b68d37a7449"
+    },
+    {
+      "path": "chat/s2-stream-text-usage.json",
+      "bytes": 1810,
+      "sha256": "42179f9b0e3708d1990ac5c2386567217df0a4087476649c5810706069b1e561"
+    },
+    {
+      "path": "chat/s3-tool-call-continuation.json",
+      "bytes": 6157,
+      "sha256": "b36e5e975d4607711ecf6afe97422fad292832f3a9169539c8330873144cafe8"
+    },
+    {
+      "path": "chat/s4-thinking-continuation.json",
+      "bytes": 3829,
+      "sha256": "a8cd96331341565715238cc983f8e2ad2afc76d98e6d960f9dedd61c424d5469"
+    },
+    {
+      "path": "chat/s5-image-understanding.json",
+      "bytes": 1965,
+      "sha256": "3e3853379ab750c0cfb7662a03019f0e2c0f46b817d47995c86b2001247b1cec"
+    },
+    {
+      "path": "chat/s6-cancel-recover.json",
+      "bytes": 2735,
+      "sha256": "46e5cb4d1a800f7637a19fc49b317238d260ee49d82db2a122abe93f38ff8114"
+    },
+    {
+      "path": "chat/s7-contract-negatives.json",
+      "bytes": 8802,
+      "sha256": "187d0925b3062d24eb105384d97cadc4143893dd415a08dc24c684f4dac78588"
+    },
+    {
+      "path": "generate.py",
+      "bytes": 49217,
+      "sha256": "459147e76726b27676e5c2fba49feecdc7257d9d5cf4a6abd69a5897b4eaafe8"
+    },
+    {
+      "path": "images/generate.py",
+      "bytes": 3923,
+      "sha256": "e245aa2c6e2efc477a16e526612af053482c69078d577323369c426303884602"
+    },
+    {
+      "path": "images/llmgw-probe.png",
+      "bytes": 230,
+      "sha256": "f24b0899ce1bb9147836beb6812c9ab7778a864f39c44b14d32548e4d91228d9"
+    },
+    {
+      "path": "images/manifest.json",
+      "bytes": 768,
+      "sha256": "c084c3bf7a9233e8c2e3e2cb8b88d7ac6ea4a262d4e647d701e77f3f9bee4f40"
+    },
+    {
+      "path": "messages/s1-text-multiturn.json",
+      "bytes": 1498,
+      "sha256": "d279a534a2358f7f2efdd56e04b5bdb79604faf27914ab0a34daec8cfb50f09f"
+    },
+    {
+      "path": "messages/s2-stream-text-usage.json",
+      "bytes": 1996,
+      "sha256": "baaf6ebc086f62ba318fb173984f9c2b78e337b21a3656d283b139d6a59bd94f"
+    },
+    {
+      "path": "messages/s3-tool-call-continuation.json",
+      "bytes": 5904,
+      "sha256": "61484c890b6c47a02d07bee599abd4301855a87137555e714f773244649bf259"
+    },
+    {
+      "path": "messages/s4-thinking-continuation.json",
+      "bytes": 4928,
+      "sha256": "626d32f81739795ad092149e25be54b96dbdd8db1cb8167e6b4efc02764b28b9"
+    },
+    {
+      "path": "messages/s5-image-understanding.json",
+      "bytes": 2050,
+      "sha256": "1b636cb78839d473f44b993edca87b9209ecb0ea1b28116927aa704dfff9d395"
+    },
+    {
+      "path": "messages/s6-cancel-recover.json",
+      "bytes": 2921,
+      "sha256": "47414733d52f44feda792abb3b8283f9b4d06e50db29f5c59b1729645fca8695"
+    },
+    {
+      "path": "messages/s7-contract-negatives.json",
+      "bytes": 11676,
+      "sha256": "fd61bcab56118391e8d7d01821e080732a0fac25b799a204eb5daa7d8f87b70e"
+    },
+    {
+      "path": "responses/s1-text-multiturn.json",
+      "bytes": 1636,
+      "sha256": "f6282089fbe4ab189d5b890fba11d74018a8f411d46b5a4aca59ab3886d69b0a"
+    },
+    {
+      "path": "responses/s2-stream-text-usage.json",
+      "bytes": 2074,
+      "sha256": "ee98becc70801b376cfc09784a2f3d06b5b4f3a9e62a73ed0d8be994a0936677"
+    },
+    {
+      "path": "responses/s3-tool-call-continuation.json",
+      "bytes": 5999,
+      "sha256": "a9d766ebdc6df29d18bfef83bc6eec3a3a578032e96121847f6bd4506c1d152d"
+    },
+    {
+      "path": "responses/s4-thinking-continuation.json",
+      "bytes": 5306,
+      "sha256": "0842bf20a4f9b59b8e147327d0bc25fb6866831e01617a0a9d301ca982172fcd"
+    },
+    {
+      "path": "responses/s5-image-understanding.json",
+      "bytes": 1953,
+      "sha256": "387321d785cf5ad7c6448c9d54902b0f09b26f42cbbca58869e1d4550e7a6214"
+    },
+    {
+      "path": "responses/s6-cancel-recover.json",
+      "bytes": 3034,
+      "sha256": "f78424037bec4304e8d3f2a0e2056dbed0ca048f0cbae4f95b56900ca3e76ae1"
+    },
+    {
+      "path": "responses/s7-contract-negatives.json",
+      "bytes": 14923,
+      "sha256": "e50ce849cf3304b5ecb76d7ef6169abf0cf5411bc0e94c3faccc031c268beb82"
+    },
+    {
+      "path": "tools/add-numbers.json",
+      "bytes": 2052,
+      "sha256": "98434a476cfab345c92bb3a1c61e2b10881d3a846a23de0679d55d0e187bdc0a"
+    },
+    {
+      "path": "tools/get-weather.json",
+      "bytes": 2110,
+      "sha256": "33d076e09ee07e6a93a6eb35de6a7009da70d29005b97ea992868e04595d207d"
+    }
+  ]
+}

@@ -1,0 +1,1102 @@
+{
+  "manifest": {
+    "host": {
+      "platform": "macOS-15.8.2-x86_64-i386-64bit-Mach-O",
+      "cpu_count": 16
+    },
+    "started": "2026-11-11T08:17:34+0800",
+    "cpu": 2,
+    "memory_bytes": 2147483648,
+    "heap_max": "1024m",
+    "rounds": 4,
+    "duration": "15s",
+    "warmup": "90s",
+    "warmup_vus": 96,
+    "profiling": false,
+    "arrival_rate": 4500,
+    "vus": "1024",
+    "modes": "json",
+    "labels": "before-webflux,after-webflux",
+    "keep_going": true,
+    "mock_idle_policy": {
+      "maxIdleConnections": 10000,
+      "idleIntervalSeconds": 1800
+    },
+    "jars": {
+      "before": {
+        "path": "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/overload-2026-11-11/before.jar",
+        "sha256": "946c4d7baf2c70c8d03cb6324f7dbd59ca6332aec53f1d8c44d2be598358ae82"
+      },
+      "after": {
+        "path": "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/overload-2026-11-11/after.jar",
+        "sha256": "9702f6c58c9028eebf1b3643eaaa878d6135fe807af7125ed1d5ea1375538eca"
+      }
+    },
+    "containers": {
+      "mock": "a338f0650d6b016eaf94f49b6fa6171937224cfcb35e83d4f609227fdb762fd2",
+      "before-webflux": "47bd8958ee88e7c9b2501e8aee73f83cce95e5004f26956cfc04625c61199774",
+      "after-webflux": "e5225796cfa249b95f90bf9eefd3f1ccd75977e17a7b3d826af716ed49baebe1"
+    },
+    "image": "sha256:5c64f5afb430812dbae5cec0dca35081092b9cdfb081f492983f8212ce4075e6",
+    "docker": {
+      "ServerVersion": "29.8.2",
+      "NCPU": 16,
+      "MemTotal": 21044813824,
+      "Architecture": "x86_64"
+    },
+    "sources": {
+      "bench/capacity/run.py": "5e995963c3b8420f85ca12fd656bd1bdd4f380ba282a6825f8a8a56af77ca771",
+      "bench/capacity/CapacityMock.java": "635694e309594885f2e07a49e640c2c4725363ff2fb3569b3576dbe57396fe4c",
+      "bench/capacity/load.js": "7972e99935ad5ed91c4d4a78899d406f91c88a48c4ace228f61a22cfaf2e4106"
+    },
+    "before-webflux-limits": "200000 100000\n2147483648\n0",
+    "after-webflux-limits": "200000 100000\n2147483648\n0"
+  },
+  "trials": [
+    {
+      "label": "direct",
+      "mode": "json",
+      "vus": 64,
+      "round": 0,
+      "exit": 0,
+      "upstream_delta": {
+        "requests": 10688,
+        "active": 0,
+        "completed": 10688,
+        "cancelled": 0
+      },
+      "started": "2026-11-11T08:17:51+0800",
+      "ended": "2026-11-11T08:17:56+0800",
+      "host_loadavg_before": [
+        5.505859375,
+        8.31787109375,
+        7.77978515625
+      ],
+      "host_loadavg_after": [
+        5.70556640625,
+        8.3125,
+        7.78076171875
+      ],
+      "arrival_rate": 0,
+      "client_backoffs": 0,
+      "client_backoff_ms": 0,
+      "iteration_latency": {
+        "avg": 23.963568803424288,
+        "p(50)": 22.6664615,
+        "p(95)": 25.798009849999996,
+        "p(99)": 36.252127799999904,
+        "max": 224.784976
+      },
+      "http_requests": 10688,
+      "dropped_iterations": 0,
+      "success": 10688,
+      "success_rps": 2661.463929668425,
+      "rejected": 0,
+      "unexpected": 0,
+      "invalid": [],
+      "latency": {
+        "avg": 23.706122099550814,
+        "p(50)": 22.433,
+        "p(95)": 25.47465,
+        "p(99)": 34.461909999999996,
+        "max": 224.585
+      },
+      "duration_minus_mock": {
+        "avg": 2.9723198391654244,
+        "p(50)": 1.743318499999999,
+        "p(95)": 4.082108899999999,
+        "p(99)": 8.90876331999997,
+        "max": 203.02176500000002
+      },
+      "preflight": null,
+      "resources_before": null,
+      "resources_after": null
+    },
+    {
+      "label": "before-webflux",
+      "mode": "json",
+      "vus": 96,
+      "round": "warm",
+      "exit": 0,
+      "upstream_delta": {
+        "requests": 70245,
+        "active": 0,
+        "completed": 70245,
+        "cancelled": 0
+      },
+      "started": "2026-11-11T08:17:56+0800",
+      "ended": "2026-11-11T08:19:27+0800",
+      "host_loadavg_before": [
+        5.70556640625,
+        8.3125,
+        7.78076171875
+      ],
+      "host_loadavg_after": [
+        7.140625,
+        8.78955078125,
+        8.06640625
+      ],
+      "arrival_rate": 0,
+      "client_backoffs": 0,
+      "client_backoff_ms": 0,
+      "iteration_latency": {
+        "avg": 34.06329882761466,
+        "p(50)": 3.064994,
+        "p(95)": 169.30339449999968,
+        "p(99)": 203.41620308,
+        "max": 1942.550315
+      },
+      "http_requests": 253699,
+      "dropped_iterations": 0,
+      "success": 70245,
+      "success_rps": 779.9382711251741,
+      "rejected": 183454,
+      "unexpected": 0,
+      "invalid": [],
+      "latency": {
+        "avg": 102.97765314257157,
+        "p(50)": 97.988,
+        "p(95)": 193.35060000000001,
+        "p(99)": 306.7520799999999,
+        "max": 1940.269
+      },
+      "duration_minus_mock": {
+        "avg": 82.41773706557014,
+        "p(50)": 77.50498,
+        "p(95)": 172.87098920000003,
+        "p(99)": 286.19527231999996,
+        "max": 1920.059609
+      },
+      "preflight": {
+        "p(99)": 74.15599999999976,
+        "max": 327.6,
+        "avg": 2.712739696776122,
+        "p(50)": 0.4,
+        "p(95)": 2.5
+      },
+      "resources_before": {
+        "memory_current": 292020224,
+        "memory_peak_lifetime": 294658048,
+        "oom": 0,
+        "oom_kill": 0,
+        "usage_usec": 11765735,
+        "nr_periods": 101,
+        "nr_throttled": 48,
+        "throttled_usec": 1976480,
+        "VmRSS_bytes": 286052352,
+        "VmHWM_bytes": 286052352
+      },
+      "resources_after": {
+        "memory_current": 538677248,
+        "memory_peak_lifetime": 538677248,
+        "oom": 0,
+        "oom_kill": 0,
+        "usage_usec": 192550589,
+        "nr_periods": 1011,
+        "nr_throttled": 948,
+        "throttled_usec": 456352234,
+        "VmRSS_bytes": 522551296,
+        "VmHWM_bytes": 522551296
+      },
+      "cpu_delta": {
+        "usage_usec": 180784854,
+        "nr_periods": 910,
+        "nr_throttled": 900,
+        "throttled_usec": 454375754
+      }
+    },
+    {
+      "label": "after-webflux",
+      "mode": "json",
+      "vus": 96,
+      "round": "warm",
+      "exit": 0,
+      "upstream_delta": {
+        "requests": 68280,
+        "active": 0,
+        "completed": 68280,
+        "cancelled": 0
+      },
+      "started": "2026-11-11T08:19:27+0800",
+      "ended": "2026-11-11T08:20:58+0800",
+      "host_loadavg_before": [
+        7.140625,
+        8.78955078125,
+        8.06640625
+      ],
+      "host_loadavg_after": [
+        24.4345703125,
+        12.82080078125,
+        9.60986328125
+      ],
+      "arrival_rate": 0,
+      "client_backoffs": 0,
+      "client_backoff_ms": 0,
+      "iteration_latency": {
+        "p(95)": 116.77843459999997,
+        "p(99)": 203.53608100000002,
+        "max": 1807.760625,
+        "avg": 33.72402264125033,
+        "p(50)": 2.886767
+      },
+      "http_requests": 256179,
+      "dropped_iterations": 0,
+      "success": 68280,
+      "success_rps": 757.1439324405836,
+      "rejected": 187899,
+      "unexpected": 0,
+      "invalid": [],
+      "latency": {
+        "p(95)": 194.32364999999996,
+        "p(99)": 305.7969300000002,
+        "max": 1805.519,
+        "avg": 105.47270237258223,
+        "p(50)": 98.594
+      },
+      "duration_minus_mock": {
+        "avg": 84.8954689933658,
+        "p(50)": 78.09407,
+        "p(95)": 173.817163,
+        "p(99)": 285.20357746000036,
+        "max": 1785.090104
+      },
+      "preflight": {
+        "max": 377,
+        "avg": 3.3057586408905872,
+        "p(50)": 0.5,
+        "p(95)": 3.3,
+        "p(99)": 73.7
+      },
+      "resources_before": {
+        "memory_current": 249720832,
+        "memory_peak_lifetime": 251924480,
+        "oom": 0,
+        "oom_kill": 0,
+        "usage_usec": 11671732,
+        "nr_periods": 368,
+        "nr_throttled": 51,
+        "throttled_usec": 2180489,
+        "VmRSS_bytes": 262189056,
+        "VmHWM_bytes": 272162816
+      },
+      "resources_after": {
+        "memory_current": 384446464,
+        "memory_peak_lifetime": 384446464,
+        "oom": 0,
+        "oom_kill": 0,
+        "usage_usec": 192306955,
+        "nr_periods": 1280,
+        "nr_throttled": 951,
+        "throttled_usec": 454371339,
+        "VmRSS_bytes": 361775104,
+        "VmHWM_bytes": 361775104
+      },
+      "cpu_delta": {
+        "usage_usec": 180635223,
+        "nr_periods": 912,
+        "nr_throttled": 900,
+        "throttled_usec": 452190850
+      }
+    },
+    {
+      "label": "before-webflux",
+      "mode": "json",
+      "vus": 1024,
+      "round": 1,
+      "exit": 99,
+      "upstream_delta": {
+        "requests": 11505,
+        "active": 0,
+        "completed": 11505,
+        "cancelled": 0
+      },
+      "started": "2026-11-11T08:20:59+0800",
+      "ended": "2026-11-11T08:21:15+0800",
+      "host_loadavg_before": [
+        24.4345703125,
+        12.82080078125,
+        9.60986328125
+      ],
+      "host_loadavg_after": [
+        21.15576171875,
+        12.66552734375,
+        9.60986328125
+      ],
+      "arrival_rate": 4500,
+      "client_backoffs": 0,
+      "client_backoff_ms": 0,
+      "iteration_latency": {
+        "p(95)": 401.3722065,
+        "p(99)": 1696.2222793000028,
+        "max": 15258.834139,
+        "avg": 234.35717212761128,
+        "p(50)": 131.788783
+      },
+      "http_requests": 56296,
+      "dropped_iterations": 11204,
+      "success": 11505,
+      "success_rps": 751.3440438009088,
+      "rejected": 44791,
+      "unexpected": 0,
+      "invalid": [
+        "load exit 99",
+        "load driver dropped scheduled iterations"
+      ],
+      "latency": {
+        "p(95)": 626.5439999999999,
+        "p(99)": 3201.637919999999,
+        "max": 15252.799,
+        "avg": 398.78180000000157,
+        "p(50)": 252.062
+      },
+      "duration_minus_mock": {
+        "p(95)": 605.4085416,
+        "p(99)": 3181.477391759999,
+        "max": 15232.573599000001,
+        "avg": 377.57800599608856,
+        "p(50)": 230.905721
+      },
+      "preflight": {
+        "p(50)": 0.5,
+        "p(95)": 59.9,
+        "p(99)": 71.8,
+        "max": 93.8,
+        "avg": 4.396636245110656
+      },
+      "resources_before": {
+        "memory_current": 506253312,
+        "memory_peak_lifetime": 538742784,
+        "oom": 0,
+        "oom_kill": 0,
+        "usage_usec": 192731280,
+        "nr_periods": 1217,
+        "nr_throttled": 948,
+        "throttled_usec": 456352234,
+        "VmRSS_bytes": 512540672,
+        "VmHWM_bytes": 521150464
+      },
+      "resources_after": {
+        "memory_current": 533565440,
+        "memory_peak_lifetime": 538742784,
+        "oom": 0,
+        "oom_kill": 0,
+        "usage_usec": 224487011,
+        "nr_periods": 1381,
+        "nr_throttled": 1101,
+        "throttled_usec": 535215091,
+        "VmRSS_bytes": 518201344,
+        "VmHWM_bytes": 521150464
+      },
+      "cpu_delta": {
+        "usage_usec": 31755731,
+        "nr_periods": 164,
+        "nr_throttled": 153,
+        "throttled_usec": 78862857
+      }
+    },
+    {
+      "label": "after-webflux",
+      "mode": "json",
+      "vus": 1024,
+      "round": 1,
+      "exit": 99,
+      "upstream_delta": {
+        "requests": 11098,
+        "active": 0,
+        "completed": 11098,
+        "cancelled": 0
+      },
+      "started": "2026-11-11T08:21:15+0800",
+      "ended": "2026-11-11T08:21:34+0800",
+      "host_loadavg_before": [
+        21.15576171875,
+        12.66552734375,
+        9.60986328125
+      ],
+      "host_loadavg_after": [
+        16.708984375,
+        12.2001953125,
+        9.513671875
+      ],
+      "arrival_rate": 4500,
+      "client_backoffs": 0,
+      "client_backoff_ms": 0,
+      "iteration_latency": {
+        "avg": 294.25778852562803,
+        "p(50)": 96.28843950000001,
+        "p(95)": 472.1619266499998,
+        "p(99)": 7927.31259428,
+        "max": 15317.826989
+      },
+      "http_requests": 48504,
+      "dropped_iterations": 18997,
+      "success": 11098,
+      "success_rps": 610.3659363229605,
+      "rejected": 37406,
+      "unexpected": 0,
+      "invalid": [
+        "load exit 99",
+        "load driver dropped scheduled iterations"
+      ],
+      "latency": {
+        "max": 15308.716,
+        "avg": 547.2321061452523,
+        "p(50)": 217.8,
+        "p(95)": 663.0609999999996,
+        "p(99)": 15064.05799
+      },
+      "duration_minus_mock": {
+        "max": 15288.581454000001,
+        "avg": 525.7524964265631,
+        "p(50)": 196.89043550000002,
+        "p(95)": 642.3549554,
+        "p(99)": 15042.7591249
+      },
+      "preflight": {
+        "avg": 4.55607316633623,
+        "p(50)": 0.6,
+        "p(95)": 27.3,
+        "p(99)": 72.2,
+        "max": 269.8
+      },
+      "resources_before": {
+        "memory_current": 352468992,
+        "memory_peak_lifetime": 384446464,
+        "oom": 0,
+        "oom_kill": 0,
+        "usage_usec": 192415026,
+        "nr_periods": 1352,
+        "nr_throttled": 951,
+        "throttled_usec": 454371339,
+        "VmRSS_bytes": 359555072,
+        "VmHWM_bytes": 360574976
+      },
+      "resources_after": {
+        "memory_current": 361545728,
+        "memory_peak_lifetime": 384446464,
+        "oom": 0,
+        "oom_kill": 0,
+        "usage_usec": 225232813,
+        "nr_periods": 1537,
+        "nr_throttled": 1106,
+        "throttled_usec": 534605512,
+        "VmRSS_bytes": 365314048,
+        "VmHWM_bytes": 365314048
+      },
+      "cpu_delta": {
+        "usage_usec": 32817787,
+        "nr_periods": 185,
+        "nr_throttled": 155,
+        "throttled_usec": 80234173
+      }
+    },
+    {
+      "label": "after-webflux",
+      "mode": "json",
+      "vus": 1024,
+      "round": 2,
+      "exit": 99,
+      "upstream_delta": {
+        "requests": 13105,
+        "active": 0,
+        "completed": 13105,
+        "cancelled": 0
+      },
+      "started": "2026-11-11T08:21:35+0800",
+      "ended": "2026-11-11T08:22:07+0800",
+      "host_loadavg_before": [
+        16.708984375,
+        12.2001953125,
+        9.513671875
+      ],
+      "host_loadavg_after": [
+        16.4716796875,
+        12.64892578125,
+        9.78466796875
+      ],
+      "arrival_rate": 4500,
+      "client_backoffs": 0,
+      "client_backoff_ms": 0,
+      "iteration_latency": {
+        "p(50)": 70.67317,
+        "p(95)": 404.9456785,
+        "p(99)": 1508.3158092000006,
+        "max": 23658.424457,
+        "avg": 151.02604652638382
+      },
+      "http_requests": 62046,
+      "dropped_iterations": 5455,
+      "success": 13105,
+      "success_rps": 422.72223117341787,
+      "rejected": 48941,
+      "unexpected": 0,
+      "invalid": [
+        "load exit 99",
+        "load driver dropped scheduled iterations"
+      ],
+      "latency": {
+        "avg": 280.45491255246105,
+        "p(50)": 149.029,
+        "p(95)": 634.5224,
+        "p(99)": 3031.73016,
+        "max": 23658.729
+      },
+      "duration_minus_mock": {
+        "p(50)": 127.8846,
+        "p(95)": 612.7245739999987,
+        "p(99)": 3010.7776462,
+        "max": 23637.555472,
+        "avg": 259.300817163144
+      },
+      "preflight": {
+        "avg": 3.6653719954214643,
+        "p(50)": 0.5,
+        "p(95)": 8.679999999999927,
+        "p(99)": 69.7,
+        "max": 143
+      },
+      "resources_before": {
+        "memory_current": 361299968,
+        "memory_peak_lifetime": 384446464,
+        "oom": 0,
+        "oom_kill": 0,
+        "usage_usec": 225282204,
+        "nr_periods": 1539,
+        "nr_throttled": 1106,
+        "throttled_usec": 534605512,
+        "VmRSS_bytes": 365314048,
+        "VmHWM_bytes": 365314048
+      },
+      "resources_after": {
+        "memory_current": 481308672,
+        "memory_peak_lifetime": 481308672,
+        "oom": 0,
+        "oom_kill": 0,
+        "usage_usec": 257221615,
+        "nr_periods": 1765,
+        "nr_throttled": 1257,
+        "throttled_usec": 601630996,
+        "VmRSS_bytes": 472129536,
+        "VmHWM_bytes": 472580096
+      },
+      "cpu_delta": {
+        "usage_usec": 31939411,
+        "nr_periods": 226,
+        "nr_throttled": 151,
+        "throttled_usec": 67025484
+      }
+    },
+    {
+      "label": "before-webflux",
+      "mode": "json",
+      "vus": 1024,
+      "round": 2,
+      "exit": 99,
+      "upstream_delta": {
+        "requests": 13522,
+        "active": 0,
+        "completed": 13522,
+        "cancelled": 0
+      },
+      "started": "2026-11-11T08:22:07+0800",
+      "ended": "2026-11-11T08:23:03+0800",
+      "host_loadavg_before": [
+        16.4716796875,
+        12.64892578125,
+        9.78466796875
+      ],
+      "host_loadavg_after": [
+        39.44384765625,
+        21.03759765625,
+        13.15966796875
+      ],
+      "arrival_rate": 4500,
+      "client_backoffs": 0,
+      "client_backoff_ms": 0,
+      "iteration_latency": {
+        "avg": 210.3380339516737,
+        "p(50)": 68.938022,
+        "p(95)": 679.1018978999989,
+        "p(99)": 3006.4557476000004,
+        "max": 31566.735494
+      },
+      "http_requests": 58290,
+      "dropped_iterations": 9209,
+      "success": 13522,
+      "success_rps": 245.84405014855002,
+      "rejected": 44768,
+      "unexpected": 0,
+      "invalid": [
+        "load exit 99",
+        "load driver dropped scheduled iterations"
+      ],
+      "latency": {
+        "p(99)": 6225.43443,
+        "max": 31565.42,
+        "avg": 403.8653617808006,
+        "p(50)": 157.80200000000002,
+        "p(95)": 1246.6578499999996
+      },
+      "duration_minus_mock": {
+        "avg": 382.2537732836124,
+        "p(50)": 136.54997300000002,
+        "p(95)": 1225.7130021499995,
+        "p(99)": 6204.78528427,
+        "max": 31544.938491999997
+      },
+      "preflight": {
+        "avg": 2.6807498890695447,
+        "p(50)": 0.4,
+        "p(95)": 4.9,
+        "p(99)": 64.9,
+        "max": 169.8
+      },
+      "resources_before": {
+        "memory_current": 514306048,
+        "memory_peak_lifetime": 538742784,
+        "oom": 0,
+        "oom_kill": 0,
+        "usage_usec": 224970386,
+        "nr_periods": 1490,
+        "nr_throttled": 1101,
+        "throttled_usec": 535215091,
+        "VmRSS_bytes": 516947968,
+        "VmHWM_bytes": 521150464
+      },
+      "resources_after": {
+        "memory_current": 524398592,
+        "memory_peak_lifetime": 538742784,
+        "oom": 0,
+        "oom_kill": 0,
+        "usage_usec": 259902319,
+        "nr_periods": 1816,
+        "nr_throttled": 1255,
+        "throttled_usec": 597602403,
+        "VmRSS_bytes": 519385088,
+        "VmHWM_bytes": 521150464
+      },
+      "cpu_delta": {
+        "usage_usec": 34931933,
+        "nr_periods": 326,
+        "nr_throttled": 154,
+        "throttled_usec": 62387312
+      }
+    },
+    {
+      "label": "before-webflux",
+      "mode": "json",
+      "vus": 1024,
+      "round": 3,
+      "exit": 99,
+      "upstream_delta": {
+        "requests": 15960,
+        "active": 0,
+        "completed": 15960,
+        "cancelled": 0
+      },
+      "started": "2026-11-11T08:23:04+0800",
+      "ended": "2026-11-11T08:23:40+0800",
+      "host_loadavg_before": [
+        39.44384765625,
+        21.03759765625,
+        13.15966796875
+      ],
+      "host_loadavg_after": [
+        31.17431640625,
+        20.85986328125,
+        13.40380859375
+      ],
+      "arrival_rate": 4500,
+      "client_backoffs": 0,
+      "client_backoff_ms": 0,
+      "iteration_latency": {
+        "avg": 248.9422390086347,
+        "p(50)": 62.400519,
+        "p(95)": 701.089544,
+        "p(99)": 3617.840415,
+        "max": 30564.435816
+      },
+      "http_requests": 56301,
+      "dropped_iterations": 11200,
+      "success": 15960,
+      "success_rps": 469.80352557520905,
+      "rejected": 40341,
+      "unexpected": 0,
+      "invalid": [
+        "load exit 99",
+        "load driver dropped scheduled iterations"
+      ],
+      "latency": {
+        "p(99)": 7507.89991,
+        "max": 30566.513,
+        "avg": 410.9050712406014,
+        "p(50)": 117.913,
+        "p(95)": 1425.7094499999998
+      },
+      "duration_minus_mock": {
+        "p(99)": 7487.5068433,
+        "max": 30545.6855,
+        "avg": 389.2602533619052,
+        "p(50)": 95.700969,
+        "p(95)": 1405.25997285
+      },
+      "preflight": {
+        "p(50)": 0.3,
+        "p(95)": 4.1,
+        "p(99)": 61.7,
+        "max": 95.6,
+        "avg": 2.2122243107768087
+      },
+      "resources_before": {
+        "memory_current": 524292096,
+        "memory_peak_lifetime": 538742784,
+        "oom": 0,
+        "oom_kill": 0,
+        "usage_usec": 259982715,
+        "nr_periods": 1818,
+        "nr_throttled": 1255,
+        "throttled_usec": 597602403,
+        "VmRSS_bytes": 519385088,
+        "VmHWM_bytes": 521150464
+      },
+      "resources_after": {
+        "memory_current": 545140736,
+        "memory_peak_lifetime": 545140736,
+        "oom": 0,
+        "oom_kill": 0,
+        "usage_usec": 291577278,
+        "nr_periods": 2123,
+        "nr_throttled": 1404,
+        "throttled_usec": 642973931,
+        "VmRSS_bytes": 521052160,
+        "VmHWM_bytes": 521150464
+      },
+      "cpu_delta": {
+        "usage_usec": 31594563,
+        "nr_periods": 305,
+        "nr_throttled": 149,
+        "throttled_usec": 45371528
+      }
+    },
+    {
+      "label": "after-webflux",
+      "mode": "json",
+      "vus": 1024,
+      "round": 3,
+      "exit": 99,
+      "upstream_delta": {
+        "requests": 13566,
+        "active": 0,
+        "completed": 13566,
+        "cancelled": 0
+      },
+      "started": "2026-11-11T08:23:41+0800",
+      "ended": "2026-11-11T08:24:15+0800",
+      "host_loadavg_before": [
+        31.17431640625,
+        20.85986328125,
+        13.40380859375
+      ],
+      "host_loadavg_after": [
+        25.54638671875,
+        20.8642578125,
+        13.72265625
+      ],
+      "arrival_rate": 4500,
+      "client_backoffs": 0,
+      "client_backoff_ms": 0,
+      "iteration_latency": {
+        "avg": 201.06067385266925,
+        "p(50)": 59.447053,
+        "p(95)": 373.5960799999997,
+        "p(99)": 3233.3420129599976,
+        "max": 28273.697262
+      },
+      "http_requests": 59817,
+      "dropped_iterations": 7684,
+      "success": 13566,
+      "success_rps": 415.0289807462163,
+      "rejected": 46251,
+      "unexpected": 0,
+      "invalid": [
+        "load exit 99",
+        "load driver dropped scheduled iterations"
+      ],
+      "latency": {
+        "p(50)": 124.0755,
+        "p(95)": 701.2535,
+        "p(99)": 6486.3523000000005,
+        "max": 28139.222,
+        "avg": 438.5928914197259
+      },
+      "duration_minus_mock": {
+        "p(50)": 103.14197800000001,
+        "p(95)": 680.3298147500001,
+        "p(99)": 6464.9305923500015,
+        "max": 28118.910568000003,
+        "avg": 417.27950795009707
+      },
+      "preflight": {
+        "avg": 3.9783134306351733,
+        "p(50)": 0.3,
+        "p(95)": 47.075,
+        "p(99)": 67.3,
+        "max": 98.9
+      },
+      "resources_before": {
+        "memory_current": 464228352,
+        "memory_peak_lifetime": 483164160,
+        "oom": 0,
+        "oom_kill": 0,
+        "usage_usec": 258444433,
+        "nr_periods": 2119,
+        "nr_throttled": 1257,
+        "throttled_usec": 601630996,
+        "VmRSS_bytes": 469315584,
+        "VmHWM_bytes": 472580096
+      },
+      "resources_after": {
+        "memory_current": 482029568,
+        "memory_peak_lifetime": 483164160,
+        "oom": 0,
+        "oom_kill": 0,
+        "usage_usec": 288910511,
+        "nr_periods": 2361,
+        "nr_throttled": 1406,
+        "throttled_usec": 661749377,
+        "VmRSS_bytes": 471064576,
+        "VmHWM_bytes": 472580096
+      },
+      "cpu_delta": {
+        "usage_usec": 30466078,
+        "nr_periods": 242,
+        "nr_throttled": 149,
+        "throttled_usec": 60118381
+      }
+    },
+    {
+      "label": "after-webflux",
+      "mode": "json",
+      "vus": 1024,
+      "round": 4,
+      "exit": 99,
+      "upstream_delta": {
+        "requests": 17989,
+        "active": 0,
+        "completed": 17989,
+        "cancelled": 0
+      },
+      "started": "2026-11-11T08:24:15+0800",
+      "ended": "2026-11-11T08:24:51+0800",
+      "host_loadavg_before": [
+        25.54638671875,
+        20.8642578125,
+        13.72265625
+      ],
+      "host_loadavg_after": [
+        86.49169921875,
+        37.041015625,
+        19.92333984375
+      ],
+      "arrival_rate": 4500,
+      "client_backoffs": 0,
+      "client_backoff_ms": 0,
+      "iteration_latency": {
+        "avg": 364.27885798500705,
+        "p(50)": 67.2658775,
+        "p(95)": 1432.2515196999993,
+        "p(99)": 6230.51222192,
+        "max": 31501.758596
+      },
+      "http_requests": 41090,
+      "dropped_iterations": 26411,
+      "success": 17989,
+      "success_rps": 516.9149044966022,
+      "rejected": 23101,
+      "unexpected": 0,
+      "invalid": [
+        "load exit 99",
+        "load driver dropped scheduled iterations"
+      ],
+      "latency": {
+        "p(99)": 12622.61412,
+        "max": 31496.959,
+        "avg": 532.0011659903266,
+        "p(50)": 96.245,
+        "p(95)": 1622.4343999999965
+      },
+      "duration_minus_mock": {
+        "p(50)": 74.18077199999999,
+        "p(95)": 1597.5327089999973,
+        "p(99)": 12602.119805080001,
+        "max": 31476.793642,
+        "avg": 510.4772586043695
+      },
+      "preflight": {
+        "avg": 1.4407415642892434,
+        "p(50)": 0.3,
+        "p(95)": 3.4,
+        "p(99)": 35.123999999999796,
+        "max": 118.2
+      },
+      "resources_before": {
+        "memory_current": 481861632,
+        "memory_peak_lifetime": 484098048,
+        "oom": 0,
+        "oom_kill": 0,
+        "usage_usec": 288959672,
+        "nr_periods": 2362,
+        "nr_throttled": 1406,
+        "throttled_usec": 661749377,
+        "VmRSS_bytes": 471064576,
+        "VmHWM_bytes": 472580096
+      },
+      "resources_after": {
+        "memory_current": 473411584,
+        "memory_peak_lifetime": 484098048,
+        "oom": 0,
+        "oom_kill": 0,
+        "usage_usec": 318688397,
+        "nr_periods": 2641,
+        "nr_throttled": 1524,
+        "throttled_usec": 680903573,
+        "VmRSS_bytes": 471785472,
+        "VmHWM_bytes": 472580096
+      },
+      "cpu_delta": {
+        "usage_usec": 29728725,
+        "nr_periods": 279,
+        "nr_throttled": 118,
+        "throttled_usec": 19154196
+      }
+    },
+    {
+      "label": "before-webflux",
+      "mode": "json",
+      "vus": 1024,
+      "round": 4,
+      "exit": 99,
+      "upstream_delta": {
+        "requests": 16088,
+        "active": 0,
+        "completed": 16088,
+        "cancelled": 0
+      },
+      "started": "2026-11-11T08:24:52+0800",
+      "ended": "2026-11-11T08:25:26+0800",
+      "host_loadavg_before": [
+        80.6064453125,
+        36.6416015625,
+        19.88232421875
+      ],
+      "host_loadavg_after": [
+        59.07177734375,
+        35.93896484375,
+        20.2265625
+      ],
+      "arrival_rate": 4500,
+      "client_backoffs": 0,
+      "client_backoff_ms": 0,
+      "iteration_latency": {
+        "p(50)": 58.177109,
+        "p(95)": 709.9666959999996,
+        "p(99)": 3040.080684759999,
+        "max": 28041.242471,
+        "avg": 217.87991765848108
+      },
+      "http_requests": 56413,
+      "dropped_iterations": 11087,
+      "success": 16088,
+      "success_rps": 497.6248527857233,
+      "rejected": 40325,
+      "unexpected": 0,
+      "invalid": [
+        "load exit 99",
+        "load driver dropped scheduled iterations"
+      ],
+      "latency": {
+        "p(50)": 100.53049999999999,
+        "p(95)": 1258.2716,
+        "p(99)": 3288.2948199999946,
+        "max": 28039.663,
+        "avg": 345.9731752237694
+      },
+      "duration_minus_mock": {
+        "p(99)": 3263.4573978299964,
+        "max": 28019.19671,
+        "avg": 324.3640433864997,
+        "p(50)": 79.10323149999999,
+        "p(95)": 1235.4289872
+      },
+      "preflight": {
+        "max": 251.2,
+        "avg": 1.7371332670312822,
+        "p(50)": 0.3,
+        "p(95)": 3.1,
+        "p(99)": 52.51299999999992
+      },
+      "resources_before": {
+        "memory_current": 517947392,
+        "memory_peak_lifetime": 545206272,
+        "oom": 0,
+        "oom_kill": 0,
+        "usage_usec": 291836926,
+        "nr_periods": 2325,
+        "nr_throttled": 1404,
+        "throttled_usec": 642973931,
+        "VmRSS_bytes": 518418432,
+        "VmHWM_bytes": 521150464
+      },
+      "resources_after": {
+        "memory_current": 533184512,
+        "memory_peak_lifetime": 545206272,
+        "oom": 0,
+        "oom_kill": 0,
+        "usage_usec": 322174965,
+        "nr_periods": 2564,
+        "nr_throttled": 1551,
+        "throttled_usec": 683222001,
+        "VmRSS_bytes": 522616832,
+        "VmHWM_bytes": 522616832
+      },
+      "cpu_delta": {
+        "usage_usec": 30338039,
+        "nr_periods": 239,
+        "nr_throttled": 147,
+        "throttled_usec": 40248070
+      }
+    }
+  ],
+  "raw_sha256": {
+    "47bd8958ee88.log": "36dc6d03a0b230c97d6f63bd7420057726827689be405d401a2a1b377d48c711",
+    "CapacityMock.java": "635694e309594885f2e07a49e640c2c4725363ff2fb3569b3576dbe57396fe4c",
+    "a338f0650d6b.log": "05f149cf58ad887f2e56f38db1e1ce138a95129bee1bb8e06822d73c8a7d9bd4",
+    "after-webflux-json-v1024-r1.json": "2308676ebe30d0043c68232636ba387933120b20910cfd9716926e88a3b62d17",
+    "after-webflux-json-v1024-r1.log": "66dbace25330de2ae959b87ed7d9389c46354602f2906f6947ddca0c9875017f",
+    "after-webflux-json-v1024-r2.json": "46ce87cf170d17fc37c5fc179e0777b74e99281eec9ec4ad9b9b85a80fae4295",
+    "after-webflux-json-v1024-r2.log": "bb273b12b832efcf1904fea6132ec6d1038bf137072cf947c9ddcaa5073a6e64",
+    "after-webflux-json-v1024-r3.json": "3995174645c78c5abad9de5f4ef6618cdaec3ade2b6506a8c413f427bfb9482f",
+    "after-webflux-json-v1024-r3.log": "5b05148738c65092168020e1b033c0179b1c92040f309c042a3e0efbb0320d79",
+    "after-webflux-json-v1024-r4.json": "7f93889a6f5e8db51b9384c35b0f7c7fc20e107f5b58926e071b14895d05fb50",
+    "after-webflux-json-v1024-r4.log": "0fa03e82761f39261731d69208ffdad498e781ff449827be858f79bf46b161da",
+    "after-webflux-json-v96-rwarm.json": "1e4e86bbdea2fa2d2352b0b2d4b29e8b2f70cab7722b82d3c4c71fb7af3e4a0a",
+    "after-webflux-json-v96-rwarm.log": "bfda9b21a063ca9e350f9dfb4765d498625c4cfc2b7f7d41b19ef18a5bca1b29",
+    "before-webflux-json-v1024-r1.json": "9a13ecf0ad825444fc0749b4dc3d6a10899991b0d95117e3153105c369ff5e10",
+    "before-webflux-json-v1024-r1.log": "d8993b87f45268b134d9a6bd55f72da7bdfaab1d493444797ed3d7ee734ada03",
+    "before-webflux-json-v1024-r2.json": "10d57672580d262b1e55be5815be3a09862e615ffad2f0addfdd7c75c9b304c7",
+    "before-webflux-json-v1024-r2.log": "5062b669cc7d295ff35b9a445c5165ed67b5ca63401e638d6620ef638345ab59",
+    "before-webflux-json-v1024-r3.json": "bd09f20dd0b7001c37416996237e09f3485b92617bdc8284f43e2a3020bdc8f2",
+    "before-webflux-json-v1024-r3.log": "4f15e9d48048b628f93a05e47d1f76b844738cff6af32184bc8d7ffcd8502dc7",
+    "before-webflux-json-v1024-r4.json": "2f6e1b9ba5ea0816f768047d1996c682d970fc3490e7fc203bd7a73d0203cd64",
+    "before-webflux-json-v1024-r4.log": "2191b14d0f017aa59f75d9dbc1ee1049fb376a04d34f268b5958fc8469a2c887",
+    "before-webflux-json-v96-rwarm.json": "ad366bdccefdf56e87cdc41eb09b5ec0c18d7ac9272a0dda6bd6c85150cdba32",
+    "before-webflux-json-v96-rwarm.log": "eaefb8189be71497a467806e6427bccfe9d0af950c15671f9e8a4a0015f27930",
+    "direct-json-v64-r0.json": "401d76b4ffe37e47d8d079e9a6054976832837eb81e41a1fc956df2bf1e9919a",
+    "direct-json-v64-r0.log": "85a29aa91b2337b87f1b3f5cf1803a23b619f628eb172904e932e6bc4a45080e",
+    "e5225796cfa2.log": "9cb2596b7d42c594933dbbb49159e08e4e92db5e8f918e00247257631d30d006",
+    "load.js": "7972e99935ad5ed91c4d4a78899d406f91c88a48c4ace228f61a22cfaf2e4106",
+    "manifest.json": "e562cc63e0efa338579144beaec85344d764237bf96588368611fdcb5ee43c2f",
+    "run.py": "5e995963c3b8420f85ca12fd656bd1bdd4f380ba282a6825f8a8a56af77ca771",
+    "samples.json": "0fb08d7fb5b1bbcf6b875ec57cbbfa1f48eb3ab0b41882687332b213be6f9197"
+  }
+}

@@ -4,6 +4,7 @@ import io.github.leohou0430.llmgw.core.protocol.ParsedRequest;
 import io.github.leohou0430.llmgw.core.protocol.ProtocolKind;
 import io.github.leohou0430.llmgw.core.routing.Route;
 import io.github.leohou0430.llmgw.core.routing.Router;
+import io.github.leohou0430.llmgw.core.upstream.ByteStream;
 import io.github.leohou0430.llmgw.core.upstream.UpstreamMethod;
 import io.github.leohou0430.llmgw.core.upstream.UpstreamRequest;
 
@@ -50,7 +51,7 @@ public final class EngineRoutes {
         if (node.isObject()) {
             for (var field : node.properties()) {
                 if ("file_id".equals(field.getKey()) || "input_file_id".equals(field.getKey())) {
-                    ids.add(field.getValue().isTextual() ? field.getValue().asText() : "");
+                    ids.add(field.getValue().isString() ? field.getValue().asString() : "");
                 } else {
                     collectFiles(field.getValue(), ids);
                 }
@@ -92,6 +93,24 @@ public final class EngineRoutes {
                 UpstreamMethod.POST, passHeaders).forRoute(route);
     }
 
+    /**
+     * T1.12 protocol conversion: build the upstream request from an ALREADY converted payload
+     * ({@code PreparedConversion.upstreamJson()} / {@code upstreamPath()}). The entry codec rewrote
+     * the model upstream, so there is deliberately NO {@code forRoute} tree rewrite here and the
+     * path is the upstream protocol's path, not the caller's. The caller model is kept for
+     * governance/metrics; the wire body is the prepared payload verbatim.
+     *
+     * <p>The prepared payload is passed as plain strings so this foundation module keeps depending
+     * on llmgw-core only (the conversion handle lives in the engine implementations).
+     */
+    public static UpstreamRequest convertedRequest(String upstreamJson, String upstreamPath,
+                                                   ParsedRequest parsed, Route route, int timeoutMs,
+                                                   Map<String, String> passHeaders) {
+        return new UpstreamRequest(upstreamJson, route.targetUrl(), route.apiKey(), route.provider(),
+                parsed.model(), parsed.stream(), timeoutMs, upstreamPath,
+                UpstreamMethod.POST, passHeaders);
+    }
+
     /** Bodyless GET (video poll/content) pinned to one route; no fallback. */
     public static UpstreamRequest fetch(Route route, String path, int timeoutMs) {
         return new UpstreamRequest("", route.targetUrl(), route.apiKey(), "", false,
@@ -112,16 +131,16 @@ public final class EngineRoutes {
     }
 
     /**
-     * W4.3: POST with a BINARY body (multipart uploads — transcriptions,
-     * files). Byte-faithful both ways: no charset round-trip, no model rewrite.
+     * W4.3/T2.1: POST with a BINARY body (multipart uploads — transcriptions,
+     * files) carried as a cold byte stream. Byte-faithful both ways: no charset
+     * round-trip, no model rewrite. {@code bodyLength} is the exact byte count.
      */
-    public static UpstreamRequest postRawBytes(byte[] body, ParsedRequest parsed,
+    public static UpstreamRequest postRawBytes(ByteStream body, long bodyLength, ParsedRequest parsed,
                                                Route route, int timeoutMs,
                                                Map<String, String> passHeaders) {
         return new UpstreamRequest("", route.targetUrl(), route.apiKey(), route.provider(),
                 parsed.model(), false, timeoutMs, parsed.kind().upstreamPath(),
-                UpstreamMethod.POST, passHeaders,
-                body == null ? new byte[0] : body).forRoute(route);
+                UpstreamMethod.POST, passHeaders, body, bodyLength).forRoute(route);
     }
 
     /** W4.3: bodyless GET/DELETE by explicit verb (file list/retrieve/delete). */

@@ -75,7 +75,11 @@ start() {
     '--gateway.api-keys[0].quota-tokens=1000000000000' \
     "$@" > "$TMP/gateway-$engine.log" 2>&1 &
   PID=$!
-  wait_health
+  if ! wait_health; then
+    echo "gateway startup failed: engine=$engine pid=$PID" >&2
+    cat "$TMP/gateway-$engine.log" >&2
+    exit 1
+  fi
 }
 
 # call <body> [auth] -> prints "<status> <content-type>", body in $TMP/body

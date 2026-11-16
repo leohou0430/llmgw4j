@@ -79,6 +79,10 @@ start_pair() {
   local -a common=(
     --spring.profiles.active=webflux
     --gateway.governance-enabled=true
+    --gateway.keys-store-path=
+    "--gateway.mock.port=$MOCK_PORT"
+    "--gateway.upstream.base-url=http://127.0.0.1:$MOCK_PORT/mock/v1"
+    "--gateway.routes[0].target-url=http://127.0.0.1:$MOCK_PORT/mock/v1"
     "--gateway.governance.default-quota-tokens=$QUOTA"
     --gateway.governance.rate-limit-tokens-per-second=2000000000
     --gateway.governance.rate-limit-burst=2000000000
@@ -138,16 +142,18 @@ for port in "$P1" "$P2" "$MOCK_PORT"; do
 done
 
 echo "=== distributed quota: mem (2 independent ledgers) vs redis (1 shared) ==="
-redis-server --port "$REDIS_PORT" --save '' --appendonly no --dir "$TMP" \
+redis-server --bind 127.0.0.1 --port "$REDIS_PORT" --save '' --appendonly no --dir "$TMP" \
   > "$TMP/redis.log" 2>&1 &
 REDIS_PID=$!
 for _ in $(seq 1 30); do
-  [[ "$(redis-cli -p "$REDIS_PORT" ping 2>/dev/null)" == "PONG" ]] && break
+  kill -0 "$REDIS_PID" 2>/dev/null || break
+  redis-cli -p "$REDIS_PORT" INFO server 2>/dev/null | tr -d '\r' | grep -qx "process_id:$REDIS_PID" && break
   sleep 0.5
 done
-[[ "$(redis-cli -p "$REDIS_PORT" ping 2>/dev/null)" == "PONG" ]]
+kill -0 "$REDIS_PID" 2>/dev/null && redis-cli -p "$REDIS_PORT" INFO server 2>/dev/null | tr -d '\r' | grep -qx "process_id:$REDIS_PID"
 ok=$?
 check "local redis is up" "$ok" "port=$REDIS_PORT pid=$REDIS_PID"
+[[ "$ok" == "0" ]] || exit 1
 
 unzip -l "$DEFAULT_JAR" | grep -qiE 'spring-data-redis|llmgw-governance-redis|jedis|lettuce'
 if [[ $? -eq 0 ]]; then

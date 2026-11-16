@@ -1,0 +1,48 @@
+{
+  "complete": true,
+  "profiles": {
+    "default": {
+      "tests": 246,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "redis": {
+      "tests": 246,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "combined": {
+      "tests": 246,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "native": {
+    "webflux": {
+      "sha256": "e3de8eb77261b694fc541cecefd8ee0c03e7ce66e481f793305b3757b20d696d",
+      "bytes": 297994496,
+      "compared_jvm_classes": 174,
+      "class_mismatches": []
+    },
+    "vt": {
+      "sha256": "a966913fe96f6f0c684bc68dbe7c9453d2c3eb7e596153f43cc6e1f859912d1a",
+      "bytes": 259655936,
+      "compared_jvm_classes": 174,
+      "class_mismatches": []
+    }
+  },
+  "jvm_sdk_checks": 52,
+  "native_sdk_checks_per_engine": 26,
+  "memory_events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0\nsock_throttled 0\n",
+  "memory_peak": "10892271616",
+  "paid_provider_calls": 0,
+  "cleaned_container_ids": [
+    "0e75391a128c611c5d7b93d9472f84986a4f07e30a07baadfe91b1928e6b6a4d",
+    "714f9ccca6f782109c627e22a9680937ac1f0c2129ff9989cfed6ddcbd1809bf"
+  ],
+  "source_mismatches": [],
+  "scope": "Linux amd64 functional verification; no native capacity benchmark or live TLS claim"
+}

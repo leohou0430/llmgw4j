@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>io.github.leohou0430</groupId>
+    <artifactId>llmgw-persistence</artifactId>
+    <version>0.3.1</version>
+  </parent>
+
+  <artifactId>llmgw-persistence-sqlite</artifactId>
+  <name>llmgw-persistence-sqlite</name>
+  <description>SQLite-backed DatabaseContext (xerial sqlite-jdbc, WAL). A foundation
+    pack: no Spring, Reactor or HTTP framework. Linked into the app explicitly;
+    JDBC work is bridged off the reactive event loop by the data planes.</description>
+
+  <dependencies>
+    <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-core</artifactId></dependency>
+    <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-persistence-api</artifactId></dependency>
+    <dependency><groupId>org.xerial</groupId><artifactId>sqlite-jdbc</artifactId><version>3.53.2.1</version></dependency>
+    <dependency><groupId>org.slf4j</groupId><artifactId>slf4j-api</artifactId></dependency>
+    <dependency><groupId>org.junit.jupiter</groupId><artifactId>junit-jupiter</artifactId><scope>test</scope></dependency>
+  </dependencies>
+</project>

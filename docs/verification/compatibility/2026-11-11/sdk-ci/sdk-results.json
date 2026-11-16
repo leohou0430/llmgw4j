@@ -1,0 +1,349 @@
+{
+  "jar_sha256": "cd7980dd63e2e3150e366a22bbfaaf3043bd3ccae56897087ea892534d19cf24",
+  "harness_sha256": "26d0a2a33926154362db89d2081f48a08d092b243469f6ab1017d4a4f8c4568c",
+  "versions": {
+    "openai": "3.49.0",
+    "anthropic": "2.8.0"
+  },
+  "checks": [
+    {
+      "engine": "webflux",
+      "name": "openai-chat-json",
+      "passed": true
+    },
+    {
+      "engine": "webflux",
+      "name": "openai-tools-and-extension",
+      "passed": true
+    },
+    {
+      "engine": "webflux",
+      "name": "openai-chat-sse-usage",
+      "passed": true
+    },
+    {
+      "engine": "webflux",
+      "name": "openai-streaming-tool-arguments",
+      "passed": true
+    },
+    {
+      "engine": "webflux",
+      "name": "openai-responses-json",
+      "passed": true
+    },
+    {
+      "engine": "webflux",
+      "name": "openai-responses-sse",
+      "passed": true
+    },
+    {
+      "engine": "webflux",
+      "name": "anthropic-messages-json",
+      "passed": true
+    },
+    {
+      "engine": "webflux",
+      "name": "anthropic-messages-sse",
+      "passed": true
+    },
+    {
+      "engine": "webflux",
+      "name": "anthropic-tool-json",
+      "passed": true
+    },
+    {
+      "engine": "webflux",
+      "name": "anthropic-streaming-tool-input",
+      "passed": true
+    },
+    {
+      "engine": "webflux",
+      "name": "model-rewrite-and-upstream-credentials",
+      "passed": true
+    },
+    {
+      "engine": "webflux",
+      "name": "upstream-503-is-sdk-502-error",
+      "passed": true
+    },
+    {
+      "engine": "webflux",
+      "name": "anthropic-upstream-error-is-sdk-502",
+      "passed": true
+    },
+    {
+      "engine": "webflux",
+      "name": "sdk-one-retry-recovers",
+      "passed": true
+    },
+    {
+      "engine": "webflux",
+      "name": "openai-file-upload-content",
+      "passed": true
+    },
+    {
+      "engine": "webflux",
+      "name": "openai-batch-create",
+      "passed": true
+    },
+    {
+      "engine": "webflux",
+      "name": "openai-transcription-upload",
+      "passed": true
+    },
+    {
+      "engine": "webflux",
+      "name": "openai-speech-binary",
+      "passed": true
+    },
+    {
+      "engine": "webflux",
+      "name": "openai-embeddings",
+      "passed": true
+    },
+    {
+      "engine": "webflux",
+      "name": "file-list-explicit-501",
+      "passed": true
+    },
+    {
+      "engine": "webflux",
+      "name": "foreign-file-sdk-404-without-upstream",
+      "passed": true
+    },
+    {
+      "engine": "webflux",
+      "name": "chat-sdk-detects-truncation",
+      "passed": true
+    },
+    {
+      "engine": "webflux",
+      "name": "responses-sdk-detects-truncation",
+      "passed": true
+    },
+    {
+      "engine": "webflux",
+      "name": "messages-sdk-detects-truncation",
+      "passed": true
+    },
+    {
+      "engine": "webflux",
+      "name": "async-sdk-json-and-sse-both-clients",
+      "passed": true
+    },
+    {
+      "engine": "webflux",
+      "name": "invalid-key-sdk-401",
+      "passed": true
+    },
+    {
+      "engine": "vt",
+      "name": "openai-chat-json",
+      "passed": true
+    },
+    {
+      "engine": "vt",
+      "name": "openai-tools-and-extension",
+      "passed": true
+    },
+    {
+      "engine": "vt",
+      "name": "openai-chat-sse-usage",
+      "passed": true
+    },
+    {
+      "engine": "vt",
+      "name": "openai-streaming-tool-arguments",
+      "passed": true
+    },
+    {
+      "engine": "vt",
+      "name": "openai-responses-json",
+      "passed": true
+    },
+    {
+      "engine": "vt",
+      "name": "openai-responses-sse",
+      "passed": true
+    },
+    {
+      "engine": "vt",
+      "name": "anthropic-messages-json",
+      "passed": true
+    },
+    {
+      "engine": "vt",
+      "name": "anthropic-messages-sse",
+      "passed": true
+    },
+    {
+      "engine": "vt",
+      "name": "anthropic-tool-json",
+      "passed": true
+    },
+    {
+      "engine": "vt",
+      "name": "anthropic-streaming-tool-input",
+      "passed": true
+    },
+    {
+      "engine": "vt",
+      "name": "model-rewrite-and-upstream-credentials",
+      "passed": true
+    },
+    {
+      "engine": "vt",
+      "name": "upstream-503-is-sdk-502-error",
+      "passed": true
+    },
+    {
+      "engine": "vt",
+      "name": "anthropic-upstream-error-is-sdk-502",
+      "passed": true
+    },
+    {
+      "engine": "vt",
+      "name": "sdk-one-retry-recovers",
+      "passed": true
+    },
+    {
+      "engine": "vt",
+      "name": "openai-file-upload-content",
+      "passed": true
+    },
+    {
+      "engine": "vt",
+      "name": "openai-batch-create",
+      "passed": true
+    },
+    {
+      "engine": "vt",
+      "name": "openai-transcription-upload",
+      "passed": true
+    },
+    {
+      "engine": "vt",
+      "name": "openai-speech-binary",
+      "passed": true
+    },
+    {
+      "engine": "vt",
+      "name": "openai-embeddings",
+      "passed": true
+    },
+    {
+      "engine": "vt",
+      "name": "file-list-explicit-501",
+      "passed": true
+    },
+    {
+      "engine": "vt",
+      "name": "foreign-file-sdk-404-without-upstream",
+      "passed": true
+    },
+    {
+      "engine": "vt",
+      "name": "chat-sdk-detects-truncation",
+      "passed": true
+    },
+    {
+      "engine": "vt",
+      "name": "responses-sdk-detects-truncation",
+      "passed": true
+    },
+    {
+      "engine": "vt",
+      "name": "messages-sdk-detects-truncation",
+      "passed": true
+    },
+    {
+      "engine": "vt",
+      "name": "async-sdk-json-and-sse-both-clients",
+      "passed": true
+    },
+    {
+      "engine": "vt",
+      "name": "invalid-key-sdk-401",
+      "passed": true
+    }
+  ],
+  "commands": {
+    "webflux": [
+      "java",
+      "-jar",
+      "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/compatibility-2026-11-11/sdk-final-default.jar",
+      "--spring.profiles.active=webflux",
+      "--server.port=50288",
+      "--server.address=127.0.0.1",
+      "--gateway.mock.enabled=false",
+      "--gateway.keys-store-path=",
+      "--gateway.governance.snapshot-path=",
+      "--gateway.api-keys[0].id=sdk",
+      "--gateway.api-keys[0].token=sdk-client",
+      "--gateway.api-keys[0].quota-tokens=1000000",
+      "--gateway.governance.rate-limit-tokens-per-second=1000000",
+      "--gateway.governance.rate-limit-burst=1000000",
+      "--gateway.api-keys[1].id=foreign",
+      "--gateway.api-keys[1].token=sdk-foreign",
+      "--gateway.api-keys[1].quota-tokens=1000000",
+      "--gateway.routes[0].id=sdk-openai",
+      "--gateway.routes[0].protocol=*",
+      "--gateway.routes[0].model=*",
+      "--gateway.routes[0].target-model=upstream-model",
+      "--gateway.routes[0].target-url=http://127.0.0.1:50287/v1",
+      "--gateway.routes[0].api-key=sdk-upstream",
+      "--gateway.routes[0].provider=openai",
+      "--gateway.routes[1].id=sdk-anthropic",
+      "--gateway.routes[1].protocol=messages",
+      "--gateway.routes[1].model=*",
+      "--gateway.routes[1].target-model=upstream-model",
+      "--gateway.routes[1].target-url=http://127.0.0.1:50287/v1",
+      "--gateway.routes[1].api-key=sdk-upstream",
+      "--gateway.routes[1].provider=anthropic"
+    ],
+    "vt": [
+      "java",
+      "-jar",
+      "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/compatibility-2026-11-11/sdk-final-default.jar",
+      "--spring.profiles.active=vt",
+      "--server.port=50377",
+      "--server.address=127.0.0.1",
+      "--gateway.mock.enabled=false",
+      "--gateway.keys-store-path=",
+      "--gateway.governance.snapshot-path=",
+      "--gateway.api-keys[0].id=sdk",
+      "--gateway.api-keys[0].token=sdk-client",
+      "--gateway.api-keys[0].quota-tokens=1000000",
+      "--gateway.governance.rate-limit-tokens-per-second=1000000",
+      "--gateway.governance.rate-limit-burst=1000000",
+      "--gateway.api-keys[1].id=foreign",
+      "--gateway.api-keys[1].token=sdk-foreign",
+      "--gateway.api-keys[1].quota-tokens=1000000",
+      "--gateway.routes[0].id=sdk-openai",
+      "--gateway.routes[0].protocol=*",
+      "--gateway.routes[0].model=*",
+      "--gateway.routes[0].target-model=upstream-model",
+      "--gateway.routes[0].target-url=http://127.0.0.1:50287/v1",
+      "--gateway.routes[0].api-key=sdk-upstream",
+      "--gateway.routes[0].provider=openai",
+      "--gateway.routes[1].id=sdk-anthropic",
+      "--gateway.routes[1].protocol=messages",
+      "--gateway.routes[1].model=*",
+      "--gateway.routes[1].target-model=upstream-model",
+      "--gateway.routes[1].target-url=http://127.0.0.1:50287/v1",
+      "--gateway.routes[1].api-key=sdk-upstream",
+      "--gateway.routes[1].provider=anthropic"
+    ]
+  },
+  "upload_observations": {
+    "webflux": {
+      "content_type": "multipart/form-data; boundary=8ef2686c463276712ea5c5e6192d871d",
+      "bytes": 275
+    },
+    "vt": {
+      "content_type": "multipart/form-data; boundary=7ac08a7959ac7a874254778486cf2627",
+      "bytes": 275
+    }
+  },
+  "complete": true
+}

@@ -1,0 +1,406 @@
+{
+  "schema": "llmgw-acceptance-fixture/v1",
+  "id": "messages-s7-contract-negatives",
+  "entry": "messages",
+  "scenario": 7,
+  "slug": "contract-negatives",
+  "title": "受控合同反例+授权降级正例",
+  "mock": {
+    "chunks": 4
+  },
+  "markers": [
+    "mock-deepseek"
+  ],
+  "steps": [
+    {
+      "name": "unknown-field",
+      "request": {
+        "model": "mock-model",
+        "messages": [
+          {
+            "role": "user",
+            "content": "mock-deepseek: What is the capital of France?"
+          }
+        ],
+        "max_tokens": 1024,
+        "stream": false,
+        "temperature": 0.7
+      },
+      "expected": {
+        "error": {
+          "status": 400,
+          "code": "capability_unknown_field",
+          "param": "temperature",
+          "reason": "未知请求字段: temperature",
+          "finished": [
+            false
+          ],
+          "active_permits": 0,
+          "upstream_requests": 0
+        }
+      }
+    },
+    {
+      "name": "redacted-thinking",
+      "request": {
+        "model": "mock-model",
+        "messages": [
+          {
+            "role": "user",
+            "content": "mock-deepseek: What is the capital of France?"
+          },
+          {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "redacted_thinking",
+                "data": "opaque"
+              }
+            ]
+          }
+        ],
+        "max_tokens": 1024,
+        "stream": false
+      },
+      "expected": {
+        "error": {
+          "status": 400,
+          "code": "capability_not_supported",
+          "param": "messages[1].content[0]",
+          "reason": "私有加密思考块不可表达",
+          "finished": [
+            false
+          ],
+          "active_permits": 0,
+          "upstream_requests": 0
+        }
+      }
+    },
+    {
+      "name": "server-tool",
+      "request": {
+        "model": "mock-model",
+        "messages": [
+          {
+            "role": "user",
+            "content": "mock-deepseek: What is the capital of France?"
+          }
+        ],
+        "max_tokens": 1024,
+        "stream": false,
+        "tools": [
+          {
+            "type": "web_search_20250305",
+            "name": "web_search"
+          }
+        ]
+      },
+      "expected": {
+        "error": {
+          "status": 400,
+          "code": "capability_not_supported",
+          "param": "tools[0]",
+          "reason": "服务端工具不可表达: web_search_20250305",
+          "finished": [
+            false
+          ],
+          "active_permits": 0,
+          "upstream_requests": 0
+        }
+      }
+    },
+    {
+      "name": "private-block",
+      "request": {
+        "model": "mock-model",
+        "messages": [
+          {
+            "role": "user",
+            "content": "mock-deepseek: What is the capital of France?"
+          },
+          {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "server_tool_use",
+                "id": "srvtoolu_fixture_1",
+                "name": "web_search",
+                "input": {}
+              }
+            ]
+          }
+        ],
+        "max_tokens": 1024,
+        "stream": false
+      },
+      "expected": {
+        "error": {
+          "status": 400,
+          "code": "capability_not_supported",
+          "param": "messages[1].content[0]",
+          "reason": "私有/服务端内容块不可表达: server_tool_use",
+          "finished": [
+            false
+          ],
+          "active_permits": 0,
+          "upstream_requests": 0
+        }
+      }
+    },
+    {
+      "name": "expected-unsupported-external-image",
+      "request": {
+        "model": "mock-model",
+        "messages": [
+          {
+            "role": "user",
+            "content": [
+              {
+                "type": "text",
+                "text": "mock-deepseek: Describe the probe image."
+              },
+              {
+                "type": "image",
+                "source": {
+                  "type": "url",
+                  "url": "https://example.invalid/probe.png"
+                }
+              }
+            ]
+          }
+        ],
+        "max_tokens": 1024,
+        "stream": false
+      },
+      "expected": {
+        "error": {
+          "status": 400,
+          "code": "capability_not_supported",
+          "param": "messages[0].content[1].source.url",
+          "reason": "第一阶段仅支持内联图片，外部 URL 属阶段 2/3",
+          "finished": [
+            false
+          ],
+          "active_permits": 0,
+          "upstream_requests": 0
+        }
+      }
+    },
+    {
+      "name": "invalid-image-media-type",
+      "request": {
+        "model": "mock-model",
+        "messages": [
+          {
+            "role": "user",
+            "content": [
+              {
+                "type": "text",
+                "text": "mock-deepseek: Describe the probe image."
+              },
+              {
+                "type": "image",
+                "source": {
+                  "type": "base64",
+                  "media_type": "image/bmp",
+                  "data": "QUJD"
+                }
+              }
+            ]
+          }
+        ],
+        "max_tokens": 1024,
+        "stream": false
+      },
+      "expected": {
+        "error": {
+          "status": 400,
+          "code": "capability_invalid_value",
+          "param": "messages[0].content[1].source.media_type",
+          "reason": "unsupported image media_type: image/bmp (allowed: image/jpeg, image/png, image/gif, image/webp)",
+          "finished": [
+            false
+          ],
+          "active_permits": 0,
+          "upstream_requests": 0
+        }
+      }
+    },
+    {
+      "name": "file-id",
+      "request": {
+        "model": "mock-model",
+        "messages": [
+          {
+            "role": "user",
+            "content": [
+              {
+                "type": "text",
+                "text": "mock-deepseek: Describe the file image."
+              },
+              {
+                "type": "image",
+                "source": {
+                  "type": "file",
+                  "file_id": "file_fixture_1"
+                }
+              }
+            ]
+          }
+        ],
+        "max_tokens": 1024,
+        "stream": false
+      },
+      "expected": {
+        "error": {
+          "status": 400,
+          "code": "capability_not_supported",
+          "param": "messages[0].content[1].source.file_id",
+          "reason": "第一阶段仅支持内联图片，file 引用属阶段 2/3",
+          "finished": [
+            false
+          ],
+          "active_permits": 0,
+          "upstream_requests": 0
+        },
+        "resource_denial": {
+          "status": 404,
+          "message": "referenced file not found on this route",
+          "error_type": "gateway_error",
+          "finished": [
+            false
+          ],
+          "active_permits": 0,
+          "upstream_requests": 0
+        }
+      }
+    },
+    {
+      "name": "cross-project-signature",
+      "request": {
+        "model": "mock-model",
+        "messages": [
+          {
+            "role": "user",
+            "content": "mock-deepseek: Explain the answer."
+          },
+          {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "thinking",
+                "thinking": "Let me think",
+                "signature": "llmgw1:eyJwcm9qZWN0SWQiOiJvdGhlci1wcm9qZWN0IiwiaXRlbUlkIjoidGhfY3Jvc3NfcHJvamVjdF8xIiwicmVhc29uaW5nU2hhMjU2IjoiNzA2NzgwMGVkZTJhNjc3NWFhN2ZiMWI5Zjc2Y2I2MDg0MTk0OWEyYzAxYjI1YTgwOGEyODE5Y2YwNDI1NmY0NCJ9.omXIk5ZrEDFGFZhAOUZBLI80iPGwZUtY-a8sSbfu64s"
+              }
+            ]
+          }
+        ],
+        "max_tokens": 1024,
+        "stream": false
+      },
+      "expected": {
+        "error": {
+          "status": 400,
+          "code": "capability_continuation_invalid",
+          "param": "continuation",
+          "reason": "续轮信封不属于当前项目",
+          "finished": [
+            false
+          ],
+          "active_permits": 0,
+          "upstream_requests": 0
+        }
+      }
+    },
+    {
+      "name": "degradation-unauthorized",
+      "request": {
+        "model": "mock-model",
+        "messages": [
+          {
+            "role": "user",
+            "content": "mock-deepseek: What is the capital of France?"
+          }
+        ],
+        "max_tokens": 1024,
+        "stream": false,
+        "thinking": {
+          "type": "enabled",
+          "budget_tokens": 1024
+        }
+      },
+      "expected": {
+        "error": {
+          "status": 400,
+          "code": "capability_degradation_not_authorized",
+          "param": "thinking.budget_tokens",
+          "reason": "需授权降级 thinking.budget_to_effort",
+          "finished": [
+            false
+          ],
+          "active_permits": 0,
+          "upstream_requests": 0
+        }
+      }
+    },
+    {
+      "name": "degradation-authorized",
+      "request": {
+        "model": "mock-model",
+        "messages": [
+          {
+            "role": "user",
+            "content": "mock-deepseek: What is the capital of France?"
+          }
+        ],
+        "max_tokens": 1024,
+        "stream": false,
+        "thinking": {
+          "type": "enabled",
+          "budget_tokens": 1024
+        }
+      },
+      "expected": {
+        "transport": "json",
+        "terminal": {
+          "type": "message",
+          "role": "assistant",
+          "stop_reason": "end_turn",
+          "stop_sequence_null": true,
+          "content_block_types": [
+            "text"
+          ]
+        },
+        "text": {
+          "equals": "Hello world"
+        },
+        "usage": {
+          "input_tokens": 4,
+          "cache_read_input_tokens": 3,
+          "cache_creation_input_tokens": 0,
+          "output_tokens": 1,
+          "absent_fields": [
+            "usage.total_tokens",
+            "usage.output_tokens_details"
+          ]
+        }
+      },
+      "headers": {
+        "X-LLMGW-Allow-Degradation": "thinking.budget_to_effort"
+      },
+      "degradation": {
+        "id": "thinking.budget_to_effort",
+        "field_path": "thinking.budget_tokens",
+        "header": "X-LLMGW-Allow-Degradation",
+        "outbound_field": "reasoning_effort",
+        "outbound_equals": "low"
+      }
+    }
+  ],
+  "notes": "Controlled contract NEGATIVES (spec 3.1/3.2): every error step must be rejected pre-header with the pinned status + stable capability code + field path + reason, in the ENTRY's own error shape, with no success terminal, zero active permits and zero outbound upstream requests. The mock marker is present in every request only so the authorized/unauthorized degradation pair stays byte-identical; error steps never reach the wire (upstream_requests=0). The last step is the explicit authorization POSITIVE: the same request plus the grant header must succeed and really degrade. Cross-project tokens are minted with manifest.continuation_envelope.drive_key_utf8 and cross_project_id so the HMAC passes and the PROJECT BINDING branch is the one that fails. Corrupt/truncated SSE negatives are already covered by ConversionEngineIntegrationTest / ConversionServiceTest / MockUpstreamDeepSeekTest. File references (input_file / file_id) are denied by the ENGINE ownership guard BEFORE conversion: the drive answers 404 with the gateway-generic body (expected.resource_denial), while the entry codec's own 400 capability rejection stays pinned as expected.error and is asserted at codec level.",
+  "continuation": {
+    "token_source": "preminted_drive_key_cross_project",
+    "envelope_ref": "manifest.continuation_envelope",
+    "item_id": "th_cross_project_1"
+  }
+}

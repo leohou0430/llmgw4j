@@ -1,0 +1,76 @@
+{
+  "schema": "llmgw-acceptance-fixture/v1",
+  "id": "chat-s2-stream-text-usage",
+  "entry": "chat",
+  "scenario": 2,
+  "slug": "stream-text-usage",
+  "title": "流式文本+usage",
+  "mock": {
+    "chunks": 4
+  },
+  "markers": [
+    "mock-deepseek"
+  ],
+  "steps": [
+    {
+      "name": "initial",
+      "request": {
+        "model": "mock-model",
+        "messages": [
+          {
+            "role": "user",
+            "content": "mock-deepseek: Tell me about the probe."
+          }
+        ],
+        "max_tokens": 1024,
+        "stream": true,
+        "stream_options": {
+          "include_usage": true
+        }
+      },
+      "expected": {
+        "transport": "sse",
+        "terminal": {
+          "object": "chat.completion.chunk",
+          "finish_reason": "stop",
+          "done_literal": "data: [DONE]",
+          "done_count": 1,
+          "usage_chunk_after_terminal": true,
+          "usage_chunk_choices_len": 0
+        },
+        "text": {
+          "equals": "Hello world"
+        },
+        "usage": {
+          "prompt_tokens": 7,
+          "completion_tokens": 4,
+          "total_tokens": 11,
+          "prompt_tokens_details": {
+            "cached_tokens": 3
+          },
+          "absent_fields": [
+            "usage.completion_tokens_details"
+          ]
+        },
+        "sse": {
+          "framing": "data-only",
+          "first_delta_role": "assistant",
+          "content_delta_concat": "Hello world",
+          "terminal_chunk": {
+            "finish_reason": "stop",
+            "delta_empty": true
+          },
+          "usage_chunk": {
+            "after_terminal": true,
+            "choices_len": 0
+          },
+          "done": {
+            "literal": "data: [DONE]",
+            "count": 1,
+            "last": true
+          }
+        }
+      }
+    }
+  ]
+}

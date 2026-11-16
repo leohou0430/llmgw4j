@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>io.github.leohou0430</groupId>
+    <artifactId>llmgw-parent</artifactId>
+    <version>0.3.1</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <artifactId>llmgw-identity</artifactId>
+  <packaging>pom</packaging>
+  <name>llmgw-identity</name>
+  <description>Control-plane identity subsystem: one shared identity API plus a default
+    implementation (accounts, roles/scopes, PBKDF2 password hashing, one-time bootstrap).
+    Foundational packs carry no Spring/Reactor/HTTP framework.</description>
+
+  <properties><llmgw.foundation.enforcer.skip>false</llmgw.foundation.enforcer.skip></properties>
+  <modules>
+    <module>llmgw-identity-api</module>
+    <module>llmgw-identity-default</module>
+  </modules>
+</project>

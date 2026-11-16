@@ -1,0 +1,193 @@
+{
+  "quiet-retest": {
+    "runtime_labels": {
+      "before": "JVM",
+      "after": "Linux native Serial GC"
+    },
+    "groups": {
+      "before-webflux": {
+        "p99_ms": [
+          125.49232,
+          308.32052,
+          126.2701599999999
+        ],
+        "p99_median_ms": 126.2701599999999,
+        "success_per_second": [
+          578.867876568015,
+          571.5611682383153,
+          573.264304240301
+        ],
+        "success_per_second_median": 573.264304240301
+      },
+      "after-webflux": {
+        "p99_ms": [
+          323.98341999999985,
+          329.3940599999997,
+          142.91240000000005
+        ],
+        "p99_median_ms": 323.98341999999985,
+        "success_per_second": [
+          513.5168297936535,
+          520.0503273440788,
+          571.4312150311276
+        ],
+        "success_per_second_median": 520.0503273440788
+      }
+    },
+    "p99_after_to_before_ratio": 2.56579559256122,
+    "success_rate_after_to_before_ratio": 0.9071737477763556,
+    "artifacts": {
+      "jars": {
+        "before": {
+          "path": "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/linux-native-2026-11-11/evidence/jvm-default.jar",
+          "sha256": "09c706770b61535d96960841dbf83dca4282fd229579da7337bb27086786cea0"
+        },
+        "after": {
+          "path": "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/linux-native-2026-11-11/evidence/jvm-default.jar",
+          "sha256": "09c706770b61535d96960841dbf83dca4282fd229579da7337bb27086786cea0"
+        }
+      },
+      "native_binaries": {
+        "webflux": {
+          "path": "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/linux-native-2026-11-11/evidence/llmgw-webflux-linux",
+          "sha256": "e3de8eb77261b694fc541cecefd8ee0c03e7ce66e481f793305b3757b20d696d"
+        }
+      }
+    },
+    "samples": 9,
+    "all_load_guards_passed": true,
+    "raw": "bench/results/native-sse-2026-11-12/quiet-retest"
+  },
+  "young-probe": {
+    "runtime_labels": {
+      "before": "native default young generation",
+      "after": "same native -Xmn16m"
+    },
+    "groups": {
+      "before-webflux": {
+        "p99_ms": [
+          145.30292,
+          147.90520000000004,
+          143.19740000000002
+        ],
+        "p99_median_ms": 145.30292,
+        "success_per_second": [
+          553.558864044027,
+          555.7235891558079,
+          556.2488320098732
+        ],
+        "success_per_second_median": 555.7235891558079,
+        "gc_entire_process": {
+          "count": 166,
+          "median_ms": 12.251999999999999,
+          "max_ms": 59.486,
+          "total_ms": 2838.91,
+          "includes_startup_warmup_and_trials": true
+        }
+      },
+      "after-webflux": {
+        "p99_ms": [
+          147.56150000000002,
+          151.584,
+          149.76413999999997
+        ],
+        "p99_median_ms": 149.76413999999997,
+        "success_per_second": [
+          547.1784962979981,
+          548.1236087242745,
+          549.0870053544047
+        ],
+        "success_per_second_median": 548.1236087242745,
+        "gc_entire_process": {
+          "count": 435,
+          "median_ms": 6.989,
+          "max_ms": 42.419,
+          "total_ms": 4393.001,
+          "includes_startup_warmup_and_trials": true
+        }
+      }
+    },
+    "p99_after_to_before_ratio": 1.030702892963197,
+    "success_rate_after_to_before_ratio": 0.9863241716208621,
+    "artifacts": {
+      "jars": {
+        "before": {
+          "path": "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/linux-native-2026-11-11/evidence/jvm-default.jar",
+          "sha256": "09c706770b61535d96960841dbf83dca4282fd229579da7337bb27086786cea0"
+        },
+        "after": {
+          "path": "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/linux-native-2026-11-11/evidence/jvm-default.jar",
+          "sha256": "09c706770b61535d96960841dbf83dca4282fd229579da7337bb27086786cea0"
+        }
+      },
+      "native_binaries": {
+        "webflux": {
+          "path": "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/linux-native-2026-11-11/evidence/llmgw-webflux-linux",
+          "sha256": "e3de8eb77261b694fc541cecefd8ee0c03e7ce66e481f793305b3757b20d696d"
+        }
+      }
+    },
+    "samples": 9,
+    "all_load_guards_passed": true,
+    "raw": "bench/results/native-sse-2026-11-12/young-probe"
+  },
+  "quiet-confirmation": {
+    "runtime_labels": {
+      "before": "JVM",
+      "after": "Linux native Serial GC"
+    },
+    "groups": {
+      "before-webflux": {
+        "p99_ms": [
+          305.60804,
+          203.73166999999998,
+          122.74171999999999
+        ],
+        "p99_median_ms": 203.73166999999998,
+        "success_per_second": [
+          567.4666388328354,
+          567.5579357970732,
+          567.9679001408263
+        ],
+        "success_per_second_median": 567.5579357970732
+      },
+      "after-webflux": {
+        "p99_ms": [
+          304.58364,
+          154.4833,
+          244.94805000000684
+        ],
+        "p99_median_ms": 244.94805000000684,
+        "success_per_second": [
+          538.8722548870722,
+          557.5317657153337,
+          550.6482386593366
+        ],
+        "success_per_second_median": 550.6482386593366
+      }
+    },
+    "p99_after_to_before_ratio": 1.2023071817945972,
+    "success_rate_after_to_before_ratio": 0.9702062184823672,
+    "artifacts": {
+      "jars": {
+        "before": {
+          "path": "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/linux-native-2026-11-11/evidence/jvm-default.jar",
+          "sha256": "09c706770b61535d96960841dbf83dca4282fd229579da7337bb27086786cea0"
+        },
+        "after": {
+          "path": "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/linux-native-2026-11-11/evidence/jvm-default.jar",
+          "sha256": "09c706770b61535d96960841dbf83dca4282fd229579da7337bb27086786cea0"
+        }
+      },
+      "native_binaries": {
+        "webflux": {
+          "path": "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/linux-native-2026-11-11/evidence/llmgw-webflux-linux",
+          "sha256": "e3de8eb77261b694fc541cecefd8ee0c03e7ce66e481f793305b3757b20d696d"
+        }
+      }
+    },
+    "samples": 9,
+    "all_load_guards_passed": true,
+    "raw": "bench/results/native-sse-2026-11-12/quiet-confirmation"
+  }
+}

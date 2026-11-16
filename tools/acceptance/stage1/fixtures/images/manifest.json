@@ -1,0 +1,15 @@
+{
+  "description": "Canonical T1.9 inline-image probe fixtures (own small image, sha256 pinned).",
+  "images": [
+    {
+      "file": "llmgw-probe.png",
+      "mediaType": "image/png",
+      "bytes": 230,
+      "sha256": "f24b0899ce1bb9147836beb6812c9ab7778a864f39c44b14d32548e4d91228d9",
+      "width": 132,
+      "height": 44,
+      "content": "White canvas, blue border frame, black 'LLMGW' text (5x7 bitmap font, 4x scale).",
+      "base64": "iVBORw0KGgoAAAANSUhEUgAAAIQAAAAsCAIAAAAraYdzAAAArUlEQVR42u3bSw6AIAwFQC7jyTy+h9CtGw0EKh/npStCauMsUBPTth9qkEpuAQwFYyKMUz4PDBgCYwWMdEvNxXr1ydmfMhI9DwwYMGDAiO3z1LN0T838MGDAgAFjvgO81XqvBwoYMGDAgDEfRukLYKt1GDBgwIAx7oEZ3QcGDBgwYMCo/SgJAwYMGH/BKE10n1Z4I8wDAwYMGCtgyDeBAUNgzIqh/O2qYMBQL3UBgEWIVMaFMTEAAAAASUVORK5CYII="
+    }
+  ]
+}

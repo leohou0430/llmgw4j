@@ -1,0 +1,424 @@
+{
+  "run_id": "5538d51e13a14b5f83bd59fd74a4f471",
+  "mode": "dry-run",
+  "scenario_count": 27,
+  "used": 27,
+  "cap": 60,
+  "window_seconds": 600,
+  "max_tokens": 1024,
+  "concurrency": 1,
+  "max_retries": 0,
+  "fallbacks": [],
+  "api_key_env": "LLMGW_ACCEPTANCE_API_KEY",
+  "provider": "deepseek",
+  "scenarios": [
+    {
+      "id": "chat-text-initial",
+      "entry": "chat",
+      "kind": "text",
+      "expectation": "must-succeed",
+      "fixture": "chat/s1-text-multiturn.json",
+      "step": "initial",
+      "request_sha256": "cee924c2a133e619832a277010cee7153cc46f59d57673e7cfba4bfde2a6851a",
+      "classification": "dry-run"
+    },
+    {
+      "id": "responses-text-initial",
+      "entry": "responses",
+      "kind": "text",
+      "expectation": "must-succeed",
+      "fixture": "responses/s1-text-multiturn.json",
+      "step": "initial",
+      "request_sha256": "9a1db149c790e825ee0f7ae7d7d2940b20454ccab8524822bc80f4d3109fa2db",
+      "classification": "dry-run"
+    },
+    {
+      "id": "messages-text-initial",
+      "entry": "messages",
+      "kind": "text",
+      "expectation": "must-succeed",
+      "fixture": "messages/s1-text-multiturn.json",
+      "step": "initial",
+      "request_sha256": "9dbef112cda06729e153d2f8f0f63b14b66b4f2e6c4eb5fec7499d6311caae8a",
+      "classification": "dry-run"
+    },
+    {
+      "id": "chat-text-unknown-field",
+      "entry": "chat",
+      "kind": "text",
+      "expectation": "expected-rejection",
+      "fixture": "chat/s7-contract-negatives.json",
+      "step": "unknown-field",
+      "request_sha256": "43a810d1faa78847ed0cf9d42cac1c1e435550447399c1851cd47639356d9f21",
+      "classification": "dry-run"
+    },
+    {
+      "id": "responses-text-unknown-field",
+      "entry": "responses",
+      "kind": "text",
+      "expectation": "expected-rejection",
+      "fixture": "responses/s7-contract-negatives.json",
+      "step": "unknown-field",
+      "request_sha256": "16769804b2af69bbccc985ae7af512ba694baa1033256511d0a1c57721ec8241",
+      "classification": "dry-run"
+    },
+    {
+      "id": "messages-text-unknown-field",
+      "entry": "messages",
+      "kind": "text",
+      "expectation": "expected-rejection",
+      "fixture": "messages/s7-contract-negatives.json",
+      "step": "unknown-field",
+      "request_sha256": "11f9c404ba792ac13af7ba653035fb421323e1b85361c264360617435dad02ac",
+      "classification": "dry-run"
+    },
+    {
+      "id": "chat-stream-initial",
+      "entry": "chat",
+      "kind": "stream",
+      "expectation": "must-succeed",
+      "fixture": "chat/s2-stream-text-usage.json",
+      "step": "initial",
+      "request_sha256": "8d17b9f0856f8f119b9975724a9af8bad1583d9e857ea784c2c794bfebeabd43",
+      "classification": "dry-run"
+    },
+    {
+      "id": "responses-stream-initial",
+      "entry": "responses",
+      "kind": "stream",
+      "expectation": "must-succeed",
+      "fixture": "responses/s2-stream-text-usage.json",
+      "step": "initial",
+      "request_sha256": "cb930c00fc773046f82c49ca676813d242cca8405545454d1ea6c436779d7911",
+      "classification": "dry-run"
+    },
+    {
+      "id": "messages-stream-initial",
+      "entry": "messages",
+      "kind": "stream",
+      "expectation": "must-succeed",
+      "fixture": "messages/s2-stream-text-usage.json",
+      "step": "initial",
+      "request_sha256": "1e183f1d9652499cd03ee3705092a67e815eacb8005eed6ec370a792cc487d35",
+      "classification": "dry-run"
+    },
+    {
+      "id": "chat-tool-initial",
+      "entry": "chat",
+      "kind": "tool",
+      "expectation": "must-succeed",
+      "fixture": "chat/s3-tool-call-continuation.json",
+      "step": "initial",
+      "request_sha256": "4430c59b97a087af050d73fbe564b9ea3f400280ba551bf6933a86ffb4edd348",
+      "classification": "dry-run"
+    },
+    {
+      "id": "responses-tool-initial",
+      "entry": "responses",
+      "kind": "tool",
+      "expectation": "must-succeed",
+      "fixture": "responses/s3-tool-call-continuation.json",
+      "step": "initial",
+      "request_sha256": "5c8722ccacd68b00e07e7793e1dda4706a149bc781d36254e44c3ddbc649ebf3",
+      "classification": "dry-run"
+    },
+    {
+      "id": "messages-tool-initial",
+      "entry": "messages",
+      "kind": "tool",
+      "expectation": "must-succeed",
+      "fixture": "messages/s3-tool-call-continuation.json",
+      "step": "initial",
+      "request_sha256": "f4f81a5f7c27087ebe70ab5b72ae253c29aaf08e017fb0a05d7496e358a7f4bd",
+      "classification": "dry-run"
+    },
+    {
+      "id": "chat-tool-continuation",
+      "entry": "chat",
+      "kind": "tool",
+      "expectation": "must-succeed",
+      "fixture": "chat/s3-tool-call-continuation.json",
+      "step": "continuation",
+      "request_sha256": "04fafa4cdaa54a5ddbe46c8cff99aa392dfafdec7f92a2ac9aac3dee7463a393",
+      "classification": "dry-run"
+    },
+    {
+      "id": "responses-tool-continuation",
+      "entry": "responses",
+      "kind": "tool",
+      "expectation": "must-succeed",
+      "fixture": "responses/s3-tool-call-continuation.json",
+      "step": "continuation",
+      "request_sha256": "6c0a5ef6744b3c653b227d703d28362f7b45c54cd136e15f94d5f497e6559773",
+      "classification": "dry-run"
+    },
+    {
+      "id": "messages-tool-continuation",
+      "entry": "messages",
+      "kind": "tool",
+      "expectation": "must-succeed",
+      "fixture": "messages/s3-tool-call-continuation.json",
+      "step": "continuation",
+      "request_sha256": "da77921156c42bb137b13254168ed2b6d57b0966d769e7b914d92beccbec2892",
+      "classification": "dry-run"
+    },
+    {
+      "id": "chat-thinking-initial",
+      "entry": "chat",
+      "kind": "thinking",
+      "expectation": "must-succeed",
+      "fixture": "chat/s4-thinking-continuation.json",
+      "step": "initial",
+      "request_sha256": "0365ed676650986c344e9d8e573808b2f0a19dc87aa1d8d19f1e061831b366dc",
+      "classification": "dry-run"
+    },
+    {
+      "id": "responses-thinking-initial",
+      "entry": "responses",
+      "kind": "thinking",
+      "expectation": "must-succeed",
+      "fixture": "responses/s4-thinking-continuation.json",
+      "step": "initial",
+      "request_sha256": "42e2a94d2236c770076171f367a64d952c9668aa6029fc9604b33da3f7a91f01",
+      "classification": "dry-run"
+    },
+    {
+      "id": "messages-thinking-initial",
+      "entry": "messages",
+      "kind": "thinking",
+      "expectation": "must-succeed",
+      "fixture": "messages/s4-thinking-continuation.json",
+      "step": "initial",
+      "request_sha256": "599a3e8464d29865b7d938239e4804958a81adac432cdd8fc3ab0d39a6b17788",
+      "classification": "dry-run"
+    },
+    {
+      "id": "chat-thinking-continuation",
+      "entry": "chat",
+      "kind": "thinking",
+      "expectation": "must-succeed",
+      "fixture": "chat/s4-thinking-continuation.json",
+      "step": "continuation",
+      "request_sha256": "5ec402fc6df6699a64a8e12022a55d71346dffc14e42abc8be7ea2baef320696",
+      "classification": "dry-run"
+    },
+    {
+      "id": "responses-thinking-continuation",
+      "entry": "responses",
+      "kind": "thinking",
+      "expectation": "must-succeed",
+      "fixture": "responses/s4-thinking-continuation.json",
+      "step": "continuation",
+      "request_sha256": "8389493bb1966ed351071216efd749501e74bd56c9366c59cfd6135aa7ae4470",
+      "classification": "dry-run"
+    },
+    {
+      "id": "messages-thinking-continuation",
+      "entry": "messages",
+      "kind": "thinking",
+      "expectation": "must-succeed",
+      "fixture": "messages/s4-thinking-continuation.json",
+      "step": "continuation",
+      "request_sha256": "22a6d93b2c37a01405da4556f34bc546895343378ae39a1d72e84842480fa2e1",
+      "classification": "dry-run"
+    },
+    {
+      "id": "chat-image-initial",
+      "entry": "chat",
+      "kind": "image",
+      "expectation": "must-succeed",
+      "fixture": "chat/s5-image-understanding.json",
+      "step": "initial",
+      "request_sha256": "84d9c8c2421032f579ca94043d88092da7f708327b80280026dd7bba47685242",
+      "classification": "dry-run"
+    },
+    {
+      "id": "responses-image-initial",
+      "entry": "responses",
+      "kind": "image",
+      "expectation": "must-succeed",
+      "fixture": "responses/s5-image-understanding.json",
+      "step": "initial",
+      "request_sha256": "41cbe11a5f354b3446e887575dd3b226b296536e710fe6cf29dae56647aa5269",
+      "classification": "dry-run"
+    },
+    {
+      "id": "messages-image-initial",
+      "entry": "messages",
+      "kind": "image",
+      "expectation": "must-succeed",
+      "fixture": "messages/s5-image-understanding.json",
+      "step": "initial",
+      "request_sha256": "601a623b6bbffe1fbdfc598800b7ba9a7462a9d5c6f487a007177ef0ee0de7f4",
+      "classification": "dry-run"
+    },
+    {
+      "id": "chat-cancel-recovery",
+      "entry": "chat",
+      "kind": "cancel",
+      "expectation": "must-succeed",
+      "fixture": "chat/s6-cancel-recover.json",
+      "step": "recovery",
+      "request_sha256": "3ea4fbc758455c4fd261bd6d57b2820099f8dd76387dab64f9eb4f7fb4228de0",
+      "classification": "dry-run"
+    },
+    {
+      "id": "responses-cancel-recovery",
+      "entry": "responses",
+      "kind": "cancel",
+      "expectation": "must-succeed",
+      "fixture": "responses/s6-cancel-recover.json",
+      "step": "recovery",
+      "request_sha256": "f8d5adfcb84de4a77945288b793f16fffd71c3416d7ebd222c99ce10e81f3009",
+      "classification": "dry-run"
+    },
+    {
+      "id": "messages-cancel-recovery",
+      "entry": "messages",
+      "kind": "cancel",
+      "expectation": "must-succeed",
+      "fixture": "messages/s6-cancel-recover.json",
+      "step": "recovery",
+      "request_sha256": "6629ad44144d42bd4b7ad24243325c2e249f4598c4a7cdfcd13e268b20d5ee23",
+      "classification": "dry-run"
+    }
+  ],
+  "resource_samples": [
+    {
+      "observed": false,
+      "rss_bytes": null,
+      "cpu_percent": null
+    },
+    {
+      "observed": false,
+      "rss_bytes": null,
+      "cpu_percent": null
+    },
+    {
+      "observed": false,
+      "rss_bytes": null,
+      "cpu_percent": null
+    },
+    {
+      "observed": false,
+      "rss_bytes": null,
+      "cpu_percent": null
+    },
+    {
+      "observed": false,
+      "rss_bytes": null,
+      "cpu_percent": null
+    },
+    {
+      "observed": false,
+      "rss_bytes": null,
+      "cpu_percent": null
+    },
+    {
+      "observed": false,
+      "rss_bytes": null,
+      "cpu_percent": null
+    },
+    {
+      "observed": false,
+      "rss_bytes": null,
+      "cpu_percent": null
+    },
+    {
+      "observed": false,
+      "rss_bytes": null,
+      "cpu_percent": null
+    },
+    {
+      "observed": false,
+      "rss_bytes": null,
+      "cpu_percent": null
+    },
+    {
+      "observed": false,
+      "rss_bytes": null,
+      "cpu_percent": null
+    },
+    {
+      "observed": false,
+      "rss_bytes": null,
+      "cpu_percent": null
+    },
+    {
+      "observed": false,
+      "rss_bytes": null,
+      "cpu_percent": null
+    },
+    {
+      "observed": false,
+      "rss_bytes": null,
+      "cpu_percent": null
+    },
+    {
+      "observed": false,
+      "rss_bytes": null,
+      "cpu_percent": null
+    },
+    {
+      "observed": false,
+      "rss_bytes": null,
+      "cpu_percent": null
+    },
+    {
+      "observed": false,
+      "rss_bytes": null,
+      "cpu_percent": null
+    },
+    {
+      "observed": false,
+      "rss_bytes": null,
+      "cpu_percent": null
+    },
+    {
+      "observed": false,
+      "rss_bytes": null,
+      "cpu_percent": null
+    },
+    {
+      "observed": false,
+      "rss_bytes": null,
+      "cpu_percent": null
+    },
+    {
+      "observed": false,
+      "rss_bytes": null,
+      "cpu_percent": null
+    },
+    {
+      "observed": false,
+      "rss_bytes": null,
+      "cpu_percent": null
+    },
+    {
+      "observed": false,
+      "rss_bytes": null,
+      "cpu_percent": null
+    },
+    {
+      "observed": false,
+      "rss_bytes": null,
+      "cpu_percent": null
+    },
+    {
+      "observed": false,
+      "rss_bytes": null,
+      "cpu_percent": null
+    },
+    {
+      "observed": false,
+      "rss_bytes": null,
+      "cpu_percent": null
+    },
+    {
+      "observed": false,
+      "rss_bytes": null,
+      "cpu_percent": null
+    }
+  ],
+  "ledger_crash_resume_ok": true
+}

@@ -1,0 +1,5 @@
+{
+  "service_tier": "auto",
+  "speed": "fast",
+  "metadata": {"trace": "abc", "session": "s-1"}
+}

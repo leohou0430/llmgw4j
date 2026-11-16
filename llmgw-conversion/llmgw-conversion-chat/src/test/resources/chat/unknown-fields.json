@@ -1,0 +1,6 @@
+{
+  "bogus_top_level": 1,
+  "thinking": {"type": "enabled"},
+  "top_k": 5,
+  "previous_response_id": "resp_1"
+}

@@ -1,0 +1,51 @@
+{
+  "model": "client-model",
+  "instructions": "be helpful",
+  "input": [
+    {
+      "type": "message",
+      "role": "developer",
+      "content": [
+        {
+          "type": "input_text",
+          "text": "prefer metric units"
+        }
+      ]
+    },
+    {
+      "type": "message",
+      "role": "system",
+      "content": "stay concise"
+    },
+    {
+      "type": "message",
+      "role": "user",
+      "content": [
+        {
+          "type": "input_text",
+          "text": "hello"
+        },
+        {
+          "type": "input_text",
+          "text": "world"
+        }
+      ]
+    },
+    {
+      "type": "message",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "hi there",
+          "annotations": []
+        }
+      ]
+    },
+    {
+      "type": "message",
+      "role": "user",
+      "content": "next"
+    }
+  ]
+}

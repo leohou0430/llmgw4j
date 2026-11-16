@@ -1,0 +1,255 @@
+1739:
+2026-11-11 16:00:28
+Full thread dump Java HotSpot(TM) 64-Bit Server VM (25+37-LTS-jvmci-b01 mixed mode, sharing):
+
+Threads class SMR info:
+_java_thread_list=0x00007fa3330c7f60, length=13, elements={
+0x00007fa333819800, 0x00007fa32480de00, 0x00007fa324810800, 0x00007fa324811000,
+0x00007fa324811800, 0x00007fa323021a00, 0x00007fa323024000, 0x00007fa333847400,
+0x00007fa314061200, 0x00007fa32480e600, 0x00007fa313015000, 0x00007fa343073000,
+0x00007fa343119e00
+}
+
+"main" #3 [5379] prio=5 os_prio=31 cpu=67086.37ms elapsed=67.94s tid=0x00007fa333819800 nid=5379 runnable  [0x000070000d20a000]
+   java.lang.Thread.State: RUNNABLE
+	at reactor.core.publisher.Operators.onDiscardQueueWithClear(Operators.java:480)
+	at reactor.core.publisher.FluxFlattenIterable$FlattenIterableSubscriber.cancel(FluxFlattenIterable.java:317)
+	at reactor.core.publisher.FluxContextWrite$ContextWriteSubscriber.cancel(FluxContextWrite.java:143)
+	at reactor.core.publisher.Operators.terminate(Operators.java:1327)
+	at reactor.core.publisher.BaseSubscriber.cancel(BaseSubscriber.java:231)
+	at io.github.leohou0430.llmgw.engine.webflux.SseResponseBuffersTest.slowWriterCannotPrefetchHundredsOfLargeLines(SseResponseBuffersTest.java:33)
+	at java.lang.invoke.LambdaForm$DMH/0x000000013f0d8000.invokeVirtual(java.base@25/LambdaForm$DMH)
+	at java.lang.invoke.LambdaForm$MH/0x000000013f0d8800.invoke(java.base@25/LambdaForm$MH)
+	at java.lang.invoke.Invokers$Holder.invokeExact_MT(java.base@25/Invokers$Holder)
+	at jdk.internal.reflect.DirectMethodHandleAccessor.invokeImpl(java.base@25/DirectMethodHandleAccessor.java:154)
+	at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(java.base@25/DirectMethodHandleAccessor.java:104)
+	at java.lang.reflect.Method.invoke(java.base@25/Method.java:565)
+	at org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:701)
+	at org.junit.platform.commons.support.ReflectionSupport.invokeMethod(ReflectionSupport.java:502)
+	at org.junit.jupiter.engine.support.MethodReflectionUtils.invoke(MethodReflectionUtils.java:45)
+	at org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:61)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:124)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.intercept(TimeoutExtension.java:163)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestableMethod(TimeoutExtension.java:148)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestMethod(TimeoutExtension.java:86)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor$$Lambda/0x000000013f09c478.apply(Unknown Source)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker$ReflectiveInterceptorCall.lambda$ofVoidMethod$0(InterceptingExecutableInvoker.java:123)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker$ReflectiveInterceptorCall$$Lambda/0x000000013f0d7628.apply(Unknown Source)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.lambda$invoke$0(InterceptingExecutableInvoker.java:105)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker$$Lambda/0x000000013f0d7d28.apply(Unknown Source)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$InterceptedInvocation.proceed(InvocationInterceptorChain.java:99)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.proceed(InvocationInterceptorChain.java:66)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.chainAndInvoke(InvocationInterceptorChain.java:47)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.invoke(InvocationInterceptorChain.java:39)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:104)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:98)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invokeVoid(InterceptingExecutableInvoker.java:71)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeTestMethod$0(TestMethodTestDescriptor.java:219)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor$$Lambda/0x000000013f0d71b0.execute(Unknown Source)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeTestMethod(TestMethodTestDescriptor.java:215)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:157)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:70)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$2(NodeTestTask.java:176)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask$$Lambda/0x000000013f0bd718.execute(Unknown Source)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$1(NodeTestTask.java:166)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask$$Lambda/0x000000013f0bd4e8.invoke(Unknown Source)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$0(NodeTestTask.java:164)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask$$Lambda/0x000000013f0bd2b8.execute(Unknown Source)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:163)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:116)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService$$Lambda/0x000000013f0be258.accept(Unknown Source)
+	at java.util.ArrayList.forEach(java.base@25/ArrayList.java:1604)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:42)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$2(NodeTestTask.java:180)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask$$Lambda/0x000000013f0bd718.execute(Unknown Source)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$1(NodeTestTask.java:166)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask$$Lambda/0x000000013f0bd4e8.invoke(Unknown Source)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$0(NodeTestTask.java:164)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask$$Lambda/0x000000013f0bd2b8.execute(Unknown Source)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:163)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:116)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService$$Lambda/0x000000013f0be258.accept(Unknown Source)
+	at java.util.ArrayList.forEach(java.base@25/ArrayList.java:1604)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:42)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$2(NodeTestTask.java:180)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask$$Lambda/0x000000013f0bd718.execute(Unknown Source)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$1(NodeTestTask.java:166)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask$$Lambda/0x000000013f0bd4e8.invoke(Unknown Source)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$0(NodeTestTask.java:164)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask$$Lambda/0x000000013f0bd2b8.execute(Unknown Source)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:163)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:116)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:36)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:52)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:58)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.executeEngine(EngineExecutionOrchestrator.java:246)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.failOrExecuteEngine(EngineExecutionOrchestrator.java:218)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:179)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:108)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:66)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator$$Lambda/0x000000013f0aa468.accept(Unknown Source)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:157)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:65)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:125)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:114)
+	at org.junit.platform.launcher.core.DelegatingLauncher.execute(DelegatingLauncher.java:58)
+	at org.junit.platform.launcher.core.InterceptingLauncher.lambda$execute$2(InterceptingLauncher.java:57)
+	at org.junit.platform.launcher.core.InterceptingLauncher$$Lambda/0x000000013f0a9dc0.proceed(Unknown Source)
+	at org.junit.platform.launcher.core.ClasspathAlignmentCheckingLauncherInterceptor.intercept(ClasspathAlignmentCheckingLauncherInterceptor.java:25)
+	at org.junit.platform.launcher.core.InterceptingLauncher.execute(InterceptingLauncher.java:56)
+	at org.junit.platform.launcher.core.DelegatingLauncher.execute(DelegatingLauncher.java:58)
+	at java.lang.invoke.LambdaForm$DMH/0x000000013f08c800.invokeInterface(java.base@25/LambdaForm$DMH)
+	at java.lang.invoke.LambdaForm$MH/0x000000013f0ad800.invoke(java.base@25/LambdaForm$MH)
+	at java.lang.invoke.Invokers$Holder.invokeExact_MT(java.base@25/Invokers$Holder)
+	at jdk.internal.reflect.DirectMethodHandleAccessor.invokeImpl(java.base@25/DirectMethodHandleAccessor.java:155)
+	at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(java.base@25/DirectMethodHandleAccessor.java:104)
+	at java.lang.reflect.Method.invoke(java.base@25/Method.java:565)
+	at org.apache.maven.surefire.api.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:125)
+	at org.apache.maven.surefire.junitplatform.LauncherAdapter.executeWithCancellationToken(LauncherAdapter.java:68)
+	at org.apache.maven.surefire.junitplatform.LauncherAdapter.execute(LauncherAdapter.java:54)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.execute(JUnitPlatformProvider.java:203)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invokeAllTests(JUnitPlatformProvider.java:168)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invoke(JUnitPlatformProvider.java:136)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+"Reference Handler" #15 [28675] daemon prio=10 os_prio=36 cpu=0.41ms elapsed=67.92s tid=0x00007fa32480de00 nid=28675 waiting on condition  [0x000070000db2c000]
+   java.lang.Thread.State: RUNNABLE
+	at java.lang.ref.Reference.waitForReferencePendingList(java.base@25/Native Method)
+	at java.lang.ref.Reference.processPendingReferences(java.base@25/Reference.java:246)
+	at java.lang.ref.Reference$ReferenceHandler.run(java.base@25/Reference.java:208)
+
+"Finalizer" #16 [23811] daemon prio=8 os_prio=34 cpu=0.11ms elapsed=67.92s tid=0x00007fa324810800 nid=23811 in Object.wait()  [0x000070000dc2f000]
+   java.lang.Thread.State: WAITING (on object monitor)
+	at java.lang.Object.wait0(java.base@25/Native Method)
+	- waiting on <0x000000061cc2b5c0> (a java.lang.ref.ReferenceQueue$Lock)
+	at java.lang.Object.wait(java.base@25/Object.java:389)
+	at java.lang.Object.wait(java.base@25/Object.java:351)
+	at java.lang.ref.ReferenceQueue.remove0(java.base@25/ReferenceQueue.java:137)
+	at java.lang.ref.ReferenceQueue.remove(java.base@25/ReferenceQueue.java:215)
+	- locked <0x000000061cc2b5c0> (a java.lang.ref.ReferenceQueue$Lock)
+	at java.lang.ref.Finalizer$FinalizerThread.run(java.base@25/Finalizer.java:165)
+
+"Signal Dispatcher" #17 [24067] daemon prio=9 os_prio=35 cpu=0.25ms elapsed=67.92s tid=0x00007fa324811000 nid=24067 waiting on condition  [0x0000000000000000]
+   java.lang.Thread.State: RUNNABLE
+
+"Service Thread" #18 [27651] daemon prio=9 os_prio=31 cpu=1.32ms elapsed=67.92s tid=0x00007fa324811800 nid=27651 runnable  [0x0000000000000000]
+   java.lang.Thread.State: RUNNABLE
+
+"Monitor Deflation Thread" #19 [27139] daemon prio=9 os_prio=31 cpu=4.84ms elapsed=67.92s tid=0x00007fa323021a00 nid=27139 runnable  [0x0000000000000000]
+   java.lang.Thread.State: RUNNABLE
+
+"JVMCI-native CompilerThread0" #20 [24323] daemon prio=9 os_prio=35 cpu=916.72ms elapsed=67.92s tid=0x00007fa323024000 nid=24323 waiting on condition  [0x0000000000000000]
+   java.lang.Thread.State: RUNNABLE
+   No compile task
+
+"C1 CompilerThread0" #27 [24835] daemon prio=9 os_prio=35 cpu=490.27ms elapsed=67.92s tid=0x00007fa333847400 nid=24835 waiting on condition  [0x0000000000000000]
+   java.lang.Thread.State: RUNNABLE
+   No compile task
+
+"Notification Thread" #32 [26371] daemon prio=9 os_prio=31 cpu=0.07ms elapsed=67.88s tid=0x00007fa314061200 nid=26371 runnable  [0x0000000000000000]
+   java.lang.Thread.State: RUNNABLE
+
+"Common-Cleaner" #33 [25347] daemon prio=8 os_prio=34 cpu=0.26ms elapsed=67.88s tid=0x00007fa32480e600 nid=25347 in Object.wait()  [0x000070000e544000]
+   java.lang.Thread.State: TIMED_WAITING (on object monitor)
+	at java.lang.Object.wait0(java.base@25/Native Method)
+	- waiting on <0x000000061cc11550> (a java.lang.ref.ReferenceQueue$Lock)
+	at java.lang.Object.wait(java.base@25/Object.java:389)
+	at java.lang.ref.ReferenceQueue.remove0(java.base@25/ReferenceQueue.java:123)
+	at java.lang.ref.ReferenceQueue.remove(java.base@25/ReferenceQueue.java:201)
+	- locked <0x000000061cc11550> (a java.lang.ref.ReferenceQueue$Lock)
+	at jdk.internal.ref.CleanerImpl.run(java.base@25/CleanerImpl.java:146)
+	at java.lang.Thread.runWith(java.base@25/Thread.java:1487)
+	at java.lang.Thread.run(java.base@25/Thread.java:1474)
+	at jdk.internal.misc.InnocuousThread.run(java.base@25/InnocuousThread.java:148)
+
+"surefire-forkedjvm-stream-flusher" #34 [26115] daemon prio=5 os_prio=31 cpu=56.58ms elapsed=67.80s tid=0x00007fa313015000 nid=26115 waiting on condition  [0x000070000e647000]
+   java.lang.Thread.State: TIMED_WAITING (parking)
+	at jdk.internal.misc.Unsafe.park(java.base@25/Native Method)
+	- parking to wait for  <0x000000061cc19ff8> (a java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject)
+	at java.util.concurrent.locks.LockSupport.parkNanos(java.base@25/LockSupport.java:271)
+	at java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.awaitNanos(java.base@25/AbstractQueuedSynchronizer.java:1803)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$DelayedWorkQueue.take(java.base@25/ScheduledThreadPoolExecutor.java:1166)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$DelayedWorkQueue.take(java.base@25/ScheduledThreadPoolExecutor.java:883)
+	at java.util.concurrent.ThreadPoolExecutor.getTask(java.base@25/ThreadPoolExecutor.java:1016)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(java.base@25/ThreadPoolExecutor.java:1076)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(java.base@25/ThreadPoolExecutor.java:614)
+	at java.lang.Thread.runWith(java.base@25/Thread.java:1487)
+	at java.lang.Thread.run(java.base@25/Thread.java:1474)
+
+"surefire-forkedjvm-command-thread" #36 [32771] daemon prio=5 os_prio=31 cpu=3.14ms elapsed=67.79s tid=0x00007fa343073000 nid=32771 runnable  [0x000070000e74a000]
+   java.lang.Thread.State: RUNNABLE
+	at java.io.FileInputStream.readBytes(java.base@25/Native Method)
+	at java.io.FileInputStream.read(java.base@25/FileInputStream.java:281)
+	at java.lang.System$In.read(java.base@25/System.java:1871)
+	at java.io.BufferedInputStream.read1(java.base@25/BufferedInputStream.java:328)
+	at java.io.BufferedInputStream.read(java.base@25/BufferedInputStream.java:388)
+	- locked <0x000000061cc22b60> (a java.io.BufferedInputStream)
+	at java.io.BufferedInputStream.fill(java.base@25/BufferedInputStream.java:289)
+	at java.io.BufferedInputStream.read1(java.base@25/BufferedInputStream.java:330)
+	at java.io.BufferedInputStream.read(java.base@25/BufferedInputStream.java:388)
+	- locked <0x000000061cc22b38> (a java.io.BufferedInputStream)
+	at org.apache.maven.surefire.api.util.internal.Channels$3.readImpl(Channels.java:169)
+	at org.apache.maven.surefire.api.util.internal.AbstractNoninterruptibleReadableChannel.read(AbstractNoninterruptibleReadableChannel.java:50)
+	at org.apache.maven.surefire.api.stream.AbstractStreamDecoder.read(AbstractStreamDecoder.java:446)
+	at org.apache.maven.surefire.api.stream.AbstractStreamDecoder.read(AbstractStreamDecoder.java:435)
+	at org.apache.maven.surefire.api.stream.AbstractStreamDecoder.readMessageType(AbstractStreamDecoder.java:120)
+	at org.apache.maven.surefire.booter.stream.CommandDecoder.decode(CommandDecoder.java:74)
+	at org.apache.maven.surefire.booter.spi.CommandChannelDecoder.decode(CommandChannelDecoder.java:60)
+	at org.apache.maven.surefire.booter.CommandReader$CommandRunnable.run(CommandReader.java:290)
+	at java.lang.Thread.runWith(java.base@25/Thread.java:1487)
+	at java.lang.Thread.run(java.base@25/Thread.java:1474)
+
+"Attach Listener" #49 [29447] daemon prio=9 os_prio=35 cpu=0.95ms elapsed=0.11s tid=0x00007fa343119e00 nid=29447 waiting on condition  [0x0000000000000000]
+   java.lang.Thread.State: RUNNABLE
+
+"GC Thread#11" os_prio=35 cpu=2.54ms elapsed=67.26s tid=0x00007fa333cfc400 nid=36099 runnable  
+
+"GC Thread#10" os_prio=35 cpu=2.45ms elapsed=67.26s tid=0x00007fa333cfbe00 nid=35843 runnable  
+
+"GC Thread#9" os_prio=35 cpu=2.49ms elapsed=67.26s tid=0x00007fa333cfb800 nid=35587 runnable  
+
+"GC Thread#8" os_prio=35 cpu=2.50ms elapsed=67.26s tid=0x00007fa3130b3600 nid=35331 runnable  
+
+"GC Thread#7" os_prio=35 cpu=2.47ms elapsed=67.26s tid=0x00007fa3130bd200 nid=35075 runnable  
+
+"GC Thread#6" os_prio=35 cpu=2.58ms elapsed=67.26s tid=0x00007fa3230eb000 nid=34563 runnable  
+
+"GC Thread#5" os_prio=35 cpu=2.45ms elapsed=67.26s tid=0x00007fa3230eaa00 nid=34051 runnable  
+
+"GC Thread#4" os_prio=35 cpu=2.54ms elapsed=67.26s tid=0x00007fa3230ea400 nid=42243 runnable  
+
+"GC Thread#3" os_prio=35 cpu=2.49ms elapsed=67.26s tid=0x00007fa3230e5800 nid=42755 runnable  
+
+"GC Thread#2" os_prio=35 cpu=2.50ms elapsed=67.26s tid=0x00007fa3230e5200 nid=33539 runnable  
+
+"GC Thread#1" os_prio=35 cpu=2.43ms elapsed=67.26s tid=0x00007fa3230dbe00 nid=43267 runnable  
+
+"VM Thread" os_prio=35 cpu=3.26ms elapsed=67.94s tid=0x00007fa344808800 nid=19459 runnable  
+
+"VM Periodic Task Thread" os_prio=36 cpu=0.66ms elapsed=67.94s tid=0x00007fa3239071d0 nid=17927 waiting on condition  
+
+"G1 Service" os_prio=35 cpu=2.02ms elapsed=67.95s tid=0x00007fa34400a000 nid=21507 runnable  
+
+"G1 Refine#0" os_prio=35 cpu=0.05ms elapsed=67.95s tid=0x00007fa344808200 nid=16643 runnable  
+
+"G1 Conc#0" os_prio=35 cpu=0.08ms elapsed=67.95s tid=0x00007fa324008200 nid=13827 runnable  
+
+"G1 Main Marker" os_prio=35 cpu=0.07ms elapsed=67.95s tid=0x00007fa323020a00 nid=13059 runnable  
+
+"GC Thread#0" os_prio=35 cpu=2.65ms elapsed=67.95s tid=0x00007fa33381ba00 nid=12547 runnable  
+
+JNI global refs: 35, weak refs: 0
+

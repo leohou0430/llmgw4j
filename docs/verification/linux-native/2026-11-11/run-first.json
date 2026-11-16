@@ -1,0 +1,60 @@
+{
+  "image": "sha256:e9443e94b66d21c2168d400ff54a8b576cbefa3cf5d8db941a3e67c1271d7937",
+  "builder": "ca9f03765e3aeae486fbc8fa02f427208cc9d5bde03a9d4dec86c4e6763bf115",
+  "redis": "e23730f7afc4c3d33b1cd0fadeec1b05f071b087bf17fc94372bfb7ac74db230",
+  "source_mount": false,
+  "exit_code": 1,
+  "container_state": {
+    "Status": "running",
+    "Running": true,
+    "Paused": false,
+    "Restarting": false,
+    "OOMKilled": false,
+    "Dead": false,
+    "Pid": 13598,
+    "ExitCode": 0,
+    "Error": "",
+    "StartedAt": "2026-11-11T15:38:48.457202224Z",
+    "FinishedAt": "0001-01-01T00:00:00Z",
+    "Health": {
+      "Status": "unhealthy",
+      "FailingStreak": 33,
+      "Log": [
+        {
+          "Start": "2026-11-11T23:43:49.890704516+08:00",
+          "End": "2026-11-11T23:43:49.949056322+08:00",
+          "ExitCode": 1,
+          "Output": "curl: (7) Failed to connect to 127.0.0.1 port 8080 after 0 ms: Could not connect to server\n"
+        },
+        {
+          "Start": "2026-11-11T23:43:59.949919366+08:00",
+          "End": "2026-11-11T23:43:59.994150653+08:00",
+          "ExitCode": 1,
+          "Output": "curl: (7) Failed to connect to 127.0.0.1 port 8080 after 0 ms: Could not connect to server\n"
+        },
+        {
+          "Start": "2026-11-11T23:44:09.995917549+08:00",
+          "End": "2026-11-11T23:44:10.052539613+08:00",
+          "ExitCode": 1,
+          "Output": "curl: (7) Failed to connect to 127.0.0.1 port 8080 after 0 ms: Could not connect to server\n"
+        },
+        {
+          "Start": "2026-11-11T23:44:20.053419355+08:00",
+          "End": "2026-11-11T23:44:20.094925278+08:00",
+          "ExitCode": 1,
+          "Output": "curl: (7) Failed to connect to 127.0.0.1 port 8080 after 0 ms: Could not connect to server\n"
+        },
+        {
+          "Start": "2026-11-11T23:44:30.096497252+08:00",
+          "End": "2026-11-11T23:44:30.140513908+08:00",
+          "ExitCode": 1,
+          "Output": "curl: (7) Failed to connect to 127.0.0.1 port 8080 after 0 ms: Could not connect to server\n"
+        }
+      ]
+    }
+  },
+  "cleaned_container_ids": [
+    "e23730f7afc4c3d33b1cd0fadeec1b05f071b087bf17fc94372bfb7ac74db230",
+    "ca9f03765e3aeae486fbc8fa02f427208cc9d5bde03a9d4dec86c4e6763bf115"
+  ]
+}

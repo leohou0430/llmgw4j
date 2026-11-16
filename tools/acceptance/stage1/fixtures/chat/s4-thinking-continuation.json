@@ -1,0 +1,139 @@
+{
+  "schema": "llmgw-acceptance-fixture/v1",
+  "id": "chat-s4-thinking-continuation",
+  "entry": "chat",
+  "scenario": 4,
+  "slug": "thinking-continuation",
+  "title": "思考输出+携带状态续轮",
+  "mock": {
+    "chunks": 4
+  },
+  "markers": [
+    "mock-deepseek-thinking"
+  ],
+  "steps": [
+    {
+      "name": "initial",
+      "request": {
+        "model": "mock-model",
+        "messages": [
+          {
+            "role": "user",
+            "content": "mock-deepseek-thinking: Explain the answer."
+          }
+        ],
+        "reasoning_effort": "medium",
+        "max_tokens": 1024,
+        "stream": true,
+        "stream_options": {
+          "include_usage": true
+        }
+      },
+      "expected": {
+        "transport": "sse",
+        "terminal": {
+          "object": "chat.completion.chunk",
+          "finish_reason": "stop",
+          "done_literal": "data: [DONE]",
+          "done_count": 1,
+          "usage_chunk_after_terminal": true,
+          "usage_chunk_choices_len": 0
+        },
+        "text": {
+          "equals": "Hello world"
+        },
+        "thinking": {
+          "equals": "Let me think",
+          "before_text": true
+        },
+        "usage": {
+          "prompt_tokens": 7,
+          "completion_tokens": 4,
+          "total_tokens": 11,
+          "prompt_tokens_details": {
+            "cached_tokens": 3
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 2
+          }
+        },
+        "sse": {
+          "framing": "data-only",
+          "first_delta_role": "assistant",
+          "reasoning_delta_concat": "Let me think",
+          "reasoning_before_content": true,
+          "content_delta_concat": "Hello world",
+          "terminal_chunk": {
+            "finish_reason": "stop",
+            "delta_empty": true
+          },
+          "usage_chunk": {
+            "after_terminal": true,
+            "choices_len": 0
+          },
+          "done": {
+            "literal": "data: [DONE]",
+            "count": 1,
+            "last": true
+          }
+        }
+      }
+    },
+    {
+      "name": "continuation",
+      "request": {
+        "model": "mock-model",
+        "messages": [
+          {
+            "role": "user",
+            "content": "mock-deepseek-thinking: Explain the answer."
+          },
+          {
+            "role": "assistant",
+            "reasoning_content": "Let me think",
+            "content": "Hello world"
+          },
+          {
+            "role": "user",
+            "content": "mock-deepseek-thinking: Continue."
+          }
+        ],
+        "reasoning_effort": "medium",
+        "max_tokens": 1024,
+        "stream": false
+      },
+      "expected": {
+        "transport": "json",
+        "terminal": {
+          "object": "chat.completion",
+          "choices_len": 1,
+          "message_role": "assistant",
+          "finish_reason": "stop"
+        },
+        "text": {
+          "equals": "Hello world"
+        },
+        "thinking": {
+          "equals": "Let me think",
+          "before_text": true
+        },
+        "usage": {
+          "prompt_tokens": 7,
+          "completion_tokens": 1,
+          "total_tokens": 8,
+          "prompt_tokens_details": {
+            "cached_tokens": 3
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 2
+          }
+        }
+      }
+    }
+  ],
+  "notes": "Step 1 streams thinking; step 2 carries the reasoning state back. Responses/Messages tokens are pre-minted with the documented fixture key/project (manifest.continuation_envelope); T1.14 may substitute the runtime-minted token from step 1 because verify() binds projectId + reasoning text, not the runtime item id. Chat carries native reasoning_content plaintext.",
+  "continuation": {
+    "token_source": "native_plaintext",
+    "envelope_ref": null
+  }
+}

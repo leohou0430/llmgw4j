@@ -13,6 +13,18 @@ import io.github.leohou0430.llmgw.core.routing.Route;
 import io.github.leohou0430.llmgw.core.routing.Router;
 import io.github.leohou0430.llmgw.core.routing.TaskRouteSticky;
 import io.github.leohou0430.llmgw.core.upstream.UpstreamMethod;
+import io.github.leohou0430.llmgw.conversion.CapabilityException;
+import io.github.leohou0430.llmgw.conversion.ConversionService;
+import io.github.leohou0430.llmgw.conversion.DegradationGrant;
+import io.github.leohou0430.llmgw.conversion.PreparedConversion;
+import io.github.leohou0430.llmgw.conversion.StreamTranscoder;
+import io.github.leohou0430.llmgw.conversion.UpstreamException;
+import io.github.leohou0430.llmgw.core.upstream.ByteStream;
+import io.github.leohou0430.llmgw.core.multipart.MultipartLimitException;
+import io.github.leohou0430.llmgw.core.multipart.MultipartScanner;
+import io.github.leohou0430.llmgw.core.multipart.MultipartUpload;
+import io.github.leohou0430.llmgw.core.multipart.SpoolLimitException;
+import io.github.leohou0430.llmgw.core.multipart.SpoolManager;
 import io.github.leohou0430.llmgw.core.upstream.ChunkSink;
 import io.github.leohou0430.llmgw.core.upstream.CircuitBreaker;
 import io.github.leohou0430.llmgw.core.upstream.CircuitOpenException;
@@ -39,11 +51,17 @@ import tools.jackson.databind.JsonNode;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Flow;
 
 /**
  * Blocking data plane on virtual threads (one request = one virtual thread).
@@ -75,12 +93,12 @@ import java.util.Optional;
  * fallback chain) is delegated to {@link ForwardingPolicy}; header pass-through
  * in both directions is delegated to {@link HeaderPolicy}. Comment lines
  * (": ...", SSE heartbeat) are transport-level and excluded from accounting,
- * TTFT and the first-chunk guard. The provider's heartbeat watchdog may write
- * comment frames from another thread, so StreamSink writes are synchronized.
+ * TTFT and the first-chunk guard. JDK heartbeats use the requesting thread;
+ * StreamSink also serializes writes from custom providers defensively.
  */
 @RestController
 @Profile(EngineProfiles.VT)
-public class VirtualThreadGatewayController {
+public class VirtualThreadGatewayController implements AutoCloseable {
 
     private final GovernanceChain chain;
     private final Router router;
@@ -92,11 +110,37 @@ public class VirtualThreadGatewayController {
     private final java.util.concurrent.Semaphore requestSlots;
     private final HeaderPolicy headerPolicy;
     private final ForwardingPolicy.RetryConfig retryConfig;
+    /**
+     * T1.12 protocol-conversion seam. Nullable: when absent (or {@code applies(route)} is false)
+     * the data plane stays byte-for-byte passthrough. Injected by the engine Spring configuration
+     * so this module compiles and tests without the app's conversion bean.
+     */
+    private final ConversionService conversion;
+
+    /**
+     * T2.4 bounded upload spool, owned per controller instance (one per engine
+     * profile), mirroring {@link #requestSlots} ownership — never a static global.
+     * Lazily created on the first upload so download/conversion-only instances
+     * never touch disk; released by {@link #close()} (Spring's inferred destroy
+     * method) which also removes the private temp directory.
+     */
+    private volatile SpoolManager spools;
+    private volatile Path spoolDir;
+    private static final int UPLOAD_CHUNK_BYTES = 16 * 1024;
 
     public VirtualThreadGatewayController(GovernanceChain chain, Router router,
                                           UpstreamProvider provider, CircuitBreaker breaker,
                                           GatewayProperties properties, HeaderPolicy headerPolicy,
                                           TaskRouteSticky taskRoutes) {
+        this(chain, router, provider, breaker, properties, headerPolicy, taskRoutes, null);
+    }
+
+    @org.springframework.beans.factory.annotation.Autowired
+    public VirtualThreadGatewayController(GovernanceChain chain, Router router,
+                                          UpstreamProvider provider, CircuitBreaker breaker,
+                                          GatewayProperties properties, HeaderPolicy headerPolicy,
+                                          TaskRouteSticky taskRoutes,
+                                          @org.springframework.lang.Nullable ConversionService conversion) {
         this.chain = chain;
         this.router = router;
         this.provider = provider;
@@ -105,6 +149,7 @@ public class VirtualThreadGatewayController {
         this.requestSlots = new java.util.concurrent.Semaphore(properties.getMaxConcurrentRequests());
         this.taskRoutes = taskRoutes;
         this.headerPolicy = headerPolicy;
+        this.conversion = conversion;
         GatewayProperties.Upstream.Retry retry = properties.getUpstream().getRetry();
         this.retryConfig = new ForwardingPolicy.RetryConfig(
                 retry.getAttempts(), retry.getBackoffBaseMs(), retry.getBackoffMaxMs());
@@ -159,7 +204,7 @@ public class VirtualThreadGatewayController {
     private void handleBinaryKind(ProtocolKind kind, String contentType,
                                   HttpServletRequest request, HttpServletResponse response) throws IOException {
         if (!requestSlots.tryAcquire()) {
-            writeError(response, GatewayDecision.deny(503, "gateway request capacity exceeded"));
+            writeError(response, GatewayDecision.deny(503, EngineReasons.CAPACITY_EXCEEDED));
             return;
         }
         try {
@@ -308,7 +353,7 @@ public class VirtualThreadGatewayController {
     private void handleKind(ProtocolKind kind, HttpServletRequest request,
                             HttpServletResponse response) throws IOException {
         if (!requestSlots.tryAcquire()) {
-            writeError(response, GatewayDecision.deny(503, "gateway request capacity exceeded"));
+            writeError(response, GatewayDecision.deny(503, EngineReasons.CAPACITY_EXCEEDED));
             return;
         }
         try {
@@ -353,10 +398,30 @@ public class VirtualThreadGatewayController {
         ForwardingPolicy.RetryConfig retry = retryConfig;
         Map<String, String> pass = headerPolicy.toUpstream(kind, clientHeaders);
         HeaderListener egress = egressListener(response);
+        // T1.12 protocol conversion: prepare BEFORE any upstream request is built, so a capability
+        // violation fails pre-header with the entry error shape instead of touching the upstream.
+        PreparedConversion prepared = null;
+        if (conversion != null && conversion.applies(route)) {
+            try {
+                // Stage-1 degenerate mapping: tenantId = projectId = decision.keyId().
+                // TODO(stage 3): replace with the real tenant/project split from the decision.
+                DegradationGrant grant = DegradationGrant.parse(degradationGrantValue(clientHeaders));
+                prepared = conversion.prepare(parsed, route, decision.keyId(), decision.keyId(), grant);
+            } catch (CapabilityException | UpstreamException error) {
+                GatewayPipeline.finish(chain, context, false);
+                writeConversionError(response, kind, error);
+                return;
+            }
+        }
+        final PreparedConversion conversionHandle = prepared;
+        // Matrix §11 security invariant: the degradation grant is gateway-only; strip it from the
+        // upstream pass headers unconditionally, regardless of the configured whitelist.
+        final Map<String, String> upstreamPass = withoutDegradation(pass);
         boolean success = false;
         try {
             if (parsed.stream()) {
-                success = handleStream(kind, response, rawJson, parsed, route, timeout, context, pass);
+                success = handleStream(kind, response, rawJson, parsed, route, timeout, context,
+                        upstreamPass, conversionHandle);
             } else {
                 boolean cacheBypass = "1".equals(clientHeaders.get("x-llmgw-no-cache"));
                 Optional<String> cached = cacheBypass
@@ -370,10 +435,15 @@ public class VirtualThreadGatewayController {
                 } else {
                     Completed completed = completeWithPlan(
                             EngineRoutes.forwardPlan(router, route, retry, parsed), 0,
-                            rawJson, parsed, timeout, context, pass, egress, 0);
+                            rawJson, parsed, timeout, context, upstreamPass, egress, 0, conversionHandle);
                     body = completed.body();
                     winning = completed.route();
                     context.markUpstreamEnd();
+                    // T1.12: transcode the upstream body into the ENTRY body BEFORE accounting,
+                    // cache, taskId binding and the write. A cache HIT is already entry-shaped.
+                    if (conversionHandle != null) {
+                        body = conversionHandle.transcodeResponse(body);
+                    }
                 }
                 // Single parse: token count AND cacheability come from the
                 // same tree (the body previously went through readTree twice).
@@ -404,10 +474,17 @@ public class VirtualThreadGatewayController {
             }
         } catch (Exception e) {
             if (!response.isCommitted()) {
-                writeError(response, GatewayDecision.deny(502,
-                        EngineReasons.upstream(e)));
+                if (e instanceof CapabilityException || e instanceof UpstreamException) {
+                    writeConversionError(response, kind, (RuntimeException) e);
+                } else {
+                    writeError(response, GatewayDecision.deny(502,
+                            EngineReasons.upstream(e)));
+                }
             }
         } finally {
+            if (conversionHandle != null) {
+                conversionHandle.close();
+            }
             GatewayPipeline.finish(chain, context, success);
         }
     }
@@ -420,8 +497,16 @@ public class VirtualThreadGatewayController {
      */
     private void handleUpload(ProtocolKind kind, HttpServletRequest request,
                               HttpServletResponse response) throws IOException {
+        // T2.7: a declared Content-Length over the cap is rejected before the body
+        // is read or a permit is taken; unknown length (-1) falls through to the
+        // scanner's cumulative bound.
+        long declared = request.getContentLengthLong();
+        if (declared > properties.getMaxRequestBytes()) {
+            writeError(response, GatewayDecision.deny(413, EngineReasons.REQUEST_TOO_LARGE));
+            return;
+        }
         if (!requestSlots.tryAcquire()) {
-            writeError(response, GatewayDecision.deny(503, "gateway request capacity exceeded"));
+            writeError(response, GatewayDecision.deny(503, EngineReasons.CAPACITY_EXCEEDED));
             return;
         }
         try {
@@ -434,61 +519,134 @@ public class VirtualThreadGatewayController {
     private void handleUploadWithinCapacity(ProtocolKind kind, HttpServletRequest request,
                               HttpServletResponse response) throws IOException {
         long arrived = System.nanoTime();
-        long max = Math.max(1, properties.getMaxRequestBytes());
-        int cap = (int) Math.min(max, Integer.MAX_VALUE - 1) + 1;
-        byte[] body = request.getInputStream().readNBytes(cap);
-        if (body.length > max) {
-            writeError(response, GatewayDecision.deny(413, EngineReasons.REQUEST_TOO_LARGE));
-            return;
-        }
         Map<String, String> clientHeaders = firstValues(request);
         String requestId = GatewayPipeline.requestId(request.getHeader(EngineHeaders.REQUEST_ID));
         response.setHeader(EngineHeaders.REQUEST_ID, requestId);
-        ParsedRequest parsed;
+
+        String boundary = multipartBoundary(request.getContentType());
+        if (boundary == null) {
+            writeError(response, GatewayDecision.deny(400, "missing multipart boundary"));
+            return;
+        }
+        // T2.4: stream the body through the scanner+spool instead of buffering it
+        // whole. The configured request cap becomes the whole-multipart bound
+        // (413), with the plan's per-file / metadata defaults; limits are enforced
+        // chunk-by-chunk so memory stays flat regardless of upload size.
+        MultipartScanner.Limits defaults = MultipartScanner.Limits.defaults();
+        MultipartScanner.Limits limits = new MultipartScanner.Limits(
+                defaults.maxFileBytes(), Math.max(1, properties.getMaxRequestBytes()),
+                defaults.maxMetadataBytes());
+
+        MultipartUpload.Prepared prepared;
         try {
-            parsed = Protocols.of(kind).parse(body);
-        } catch (RuntimeException e) {
+            prepared = MultipartUpload.prepare(
+                    ByteStream.inputStreamSource(request.getInputStream(), UPLOAD_CHUNK_BYTES),
+                    boundary, limits, spools());
+        } catch (MultipartLimitException | SpoolLimitException e) {
+            writeError(response, GatewayDecision.deny(413, EngineReasons.REQUEST_TOO_LARGE));
+            return;
+        } catch (IOException e) {
             writeError(response, GatewayDecision.deny(400,
                     "invalid multipart body: " + e.getMessage()));
             return;
         }
-        GatewayDecision decision = chain.enter(request.getHeader("Authorization"), parsed,
-                router.resolve(kind, parsed.model()));
-        if (!decision.allowed()) {
-            writeError(response, decision);
-            return;
-        }
-        GatewayContext context = GatewayPipeline.context(decision, requestId, arrived);
-        Map<String, String> pass = headerPolicy.toUpstream(kind, clientHeaders);
+
         boolean success = false;
+        GatewayContext context = null;
         try {
-            if (!breaker.allow(decision.route())) {
-                throw new CircuitOpenException(decision.route().id());
+            // Mirror DefaultProtocols.Multipart routing: FILES keys on "purpose",
+            // TRANSCRIPTIONS on "model"; the prompt field rides as probe text.
+            String routingField = kind == ProtocolKind.FILES ? "purpose" : "model";
+            ParsedRequest parsed = new ParsedRequest("", kind,
+                    prepared.fields().getOrDefault(routingField, ""), false,
+                    prepared.fields().getOrDefault("prompt", ""),
+                    (int) Math.max(1L, prepared.totalBytes() / 4), 1, null);
+            GatewayDecision decision = chain.enter(request.getHeader("Authorization"), parsed,
+                    router.resolve(kind, parsed.model()));
+            if (!decision.allowed()) {
+                writeError(response, decision);
+                return;
             }
-            context.markUpstreamStart();
-            byte[] upstreamBody = provider.fetchRaw(EngineRoutes.postRawBytes(body, parsed,
-                    decision.route(), properties.getUpstream().getTimeoutMs(), pass));
-            breaker.recordSuccess(decision.route());
-            context.markUpstreamEnd();
-            if (kind == ProtocolKind.FILES) {
-                String resourceId = ProtocolCodec.tryParse(new String(upstreamBody, StandardCharsets.UTF_8))
-                        .path("id").asText("");
-                if (!resourceId.isBlank()) {
-                    taskRoutes.bind(decision.keyId(), kind.wireName(), resourceId, decision.route().id());
+            context = GatewayPipeline.context(decision, requestId, arrived);
+            Map<String, String> pass = headerPolicy.toUpstream(kind, clientHeaders);
+            try {
+                if (!breaker.allow(decision.route())) {
+                    throw new CircuitOpenException(decision.route().id());
+                }
+                context.markUpstreamStart();
+                byte[] upstreamBody = provider.fetchRaw(EngineRoutes.postRawBytes(
+                        prepared.body(), prepared.bodyLength(), parsed,
+                        decision.route(), properties.getUpstream().getTimeoutMs(), pass));
+                breaker.recordSuccess(decision.route());
+                context.markUpstreamEnd();
+                if (kind == ProtocolKind.FILES) {
+                    String resourceId = ProtocolCodec.tryParse(new String(upstreamBody, StandardCharsets.UTF_8))
+                            .path("id").asText("");
+                    if (!resourceId.isBlank()) {
+                        taskRoutes.bind(decision.keyId(), kind.wireName(), resourceId, decision.route().id());
+                    }
+                }
+                response.setHeader(EngineHeaders.OVERHEAD_MS, EngineTimings.total(context));
+                response.setStatus(200);
+                response.setContentType(EngineHeaders.APPLICATION_JSON);
+                response.getOutputStream().write(upstreamBody);
+                response.flushBuffer();
+                success = true;
+            } catch (Exception e) {
+                if (!response.isCommitted()) {
+                    writeError(response, GatewayDecision.deny(502, EngineReasons.upstream(e)));
                 }
             }
-            response.setHeader(EngineHeaders.OVERHEAD_MS, EngineTimings.total(context));
-            response.setStatus(200);
-            response.setContentType(EngineHeaders.APPLICATION_JSON);
-            response.getOutputStream().write(upstreamBody);
-            response.flushBuffer();
-            success = true;
-        } catch (Exception e) {
-            if (!response.isCommitted()) {
-                writeError(response, GatewayDecision.deny(502, EngineReasons.upstream(e)));
-            }
         } finally {
-            GatewayPipeline.finish(chain, context, success);
+            // Every terminal path (success, governance reject, upstream error,
+            // cancel) releases the spool exactly once; Prepared.close is idempotent.
+            prepared.close();
+            if (context != null) {
+                GatewayPipeline.finish(chain, context, success);
+            }
+        }
+    }
+
+    /** Lazily create the per-engine spool manager owning one restricted temp dir. */
+    private synchronized SpoolManager spools() throws IOException {
+        if (spools == null) {
+            spoolDir = Files.createTempDirectory("llmgw-vt-spool-");
+            spools = new SpoolManager(SpoolManager.Config.defaults(spoolDir));
+        }
+        return spools;
+    }
+
+    /** Extract the multipart boundary parameter from a Content-Type header. */
+    private static String multipartBoundary(String contentType) {
+        if (contentType == null) {
+            return null;
+        }
+        for (String part : contentType.split(";")) {
+            String t = part.trim();
+            if (t.toLowerCase(Locale.ROOT).startsWith("boundary=")) {
+                String b = t.substring("boundary=".length()).trim();
+                if (b.length() >= 2 && b.startsWith("\"") && b.endsWith("\"")) {
+                    b = b.substring(1, b.length() - 1);
+                }
+                return b.isEmpty() ? null : b;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public synchronized void close() {
+        if (spools != null) {
+            spools.close();
+            spools = null;
+        }
+        if (spoolDir != null) {
+            try {
+                Files.deleteIfExists(spoolDir);
+            } catch (IOException ignored) {
+                // best-effort temp-dir removal on shutdown
+            }
+            spoolDir = null;
         }
     }
 
@@ -504,7 +662,7 @@ public class VirtualThreadGatewayController {
                                    String taskId, UpstreamMethod method,
                                    HttpServletRequest request, HttpServletResponse response) throws IOException {
         if (!requestSlots.tryAcquire()) {
-            writeError(response, GatewayDecision.deny(503, "gateway request capacity exceeded"));
+            writeError(response, GatewayDecision.deny(503, EngineReasons.CAPACITY_EXCEEDED));
             return;
         }
         try {
@@ -540,6 +698,7 @@ public class VirtualThreadGatewayController {
         Route route = isPinned ? pinned : decision.route();
         decision = decision.withRoute(route);
         GatewayContext context = GatewayPipeline.context(decision, requestId, arrived);
+        boolean stream = !EngineHeaders.APPLICATION_JSON.equals(contentType);
         boolean success = false;
         boolean fetched = false;
         try {
@@ -547,23 +706,48 @@ public class VirtualThreadGatewayController {
                 throw new CircuitOpenException(route.id());
             }
             context.markUpstreamStart();
-            byte[] body = provider.fetchRaw(EngineRoutes.methodFetch(route, upstreamPath,
-                    method, properties.getUpstream().getTimeoutMs()));
-            if (!isPinned) {
-                breaker.recordSuccess(route);
+            if (stream) {
+                // T2.4 binary content download: bounded blocking drain of fetchStream
+                // straight to the servlet output (one chunk in flight, never a whole
+                // byte[]). Headers precede the first byte because it commits the
+                // response; only pre-commit overhead is reported here (upstream timing
+                // is a meter), matching the streaming convention.
+                response.setStatus(200);
+                response.setContentType(contentType);
+                response.setHeader(EngineHeaders.OVERHEAD_MS, EngineTimings.preflight(context));
+                ServletDrain drain = new ServletDrain(response.getOutputStream());
+                provider.fetchStream(EngineRoutes.methodFetch(route, upstreamPath,
+                        method, properties.getUpstream().getTimeoutMs())).subscribe(drain);
+                drain.await();
+                if (drain.error != null) {
+                    throw asException(drain.error);
+                }
+                if (!isPinned) {
+                    breaker.recordSuccess(route);
+                }
+                fetched = true;
+                context.markUpstreamEnd();
+                response.flushBuffer();
+                success = true;
+            } else {
+                byte[] body = provider.fetchRaw(EngineRoutes.methodFetch(route, upstreamPath,
+                        method, properties.getUpstream().getTimeoutMs()));
+                if (!isPinned) {
+                    breaker.recordSuccess(route);
+                }
+                fetched = true;
+                context.markUpstreamEnd();
+                String upstream = EngineTimings.upstreamOrNull(context);
+                if (upstream != null) {
+                    response.setHeader(EngineHeaders.UPSTREAM_MS, upstream);
+                }
+                response.setHeader(EngineHeaders.OVERHEAD_MS, EngineTimings.total(context));
+                response.setStatus(200);
+                response.setContentType(contentType);
+                response.getOutputStream().write(body);
+                response.flushBuffer();
+                success = true;
             }
-            fetched = true;
-            context.markUpstreamEnd();
-            String upstream = EngineTimings.upstreamOrNull(context);
-            if (upstream != null) {
-                response.setHeader(EngineHeaders.UPSTREAM_MS, upstream);
-            }
-            response.setHeader(EngineHeaders.OVERHEAD_MS, EngineTimings.total(context));
-            response.setStatus(200);
-            response.setContentType(contentType);
-            response.getOutputStream().write(body);
-            response.flushBuffer();
-            success = true;
         } catch (Exception e) {
             if (!isPinned && !fetched && !(e instanceof CircuitOpenException)) {
                 breaker.recordFailure(route);
@@ -576,6 +760,66 @@ public class VirtualThreadGatewayController {
         }
     }
 
+    private static Exception asException(Throwable t) {
+        return t instanceof Exception e ? e : new IOException(t);
+    }
+
+    /**
+     * T2.4 bounded blocking drain of a download publisher to the servlet output.
+     * One chunk is in flight at a time (request(1) after each write) so a slow
+     * client backpressures the upstream instead of buffering the whole body. A
+     * write failure cancels the subscription (releasing the upstream source) and
+     * is surfaced as the terminal error. ByteStream emits on the requesting
+     * thread, so {@link #await()} returns immediately for the JDK transport.
+     */
+    private static final class ServletDrain implements Flow.Subscriber<ByteBuffer> {
+        private final OutputStream out;
+        private final CountDownLatch done = new CountDownLatch(1);
+        private volatile Flow.Subscription sub;
+        private volatile Throwable error;
+
+        ServletDrain(OutputStream out) {
+            this.out = out;
+        }
+
+        @Override public void onSubscribe(Flow.Subscription s) {
+            this.sub = s;
+            s.request(1);
+        }
+
+        @Override public void onNext(ByteBuffer b) {
+            try {
+                byte[] a = new byte[b.remaining()];
+                b.get(a);
+                out.write(a);
+            } catch (IOException e) {
+                error = e;
+                sub.cancel();
+                done.countDown();
+                return;
+            }
+            sub.request(1);
+        }
+
+        @Override public void onError(Throwable t) {
+            error = t;
+            done.countDown();
+        }
+
+        @Override public void onComplete() {
+            done.countDown();
+        }
+
+        void await() throws IOException {
+            try {
+                done.await();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                throw new IOException("download interrupted", e);
+            }
+        }
+    }
+
     /**
      * Do NOT call flushBuffer() before the first chunk: that commits the
      * response and turns a failed upstream into a misleading "200 OK, empty
@@ -583,7 +827,8 @@ public class VirtualThreadGatewayController {
      */
     private boolean handleStream(ProtocolKind kind, HttpServletResponse response, String rawJson,
                                  ParsedRequest parsed, Route route, int timeout,
-                                 GatewayContext context, Map<String, String> pass) {
+                                 GatewayContext context, Map<String, String> pass,
+                                 PreparedConversion prepared) {
         response.setStatus(200);
         response.setContentType(EngineHeaders.TEXT_EVENT_STREAM);
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
@@ -594,14 +839,17 @@ public class VirtualThreadGatewayController {
         response.setHeader(EngineHeaders.OVERHEAD_MS,
                 EngineTimings.preflight(context));
 
-        StreamSink sink = new StreamSink(response, context, headerPolicy);
+        // T1.12: one fresh transcoder per request; the sink transcodes upstream chat lines into
+        // ENTRY lines before accounting and owns the entry terminal (no double error / fake success).
+        StreamTranscoder transcoder = prepared == null ? null : prepared.newStreamTranscoder();
+        StreamSink sink = new StreamSink(response, context, headerPolicy, transcoder);
         try {
             streamWithPlan(EngineRoutes.forwardPlan(router, route, retryConfig, parsed), 0,
-                    rawJson, parsed, timeout, sink, context, pass, 0);
+                    rawJson, parsed, timeout, sink, context, pass, 0, prepared);
             // A clean EOF is NOT proof of completion. Only an explicit upstream
             // terminator frame is. Do not fabricate one here.
             if (!sink.isComplete()) {
-                return handleFailure(response, sink, EngineReasons.truncated(kind));
+                return handleFailure(response, sink, EngineReasons.truncated(kind), kind, prepared);
             }
             return true;
         } catch (Exception e) {
@@ -611,18 +859,33 @@ public class VirtualThreadGatewayController {
                 return true;
             }
             return handleFailure(response, sink,
-                    EngineReasons.upstream(e));
+                    EngineReasons.upstream(e), kind, prepared);
+        } finally {
+            // Close AFTER terminal handling so onUpstreamError ran while the transcoder was open.
+            if (transcoder != null) {
+                transcoder.close();
+            }
         }
     }
 
     /** Shared terminal handling for thrown errors and silent truncation. */
-    private boolean handleFailure(HttpServletResponse response, StreamSink sink, String reason) {
+    private boolean handleFailure(HttpServletResponse response, StreamSink sink, String reason,
+                                  ProtocolKind kind, PreparedConversion prepared) {
         if (sink.isComplete()) {
             return true;
         }
+        if (sink.terminalHandled()) {
+            // T1.12: the transcoder already rendered the entry terminal (success or error). Never
+            // append a second error or a fabricated success; the caller bills the failure once.
+            return false;
+        }
         if (!sink.chunkSent && !response.isCommitted()) {
             try {
-                writeError(response, GatewayDecision.deny(502, reason));
+                if (prepared != null) {
+                    writeConversionError(response, kind, new UpstreamException(reason));
+                } else {
+                    writeError(response, GatewayDecision.deny(502, reason));
+                }
             } catch (IOException ignored) {
                 // Client disconnected; nothing left to report to.
             }
@@ -642,6 +905,17 @@ public class VirtualThreadGatewayController {
                                 String rawJson, ParsedRequest parsed, int timeout,
                                 StreamSink sink, GatewayContext context, Map<String, String> pass,
                                 long extraDelayMs) {
+        streamWithPlan(plan, from, rawJson, parsed, timeout, sink, context, pass, extraDelayMs, null);
+    }
+
+    /**
+     * T1.12 conversion-aware attempt loop: a non-null {@code prepared} builds the upstream request
+     * from the already converted payload; null keeps the byte-for-byte passthrough path untouched.
+     */
+    private void streamWithPlan(List<ForwardingPolicy.Attempt> plan, int from,
+                                String rawJson, ParsedRequest parsed, int timeout,
+                                StreamSink sink, GatewayContext context, Map<String, String> pass,
+                                long extraDelayMs, PreparedConversion prepared) {
         if (from >= plan.size()) {
             throw new IllegalStateException(EngineReasons.NO_UPSTREAM_ROUTE);
         }
@@ -655,15 +929,20 @@ public class VirtualThreadGatewayController {
                 throw open;
             }
             streamWithPlan(plan, next, rawJson, parsed, timeout, sink, context, pass,
-                    ForwardingPolicy.effectiveDelayMs(plan, from, next, open));
+                    ForwardingPolicy.effectiveDelayMs(plan, from, next, open), prepared);
             return;
         }
         try {
             context.markUpstreamStart();
-            provider.streamRawBlocking(
-                    EngineRoutes.request(rawJson, parsed, attempt.route(), timeout, pass), sink);
+            UpstreamRequest request = prepared == null
+                    ? EngineRoutes.request(rawJson, parsed, attempt.route(), timeout, pass)
+                    : EngineRoutes.convertedRequest(prepared.upstreamJson(), prepared.upstreamPath(),
+                            parsed, attempt.route(), timeout, pass);
+            provider.streamRawBlocking(request, sink);
             breaker.recordSuccess(attempt.route());
         } catch (RuntimeException e) {
+            // A failed client write says nothing about upstream health; retrying only wastes work.
+            if (sink.disconnected) throw e;
             if (sink.chunkSent) {
                 // Status and headers are committed: never splice a second
                 // upstream's chunks into a stream the client already saw.
@@ -677,7 +956,7 @@ public class VirtualThreadGatewayController {
                 throw e;
             }
             streamWithPlan(plan, next, rawJson, parsed, timeout, sink, context, pass,
-                    ForwardingPolicy.effectiveDelayMs(plan, from, next, e));
+                    ForwardingPolicy.effectiveDelayMs(plan, from, next, e), prepared);
         }
     }
 
@@ -688,6 +967,19 @@ public class VirtualThreadGatewayController {
                                        String rawJson, ParsedRequest parsed, int timeout,
                                        GatewayContext context, Map<String, String> pass,
                                        HeaderListener egress, long extraDelayMs) {
+        return completeWithPlan(plan, from, rawJson, parsed, timeout, context, pass, egress,
+                extraDelayMs, null);
+    }
+
+    /**
+     * T1.12 conversion-aware completion loop: a non-null {@code prepared} builds the upstream
+     * request from the already converted payload; null keeps the passthrough path untouched.
+     */
+    private Completed completeWithPlan(List<ForwardingPolicy.Attempt> plan, int from,
+                                       String rawJson, ParsedRequest parsed, int timeout,
+                                       GatewayContext context, Map<String, String> pass,
+                                       HeaderListener egress, long extraDelayMs,
+                                       PreparedConversion prepared) {
         if (from >= plan.size()) {
             throw new IllegalStateException(EngineReasons.NO_UPSTREAM_ROUTE);
         }
@@ -700,12 +992,15 @@ public class VirtualThreadGatewayController {
                 throw open;
             }
             return completeWithPlan(plan, next, rawJson, parsed, timeout, context, pass, egress,
-                    ForwardingPolicy.effectiveDelayMs(plan, from, next, open));
+                    ForwardingPolicy.effectiveDelayMs(plan, from, next, open), prepared);
         }
         try {
             context.markUpstreamStart();
-            String body = provider.completeRaw(
-                    EngineRoutes.request(rawJson, parsed, attempt.route(), timeout, pass), egress);
+            UpstreamRequest request = prepared == null
+                    ? EngineRoutes.request(rawJson, parsed, attempt.route(), timeout, pass)
+                    : EngineRoutes.convertedRequest(prepared.upstreamJson(), prepared.upstreamPath(),
+                            parsed, attempt.route(), timeout, pass);
+            String body = provider.completeRaw(request, egress);
             breaker.recordSuccess(attempt.route());
             return new Completed(body, attempt.route());
         } catch (RuntimeException e) {
@@ -715,7 +1010,7 @@ public class VirtualThreadGatewayController {
                 throw e;
             }
             return completeWithPlan(plan, next, rawJson, parsed, timeout, context, pass, egress,
-                    ForwardingPolicy.effectiveDelayMs(plan, from, next, e));
+                    ForwardingPolicy.effectiveDelayMs(plan, from, next, e), prepared);
         }
     }
 
@@ -734,9 +1029,64 @@ public class VirtualThreadGatewayController {
     private void writeError(HttpServletResponse response, GatewayDecision decision) throws IOException {
         response.setStatus(decision.status());
         response.setContentType(EngineHeaders.APPLICATION_JSON);
+        if (decision.status() == 503 && EngineReasons.CAPACITY_EXCEEDED.equals(decision.reason())) {
+            response.setHeader(EngineHeaders.RETRY_AFTER, "1");
+        }
         response.getOutputStream().write(
                 ProtocolCodec.errorJson(decision.reason()).getBytes(StandardCharsets.UTF_8));
         response.flushBuffer();
+    }
+
+    /**
+     * T1.12 pre-header conversion error: the exception's own {@code status()} plus the entry-shaped
+     * JSON (matrix §10.2). CapabilityException keeps its 4xx; UpstreamException is 502.
+     */
+    private void writeConversionError(HttpServletResponse response, ProtocolKind kind,
+                                      RuntimeException error) throws IOException {
+        int status = error instanceof CapabilityException capability ? capability.status()
+                : error instanceof UpstreamException upstream ? upstream.status() : 502;
+        response.setStatus(status);
+        response.setContentType(EngineHeaders.APPLICATION_JSON);
+        String body;
+        if (conversion != null) {
+            // Render the ENTRY error shape (matrix §10.2); an upstream failure carries the
+            // upstream_error code with its own 502, exactly like the streaming pre-header path.
+            CapabilityException rendered = error instanceof CapabilityException capability ? capability
+                    : new CapabilityException(UpstreamException.UPSTREAM_ERROR, status, "upstream",
+                            error.getMessage());
+            body = conversion.errorJson(kind, rendered);
+        } else {
+            body = ProtocolCodec.errorJson(error.getMessage());
+        }
+        response.getOutputStream().write(body.getBytes(StandardCharsets.UTF_8));
+        response.flushBuffer();
+    }
+
+    /**
+     * Matrix §11: the degradation grant header is gateway-only. Strip it from the upstream pass
+     * headers unconditionally (case-insensitive), regardless of the configured whitelist.
+     */
+    private static Map<String, String> withoutDegradation(Map<String, String> pass) {
+        Map<String, String> out = null;
+        for (String name : pass.keySet()) {
+            if (name.equalsIgnoreCase(DegradationGrant.HEADER)) {
+                if (out == null) {
+                    out = new LinkedHashMap<>(pass);
+                }
+                out.remove(name);
+            }
+        }
+        return out == null ? pass : out;
+    }
+
+    // RFC 7230 §3.2: header names are case-insensitive; firstValues preserves wire case, so match ignoring case.
+    private static String degradationGrantValue(Map<String, String> clientHeaders) {
+        for (Map.Entry<String, String> entry : clientHeaders.entrySet()) {
+            if (entry.getKey().equalsIgnoreCase(DegradationGrant.HEADER)) {
+                return entry.getValue();
+            }
+        }
+        return null;
     }
 
     /**
@@ -779,15 +1129,26 @@ public class VirtualThreadGatewayController {
         private final HttpServletResponse response;
         private final GatewayContext context;
         private final HeaderPolicy headerPolicy;
+        /** T1.12: null = byte-for-byte passthrough; non-null transcodes upstream chat -> entry. */
+        private final StreamTranscoder transcoder;
         private OutputStream out;
         private boolean chunkSent;
         private boolean doneWritten;
         private boolean errorWritten;
+        private boolean disconnected;
+        /** T1.12: the transcoder emitted an entry terminal (success OR error); never double-write. */
+        private boolean transcoderTerminal;
 
         StreamSink(HttpServletResponse response, GatewayContext context, HeaderPolicy headerPolicy) {
+            this(response, context, headerPolicy, null);
+        }
+
+        StreamSink(HttpServletResponse response, GatewayContext context, HeaderPolicy headerPolicy,
+                   StreamTranscoder transcoder) {
             this.response = response;
             this.context = context;
             this.headerPolicy = headerPolicy;
+            this.transcoder = transcoder;
         }
 
         @Override
@@ -797,6 +1158,27 @@ public class VirtualThreadGatewayController {
                 // comment): forward verbatim, but it is NOT protocol data --
                 // no accounting, no first-chunk marking, no terminator check.
                 write(rawSseLine);
+                return;
+            }
+            if (transcoder != null) {
+                // Feed EVERY upstream line: the transcoder self-guards post-terminal lines and owns
+                // the entry terminal. For chat the finish chunk latches terminalSeen() but the
+                // [DONE] sentinel still follows, so gating here would drop it and mis-bill success
+                // as a truncation. transcoderTerminal is an error-suppression latch, not a stop gate.
+                List<String> entries;
+                try {
+                    entries = transcoder.onUpstreamLine(rawSseLine);
+                } catch (RuntimeException e) {
+                    // Illegal upstream chunk: render the entry error in band, then terminate.
+                    writeTail(transcoder.onUpstreamError(e));
+                    return;
+                }
+                for (String entry : entries) {
+                    writeEntry(entry);
+                }
+                if (transcoder.terminalSeen()) {
+                    transcoderTerminal = true;
+                }
                 return;
             }
             boolean done = SseChunkAccounting.apply(context.kind(), rawSseLine, context);
@@ -809,6 +1191,30 @@ public class VirtualThreadGatewayController {
             }
             if (done) {
                 doneWritten = true;
+            }
+        }
+
+        /** T1.12: account + write one framed ENTRY line; the entry terminator sets doneWritten. */
+        private void writeEntry(String entryLine) {
+            String framed = entryLine + "\n\n";
+            boolean done = SseChunkAccounting.apply(context.kind(), framed, context);
+            if (!chunkSent) {
+                context.markFirstChunk();
+            }
+            write(framed);
+            chunkSent = true;
+            if (done) {
+                doneWritten = true;
+            }
+        }
+
+        /** T1.12: write the transcoder's terminal/error tail and latch the entry terminal. */
+        private void writeTail(List<String> lines) {
+            for (String line : lines) {
+                writeEntry(line);
+            }
+            if (transcoder.terminalSeen()) {
+                transcoderTerminal = true;
             }
         }
 
@@ -832,6 +1238,18 @@ public class VirtualThreadGatewayController {
             // Upstream reached a clean EOF. Intentionally do NOT synthesize a
             // terminator frame: that would disguise a truncated stream as a
             // success. handleStream() inspects isComplete() and reports it.
+            if (transcoder == null || (!chunkSent && !response.isCommitted())) {
+                // Passthrough: no-op. Conversion with no data AND nothing committed: leave the
+                // pre-header truncation error to handleFailure (502 + entry JSON). A heartbeat may
+                // have committed the response without any entry data, though -- then the transcoder
+                // renders the entry error in band below, never a generic gateway shape.
+                return;
+            }
+            // Rely on the transcoder's idempotent onUpstreamComplete (contract: emit the terminal
+            // once), NOT a transcoderTerminal gate: for chat the finish chunk latches terminalSeen()
+            // while [DONE] is still pending, so gating here would drop it and mis-bill success.
+            // A genuine truncation still yields an error event, never a fabricated success.
+            writeTail(transcoder.onUpstreamComplete());
         }
 
         /** True only when the upstream itself emitted the protocol terminator. */
@@ -839,9 +1257,32 @@ public class VirtualThreadGatewayController {
             return doneWritten;
         }
 
+        /**
+         * T1.12: true once a terminal was delivered — either the upstream protocol terminator
+         * ({@link #isComplete()}) or an entry terminal the transcoder rendered (success or error).
+         * handleFailure uses this to avoid appending a SECOND error after the transcoder's terminal.
+         */
+        boolean terminalHandled() {
+            // transcoder.terminalSeen() is a monotonic latch: it stays true even if writeEntry
+            // disconnected mid-terminal-write (before doneWritten/transcoderTerminal were set), so
+            // handleFailure must not append a second error after the transcoder already rendered one.
+            return doneWritten || transcoderTerminal || (transcoder != null && transcoder.terminalSeen());
+        }
+
         @Override
         public void onError(Throwable error) {
             // JdkHttpUpstream rethrows after this callback; no need to throw here.
+            if (transcoder == null || (!chunkSent && !response.isCommitted())) {
+                // Passthrough: no-op. Conversion pre-header (nothing committed): handleFailure renders
+                // 502 + entry JSON. A heartbeat-committed stream with no entry data still renders the
+                // entry error in band below.
+                return;
+            }
+            // Rely on the transcoder's idempotent onUpstreamError, NOT a transcoderTerminal gate:
+            // a transport reset AFTER the semantic terminal must finish exactly like a clean EOF
+            // (chat gets [DONE] once and bills success), while a genuine mid-stream reset still
+            // yields an error event. Gating on terminalSeen would drop the former.
+            writeTail(transcoder.onUpstreamError(error));
         }
 
         void writeErrorEvent(String reason) {
@@ -864,12 +1305,11 @@ public class VirtualThreadGatewayController {
         }
 
         /**
-         * Synchronized: the upstream heartbeat watchdog may inject comment
-         * frames from another thread while this virtual thread is between
-         * chunks. Uncontended in the normal case (one writer), so the A/B
-         * benchmark cost is a single monitor acquire per chunk.
+         * Single-writer contract: one request runs on one virtual thread and {@link ChunkSink} is a
+         * blocking callback, so data and heartbeat writes are already serialized on the requesting
+         * thread. No lock is needed -- the plain boolean state above assumes the same single writer.
          */
-        private synchronized void write(String line) {
+        private void write(String line) {
             try {
                 if (out == null) {
                     out = response.getOutputStream();
@@ -877,6 +1317,7 @@ public class VirtualThreadGatewayController {
                 out.write(line.getBytes(StandardCharsets.UTF_8));
                 out.flush();
             } catch (IOException e) {
+                disconnected = true;
                 throw new IllegalStateException(e);
             }
         }

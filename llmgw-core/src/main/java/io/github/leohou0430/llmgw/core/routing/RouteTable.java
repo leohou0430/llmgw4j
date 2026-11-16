@@ -50,17 +50,55 @@ public final class RouteTable {
                         "unknown protocol '" + protocol + "' on route " + candidate.id()
                                 + " (chat|responses|messages|images|videos|*)");
             }
+            String upstreamProtocol = candidate.upstreamProtocol() == null
+                    ? "" : candidate.upstreamProtocol().trim();
+            if (!upstreamProtocol.isEmpty() && !"chat".equals(upstreamProtocol)) {
+                throw new IllegalArgumentException(
+                        "unknown upstreamProtocol '" + upstreamProtocol + "' on route " + candidate.id()
+                                + " (\"\"|chat)");
+            }
             // Normalize BEFORE the byId insert so map and list hold the same object.
-            Route route = candidate.protocol() != null && protocol.equals(candidate.protocol())
+            // Preserve the legacy protocol normalization verbatim: an unchanged
+            // protocol (including "") is kept as-is, only null/whitespace/padded
+            // values are rewritten. Carry upstreamProtocol through any
+            // reconstruction -- the legacy 9-arg ctor would reset it to "".
+            boolean protocolUnchanged = candidate.protocol() != null
+                    && protocol.equals(candidate.protocol());
+            String storedProtocol = protocolUnchanged
+                    ? candidate.protocol() : (protocol.isBlank() ? "*" : protocol);
+            Route route = protocolUnchanged && upstreamProtocol.equals(candidate.upstreamProtocol())
                     ? candidate
-                    : new Route(candidate.id(), protocol.isBlank() ? "*" : protocol,
+                    : new Route(candidate.id(), storedProtocol,
                             candidate.model(), candidate.targetModel(), candidate.targetUrl(),
                             candidate.apiKey(), candidate.provider(),
-                            candidate.weight(), candidate.fallbackIds());
+                            candidate.weight(), candidate.fallbackIds(), upstreamProtocol);
             if (byId.putIfAbsent(route.id(), route) != null) {
                 throw new IllegalArgumentException("duplicate route id: " + route.id());
             }
             parsed.add(route);
+        }
+        // Fallback-chain conversion consistency (T1.12): the converted upstream payload is built once
+        // from the primary route and reused for every fallback, so a fallback whose upstreamProtocol
+        // differs would receive a payload in the wrong shape (converted chat bytes sent to a
+        // passthrough upstream, or vice versa). Only existing, non-self fallbacks are checked --
+        // unknown ids are skipped exactly as fallbacks() skips them.
+        for (Route route : parsed) {
+            if (route.fallbackIds() == null) {
+                continue;
+            }
+            for (String fallbackId : route.fallbackIds()) {
+                Route target = byId.get(fallbackId);
+                if (target == null || target.id().equals(route.id())) {
+                    continue;
+                }
+                if (!route.upstreamProtocol().equals(target.upstreamProtocol())) {
+                    throw new IllegalArgumentException(
+                            "fallback upstreamProtocol mismatch: route " + route.id() + " ('"
+                                    + route.upstreamProtocol() + "') -> " + target.id() + " ('"
+                                    + target.upstreamProtocol()
+                                    + "'); a converted payload cannot be reused across passthrough and chat upstreams");
+                }
+            }
         }
         // An exact model match must beat a prefix, which beats a "*" wildcard,
         // regardless of weight; weight only orders routes within the same

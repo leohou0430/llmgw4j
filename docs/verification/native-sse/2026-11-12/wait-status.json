@@ -1,0 +1,408 @@
+{
+  "status": "finished",
+  "checks": [
+    {
+      "time": "2026-11-12T02:41:12+0800",
+      "llvm_compilers": 31,
+      "llvm_build_drivers": 1,
+      "loadavg": [
+        27.6181640625,
+        26.16748046875,
+        26.91650390625
+      ],
+      "quiet_samples": 0
+    },
+    {
+      "time": "2026-11-12T02:41:42+0800",
+      "llvm_compilers": 32,
+      "llvm_build_drivers": 1,
+      "loadavg": [
+        23.98486328125,
+        25.43115234375,
+        26.62353515625
+      ],
+      "quiet_samples": 0
+    },
+    {
+      "time": "2026-11-12T02:42:12+0800",
+      "llvm_compilers": 32,
+      "llvm_build_drivers": 1,
+      "loadavg": [
+        24.31005859375,
+        25.4482421875,
+        26.59228515625
+      ],
+      "quiet_samples": 0
+    },
+    {
+      "time": "2026-11-12T02:42:43+0800",
+      "llvm_compilers": 32,
+      "llvm_build_drivers": 1,
+      "loadavg": [
+        25.2890625,
+        25.66748046875,
+        26.63623046875
+      ],
+      "quiet_samples": 0
+    },
+    {
+      "time": "2026-11-12T02:43:13+0800",
+      "llvm_compilers": 32,
+      "llvm_build_drivers": 1,
+      "loadavg": [
+        22.25048828125,
+        24.88720703125,
+        26.318359375
+      ],
+      "quiet_samples": 0
+    },
+    {
+      "time": "2026-11-12T02:43:43+0800",
+      "llvm_compilers": 32,
+      "llvm_build_drivers": 1,
+      "loadavg": [
+        24.86767578125,
+        25.3388671875,
+        26.43603515625
+      ],
+      "quiet_samples": 0
+    },
+    {
+      "time": "2026-11-12T02:44:14+0800",
+      "llvm_compilers": 32,
+      "llvm_build_drivers": 1,
+      "loadavg": [
+        28.5390625,
+        26.19287109375,
+        26.70751953125
+      ],
+      "quiet_samples": 0
+    },
+    {
+      "time": "2026-11-12T02:44:44+0800",
+      "llvm_compilers": 31,
+      "llvm_build_drivers": 1,
+      "loadavg": [
+        26.318359375,
+        25.92236328125,
+        26.59326171875
+      ],
+      "quiet_samples": 0
+    },
+    {
+      "time": "2026-11-12T02:45:15+0800",
+      "llvm_compilers": 29,
+      "llvm_build_drivers": 1,
+      "loadavg": [
+        25.08544921875,
+        25.59423828125,
+        26.4462890625
+      ],
+      "quiet_samples": 0
+    },
+    {
+      "time": "2026-11-12T02:45:45+0800",
+      "llvm_compilers": 31,
+      "llvm_build_drivers": 1,
+      "loadavg": [
+        22.80615234375,
+        25.00732421875,
+        26.20361328125
+      ],
+      "quiet_samples": 0
+    },
+    {
+      "time": "2026-11-12T02:46:15+0800",
+      "llvm_compilers": 30,
+      "llvm_build_drivers": 1,
+      "loadavg": [
+        23.99267578125,
+        25.1728515625,
+        26.22705078125
+      ],
+      "quiet_samples": 0
+    },
+    {
+      "time": "2026-11-12T02:46:46+0800",
+      "llvm_compilers": 30,
+      "llvm_build_drivers": 1,
+      "loadavg": [
+        29.36083984375,
+        26.33984375,
+        26.611328125
+      ],
+      "quiet_samples": 0
+    },
+    {
+      "time": "2026-11-12T02:47:16+0800",
+      "llvm_compilers": 30,
+      "llvm_build_drivers": 1,
+      "loadavg": [
+        24.82275390625,
+        25.5380859375,
+        26.310546875
+      ],
+      "quiet_samples": 0
+    },
+    {
+      "time": "2026-11-12T02:47:46+0800",
+      "llvm_compilers": 28,
+      "llvm_build_drivers": 1,
+      "loadavg": [
+        28.79345703125,
+        26.54052734375,
+        26.65283203125
+      ],
+      "quiet_samples": 0
+    },
+    {
+      "time": "2026-11-12T02:48:17+0800",
+      "llvm_compilers": 27,
+      "llvm_build_drivers": 1,
+      "loadavg": [
+        26.73876953125,
+        26.263671875,
+        26.54833984375
+      ],
+      "quiet_samples": 0
+    },
+    {
+      "time": "2026-11-12T02:48:47+0800",
+      "llvm_compilers": 28,
+      "llvm_build_drivers": 1,
+      "loadavg": [
+        24.48779296875,
+        25.76025390625,
+        26.3544921875
+      ],
+      "quiet_samples": 0
+    },
+    {
+      "time": "2026-11-12T02:49:17+0800",
+      "llvm_compilers": 28,
+      "llvm_build_drivers": 1,
+      "loadavg": [
+        25.8720703125,
+        26.0244140625,
+        26.431640625
+      ],
+      "quiet_samples": 0
+    },
+    {
+      "time": "2026-11-12T02:49:48+0800",
+      "llvm_compilers": 28,
+      "llvm_build_drivers": 1,
+      "loadavg": [
+        23.8935546875,
+        25.48974609375,
+        26.2197265625
+      ],
+      "quiet_samples": 0
+    },
+    {
+      "time": "2026-11-12T02:50:18+0800",
+      "llvm_compilers": 28,
+      "llvm_build_drivers": 1,
+      "loadavg": [
+        23.7607421875,
+        25.240234375,
+        26.095703125
+      ],
+      "quiet_samples": 0
+    },
+    {
+      "time": "2026-11-12T02:50:48+0800",
+      "llvm_compilers": 16,
+      "llvm_build_drivers": 1,
+      "loadavg": [
+        37.64990234375,
+        28.1220703125,
+        27.0888671875
+      ],
+      "quiet_samples": 0
+    },
+    {
+      "time": "2026-11-12T02:51:18+0800",
+      "llvm_compilers": 1,
+      "llvm_build_drivers": 1,
+      "loadavg": [
+        24.22021484375,
+        25.7939453125,
+        26.28076171875
+      ],
+      "quiet_samples": 0
+    },
+    {
+      "time": "2026-11-12T02:51:49+0800",
+      "llvm_compilers": 1,
+      "llvm_build_drivers": 1,
+      "loadavg": [
+        16.11328125,
+        23.66455078125,
+        25.49072265625
+      ],
+      "quiet_samples": 0
+    },
+    {
+      "time": "2026-11-12T02:52:19+0800",
+      "llvm_compilers": 1,
+      "llvm_build_drivers": 1,
+      "loadavg": [
+        10.73291015625,
+        21.6396484375,
+        24.69287109375
+      ],
+      "quiet_samples": 0
+    },
+    {
+      "time": "2026-11-12T02:52:49+0800",
+      "llvm_compilers": 13,
+      "llvm_build_drivers": 1,
+      "loadavg": [
+        14.6337890625,
+        21.4814453125,
+        24.525390625
+      ],
+      "quiet_samples": 0
+    },
+    {
+      "time": "2026-11-12T02:53:19+0800",
+      "llvm_compilers": 25,
+      "llvm_build_drivers": 1,
+      "loadavg": [
+        18.5546875,
+        21.74462890625,
+        24.51220703125
+      ],
+      "quiet_samples": 0
+    },
+    {
+      "time": "2026-11-12T02:53:50+0800",
+      "llvm_compilers": 26,
+      "llvm_build_drivers": 1,
+      "loadavg": [
+        19.3447265625,
+        21.6513671875,
+        24.38232421875
+      ],
+      "quiet_samples": 0
+    },
+    {
+      "time": "2026-11-12T02:54:20+0800",
+      "llvm_compilers": 28,
+      "llvm_build_drivers": 1,
+      "loadavg": [
+        20.1103515625,
+        21.63134765625,
+        24.28076171875
+      ],
+      "quiet_samples": 0
+    },
+    {
+      "time": "2026-11-12T02:54:50+0800",
+      "llvm_compilers": 22,
+      "llvm_build_drivers": 1,
+      "loadavg": [
+        23.39404296875,
+        22.1708984375,
+        24.37744140625
+      ],
+      "quiet_samples": 0
+    },
+    {
+      "time": "2026-11-12T02:55:20+0800",
+      "llvm_compilers": 2,
+      "llvm_build_drivers": 1,
+      "loadavg": [
+        19.900390625,
+        21.48828125,
+        24.05517578125
+      ],
+      "quiet_samples": 0
+    },
+    {
+      "time": "2026-11-12T02:55:50+0800",
+      "llvm_compilers": 0,
+      "llvm_build_drivers": 1,
+      "loadavg": [
+        12.9931640625,
+        19.67041015625,
+        23.306640625
+      ],
+      "quiet_samples": 0
+    },
+    {
+      "time": "2026-11-12T02:56:21+0800",
+      "llvm_compilers": 0,
+      "llvm_build_drivers": 1,
+      "loadavg": [
+        8.65966796875,
+        17.9931640625,
+        22.57275390625
+      ],
+      "quiet_samples": 0
+    },
+    {
+      "time": "2026-11-12T02:56:51+0800",
+      "llvm_compilers": 0,
+      "llvm_build_drivers": 0,
+      "loadavg": [
+        6.423828125,
+        16.55908203125,
+        21.89306640625
+      ],
+      "quiet_samples": 1
+    },
+    {
+      "time": "2026-11-12T02:57:21+0800",
+      "llvm_compilers": 0,
+      "llvm_build_drivers": 0,
+      "loadavg": [
+        4.69580078125,
+        15.1669921875,
+        21.20263671875
+      ],
+      "quiet_samples": 2
+    },
+    {
+      "time": "2026-11-12T02:57:51+0800",
+      "llvm_compilers": 0,
+      "llvm_build_drivers": 0,
+      "loadavg": [
+        3.79638671875,
+        13.9404296875,
+        20.54736328125
+      ],
+      "quiet_samples": 3
+    }
+  ],
+  "command": [
+    "python3",
+    "bench/capacity/run.py",
+    "--before",
+    "bench/results/linux-native-2026-11-11/evidence/jvm-default.jar",
+    "--after",
+    "bench/results/linux-native-2026-11-11/evidence/jvm-default.jar",
+    "--native-dir",
+    "bench/results/linux-native-2026-11-11/evidence",
+    "--output",
+    "bench/results/native-sse-2026-11-12/quiet-retest",
+    "--rounds",
+    "3",
+    "--duration",
+    "12s",
+    "--warmup",
+    "30s",
+    "--warmup-vus",
+    "64",
+    "--vus",
+    "64",
+    "--modes",
+    "sse",
+    "--labels",
+    "before-webflux,after-webflux",
+    "--skip-long",
+    "--respect-retry-after"
+  ],
+  "exit_code": 0
+}

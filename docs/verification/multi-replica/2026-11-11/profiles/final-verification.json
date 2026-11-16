@@ -1,0 +1,154 @@
+{
+  "frozen_jar_sha256": "f32431c950d0776fb85a8060e6c06fc72aebff09098bd12d063fee1adf443d61",
+  "stage": "profiles",
+  "checks": [
+    {
+      "name": "module-layout",
+      "command": [
+        "bash",
+        "bin/check-module-layout.sh"
+      ],
+      "started": 1794395461.2801101,
+      "exit_code": 0,
+      "seconds": 0.4751448631286621
+    },
+    {
+      "name": "native-boundaries",
+      "command": [
+        "python3",
+        "bin/check-native-boundaries.py"
+      ],
+      "started": 1794395461.755719,
+      "exit_code": 0,
+      "seconds": 1.4562830924987793
+    },
+    {
+      "name": "native-boundary-tests",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "bin",
+        "-p",
+        "test_native_*.py"
+      ],
+      "started": 1794395463.212518,
+      "exit_code": 0,
+      "seconds": 0.19649815559387207
+    },
+    {
+      "name": "openapi",
+      "command": [
+        "/usr/local/bin/python3.14",
+        "bin/check-openapi.py"
+      ],
+      "started": 1794395463.4098089,
+      "exit_code": 0,
+      "seconds": 0.29464125633239746
+    },
+    {
+      "name": "final-default",
+      "command": [
+        "mvn",
+        "-B",
+        "clean",
+        "verify"
+      ],
+      "started": 1794395463.725528,
+      "exit_code": 0,
+      "seconds": 49.156538009643555,
+      "junit": {
+        "tests": 240,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "module_classes": {
+        "BOOT-INF/lib/llmgw-provider-http-jdk-0.3.1.jar": "461f9d1285c590d3616c47139df9935798d4a5035b4fcf3e78e24e6eef36a52d",
+        "BOOT-INF/lib/llmgw-core-0.3.1.jar": "695c5d1b0e3e560b785b8f1487a4f4c8c87661c3da9e8b3f3c4d02e6ae2e9af6",
+        "BOOT-INF/lib/llmgw-governance-default-0.3.1.jar": "07fed8462eebd2535f8c0feab99b041665b8cc05fd23dd09769a968e6a17f953",
+        "BOOT-INF/lib/llmgw-governance-api-0.3.1.jar": "c9fefc1991fe15cc3b78e5a53d452153471c789c22ac569fcb24ce59db51f390",
+        "BOOT-INF/lib/llmgw-engine-webflux-0.3.1.jar": "810a8a5561f300a9fab8db93a6c80e8fe3e38fc140ed91d9e5055927108c341a",
+        "BOOT-INF/lib/llmgw-engine-api-0.3.1.jar": "22e79e722ea1fee8c7602011bf632fae04c34f25aefc9fee684b56cc6874f389",
+        "BOOT-INF/lib/llmgw-engine-vt-0.3.1.jar": "76dce41cdb70bf7ffa610fe0cbd0d84572294da18e1855bfe40e84a2afe5c760"
+      },
+      "matches_frozen_modules": true
+    },
+    {
+      "name": "final-redis",
+      "command": [
+        "mvn",
+        "-B",
+        "-Predis",
+        "clean",
+        "verify"
+      ],
+      "started": 1794395513.095385,
+      "exit_code": 0,
+      "seconds": 50.79287672042847,
+      "junit": {
+        "tests": 240,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "module_classes": {
+        "BOOT-INF/lib/llmgw-provider-http-jdk-0.3.1.jar": "461f9d1285c590d3616c47139df9935798d4a5035b4fcf3e78e24e6eef36a52d",
+        "BOOT-INF/lib/llmgw-core-0.3.1.jar": "695c5d1b0e3e560b785b8f1487a4f4c8c87661c3da9e8b3f3c4d02e6ae2e9af6",
+        "BOOT-INF/lib/llmgw-governance-default-0.3.1.jar": "07fed8462eebd2535f8c0feab99b041665b8cc05fd23dd09769a968e6a17f953",
+        "BOOT-INF/lib/llmgw-governance-api-0.3.1.jar": "c9fefc1991fe15cc3b78e5a53d452153471c789c22ac569fcb24ce59db51f390",
+        "BOOT-INF/lib/llmgw-engine-webflux-0.3.1.jar": "810a8a5561f300a9fab8db93a6c80e8fe3e38fc140ed91d9e5055927108c341a",
+        "BOOT-INF/lib/llmgw-engine-api-0.3.1.jar": "22e79e722ea1fee8c7602011bf632fae04c34f25aefc9fee684b56cc6874f389",
+        "BOOT-INF/lib/llmgw-engine-vt-0.3.1.jar": "76dce41cdb70bf7ffa610fe0cbd0d84572294da18e1855bfe40e84a2afe5c760"
+      },
+      "matches_frozen_modules": true
+    },
+    {
+      "name": "final-combined",
+      "command": [
+        "mvn",
+        "-B",
+        "-Predis,jtokkit,otel",
+        "clean",
+        "verify"
+      ],
+      "started": 1794395564.04204,
+      "exit_code": 0,
+      "seconds": 53.277339935302734,
+      "junit": {
+        "tests": 242,
+        "failures": 2,
+        "errors": 0,
+        "skipped": 0
+      },
+      "module_classes": {
+        "BOOT-INF/lib/llmgw-provider-http-jdk-0.3.1.jar": "461f9d1285c590d3616c47139df9935798d4a5035b4fcf3e78e24e6eef36a52d",
+        "BOOT-INF/lib/llmgw-core-0.3.1.jar": "695c5d1b0e3e560b785b8f1487a4f4c8c87661c3da9e8b3f3c4d02e6ae2e9af6",
+        "BOOT-INF/lib/llmgw-governance-default-0.3.1.jar": "07fed8462eebd2535f8c0feab99b041665b8cc05fd23dd09769a968e6a17f953",
+        "BOOT-INF/lib/llmgw-governance-api-0.3.1.jar": "c9fefc1991fe15cc3b78e5a53d452153471c789c22ac569fcb24ce59db51f390",
+        "BOOT-INF/lib/llmgw-engine-webflux-0.3.1.jar": "810a8a5561f300a9fab8db93a6c80e8fe3e38fc140ed91d9e5055927108c341a",
+        "BOOT-INF/lib/llmgw-engine-api-0.3.1.jar": "22e79e722ea1fee8c7602011bf632fae04c34f25aefc9fee684b56cc6874f389",
+        "BOOT-INF/lib/llmgw-engine-vt-0.3.1.jar": "76dce41cdb70bf7ffa610fe0cbd0d84572294da18e1855bfe40e84a2afe5c760"
+      },
+      "matches_frozen_modules": true
+    }
+  ],
+  "frozen_module_classes": {
+    "BOOT-INF/lib/llmgw-provider-http-jdk-0.3.1.jar": "461f9d1285c590d3616c47139df9935798d4a5035b4fcf3e78e24e6eef36a52d",
+    "BOOT-INF/lib/llmgw-core-0.3.1.jar": "695c5d1b0e3e560b785b8f1487a4f4c8c87661c3da9e8b3f3c4d02e6ae2e9af6",
+    "BOOT-INF/lib/llmgw-governance-default-0.3.1.jar": "07fed8462eebd2535f8c0feab99b041665b8cc05fd23dd09769a968e6a17f953",
+    "BOOT-INF/lib/llmgw-governance-api-0.3.1.jar": "c9fefc1991fe15cc3b78e5a53d452153471c789c22ac569fcb24ce59db51f390",
+    "BOOT-INF/lib/llmgw-engine-webflux-0.3.1.jar": "810a8a5561f300a9fab8db93a6c80e8fe3e38fc140ed91d9e5055927108c341a",
+    "BOOT-INF/lib/llmgw-engine-api-0.3.1.jar": "22e79e722ea1fee8c7602011bf632fae04c34f25aefc9fee684b56cc6874f389",
+    "BOOT-INF/lib/llmgw-engine-vt-0.3.1.jar": "76dce41cdb70bf7ffa610fe0cbd0d84572294da18e1855bfe40e84a2afe5c760"
+  },
+  "redis": {
+    "pid": 83371,
+    "port": 50025,
+    "process_identity_verified": true,
+    "cleanup_exit_code": 0
+  },
+  "complete": true
+}

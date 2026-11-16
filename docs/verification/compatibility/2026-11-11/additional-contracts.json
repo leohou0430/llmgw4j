@@ -1,0 +1,26 @@
+{
+  "checks": [
+    {
+      "name": "provider-final",
+      "command": [
+        "bash",
+        "bin/smoke-v13-provider.sh"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "redis-recovery-final",
+      "command": [
+        "python3",
+        "bin/smoke-redis-recovery.py",
+        "--jar",
+        "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/compatibility-2026-11-11/sdk-final-redis.jar"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "ports": {
+    "PORT": "50634",
+    "MOCK_PORT": "50635"
+  }
+}

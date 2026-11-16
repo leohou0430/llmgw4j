@@ -1,0 +1,20 @@
+{
+  "default-final": {
+    "tests": 164,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "redis": {
+    "tests": 164,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "combined": {
+    "tests": 164,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  }
+}

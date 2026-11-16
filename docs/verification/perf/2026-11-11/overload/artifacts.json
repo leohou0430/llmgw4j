@@ -1,0 +1,235 @@
+{
+  "before": {
+    "path": "bench/results/overload-2026-11-11/before.jar",
+    "sha256": "946c4d7baf2c70c8d03cb6324f7dbd59ca6332aec53f1d8c44d2be598358ae82",
+    "classes": {
+      "llmgw-engine-api": {
+        "io/github/leohou0430/llmgw/engine/EngineKind.class": "e9b239fc6293b0258db4d27f5375cf4ce60e9e54b783fac9d94b2353db1c9bdd",
+        "io/github/leohou0430/llmgw/engine/AbstractEngineConfiguration.class": "4d4a8e7f4b5e9ee3778aa423db1e08755babb6d98d3bd88ef0d2b1553137db15",
+        "io/github/leohou0430/llmgw/engine/ForwardingPolicy$Attempt.class": "1155528329c7ad720bb443e2572910819215b89461a0982f3decf970cadd31eb",
+        "io/github/leohou0430/llmgw/engine/EngineProfiles.class": "d21a4157d7d3c1468cb52faaa3ac2df585ecde912615f6300e8e667a1b549039",
+        "io/github/leohou0430/llmgw/engine/EngineRoutes.class": "1bad76315a912799c6e55a18f7d5af6d7e8bf8ae8516181b3f93b463c9762d0d",
+        "io/github/leohou0430/llmgw/engine/EngineReasons.class": "00aa9530b3dea613c2e4485888793ecf04d681a04ca973c60a1e1e371840dd53",
+        "io/github/leohou0430/llmgw/engine/ForwardingPolicy$RetryConfig.class": "ec1d7d779e9ca1c2cd2b975d8445b6176218b1d8d4c7cef47b416368451f6e76",
+        "io/github/leohou0430/llmgw/engine/EngineTimings.class": "29350ee45f2603386d43ea79bd1acd06673939fc479ead12f7c2d32f7f6f6bca",
+        "io/github/leohou0430/llmgw/engine/EngineHeaders.class": "cf01e3809429d19229a2387c253697a5a12bd0699143afe33c6b313d31a353d2",
+        "io/github/leohou0430/llmgw/engine/ForwardingPolicy.class": "cb6da26441aae1e167b8b18a4d4cb7b1a78a6bf0d0a64a332067c89a9b5fd6e2",
+        "io/github/leohou0430/llmgw/engine/SseChunkAccounting.class": "c6bf56350526289d1b8b8be4035e7198f301dc639386e7c507c6ca832e66eff1"
+      },
+      "llmgw-engine-webflux": {
+        "io/github/leohou0430/llmgw/engine/webflux/WebfluxGatewayController$Completed.class": "09dac7cda0dc2901d98e849e033e5dfc44962ac4c59cf854dd3fd6f3cea37096",
+        "io/github/leohou0430/llmgw/engine/webflux/WebfluxEngineConfiguration.class": "e72b53d582eba09b973d591dd9a638a72d7364528b62479b514f43a576d9a3de",
+        "io/github/leohou0430/llmgw/engine/webflux/WebfluxGatewayController.class": "d4360bef0786cc8bed5bccea46c6d485f69dd00024e324a4ce0c630ae2dd9c3c"
+      },
+      "llmgw-engine-vt": {
+        "io/github/leohou0430/llmgw/engine/vt/VirtualThreadGatewayController$Completed.class": "7caad57e8c4332ea41674580523a63d4138dd54c8f331c7bb1a378aaa822f543",
+        "io/github/leohou0430/llmgw/engine/vt/VirtualThreadEngineConfiguration.class": "2f53b9ba0598bae7a0932d2a2264000fba929eb270e0093fa6318b2bdede8869",
+        "io/github/leohou0430/llmgw/engine/vt/VirtualThreadGatewayController$StreamSink.class": "def9ecc35f223b993475e1ce75f6ef7f49769ce7a7fac16077651eda43f4f576",
+        "io/github/leohou0430/llmgw/engine/vt/VirtualThreadGatewayController.class": "4e91aaeadbe50eaeb9bb7a6bab621c541d61628161310bef8e7bd24a6024793a"
+      },
+      "llmgw-provider-http-jdk": {
+        "io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream$LineSubscription$1.class": "fbc132ae5c5d7867ebc88e5b82450d54f5706e3230cb842beba1ae6ff1b45d77",
+        "io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream.class": "486c95a6cdb66ae7cbf6d99a26ca7eb8398dbf4dbdf3742491b4efd1b6a2f8cf",
+        "io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream$DemandBridge.class": "3228eacdc1a75600d61285c3943822bf7a49867025365f47ac588311ee57870c",
+        "io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpModule.class": "80a6d1463b75908baaeaf3ee0ec8ef8822807c7274240a6fbbfd4f83bf4ccafc",
+        "io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream$BlockingDeadline.class": "684c532c19dd710fae671187ac90a38147370e32eb7b1c81995f47fa065eb4d2",
+        "io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream$LineSubscription.class": "1f4567933da255e6a8812f23689bd8694b0bd94e8c85fb81ad88016659df6d35"
+      }
+    }
+  },
+  "early-admission": {
+    "path": "bench/results/overload-2026-11-11/early-admission.jar",
+    "sha256": "9702f6c58c9028eebf1b3643eaaa878d6135fe807af7125ed1d5ea1375538eca",
+    "classes": {
+      "llmgw-engine-api": {
+        "io/github/leohou0430/llmgw/engine/EngineKind.class": "e9b239fc6293b0258db4d27f5375cf4ce60e9e54b783fac9d94b2353db1c9bdd",
+        "io/github/leohou0430/llmgw/engine/AbstractEngineConfiguration.class": "4d4a8e7f4b5e9ee3778aa423db1e08755babb6d98d3bd88ef0d2b1553137db15",
+        "io/github/leohou0430/llmgw/engine/ForwardingPolicy$Attempt.class": "1155528329c7ad720bb443e2572910819215b89461a0982f3decf970cadd31eb",
+        "io/github/leohou0430/llmgw/engine/EngineProfiles.class": "d21a4157d7d3c1468cb52faaa3ac2df585ecde912615f6300e8e667a1b549039",
+        "io/github/leohou0430/llmgw/engine/EngineRoutes.class": "1bad76315a912799c6e55a18f7d5af6d7e8bf8ae8516181b3f93b463c9762d0d",
+        "io/github/leohou0430/llmgw/engine/EngineReasons.class": "00aa9530b3dea613c2e4485888793ecf04d681a04ca973c60a1e1e371840dd53",
+        "io/github/leohou0430/llmgw/engine/ForwardingPolicy$RetryConfig.class": "ec1d7d779e9ca1c2cd2b975d8445b6176218b1d8d4c7cef47b416368451f6e76",
+        "io/github/leohou0430/llmgw/engine/EngineTimings.class": "29350ee45f2603386d43ea79bd1acd06673939fc479ead12f7c2d32f7f6f6bca",
+        "io/github/leohou0430/llmgw/engine/EngineHeaders.class": "cf01e3809429d19229a2387c253697a5a12bd0699143afe33c6b313d31a353d2",
+        "io/github/leohou0430/llmgw/engine/ForwardingPolicy.class": "cb6da26441aae1e167b8b18a4d4cb7b1a78a6bf0d0a64a332067c89a9b5fd6e2",
+        "io/github/leohou0430/llmgw/engine/SseChunkAccounting.class": "c6bf56350526289d1b8b8be4035e7198f301dc639386e7c507c6ca832e66eff1"
+      },
+      "llmgw-engine-webflux": {
+        "io/github/leohou0430/llmgw/engine/webflux/WebfluxGatewayController$Completed.class": "479622e02953605bd21f353d15d0aa9b1aae21fbe486b1b282e9306beccef195",
+        "io/github/leohou0430/llmgw/engine/webflux/WebfluxCapacityAdmission.class": "18db5cbb8295e70ce90d173d024dbd5fdfbd0a2ad6b0988bf01a9993b177a6e3",
+        "io/github/leohou0430/llmgw/engine/webflux/WebfluxEngineConfiguration.class": "6d277fb842a6cbc2cd04bada56cc447abf8ec45a2d274468664482d1a0713122",
+        "io/github/leohou0430/llmgw/engine/webflux/WebfluxGatewayController.class": "ddd3ff9f34cb06bd503bafb939ff1c940adb851aca6fe284f7e13bd4dbf0e972"
+      },
+      "llmgw-engine-vt": {
+        "io/github/leohou0430/llmgw/engine/vt/VirtualThreadGatewayController$Completed.class": "7caad57e8c4332ea41674580523a63d4138dd54c8f331c7bb1a378aaa822f543",
+        "io/github/leohou0430/llmgw/engine/vt/VirtualThreadEngineConfiguration.class": "2f53b9ba0598bae7a0932d2a2264000fba929eb270e0093fa6318b2bdede8869",
+        "io/github/leohou0430/llmgw/engine/vt/VirtualThreadGatewayController$StreamSink.class": "def9ecc35f223b993475e1ce75f6ef7f49769ce7a7fac16077651eda43f4f576",
+        "io/github/leohou0430/llmgw/engine/vt/VirtualThreadGatewayController.class": "4e91aaeadbe50eaeb9bb7a6bab621c541d61628161310bef8e7bd24a6024793a"
+      },
+      "llmgw-provider-http-jdk": {
+        "io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream$LineSubscription$1.class": "fbc132ae5c5d7867ebc88e5b82450d54f5706e3230cb842beba1ae6ff1b45d77",
+        "io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream.class": "486c95a6cdb66ae7cbf6d99a26ca7eb8398dbf4dbdf3742491b4efd1b6a2f8cf",
+        "io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream$DemandBridge.class": "3228eacdc1a75600d61285c3943822bf7a49867025365f47ac588311ee57870c",
+        "io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpModule.class": "80a6d1463b75908baaeaf3ee0ec8ef8822807c7274240a6fbbfd4f83bf4ccafc",
+        "io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream$BlockingDeadline.class": "684c532c19dd710fae671187ac90a38147370e32eb7b1c81995f47fa065eb4d2",
+        "io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream$LineSubscription.class": "1f4567933da255e6a8812f23689bd8694b0bd94e8c85fb81ad88016659df6d35"
+      }
+    }
+  },
+  "after": {
+    "path": "bench/results/overload-2026-11-11/after.jar",
+    "sha256": "5acdebc59a5c4013fdb6f17f81bdf048b960b18455c9cb46938b969da5d34d98",
+    "classes": {
+      "llmgw-engine-api": {
+        "io/github/leohou0430/llmgw/engine/EngineKind.class": "e9b239fc6293b0258db4d27f5375cf4ce60e9e54b783fac9d94b2353db1c9bdd",
+        "io/github/leohou0430/llmgw/engine/AbstractEngineConfiguration.class": "4d4a8e7f4b5e9ee3778aa423db1e08755babb6d98d3bd88ef0d2b1553137db15",
+        "io/github/leohou0430/llmgw/engine/ForwardingPolicy$Attempt.class": "1155528329c7ad720bb443e2572910819215b89461a0982f3decf970cadd31eb",
+        "io/github/leohou0430/llmgw/engine/EngineProfiles.class": "d21a4157d7d3c1468cb52faaa3ac2df585ecde912615f6300e8e667a1b549039",
+        "io/github/leohou0430/llmgw/engine/EngineRoutes.class": "1bad76315a912799c6e55a18f7d5af6d7e8bf8ae8516181b3f93b463c9762d0d",
+        "io/github/leohou0430/llmgw/engine/EngineReasons.class": "a17c4a012cff6ef80ec50ae1a5c7e2a445052ace6fd50214e2b946ed3bf68823",
+        "io/github/leohou0430/llmgw/engine/ForwardingPolicy$RetryConfig.class": "ec1d7d779e9ca1c2cd2b975d8445b6176218b1d8d4c7cef47b416368451f6e76",
+        "io/github/leohou0430/llmgw/engine/EngineTimings.class": "29350ee45f2603386d43ea79bd1acd06673939fc479ead12f7c2d32f7f6f6bca",
+        "io/github/leohou0430/llmgw/engine/EngineHeaders.class": "67caa17f91e5cc64c97253a7b10d9545e6ceb3d58d331f6d894825732c726314",
+        "io/github/leohou0430/llmgw/engine/ForwardingPolicy.class": "cb6da26441aae1e167b8b18a4d4cb7b1a78a6bf0d0a64a332067c89a9b5fd6e2",
+        "io/github/leohou0430/llmgw/engine/SseChunkAccounting.class": "c6bf56350526289d1b8b8be4035e7198f301dc639386e7c507c6ca832e66eff1"
+      },
+      "llmgw-engine-webflux": {
+        "io/github/leohou0430/llmgw/engine/webflux/WebfluxGatewayController$Completed.class": "479622e02953605bd21f353d15d0aa9b1aae21fbe486b1b282e9306beccef195",
+        "io/github/leohou0430/llmgw/engine/webflux/WebfluxCapacityAdmission.class": "ef496390b6543273a6c55f6da9aa994693cce994fd437cf6ce5173493ea835b2",
+        "io/github/leohou0430/llmgw/engine/webflux/WebfluxEngineConfiguration.class": "6d277fb842a6cbc2cd04bada56cc447abf8ec45a2d274468664482d1a0713122",
+        "io/github/leohou0430/llmgw/engine/webflux/WebfluxGatewayController.class": "ddd3ff9f34cb06bd503bafb939ff1c940adb851aca6fe284f7e13bd4dbf0e972"
+      },
+      "llmgw-engine-vt": {
+        "io/github/leohou0430/llmgw/engine/vt/VirtualThreadGatewayController$Completed.class": "7caad57e8c4332ea41674580523a63d4138dd54c8f331c7bb1a378aaa822f543",
+        "io/github/leohou0430/llmgw/engine/vt/VirtualThreadEngineConfiguration.class": "2f53b9ba0598bae7a0932d2a2264000fba929eb270e0093fa6318b2bdede8869",
+        "io/github/leohou0430/llmgw/engine/vt/VirtualThreadGatewayController$StreamSink.class": "1fccf82cc04ed627df0b84b2736f0e87c9f8ae7e2c88e641f3b76b390f860b6c",
+        "io/github/leohou0430/llmgw/engine/vt/VirtualThreadGatewayController.class": "2e2b7f1e9c532c851c9aae85c78d4793cfdacbb56248b30846494db775e04c61"
+      },
+      "llmgw-provider-http-jdk": {
+        "io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream$LineSubscription$1.class": "fbc132ae5c5d7867ebc88e5b82450d54f5706e3230cb842beba1ae6ff1b45d77",
+        "io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream.class": "486c95a6cdb66ae7cbf6d99a26ca7eb8398dbf4dbdf3742491b4efd1b6a2f8cf",
+        "io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream$DemandBridge.class": "3228eacdc1a75600d61285c3943822bf7a49867025365f47ac588311ee57870c",
+        "io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpModule.class": "80a6d1463b75908baaeaf3ee0ec8ef8822807c7274240a6fbbfd4f83bf4ccafc",
+        "io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream$BlockingDeadline.class": "684c532c19dd710fae671187ac90a38147370e32eb7b1c81995f47fa065eb4d2",
+        "io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream$LineSubscription.class": "1f4567933da255e6a8812f23689bd8694b0bd94e8c85fb81ad88016659df6d35"
+      }
+    }
+  },
+  "verified-default-final": {
+    "path": "bench/results/overload-2026-11-11/verified-default-final.jar",
+    "sha256": "a6afa1eb786c6e4e1a1cf1e146c20e1235602cae5584f15eb681ab09e75c9ec9",
+    "classes": {
+      "llmgw-engine-api": {
+        "io/github/leohou0430/llmgw/engine/EngineKind.class": "e9b239fc6293b0258db4d27f5375cf4ce60e9e54b783fac9d94b2353db1c9bdd",
+        "io/github/leohou0430/llmgw/engine/AbstractEngineConfiguration.class": "4d4a8e7f4b5e9ee3778aa423db1e08755babb6d98d3bd88ef0d2b1553137db15",
+        "io/github/leohou0430/llmgw/engine/ForwardingPolicy$Attempt.class": "1155528329c7ad720bb443e2572910819215b89461a0982f3decf970cadd31eb",
+        "io/github/leohou0430/llmgw/engine/EngineProfiles.class": "d21a4157d7d3c1468cb52faaa3ac2df585ecde912615f6300e8e667a1b549039",
+        "io/github/leohou0430/llmgw/engine/EngineRoutes.class": "1bad76315a912799c6e55a18f7d5af6d7e8bf8ae8516181b3f93b463c9762d0d",
+        "io/github/leohou0430/llmgw/engine/EngineReasons.class": "a17c4a012cff6ef80ec50ae1a5c7e2a445052ace6fd50214e2b946ed3bf68823",
+        "io/github/leohou0430/llmgw/engine/ForwardingPolicy$RetryConfig.class": "ec1d7d779e9ca1c2cd2b975d8445b6176218b1d8d4c7cef47b416368451f6e76",
+        "io/github/leohou0430/llmgw/engine/EngineTimings.class": "29350ee45f2603386d43ea79bd1acd06673939fc479ead12f7c2d32f7f6f6bca",
+        "io/github/leohou0430/llmgw/engine/EngineHeaders.class": "67caa17f91e5cc64c97253a7b10d9545e6ceb3d58d331f6d894825732c726314",
+        "io/github/leohou0430/llmgw/engine/ForwardingPolicy.class": "cb6da26441aae1e167b8b18a4d4cb7b1a78a6bf0d0a64a332067c89a9b5fd6e2",
+        "io/github/leohou0430/llmgw/engine/SseChunkAccounting.class": "c6bf56350526289d1b8b8be4035e7198f301dc639386e7c507c6ca832e66eff1"
+      },
+      "llmgw-engine-webflux": {
+        "io/github/leohou0430/llmgw/engine/webflux/WebfluxGatewayController$Completed.class": "479622e02953605bd21f353d15d0aa9b1aae21fbe486b1b282e9306beccef195",
+        "io/github/leohou0430/llmgw/engine/webflux/WebfluxCapacityAdmission.class": "ef496390b6543273a6c55f6da9aa994693cce994fd437cf6ce5173493ea835b2",
+        "io/github/leohou0430/llmgw/engine/webflux/WebfluxEngineConfiguration.class": "6d277fb842a6cbc2cd04bada56cc447abf8ec45a2d274468664482d1a0713122",
+        "io/github/leohou0430/llmgw/engine/webflux/WebfluxGatewayController.class": "ddd3ff9f34cb06bd503bafb939ff1c940adb851aca6fe284f7e13bd4dbf0e972"
+      },
+      "llmgw-engine-vt": {
+        "io/github/leohou0430/llmgw/engine/vt/VirtualThreadGatewayController$Completed.class": "7caad57e8c4332ea41674580523a63d4138dd54c8f331c7bb1a378aaa822f543",
+        "io/github/leohou0430/llmgw/engine/vt/VirtualThreadEngineConfiguration.class": "2f53b9ba0598bae7a0932d2a2264000fba929eb270e0093fa6318b2bdede8869",
+        "io/github/leohou0430/llmgw/engine/vt/VirtualThreadGatewayController$StreamSink.class": "1fccf82cc04ed627df0b84b2736f0e87c9f8ae7e2c88e641f3b76b390f860b6c",
+        "io/github/leohou0430/llmgw/engine/vt/VirtualThreadGatewayController.class": "2e2b7f1e9c532c851c9aae85c78d4793cfdacbb56248b30846494db775e04c61"
+      },
+      "llmgw-provider-http-jdk": {
+        "io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream$LineSubscription$1.class": "fbc132ae5c5d7867ebc88e5b82450d54f5706e3230cb842beba1ae6ff1b45d77",
+        "io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream.class": "486c95a6cdb66ae7cbf6d99a26ca7eb8398dbf4dbdf3742491b4efd1b6a2f8cf",
+        "io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream$DemandBridge.class": "3228eacdc1a75600d61285c3943822bf7a49867025365f47ac588311ee57870c",
+        "io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpModule.class": "80a6d1463b75908baaeaf3ee0ec8ef8822807c7274240a6fbbfd4f83bf4ccafc",
+        "io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream$BlockingDeadline.class": "684c532c19dd710fae671187ac90a38147370e32eb7b1c81995f47fa065eb4d2",
+        "io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream$LineSubscription.class": "1f4567933da255e6a8812f23689bd8694b0bd94e8c85fb81ad88016659df6d35"
+      }
+    }
+  },
+  "verified-redis": {
+    "path": "bench/results/overload-2026-11-11/verified-redis.jar",
+    "sha256": "bbc5f3b62644b04e8b55bb1999272dd6566dd5044a76cdcb2bb36a17da03b7c7",
+    "classes": {
+      "llmgw-engine-api": {
+        "io/github/leohou0430/llmgw/engine/EngineKind.class": "e9b239fc6293b0258db4d27f5375cf4ce60e9e54b783fac9d94b2353db1c9bdd",
+        "io/github/leohou0430/llmgw/engine/AbstractEngineConfiguration.class": "4d4a8e7f4b5e9ee3778aa423db1e08755babb6d98d3bd88ef0d2b1553137db15",
+        "io/github/leohou0430/llmgw/engine/ForwardingPolicy$Attempt.class": "1155528329c7ad720bb443e2572910819215b89461a0982f3decf970cadd31eb",
+        "io/github/leohou0430/llmgw/engine/EngineProfiles.class": "d21a4157d7d3c1468cb52faaa3ac2df585ecde912615f6300e8e667a1b549039",
+        "io/github/leohou0430/llmgw/engine/EngineRoutes.class": "1bad76315a912799c6e55a18f7d5af6d7e8bf8ae8516181b3f93b463c9762d0d",
+        "io/github/leohou0430/llmgw/engine/EngineReasons.class": "a17c4a012cff6ef80ec50ae1a5c7e2a445052ace6fd50214e2b946ed3bf68823",
+        "io/github/leohou0430/llmgw/engine/ForwardingPolicy$RetryConfig.class": "ec1d7d779e9ca1c2cd2b975d8445b6176218b1d8d4c7cef47b416368451f6e76",
+        "io/github/leohou0430/llmgw/engine/EngineTimings.class": "29350ee45f2603386d43ea79bd1acd06673939fc479ead12f7c2d32f7f6f6bca",
+        "io/github/leohou0430/llmgw/engine/EngineHeaders.class": "67caa17f91e5cc64c97253a7b10d9545e6ceb3d58d331f6d894825732c726314",
+        "io/github/leohou0430/llmgw/engine/ForwardingPolicy.class": "cb6da26441aae1e167b8b18a4d4cb7b1a78a6bf0d0a64a332067c89a9b5fd6e2",
+        "io/github/leohou0430/llmgw/engine/SseChunkAccounting.class": "c6bf56350526289d1b8b8be4035e7198f301dc639386e7c507c6ca832e66eff1"
+      },
+      "llmgw-engine-webflux": {
+        "io/github/leohou0430/llmgw/engine/webflux/WebfluxGatewayController$Completed.class": "479622e02953605bd21f353d15d0aa9b1aae21fbe486b1b282e9306beccef195",
+        "io/github/leohou0430/llmgw/engine/webflux/WebfluxCapacityAdmission.class": "ef496390b6543273a6c55f6da9aa994693cce994fd437cf6ce5173493ea835b2",
+        "io/github/leohou0430/llmgw/engine/webflux/WebfluxEngineConfiguration.class": "6d277fb842a6cbc2cd04bada56cc447abf8ec45a2d274468664482d1a0713122",
+        "io/github/leohou0430/llmgw/engine/webflux/WebfluxGatewayController.class": "ddd3ff9f34cb06bd503bafb939ff1c940adb851aca6fe284f7e13bd4dbf0e972"
+      },
+      "llmgw-engine-vt": {
+        "io/github/leohou0430/llmgw/engine/vt/VirtualThreadGatewayController$Completed.class": "7caad57e8c4332ea41674580523a63d4138dd54c8f331c7bb1a378aaa822f543",
+        "io/github/leohou0430/llmgw/engine/vt/VirtualThreadEngineConfiguration.class": "2f53b9ba0598bae7a0932d2a2264000fba929eb270e0093fa6318b2bdede8869",
+        "io/github/leohou0430/llmgw/engine/vt/VirtualThreadGatewayController$StreamSink.class": "1fccf82cc04ed627df0b84b2736f0e87c9f8ae7e2c88e641f3b76b390f860b6c",
+        "io/github/leohou0430/llmgw/engine/vt/VirtualThreadGatewayController.class": "2e2b7f1e9c532c851c9aae85c78d4793cfdacbb56248b30846494db775e04c61"
+      },
+      "llmgw-provider-http-jdk": {
+        "io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream$LineSubscription$1.class": "fbc132ae5c5d7867ebc88e5b82450d54f5706e3230cb842beba1ae6ff1b45d77",
+        "io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream.class": "486c95a6cdb66ae7cbf6d99a26ca7eb8398dbf4dbdf3742491b4efd1b6a2f8cf",
+        "io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream$DemandBridge.class": "3228eacdc1a75600d61285c3943822bf7a49867025365f47ac588311ee57870c",
+        "io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpModule.class": "80a6d1463b75908baaeaf3ee0ec8ef8822807c7274240a6fbbfd4f83bf4ccafc",
+        "io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream$BlockingDeadline.class": "684c532c19dd710fae671187ac90a38147370e32eb7b1c81995f47fa065eb4d2",
+        "io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream$LineSubscription.class": "1f4567933da255e6a8812f23689bd8694b0bd94e8c85fb81ad88016659df6d35"
+      }
+    }
+  },
+  "verified-combined": {
+    "path": "bench/results/overload-2026-11-11/verified-combined.jar",
+    "sha256": "6a8c013a2fbac23d09b26b722885ec3269322db3ec83fd43f90c998fc620ae87",
+    "classes": {
+      "llmgw-engine-api": {
+        "io/github/leohou0430/llmgw/engine/EngineKind.class": "e9b239fc6293b0258db4d27f5375cf4ce60e9e54b783fac9d94b2353db1c9bdd",
+        "io/github/leohou0430/llmgw/engine/AbstractEngineConfiguration.class": "4d4a8e7f4b5e9ee3778aa423db1e08755babb6d98d3bd88ef0d2b1553137db15",
+        "io/github/leohou0430/llmgw/engine/ForwardingPolicy$Attempt.class": "1155528329c7ad720bb443e2572910819215b89461a0982f3decf970cadd31eb",
+        "io/github/leohou0430/llmgw/engine/EngineProfiles.class": "d21a4157d7d3c1468cb52faaa3ac2df585ecde912615f6300e8e667a1b549039",
+        "io/github/leohou0430/llmgw/engine/EngineRoutes.class": "1bad76315a912799c6e55a18f7d5af6d7e8bf8ae8516181b3f93b463c9762d0d",
+        "io/github/leohou0430/llmgw/engine/EngineReasons.class": "a17c4a012cff6ef80ec50ae1a5c7e2a445052ace6fd50214e2b946ed3bf68823",
+        "io/github/leohou0430/llmgw/engine/ForwardingPolicy$RetryConfig.class": "ec1d7d779e9ca1c2cd2b975d8445b6176218b1d8d4c7cef47b416368451f6e76",
+        "io/github/leohou0430/llmgw/engine/EngineTimings.class": "29350ee45f2603386d43ea79bd1acd06673939fc479ead12f7c2d32f7f6f6bca",
+        "io/github/leohou0430/llmgw/engine/EngineHeaders.class": "67caa17f91e5cc64c97253a7b10d9545e6ceb3d58d331f6d894825732c726314",
+        "io/github/leohou0430/llmgw/engine/ForwardingPolicy.class": "cb6da26441aae1e167b8b18a4d4cb7b1a78a6bf0d0a64a332067c89a9b5fd6e2",
+        "io/github/leohou0430/llmgw/engine/SseChunkAccounting.class": "c6bf56350526289d1b8b8be4035e7198f301dc639386e7c507c6ca832e66eff1"
+      },
+      "llmgw-engine-webflux": {
+        "io/github/leohou0430/llmgw/engine/webflux/WebfluxGatewayController$Completed.class": "479622e02953605bd21f353d15d0aa9b1aae21fbe486b1b282e9306beccef195",
+        "io/github/leohou0430/llmgw/engine/webflux/WebfluxCapacityAdmission.class": "ef496390b6543273a6c55f6da9aa994693cce994fd437cf6ce5173493ea835b2",
+        "io/github/leohou0430/llmgw/engine/webflux/WebfluxEngineConfiguration.class": "6d277fb842a6cbc2cd04bada56cc447abf8ec45a2d274468664482d1a0713122",
+        "io/github/leohou0430/llmgw/engine/webflux/WebfluxGatewayController.class": "ddd3ff9f34cb06bd503bafb939ff1c940adb851aca6fe284f7e13bd4dbf0e972"
+      },
+      "llmgw-engine-vt": {
+        "io/github/leohou0430/llmgw/engine/vt/VirtualThreadGatewayController$Completed.class": "7caad57e8c4332ea41674580523a63d4138dd54c8f331c7bb1a378aaa822f543",
+        "io/github/leohou0430/llmgw/engine/vt/VirtualThreadEngineConfiguration.class": "2f53b9ba0598bae7a0932d2a2264000fba929eb270e0093fa6318b2bdede8869",
+        "io/github/leohou0430/llmgw/engine/vt/VirtualThreadGatewayController$StreamSink.class": "1fccf82cc04ed627df0b84b2736f0e87c9f8ae7e2c88e641f3b76b390f860b6c",
+        "io/github/leohou0430/llmgw/engine/vt/VirtualThreadGatewayController.class": "2e2b7f1e9c532c851c9aae85c78d4793cfdacbb56248b30846494db775e04c61"
+      },
+      "llmgw-provider-http-jdk": {
+        "io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream$LineSubscription$1.class": "fbc132ae5c5d7867ebc88e5b82450d54f5706e3230cb842beba1ae6ff1b45d77",
+        "io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream.class": "486c95a6cdb66ae7cbf6d99a26ca7eb8398dbf4dbdf3742491b4efd1b6a2f8cf",
+        "io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream$DemandBridge.class": "3228eacdc1a75600d61285c3943822bf7a49867025365f47ac588311ee57870c",
+        "io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpModule.class": "80a6d1463b75908baaeaf3ee0ec8ef8822807c7274240a6fbbfd4f83bf4ccafc",
+        "io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream$BlockingDeadline.class": "684c532c19dd710fae671187ac90a38147370e32eb7b1c81995f47fa065eb4d2",
+        "io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream$LineSubscription.class": "1f4567933da255e6a8812f23689bd8694b0bd94e8c85fb81ad88016659df6d35"
+      }
+    }
+  }
+}

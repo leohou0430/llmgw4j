@@ -3,13 +3,13 @@
 > v0.3.1 使用项目内原生 SPI。内部 API、模块及 Redis 配置升级方式见 [扩展与迁移说明](EXTENSIONS.md)。
 
 审查修复补充：`gateway.production=true`（或 `LLMGW_PRODUCTION=true`）启用生产启动校验。
-`gateway.max-response-bytes` 默认 `4194304`，独立限制上游非流式响应；
-`gateway.max-concurrent-requests` 默认 `64`，达到上限返回 `503`，请求结束或取消后释放容量。
+`gateway.max-response-bytes` 默认 `4194304`，独立限制上游非流式响应；当前工作区还统一限制流式调用的非成功状态错误体，VT 不再无界等待 EOF。成功 SSE 不按累计大小套用此上限。当前未发布工作区另以 `gateway.upstream.max-sse-line-bytes` 限制上游 SSE 单行，默认 `1048576` 字节，CR/LF 不计入；超长行在 UTF-8 解码缓冲前中止。该值必须为正整数；使用较大单帧的供应商需按实际帧大小配置。
+`gateway.max-concurrent-requests` 默认 `64`，达到上限返回 `503`，请求结束或取消后释放容量。当前未发布工作区的容量拒绝增加 `Retry-After: 1`，建议客户端至少退避一秒后再发起尝试；服务端不排队、不自动重试上游。WebFlux 在已匹配到数据面控制器后、参数解析前准入，名额保持到响应结束/取消；管理接口与未知路径不占用数据面名额。
 当前金额预算仅为演示估算账本，生产启用会被拒绝；未知模型价格不能当作免费。
 未知资源返回 `404`，文件和批任务列表暂不支持并返回 `501`。
 
 > **适用版本**：`0.3.1`（包名 `io.github.leohou0430.llmgw`）
-> **文档日期**：2026-11-10，逐项核对 `GatewayProperties.java`、`application*.yml`、`bin/*.sh`、`bench/*` 实读结果
+> **文档日期**：2026-11-11，逐项核对 `GatewayProperties.java`、`application*.yml`、`bin/*.sh`、`bench/*` 实读结果
 > **配套**：[使用手册](USER_GUIDE.md) · [项目 README](../README.md) · [压测口径](../bench/README.md)
 
 ---
@@ -95,7 +95,7 @@
 | `gateway.upstream.type` | String | `mock` | `mock` | 注释标注可选 `mock` / `openai-compatible`；也用于生成 `JdkHttpUpstream.id()` = `jdk-http-<type>` |
 | `gateway.upstream.base-url` | String | `http://127.0.0.1:9090/mock/v1` | 同左 | 上游基址。`targetUri()` 按协议追加端点后缀；已以该后缀结尾的完整 URL 会复用。建议配置供应商基址，确认协议和路径匹配 |
 | `gateway.upstream.api-key` | String | `${DASHSCOPE_API_KEY:}` | `${DASHSCOPE_API_KEY:}` | 上游厂商密钥。值为空或以 `${` 开头时**不发送** `Authorization` 头 |
-| `gateway.upstream.timeout-ms` | int | `60000` | `60000` | 传给 `HttpRequest.timeout()` 的**整体**超时。不是 connect / 首字节 / 空闲读三级超时；半开上游要等满 60s |
+| `gateway.upstream.timeout-ms` | int | `60000` | `60000` | 单次上游尝试的整体超时；当前工作区通过独立定时器覆盖响应正文（含持续有数据的 SSE/JSON/下载），v0.3.1 仅依赖 `HttpRequest.timeout()`，正文不保证受限。重试/回退分别计时，不是整个客户端请求总预算 |
 | `gateway.upstream.executor-threads` | int | `32` | **—（yml 未配）** | `>0` 用固定平台线程池跑 `HttpClient.sendAsync`；`0` 回退 JDK 默认 executor。历史单机扫描选取 32，并非所有 CPU 配额下的最优值；应按实际 JSON/SSE 负载重测。2026-11-10 的 4 CPU 实验中 4 线程 JSON 更快，但 SSE 出现截断，因此默认仍保留 32（见性能审查报告） |
 
 `real` profile 会把 `type` 改为 `openai-compatible`、`base-url` 改为 `https://dashscope.aliyuncs.com/compatible-mode/v1`。
@@ -145,7 +145,7 @@ routes:
 | `id` | String | `default` | 路由唯一 id；热替换时必填、不可重复 |
 | `protocol` | String | `*` | **v12**：该路由只接哪种协议（`chat` / `responses` / `messages` / `images` / `videos` / `*`）；解析按 `ProtocolKind.isConfigValue` 校验，未知值启动失败。协议路由三级优先：精确 protocol+model > 通配 protocol+精确 model > 通配 model |
 | `model` | String | `*` | 匹配模型；**精确 model 优先于 `*` 通配** |
-| `target-model` | String | `""` | 非空时用 `ProtocolCodec.withModel()` 改写顶层 `model` 字段（会重新序列化 JSON，字节不再逐字保真） |
+| `target-model` | String | `""` | 非空时改写文本/生成 JSON 顶层 `model`（重新序列化）；multipart 和批任务创建信封不重写 |
 | `target-url` | String | `""` | 空则回退 `gateway.upstream.base-url`；热替换校验必须以 `http://` 或 `https://` 开头 |
 | `api-key` | String | `""` | 空则回退 `gateway.upstream.api-key`；**管理接口永不回显，只回 `apiKeyConfigured` 布尔值** |
 | `weight` | int | `1` | 同 model 多路由**加权随机**分流，是负载比例不只是优先级；下限 1 |
@@ -194,14 +194,31 @@ api-keys:
 | `gateway.redis.pool-size` | int | `64` | 连接池上限，必须为正 |
 | （常量）Redis key 前缀 | String | `llmgw:` | `GovernancePacks.DEFAULT_REDIS_KEY_PREFIX` |
 
-实现为 Jedis，不再要求 Spring Data。app 边缘保留部分 `spring.data.redis.*` 别名（详见扩展说明），旧 URL 形式必须迁移。默认产物无 Redis 客户端，多个网关实例可共享同一 Redis；这不等同于 Redis Cluster/Sentinel 支持。
+实现为 Jedis，不再要求 Spring Data。app 边缘保留部分 `spring.data.redis.*` 别名（详见扩展说明），旧 URL 形式必须迁移。默认产物无 Redis 客户端，多个网关实例可共享同一 Redis；这不等同于 Redis Cluster/Sentinel 支持。固定前缀下，同一 Redis database 视为同一个逻辑网关；独立部署应使用不同 database 或 Redis 实例，避免共享凭据、缓存、账本及路由绑定。
 
 覆盖 `TokenLimiter` / `UsageLedger` / `CircuitBreaker` / `ApiKeyRegistry` / `SemanticCache` / `TaskRouteSticky`；`BudgetLedger` / `RequestLogSink` / `SnapshotStore` 仍是本地实现。每请求 2–4 次 Redis 往返，无流水线合并。
+
+未发布工作区的多副本加固：共享熔断在整个冷却期拒绝请求，冷却结束后以 10 秒租约竞争单个探测；探测失败立即重新冷却，成功清理共享状态，失联探测在租约到期后可重试。探测超过 10 秒仍未结束时可能出现下一次探测；这不是无限期独占锁。升级需统一副本版本，旧脚本不识别新增的 `cb:tripped:*` 标记。限流使用 Redis 服务端时间；所有副本必须使用一致的限流参数及凭据策略。启动种子仅新增凭据，已有同 token 的策略冲突会使启动失败，整批校验失败不会发布其中的新凭据。路由、模型目录、策略和管理接口的更新仍作用于单个进程，没有版本化分布式控制面。
+
+`gateway.auth.hash-keys-at-rest=true` 现在也应用于 Redis：`llmgw:keys:sha256` 的字段为 SHA-256(token)，值保留策略及 metadata；`false` 使用旧的 `llmgw:keys` 明文字段。检测到另一种存储模式时启动失败，禁止滚动混用。旧实现即使配置 true 也写明文；已有部署升级时可先在所有副本显式设 false 保持旧模式，或停流量、停止所有副本后备份并离线转换字段至哈希表、核对策略、移除旧表，最后统一启用 true。应用不会自动迁移或删除已有 Redis 数据；历史备份/AOF 中的明文需另行处置。
+
+API key ID 不得使用 `model:` / `group:` 前缀，以免与模型限流、群组预算作用域相撞；Redis 额外禁止 ID `keys`，它与内部用量索引冲突。已有冲突 ID 必须协调改名和迁移归属/用量，不能直接重置账本。Redis 配额及导入用量每个计数、prompt+completion 总和上限为 `2^53-1`，超出时拒绝，避免 Lua 数值舍入。
+
+快照按提供的 ID 替换，保留无关 ID；任一目标仍有在途预留时整批拒绝。Redis 使用一个 Lua 脚本校验并恢复，内存实现使用实例级恢复锁；这是手动诊断恢复，不含预约 ID、幂等结算或崩溃对账，不能当作财务备份。建议停流量后保存、恢复；文件写入/解析失败会报错，缺失、损坏或越界数据不再静默当作成功。
+
+### 3.9 协议转换（`gateway.conversion.*`，T1.11）
+
+| 配置项 | 类型 | 代码默认 | 说明与约束 |
+| --- | --- | --- | --- |
+| `gateway.conversion.continuation-key` | String | `""` | 思考续轮信封（`llmgw1:`）的 HMAC-SHA256 密钥，归运行时（ExtensionContext）所有，codec 不持有。空＝每进程随机 32 字节密钥，续轮 token 仅进程内有效（单实例/开发可用）；生产必须经 env `LLMGW_CONTINUATION_KEY` 注入稳定密钥，使 token 跨重启/多副本可校验。密钥永不写日志、不入仓库 |
+
+仅当路由 `upstream-protocol="chat"` 时启用协议转换；缺省 `""` 仍逐字节透传。转换模块按命名 SPI 发现入口/上游 codec，零发现或同一协议重复发现会在启动 seal 前失败。
+
 
 ---
 
 
-## 3.1 v13 新增配置项（能力补齐，全部默认关闭/保持 v12 行为）
+## 3.1 转发配置项（含未发布工作区安全边界）
 
 ### 转发治理（gateway.upstream.*）
 
@@ -209,17 +226,20 @@ api-keys:
 |---|---|---|---|
 | `connect-timeout-ms` | int | `10000` | TCP 连接超时 |
 | `first-byte-timeout-ms` | int | `0`（关） | 流式调用响应头到达超时：悬挂上游在 200 提交前失败，保住 fallback 窗口 |
-| `idle-read-timeout-ms` | int | `0`（关） | 流内静默中止（慢过整个请求超时的截断） |
-| `heartbeat-interval-ms` | int | `0`（关） | SSE comment 心跳帧；网关唯一注入字节 |
+| `idle-read-timeout-ms` | int | `0`（关） | 从收到响应头开始，以正文读取进展刷新（含未完成 SSE 行和错误体）；不必等待完整行。超过空闲阈值中止流；整体超时仍提供总时长上限 |
+| `max-sse-line-bytes` | int | `1048576` | 未发布工作区：上游 SSE 单行原始字节上限，CR/LF 不计，必须大于 0；不限制合法长流累计大小 |
+| `heartbeat-interval-ms` | int | `0`（关） | SSE comment 心跳帧；仅成功响应头到达后启用。未发布工作区：VT 在请求线程空闲等行时发送，WebFlux 在背压下丢弃多余心跳 tick，真实数据不丢弃 |
 | `retry.attempts` | int | `1` | 同路由重试次数；1=关闭（v12 语义） |
 | `retry.backoff-base-ms` / `backoff-max-ms` | int | `200` / `2000` | 指数退避 + 全抖动 |
+
+当前工作区的整体 deadline 在持续有 token 的流中也会到期；生成可能超过默认 60s 时需显式增加 `timeout-ms`。心跳不会延长整体期限，重试/回退会分别使用各自的尝试预算。该行为修复尚未包含在 v0.3.1 发布资产中。
 
 ### 双向 header 透传（gateway.headers.*）
 
 `upstream-allow`（默认 `anthropic-version`/`openai-beta`/`x-request-id`/`traceparent`/
 `tracestate`/`baggage`）与 `client-allow`（`x-ratelimit-*`/`retry-after` 等）。尾部
 `*` 前缀匹配；`Authorization`/Host/逐跳头/Content-Type 等受保护头**无论配置如何都
-不透传**（multipart 上传体例外：Content-Type 携带 boundary，必须透传）。
+不透传**（文件/转写上传体例外：Content-Type 携带 boundary，即使可选白名单为空也保留）。未发布工作区已修复该上传头原先被删除的问题；通过白名单的 `anthropic-version` 替换 provider 默认值，只发送一个版本头。
 
 ### 模型目录与预算（gateway.models[] / api-keys[].budget-micro-usd）
 
@@ -289,7 +309,7 @@ POST `{model,prompt}` → `{action,reason}`，不可达或无效响应时返回 
 ### 快照自动恢复（gateway.governance.snapshot-auto-restore）
 
 `true` 时启动时从 snapshot-path 恢复用量账本（与 `POST /admin/snapshot/save`
-配合）；默认 `false` 保持基准纯净。
+配合）；默认 `false` 保持基准纯净。未发布工作区在启用自动恢复时要求文件存在且有效，缺失、损坏或恢复冲突会使启动失败；首次部署应先生成有效快照或保持关闭。
 
 ## 4. 代码默认 ≠ 随仓库发布值（重要）
 
@@ -543,7 +563,7 @@ curl -sS -X POST http://127.0.0.1:8080/admin/routes/reload \
 | 配置 / 状态 | 能否运行时热更 | 机制 |
 | --- | --- | --- |
 | **路由表** | ✅ 能 | `POST /admin/routes/reload`，先全量校验再一次 CAS 换 `AtomicReference<RouteTable>`，在途 SSE 不中断；`GET /admin/routes` 的 `X-LLMGW-Config-Version` 递增 |
-| 快照用量账本 | ✅ 能（手动、非幂等安全） | `POST /admin/snapshot/load`，替换语义；建议停流量后操作 |
+| 快照用量账本 | ✅ 能（手动、非幂等安全） | `POST /admin/snapshot/load`，按 ID 替换；目标有在途预留时整批拒绝，建议停流量后操作 |
 | 静态 `api-keys` 配置 | 配置文件修改需重启 | 内存默认包可通过 `/admin/keys` 管理运行时 key；Redis CRUD 尚返回 501 |
 | rate/burst/cache/circuit 支持字段 | ✅ 能 | `POST /admin/governance` 更新 DynamicGovernanceSettings；不支持的构造期字段仍需重启 |
 | `governance-enabled` / `admin-token` / `max-request-bytes` | ❌ 不能 | 启动时绑定 |
@@ -620,7 +640,7 @@ gateway:
     type: mock                    # mock | openai-compatible
     base-url: http://127.0.0.1:9090/mock/v1   # 会自动追加 /chat/completions
     api-key: ${DASHSCOPE_API_KEY:}
-    timeout-ms: 60000             # 整体超时，非三级超时
+    timeout-ms: 60000             # 单次上游尝试的整体超时，覆盖正文
     # executor-threads: 32        # 未显式配置，取代码默认 32
   governance:
     default-quota-tokens: 1000000

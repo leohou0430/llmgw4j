@@ -1,0 +1,107 @@
+{
+  "schema": "llmgw-acceptance-fixture/v1",
+  "id": "messages-s6-cancel-recover",
+  "entry": "messages",
+  "scenario": 6,
+  "slug": "cancel-recover",
+  "title": "取消后释放并恢复",
+  "mock": {
+    "chunks": 4
+  },
+  "markers": [
+    "mock-deepseek",
+    "mock-stall-mid-30000"
+  ],
+  "steps": [
+    {
+      "name": "cancel",
+      "request": {
+        "model": "mock-model",
+        "messages": [
+          {
+            "role": "user",
+            "content": "mock-deepseek mock-stall-mid-30000: cancel probe."
+          }
+        ],
+        "max_tokens": 1024,
+        "stream": true
+      },
+      "expected": {
+        "transport": "sse",
+        "cancel": {
+          "trigger": "after_first_content_frame",
+          "stall_marker": "mock-stall-mid-30000",
+          "assertions": {
+            "first_frame_received": true,
+            "active_permits_after_cancel": 0,
+            "no_success_terminal_after_cancel": true,
+            "upstream_connection_released": true
+          }
+        }
+      }
+    },
+    {
+      "name": "recovery",
+      "request": {
+        "model": "mock-model",
+        "messages": [
+          {
+            "role": "user",
+            "content": "mock-deepseek: recovery probe."
+          }
+        ],
+        "max_tokens": 1024,
+        "stream": true
+      },
+      "expected": {
+        "transport": "sse",
+        "terminal": {
+          "message_stop_count": 1,
+          "stop_reason_event": "message_delta",
+          "stop_reason": "end_turn",
+          "done_marker": false,
+          "usage_location": "message_delta.usage",
+          "block_indices": "contiguous_from_0"
+        },
+        "text": {
+          "equals": "Hello world"
+        },
+        "usage": {
+          "input_tokens": 4,
+          "cache_read_input_tokens": 3,
+          "cache_creation_input_tokens": 0,
+          "output_tokens": 4,
+          "absent_fields": [
+            "usage.total_tokens",
+            "usage.output_tokens_details"
+          ]
+        },
+        "sse": {
+          "framing": "event+data",
+          "event_type_equals_data_type": true,
+          "preamble": [
+            "message_start"
+          ],
+          "message_start_usage": {
+            "input_tokens": 0,
+            "output_tokens": 0
+          },
+          "block_indices": "contiguous_from_0",
+          "text_block": {
+            "start_type": "text",
+            "delta_type": "text_delta",
+            "delta_concat": "Hello world",
+            "closed": true
+          },
+          "terminal": {
+            "message_delta_stop_reason": "end_turn",
+            "message_stop_count": 1,
+            "usage_location": "message_delta.usage"
+          },
+          "done_marker": false
+        }
+      }
+    }
+  ],
+  "notes": "mock-stall-mid-30000 silences the upstream after the first frame so the client cancel is deterministic; the recovery step proves permits released and the route healthy."
+}

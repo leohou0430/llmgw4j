@@ -1,0 +1,22 @@
+{
+  "model": "deepseek-flash",
+  "messages": [
+    {"role": "user", "content": "weather in SF?"},
+    {"role": "assistant", "content": "calling", "reasoning_content": "need the city",
+     "tool_calls": [
+       {"id": "call_1", "type": "function", "function": {"name": "get_weather", "arguments": "{\"city\":\"SF\"}"}}
+     ]},
+    {"role": "tool", "tool_call_id": "call_1", "content": "sunny"}
+  ],
+  "tools": [
+    {"type": "function", "function": {
+      "name": "get_weather",
+      "description": "Get weather",
+      "parameters": {"type": "object", "properties": {"city": {"type": "string"}}}
+    }}
+  ],
+  "tool_choice": "auto",
+  "thinking": {"type": "enabled"},
+  "reasoning_effort": "high",
+  "stream": false
+}

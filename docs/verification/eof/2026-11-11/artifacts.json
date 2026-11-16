@@ -1,0 +1,141 @@
+{
+  "artifacts": {
+    "previous-backpressure": {
+      "path": "bench/results/backpressure-2026-11-11/after.jar",
+      "sha256": "25222da82d0829f484b33326fb8922c5d55f5c4dcf1188a2fc5780c5e08ced90",
+      "module_class_digests": {
+        "llmgw-core": {
+          "classes": 96,
+          "sha256": "43325c2b3359cb4c919f8e8a8d204e41048e10b36a1b5f0e2d1e8558d8ef79e6"
+        },
+        "llmgw-engine-api": {
+          "classes": 11,
+          "sha256": "a2b8b55abe68667a9433f3488b24bcddbe2594cb861e40a1ff5a07bf9c25825e"
+        },
+        "llmgw-engine-webflux": {
+          "classes": 4,
+          "sha256": "04626df3b3c39ca7d84a635b9139453e796e8d9abbc3978f33645518688c5c45"
+        },
+        "llmgw-engine-vt": {
+          "classes": 4,
+          "sha256": "77a96728000ea72d26a99a2d8210d0107fe98dcd96ddf9338cbab3cb811adc85"
+        },
+        "llmgw-provider-http-jdk": {
+          "classes": 11,
+          "sha256": "602d1b9faf98cc49f5cf4f2ff43cd43011cdf3ecc9b756eeee3e1c96f0ccd565"
+        }
+      }
+    },
+    "after": {
+      "path": "bench/results/eof-2026-11-11/after.jar",
+      "sha256": "0485fc98599c117939b8ea0b5cf00e4ecacd1abc1f1b55b813629eef5fe191a5",
+      "module_class_digests": {
+        "llmgw-core": {
+          "classes": 96,
+          "sha256": "43325c2b3359cb4c919f8e8a8d204e41048e10b36a1b5f0e2d1e8558d8ef79e6"
+        },
+        "llmgw-engine-api": {
+          "classes": 11,
+          "sha256": "a2b8b55abe68667a9433f3488b24bcddbe2594cb861e40a1ff5a07bf9c25825e"
+        },
+        "llmgw-engine-webflux": {
+          "classes": 4,
+          "sha256": "04626df3b3c39ca7d84a635b9139453e796e8d9abbc3978f33645518688c5c45"
+        },
+        "llmgw-engine-vt": {
+          "classes": 4,
+          "sha256": "77a96728000ea72d26a99a2d8210d0107fe98dcd96ddf9338cbab3cb811adc85"
+        },
+        "llmgw-provider-http-jdk": {
+          "classes": 11,
+          "sha256": "8e5170af41ae106e78ae9122c6fe7f504c88cb5dce33f21afbd39fbb517f6cbb"
+        }
+      }
+    },
+    "verified-default": {
+      "path": "bench/results/eof-2026-11-11/verified-default.jar",
+      "sha256": "e02d1be7780983da48e762879efbcf9f06508fab5188f9f410c96ad86102e359",
+      "module_class_digests": {
+        "llmgw-core": {
+          "classes": 96,
+          "sha256": "43325c2b3359cb4c919f8e8a8d204e41048e10b36a1b5f0e2d1e8558d8ef79e6"
+        },
+        "llmgw-engine-api": {
+          "classes": 11,
+          "sha256": "a2b8b55abe68667a9433f3488b24bcddbe2594cb861e40a1ff5a07bf9c25825e"
+        },
+        "llmgw-engine-webflux": {
+          "classes": 4,
+          "sha256": "04626df3b3c39ca7d84a635b9139453e796e8d9abbc3978f33645518688c5c45"
+        },
+        "llmgw-engine-vt": {
+          "classes": 4,
+          "sha256": "77a96728000ea72d26a99a2d8210d0107fe98dcd96ddf9338cbab3cb811adc85"
+        },
+        "llmgw-provider-http-jdk": {
+          "classes": 11,
+          "sha256": "8e5170af41ae106e78ae9122c6fe7f504c88cb5dce33f21afbd39fbb517f6cbb"
+        }
+      }
+    },
+    "verified-redis": {
+      "path": "bench/results/eof-2026-11-11/verified-redis.jar",
+      "sha256": "b382f59d2f58031714afb7d5f84fff9de05c64fd91ddcee926b9369da019ad15",
+      "module_class_digests": {
+        "llmgw-core": {
+          "classes": 96,
+          "sha256": "43325c2b3359cb4c919f8e8a8d204e41048e10b36a1b5f0e2d1e8558d8ef79e6"
+        },
+        "llmgw-engine-api": {
+          "classes": 11,
+          "sha256": "a2b8b55abe68667a9433f3488b24bcddbe2594cb861e40a1ff5a07bf9c25825e"
+        },
+        "llmgw-engine-webflux": {
+          "classes": 4,
+          "sha256": "04626df3b3c39ca7d84a635b9139453e796e8d9abbc3978f33645518688c5c45"
+        },
+        "llmgw-engine-vt": {
+          "classes": 4,
+          "sha256": "77a96728000ea72d26a99a2d8210d0107fe98dcd96ddf9338cbab3cb811adc85"
+        },
+        "llmgw-provider-http-jdk": {
+          "classes": 11,
+          "sha256": "8e5170af41ae106e78ae9122c6fe7f504c88cb5dce33f21afbd39fbb517f6cbb"
+        }
+      }
+    },
+    "verified-combined": {
+      "path": "bench/results/eof-2026-11-11/verified-combined.jar",
+      "sha256": "05b0fd2edd4de01c332fdabbd718356e8cc5959dba14bcd337ff19631b793ef5",
+      "module_class_digests": {
+        "llmgw-core": {
+          "classes": 96,
+          "sha256": "43325c2b3359cb4c919f8e8a8d204e41048e10b36a1b5f0e2d1e8558d8ef79e6"
+        },
+        "llmgw-engine-api": {
+          "classes": 11,
+          "sha256": "a2b8b55abe68667a9433f3488b24bcddbe2594cb861e40a1ff5a07bf9c25825e"
+        },
+        "llmgw-engine-webflux": {
+          "classes": 4,
+          "sha256": "04626df3b3c39ca7d84a635b9139453e796e8d9abbc3978f33645518688c5c45"
+        },
+        "llmgw-engine-vt": {
+          "classes": 4,
+          "sha256": "77a96728000ea72d26a99a2d8210d0107fe98dcd96ddf9338cbab3cb811adc85"
+        },
+        "llmgw-provider-http-jdk": {
+          "classes": 11,
+          "sha256": "8e5170af41ae106e78ae9122c6fe7f504c88cb5dce33f21afbd39fbb517f6cbb"
+        }
+      }
+    }
+  },
+  "source_sha256": {
+    "llmgw-provider/llmgw-provider-http-jdk/src/main/java/io/github/leohou0430/llmgw/provider/http/jdk/SseLineLimitSubscriber.java": "a968a482633d9ff374a67bbc1ee7477912a29f8636915893bd4bcf7a2e35f8af",
+    "llmgw-provider/llmgw-provider-http-jdk/src/main/java/io/github/leohou0430/llmgw/provider/http/jdk/BlockingSseBodySubscriber.java": "a5cbd9e8f990bdda8c22800c9038ac2573dae20d19c409ee8c2c8725b3a5f462",
+    "llmgw-provider/llmgw-provider-http-jdk/src/test/java/io/github/leohou0430/llmgw/provider/http/jdk/SseLineLimitSubscriberTest.java": "eb62e12630b2564aaf3209b2565f70223dc773ab92bf230839d0fdc1f34ebc0b",
+    "llmgw-provider/llmgw-provider-http-jdk/src/test/java/io/github/leohou0430/llmgw/provider/http/jdk/BlockingSseBodySubscriberTest.java": "1532640a00f4d153b4cc6f20216532f78c3185d3c09595247bfc5448794ed20d",
+    "llmgw-provider/llmgw-provider-http-jdk/src/test/java/io/github/leohou0430/llmgw/provider/http/jdk/JdkFlowTransportTest.java": "6d0e53d8162f850116fe63f486390816d176a34bb0fb65a66507f18537fa0636"
+  }
+}

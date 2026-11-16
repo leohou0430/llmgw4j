@@ -1,0 +1,180 @@
+{
+  "schema": "llmgw-acceptance-fixture/v1",
+  "id": "responses-s4-thinking-continuation",
+  "entry": "responses",
+  "scenario": 4,
+  "slug": "thinking-continuation",
+  "title": "思考输出+携带状态续轮",
+  "mock": {
+    "chunks": 4
+  },
+  "markers": [
+    "mock-deepseek-thinking"
+  ],
+  "steps": [
+    {
+      "name": "initial",
+      "request": {
+        "model": "mock-model",
+        "input": [
+          {
+            "type": "message",
+            "role": "user",
+            "content": "mock-deepseek-thinking: Explain the answer."
+          }
+        ],
+        "reasoning": {
+          "effort": "medium"
+        },
+        "max_output_tokens": 1024,
+        "stream": true
+      },
+      "expected": {
+        "transport": "sse",
+        "terminal": {
+          "event": "response.completed",
+          "count": 1,
+          "response_status": "completed",
+          "output_item_types": [
+            "reasoning",
+            "message"
+          ],
+          "sequence_number": "monotonic_from_0",
+          "done_marker": false,
+          "usage_location": "response.usage"
+        },
+        "text": {
+          "equals": "Hello world"
+        },
+        "thinking": {
+          "equals": "Let me think",
+          "before_text": true
+        },
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 4,
+          "total_tokens": 11,
+          "input_tokens_details": {
+            "cached_tokens": 3
+          },
+          "output_tokens_details": {
+            "reasoning_tokens": 2
+          }
+        },
+        "sse": {
+          "framing": "event+data",
+          "event_type_equals_data_type": true,
+          "sequence_number": "monotonic_from_0",
+          "preamble": [
+            "response.created",
+            "response.in_progress"
+          ],
+          "reasoning_item": {
+            "open": "response.output_item.added",
+            "delta_event": "response.reasoning_text.delta",
+            "done_text": "Let me think",
+            "close": "response.output_item.done",
+            "encrypted_content_prefix": "llmgw1:",
+            "summary_empty": true
+          },
+          "message_item": {
+            "open": "response.output_item.added",
+            "delta_event": "response.output_text.delta",
+            "done_text": "Hello world",
+            "close": "response.output_item.done"
+          },
+          "terminal": {
+            "event": "response.completed",
+            "count": 1,
+            "response_status": "completed",
+            "usage_location": "response.usage"
+          },
+          "done_marker": false
+        }
+      }
+    },
+    {
+      "name": "continuation",
+      "request": {
+        "model": "mock-model",
+        "input": [
+          {
+            "type": "message",
+            "role": "user",
+            "content": "mock-deepseek-thinking: Explain the answer."
+          },
+          {
+            "type": "reasoning",
+            "id": "rs_fixture_1",
+            "summary": [],
+            "content": [
+              {
+                "type": "reasoning_text",
+                "text": "Let me think"
+              }
+            ],
+            "encrypted_content": "llmgw1:eyJwcm9qZWN0SWQiOiJmaXh0dXJlLXByb2plY3QiLCJpdGVtSWQiOiJyc19maXh0dXJlXzEiLCJyZWFzb25pbmdTaGEyNTYiOiI3MDY3ODAwZWRlMmE2Nzc1YWE3ZmIxYjlmNzZjYjYwODQxOTQ5YTJjMDFiMjVhODA4YTI4MTljZjA0MjU2ZjQ0In0._aRuT_T-iDvpHg6YOXTnbFC_DPyoKIIMuiAa9FuWWbQ",
+            "status": "completed"
+          },
+          {
+            "type": "message",
+            "role": "assistant",
+            "content": [
+              {
+                "type": "output_text",
+                "text": "Hello world"
+              }
+            ],
+            "status": "completed"
+          },
+          {
+            "type": "message",
+            "role": "user",
+            "content": "mock-deepseek-thinking: Continue."
+          }
+        ],
+        "reasoning": {
+          "effort": "medium"
+        },
+        "max_output_tokens": 1024,
+        "stream": false
+      },
+      "expected": {
+        "transport": "json",
+        "terminal": {
+          "object": "response",
+          "status": "completed",
+          "output_item_types": [
+            "reasoning",
+            "message"
+          ],
+          "reasoning_encrypted_content_prefix": "llmgw1:"
+        },
+        "text": {
+          "equals": "Hello world"
+        },
+        "thinking": {
+          "equals": "Let me think",
+          "before_text": true
+        },
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 1,
+          "total_tokens": 8,
+          "input_tokens_details": {
+            "cached_tokens": 3
+          },
+          "output_tokens_details": {
+            "reasoning_tokens": 2
+          }
+        }
+      }
+    }
+  ],
+  "notes": "Step 1 streams thinking; step 2 carries the reasoning state back. Responses/Messages tokens are pre-minted with the documented fixture key/project (manifest.continuation_envelope); T1.14 may substitute the runtime-minted token from step 1 because verify() binds projectId + reasoning text, not the runtime item id. Chat carries native reasoning_content plaintext.",
+  "continuation": {
+    "token_source": "preminted_fixture_key",
+    "envelope_ref": "manifest.continuation_envelope",
+    "item_id": "rs_fixture_1"
+  }
+}

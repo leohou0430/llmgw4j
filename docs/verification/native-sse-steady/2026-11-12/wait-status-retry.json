@@ -1,0 +1,124 @@
+{
+  "status": "failed",
+  "checks": [
+    {
+      "time": "2026-11-12T07:38:55+0800",
+      "active_compilers": 4,
+      "build_drivers": 1,
+      "loadavg": [
+        144.68359375,
+        54.17822265625,
+        23.4130859375
+      ],
+      "quiet_samples": 0
+    },
+    {
+      "time": "2026-11-12T07:39:25+0800",
+      "active_compilers": 0,
+      "build_drivers": 1,
+      "loadavg": [
+        124.384765625,
+        58.01025390625,
+        25.87255859375
+      ],
+      "quiet_samples": 0
+    },
+    {
+      "time": "2026-11-12T07:39:55+0800",
+      "active_compilers": 0,
+      "build_drivers": 0,
+      "loadavg": [
+        77.4775390625,
+        52.98681640625,
+        25.1650390625
+      ],
+      "quiet_samples": 0
+    },
+    {
+      "time": "2026-11-12T07:40:25+0800",
+      "active_compilers": 0,
+      "build_drivers": 0,
+      "loadavg": [
+        48.35400390625,
+        48.24365234375,
+        24.408203125
+      ],
+      "quiet_samples": 0
+    },
+    {
+      "time": "2026-11-12T07:40:56+0800",
+      "active_compilers": 0,
+      "build_drivers": 0,
+      "loadavg": [
+        30.56005859375,
+        43.93505859375,
+        23.6708984375
+      ],
+      "quiet_samples": 0
+    },
+    {
+      "time": "2026-11-12T07:41:26+0800",
+      "active_compilers": 0,
+      "build_drivers": 0,
+      "loadavg": [
+        19.01611328125,
+        39.84814453125,
+        22.8896484375
+      ],
+      "quiet_samples": 1
+    },
+    {
+      "time": "2026-11-12T07:41:56+0800",
+      "active_compilers": 0,
+      "build_drivers": 0,
+      "loadavg": [
+        12.53515625,
+        36.29150390625,
+        22.1875
+      ],
+      "quiet_samples": 2
+    },
+    {
+      "time": "2026-11-12T07:42:26+0800",
+      "active_compilers": 0,
+      "build_drivers": 0,
+      "loadavg": [
+        8.5712890625,
+        33.0478515625,
+        21.49853515625
+      ],
+      "quiet_samples": 3
+    }
+  ],
+  "command": [
+    "python3",
+    "bench/capacity/run.py",
+    "--before",
+    "bench/results/linux-native-2026-11-11/evidence/jvm-default.jar",
+    "--after",
+    "bench/results/linux-native-2026-11-11/evidence/jvm-default.jar",
+    "--native-dir",
+    "bench/results/linux-native-2026-11-11/evidence",
+    "--output",
+    "bench/results/native-sse-steady-2026-11-12/serial-vs-jvm-retry",
+    "--rounds",
+    "3",
+    "--duration",
+    "60s",
+    "--warmup",
+    "60s",
+    "--warmup-vus",
+    "64",
+    "--vus",
+    "64",
+    "--modes",
+    "sse",
+    "--labels",
+    "before-webflux,after-webflux",
+    "--skip-long",
+    "--respect-retry-after",
+    "--max-host-load-ratio",
+    "0.75"
+  ],
+  "exit_code": 1
+}

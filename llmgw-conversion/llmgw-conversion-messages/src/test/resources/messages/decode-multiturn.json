@@ -1,0 +1,30 @@
+{
+  "model": "client-model",
+  "max_tokens": 2048,
+  "system": "be concise",
+  "stop_sequences": ["END"],
+  "messages": [
+    {"role": "user", "content": "weather?"},
+    {"role": "assistant", "content": [
+      {"type": "text", "text": "let me check"},
+      {"type": "tool_use", "id": "call_1", "name": "get_weather", "input": {"city": "SF"}}
+    ]},
+    {"role": "user", "content": [
+      {"type": "tool_result", "tool_use_id": "call_1", "content": "sunny", "is_error": false}
+    ]},
+    {"role": "system", "content": "stay brief"},
+    {"role": "user", "content": [{"type": "text", "text": "thanks"}]}
+  ],
+  "tools": [
+    {
+      "type": "custom",
+      "name": "get_weather",
+      "description": "weather lookup",
+      "input_schema": {"type": "object", "properties": {"city": {"type": "string"}}}
+    }
+  ],
+  "tool_choice": {"type": "auto"},
+  "metadata": {"user_id": "user-1", "trace": "abc"},
+  "service_tier": "auto",
+  "stream": false
+}

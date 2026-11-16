@@ -16,6 +16,9 @@
     <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-provider-api</artifactId></dependency>
     <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-engine-api</artifactId></dependency>
     <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-core</artifactId></dependency>
+    <!-- T1.12 protocol-conversion seam: the foundation conversion contract (core-only, no Spring). -->
+    <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-conversion-api</artifactId></dependency>
     <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-web</artifactId></dependency>
+    <dependency><groupId>org.junit.jupiter</groupId><artifactId>junit-jupiter</artifactId><scope>test</scope></dependency>
   </dependencies>
 </project>

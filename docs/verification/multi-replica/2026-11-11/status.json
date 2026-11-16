@@ -1,0 +1,23 @@
+{
+  "updated_at": "2026-11-11T11:33:33.876462+00:00",
+  "phase": 2,
+  "status": "complete",
+  "frozen_redis_jar": "bench/results/multi-replica-2026-11-11/redis-fixed.jar",
+  "sha256": "a3ce61f4adf7910e824e2feea98eb997ce66d10a9dd62857a55f26eca6580b01",
+  "passed": [
+    "26 Redis tests (20 consistency + 6 existing)",
+    "three clean profiles: 243 tests each, zero failures/errors/skips and matching class digests",
+    "nine HTTP suites on common-identical modules",
+    "final two-replica quota and WebFlux/VT recovery/ownership suites"
+  ],
+  "pending": [],
+  "limits": [
+    "Redis restart test uses explicit SAVE then RDB recovery; no arbitrary crash durability claim",
+    "single Redis endpoint, no Cluster/Sentinel discovery",
+    "budgets/routes/policies/catalog/logging stay process-local",
+    "Redis runtime key CRUD/listing resources return501",
+    "legacy plaintext registry requires coordinated storage-mode migration"
+  ],
+  "completion": "phase-2-completion.json",
+  "next_phase": 3
+}

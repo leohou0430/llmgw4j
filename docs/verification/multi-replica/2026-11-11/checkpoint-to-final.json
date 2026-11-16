@@ -1,0 +1,14 @@
+{
+  "jars": {
+    "redis.jar": "f32431c950d0776fb85a8060e6c06fc72aebff09098bd12d063fee1adf443d61",
+    "redis-fixed.jar": "a3ce61f4adf7910e824e2feea98eb997ce66d10a9dd62857a55f26eca6580b01"
+  },
+  "changed_classes": {
+    "BOOT-INF/lib/llmgw-governance-redis-0.3.1.jar": [
+      "io/github/leohou0430/llmgw/governance/redis/RedisScripts$Script.class",
+      "io/github/leohou0430/llmgw/governance/redis/RedisScripts.class",
+      "io/github/leohou0430/llmgw/governance/redis/RedisCircuitBreaker.class"
+    ]
+  },
+  "common_http_modules_identical": true
+}

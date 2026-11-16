@@ -1,0 +1,8 @@
+{
+  "id": "resp-4",
+  "object": "chat.completion",
+  "model": "deepseek-flash",
+  "choices": [
+    {"index": 0, "message": {"role": "assistant", "content": "no usage"}, "finish_reason": "stop"}
+  ]
+}

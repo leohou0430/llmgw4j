@@ -1,0 +1,99 @@
+package io.github.leohou0430.llmgw.app;
+
+import io.github.leohou0430.llmgw.identity.AccountStore;
+import io.github.leohou0430.llmgw.identity.CsrfTokenService;
+import io.github.leohou0430.llmgw.identity.Session;
+import io.github.leohou0430.llmgw.identity.SessionStore;
+import io.github.leohou0430.llmgw.identity.Action;
+import io.github.leohou0430.llmgw.identity.Target;
+import io.github.leohou0430.llmgw.identity.local.AuthOutcome;
+import io.github.leohou0430.llmgw.identity.local.AuthenticatedRequest;
+import io.github.leohou0430.llmgw.identity.local.RequestAuthorizer;
+import io.github.leohou0430.llmgw.identity.local.SessionService;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.time.Duration;
+import java.util.Map;
+import java.util.Optional;
+
+/**
+ * Login endpoint: verifies the account password, creates a random server-side session, sets
+ * an HttpOnly/SameSite session cookie, and returns a session-bound CSRF token. No default
+ * credentials; accounts exist only via explicit bootstrap. Cookies are marked Secure in TLS
+ * deployments (this local default is not Secure so plain-http local runs work).
+ */
+@RestController
+@RequestMapping("/control")
+public class ControlLoginController {
+    private static final long SESSION_TTL_MILLIS = 3_600_000L;
+
+    private final AccountStore accounts;
+    private final SessionService sessions;
+    private final CsrfTokenService csrf;
+    private final SessionStore sessionStore;
+    private final RequestAuthorizer authorizer;
+
+    public ControlLoginController(AccountStore accounts, SessionService sessions, CsrfTokenService csrf,
+                                  SessionStore sessionStore, RequestAuthorizer authorizer) {
+        this.accounts = accounts;
+        this.sessions = sessions;
+        this.csrf = csrf;
+        this.sessionStore = sessionStore;
+        this.authorizer = authorizer;
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<Map<String, Object>> login(@RequestBody LoginBody body) {
+        Optional<Session> session = accounts.findByUsername(body.username())
+                .flatMap(account -> sessions.login(account, body.password(), System.currentTimeMillis()));
+        if (session.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "invalid credentials");
+        }
+        ResponseCookie cookie = ResponseCookie.from("llmgw_sid", session.get().id())
+                .httpOnly(true)
+                .secure(false)
+                .sameSite("Lax")
+                .path("/control")
+                .maxAge(Duration.ofMillis(SESSION_TTL_MILLIS))
+                .build();
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                .body(Map.of("csrfToken", csrf.issue(session.get().id())));
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Map<String, Object>> logout(
+            @CookieValue(name = "llmgw_sid", required = false) String sessionId,
+            @RequestHeader(name = "X-CSRF-Token", required = false) String csrfToken) {
+        AuthOutcome outcome = authorizer.authorize(new AuthenticatedRequest(
+                sessionId, csrfToken, true, Action.CATALOG_READ, new Target("t1", "p1")));
+        if (outcome != AuthOutcome.ALLOW || sessionId == null) {
+            HttpStatus status = outcome == AuthOutcome.UNAUTHENTICATED ? HttpStatus.UNAUTHORIZED : HttpStatus.FORBIDDEN;
+            throw new ResponseStatusException(status, outcome.name());
+        }
+        sessionStore.revoke(sessionId);
+        ResponseCookie cleared = ResponseCookie.from("llmgw_sid", "")
+                .httpOnly(true)
+                .secure(false)
+                .sameSite("Lax")
+                .path("/control")
+                .maxAge(Duration.ZERO)
+                .build();
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, cleared.toString())
+                .body(Map.of("loggedOut", true));
+    }
+
+    public record LoginBody(String username, String password) {
+    }
+}

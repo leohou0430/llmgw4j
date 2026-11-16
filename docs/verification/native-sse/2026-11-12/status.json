@@ -1,0 +1,25 @@
+{
+  "status": "retest_complete",
+  "updated_at": "2026-11-11T19:10:48.165778+00:00",
+  "user_choice": "wait for LLVM build to finish, then retest locally",
+  "performance_cause_confirmed": false,
+  "production_changed": false,
+  "benchmark_guard_added": true,
+  "controlled_samples_completed": 27,
+  "rejected_diagnostic_batches": [
+    "repro interrupted due host interference",
+    "gc-probe aborted by host-load guard"
+  ],
+  "baseline_p99_ratio": 2.56579559256122,
+  "confirmation_p99_ratio": 1.2023071817945972,
+  "adopted_tuning": null,
+  "own_resources_cleaned": true,
+  "new_supplier_requests": 0,
+  "committed": false,
+  "pushed": false,
+  "released": false,
+  "limitations": [
+    "Tail latency remains variable; no confirmed root cause",
+    "No production SLO or long-duration claim"
+  ]
+}

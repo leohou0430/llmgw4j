@@ -1,0 +1,9 @@
+{
+  "id": "resp-10",
+  "object": "chat.completion",
+  "model": "deepseek-flash",
+  "choices": [
+    {"index": 0, "message": {"role": "assistant", "content": "legacy stop value"}, "finish_reason": "function_call"}
+  ],
+  "usage": {"prompt_tokens": 2, "completion_tokens": 3, "total_tokens": 5}
+}

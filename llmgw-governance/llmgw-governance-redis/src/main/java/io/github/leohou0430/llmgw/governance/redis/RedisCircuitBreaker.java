@@ -53,6 +53,7 @@ public final class RedisCircuitBreaker implements CircuitBreaker {
     private String failures(Route route) { return prefix + "cb:fail:" + route.id(); }
     private String open(Route route) { return prefix + "cb:open:" + route.id(); }
     private String probe(Route route) { return prefix + "cb:probe:" + route.id(); }
+    private String tripped(Route route) { return prefix + "cb:tripped:" + route.id(); }
 
     @Override
     public boolean allow(Route route) {
@@ -60,13 +61,13 @@ public final class RedisCircuitBreaker implements CircuitBreaker {
             return true;
         }
         Long allowed = scripts.execute(redis, scripts.breakerAllow,
-                List.of(open(route), probe(route)));
+                List.of(open(route), probe(route), tripped(route)));
         return allowed == null || allowed == 1L;
     }
 
     @Override
     public void recordSuccess(Route route) {
-        redis.del(failures(route), open(route), probe(route));
+        redis.del(failures(route), open(route), probe(route), tripped(route));
     }
 
     @Override
@@ -75,7 +76,7 @@ public final class RedisCircuitBreaker implements CircuitBreaker {
             return;
         }
         scripts.execute(redis, scripts.breakerFailure,
-                List.of(failures(route), open(route)),
+                List.of(failures(route), open(route), tripped(route), probe(route)),
                 Integer.toString(threshold), Long.toString(cooldownMs));
     }
 }

@@ -14,11 +14,15 @@ class AnalyzeRecording {
         var cpu = new HashMap<String,Long>();var app = new HashMap<String,Long>();
         var allocations = new HashMap<String,Long>();var sites = new HashMap<String,Long>();
         long samples=0, bytes=0;Instant first=null;
+        Instant start=args.length>1?Instant.parse(args[1]):null;
+        Instant end=args.length>2?Instant.parse(args[2]):null;
+        if(start!=null&&end!=null&&!start.isBefore(end))throw new IllegalArgumentException("start must precede end");
         try(var file = new RecordingFile(Path.of(args[0]))) {
             while(file.hasMoreEvents()) {
                 var event=file.readEvent();
                 if(first==null)first=event.getStartTime();
-                if(event.getStartTime().isBefore(first.plusSeconds(15)))continue;
+                if(event.getStartTime().isBefore(start==null?first.plusSeconds(15):start))continue;
+                if(end!=null&&!event.getStartTime().isBefore(end))continue;
                 String type=event.getEventType().getName();
                 if(!type.equals("jdk.ExecutionSample")&&!type.equals("jdk.ObjectAllocationSample"))continue;
                 List<String> frames=new ArrayList<>();
@@ -38,7 +42,7 @@ class AnalyzeRecording {
                 }
             }
         }
-        top("CPU inclusive",cpu,samples);top("CPU first application frame",app,samples);
+        top("Execution stacks inclusive (can include OS wait)",cpu,samples);top("Execution stacks first application frame",app,samples);
         top("Allocation sampled bytes by class",allocations,bytes);top("Allocation sampled bytes by site",sites,bytes);
     }
 }

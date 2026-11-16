@@ -1,0 +1,37 @@
+{
+  "complete": true,
+  "gates": {
+    "three_clean_profiles": true,
+    "foundation_and_schema_boundaries": true,
+    "official_sdk_52_checks": true,
+    "sdk_harness_matches": true,
+    "nine_http_contracts": true,
+    "provider_and_redis_recovery": true,
+    "vt_small_body_rechecked": true,
+    "source_and_artifact_integrity": true,
+    "ci_yaml_and_syntax": true,
+    "sdk_lock_consistency": true,
+    "scope_documented": true
+  },
+  "artifacts": {
+    "bench/results/compatibility-2026-11-11/sdk-final-default.jar": "cd7980dd63e2e3150e366a22bbfaaf3043bd3ccae56897087ea892534d19cf24",
+    "bench/results/compatibility-2026-11-11/sdk-final-redis.jar": "84ac6b09ca0a8a667bc121c64c4b01293a694adf51d3af6e9669c39720fb3a16"
+  },
+  "sdk_versions": {
+    "openai": "3.49.0",
+    "anthropic": "2.8.0"
+  },
+  "initial_stream_run": "contracts/ retained 66/67 with one startup-not-ready; cause not reproduced, not claimed fixed",
+  "contract_reuse": [
+    "final-smoke-heartbeat-deadline",
+    "final-smoke-sse-line-limit"
+  ],
+  "not_covered": [
+    "live suppliers and account permissions",
+    "new native artifact and performance for phase-3 fixes",
+    "other language SDKs and all supplier-specific methods",
+    "financial durability or a distributed control plane"
+  ],
+  "remote_ci_triggered": false,
+  "committed_pushed_released": false
+}

@@ -1,0 +1,79 @@
+{
+  "task": "T1.15 conversion SDK compatibility (controlled upstream, dual engine)",
+  "date": "2026-11-13",
+  "live_smoke": {
+    "complete": true,
+    "checks": 36,
+    "passed": 36,
+    "engines": [
+      "webflux",
+      "vt"
+    ],
+    "entries": [
+      "chat",
+      "responses",
+      "messages"
+    ],
+    "scenarios_per_entry": 6,
+    "jar_sha256": "a95cb47e07c4324ada34b0ba29635bbb2e76d0eaede1306d3e31408d6b4097d9",
+    "sdk_versions": {
+      "openai": "3.49.0",
+      "anthropic": "2.8.0"
+    },
+    "upstream_samples": {
+      "webflux": {
+        "path": "/v1/chat/completions",
+        "body_keys": [
+          "max_tokens",
+          "messages",
+          "model",
+          "stream"
+        ],
+        "model": "deepseek-chat",
+        "authorization": "Bearer sdk-upstream",
+        "has_messages": true,
+        "upstream_requests": 25
+      },
+      "vt": {
+        "path": "/v1/chat/completions",
+        "body_keys": [
+          "max_tokens",
+          "messages",
+          "model",
+          "stream"
+        ],
+        "model": "deepseek-chat",
+        "authorization": "Bearer sdk-upstream",
+        "has_messages": true,
+        "upstream_requests": 25
+      }
+    }
+  },
+  "pure_unittest": {
+    "ran": 16,
+    "result": "OK",
+    "note": "no network, lazy SDK import invariant holds"
+  },
+  "mutation_proofs": [
+    {
+      "id": "M3",
+      "change": "upstream_violations returns [] (detector disabled)",
+      "expected": "RED",
+      "observed": "5 negative detector tests fail",
+      "reverted": true
+    }
+  ],
+  "artifacts": {
+    "bin/smoke-conversion-sdk.py": {
+      "sha256": "ab11551368e73d1bd4885c2b0487936dd66f7d5fa101aa7a3b2493bed9035a6a"
+    },
+    "bin/test_smoke_conversion_sdk.py": {
+      "sha256": "4553733310b66100cbfd1a853a39c51709f5dd5c6944e0f2e47e24809b370594"
+    }
+  },
+  "environment_note": "anthropic 2.8.0 default httpx2 client trips an httpx2 2.16.0 mount-parse bug (fails even for https://api.anthropic.com); harness passes an explicit httpx2.Client (supported SDK pattern). Client-side only; gateway behavior unchanged.",
+  "scope": "Official SDK clients parse converted entry objects across 3 entries x 6 scenarios x 2 engines; every upstream request asserted DeepSeek-Chat shaped with route credential, caller key never leaked. Controlled mock only; no real provider.",
+  "uncovered": [
+    "real provider send (T1.18 user-gated)"
+  ]
+}

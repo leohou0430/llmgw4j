@@ -12,6 +12,9 @@ info:
     Resource reads and mutations require ownership; unknown or foreign ids return 404.
     Requests carrying file_id or input_file_id require a same-tenant file on the selected route.
     Capacity exhaustion or a configured mandatory governance outage returns 503.
+    Unreleased working-tree behavior: capacity rejection includes Retry-After: 1
+    before upstream submission. This is client backoff advice, not an automatic
+    gateway retry; other 503 causes do not gain this synthetic capacity hint.
     Buffered non-streaming responses are bounded by gateway.max-response-bytes (default 4MiB);
     exceeding this limit is reported as an upstream error. Production monetary budgets are unavailable.
 
@@ -84,6 +87,7 @@ paths:
         '401': { $ref: '#/components/responses/Unauthorized' }
         '413': { $ref: '#/components/responses/TooLarge' }
         '502': { $ref: '#/components/responses/UpstreamError' }
+        '503': { $ref: '#/components/responses/Unavailable' }
   /v1/responses:
     post:
       operationId: createResponse
@@ -130,6 +134,7 @@ paths:
         '400': { $ref: '#/components/responses/BadRequest' }
         '401': { $ref: '#/components/responses/Unauthorized' }
         '502': { $ref: '#/components/responses/UpstreamError' }
+        '503': { $ref: '#/components/responses/Unavailable' }
   /v1/messages:
     post:
       operationId: createMessage
@@ -191,6 +196,7 @@ paths:
         '400': { $ref: '#/components/responses/BadRequest' }
         '401': { $ref: '#/components/responses/Unauthorized' }
         '502': { $ref: '#/components/responses/UpstreamError' }
+        '503': { $ref: '#/components/responses/Unavailable' }
   /v1/images/generations:
     post:
       operationId: createImages
@@ -230,6 +236,7 @@ paths:
                 type: object
         '401': { $ref: '#/components/responses/Unauthorized' }
         '502': { $ref: '#/components/responses/UpstreamError' }
+        '503': { $ref: '#/components/responses/Unavailable' }
   /v1/videos:
     post:
       operationId: createVideo
@@ -268,6 +275,7 @@ paths:
                 model: sora
         '401': { $ref: '#/components/responses/Unauthorized' }
         '502': { $ref: '#/components/responses/UpstreamError' }
+        '503': { $ref: '#/components/responses/Unavailable' }
   /v1/videos/{id}:
     get:
       operationId: getVideo
@@ -287,6 +295,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/VideoTask'
         '502': { $ref: '#/components/responses/UpstreamError' }
+        '503': { $ref: '#/components/responses/Unavailable' }
   /v1/videos/{id}/content:
     get:
       operationId: getVideoContent
@@ -307,6 +316,7 @@ paths:
                 type: string
                 format: binary
         '502': { $ref: '#/components/responses/UpstreamError' }
+        '503': { $ref: '#/components/responses/Unavailable' }
   /v1/embeddings:
     post:
       summary: "Embeddings (W4.3): byte-faithful pass-through"
@@ -328,6 +338,7 @@ paths:
           content:
             application/json:
               schema: { type: object }
+        '503': { $ref: '#/components/responses/Unavailable' }
 
   /v1/rerank:
     post:
@@ -350,6 +361,7 @@ paths:
           content:
             application/json:
               schema: { type: object }
+        '503': { $ref: '#/components/responses/Unavailable' }
 
   /v1/audio/speech:
     post:
@@ -372,6 +384,7 @@ paths:
           content:
             audio/mpeg:
               schema: { type: string, format: binary }
+        '503': { $ref: '#/components/responses/Unavailable' }
 
   /v1/audio/transcriptions:
     post:
@@ -394,6 +407,7 @@ paths:
           content:
             application/json:
               schema: { type: object }
+        '503': { $ref: '#/components/responses/Unavailable' }
 
   /v1/files:
     post:
@@ -415,6 +429,7 @@ paths:
           content:
             application/json:
               schema: { type: object }
+        '503': { $ref: '#/components/responses/Unavailable' }
     get:
       summary: "Tenant-scoped files listing is currently unsupported"
       tags: [data-plane]
@@ -424,6 +439,7 @@ paths:
           description: Listing is disabled to avoid exposing other tenants' upstream resources.
         '401':
           description: Missing or invalid API key.
+        '503': { $ref: '#/components/responses/Unavailable' }
 
   /v1/files/{id}:
     get:
@@ -437,6 +453,7 @@ paths:
           content:
             application/json:
               schema: { type: object }
+        '503': { $ref: '#/components/responses/Unavailable' }
     delete:
       summary: "Delete a file: sticky-routed"
       tags: [data-plane]
@@ -448,6 +465,7 @@ paths:
           content:
             application/json:
               schema: { type: object }
+        '503': { $ref: '#/components/responses/Unavailable' }
 
   /v1/batches:
     post:
@@ -465,6 +483,7 @@ paths:
           content:
             application/json:
               schema: { type: object }
+        '503': { $ref: '#/components/responses/Unavailable' }
     get:
       summary: "Tenant-scoped batches listing is currently unsupported"
       tags: [data-plane]
@@ -474,6 +493,7 @@ paths:
           description: Listing is disabled to avoid exposing other tenants' upstream resources.
         '401':
           description: Missing or invalid API key.
+        '503': { $ref: '#/components/responses/Unavailable' }
 
   /v1/batches/{id}:
     get:
@@ -487,6 +507,7 @@ paths:
           content:
             application/json:
               schema: { type: object }
+        '503': { $ref: '#/components/responses/Unavailable' }
 
   /v1/models:
     get:
@@ -499,6 +520,7 @@ paths:
           content:
             application/json:
               schema: { type: object }
+        '503': { $ref: '#/components/responses/Unavailable' }
 
   /v1/batches/{id}/cancel:
     post:
@@ -512,6 +534,7 @@ paths:
           content:
             application/json:
               schema: { type: object }
+        '503': { $ref: '#/components/responses/Unavailable' }
 
   /v1/files/{id}/content:
     get:
@@ -525,6 +548,7 @@ paths:
           content:
             application/octet-stream:
               schema: { type: string, format: binary }
+        '503': { $ref: '#/components/responses/Unavailable' }
 
 
   /admin/snapshot:
@@ -606,6 +630,10 @@ paths:
   /admin/routes/reload:
     post:
       summary: "Atomically replace routing configuration"
+      description: >-
+        Each route object accepts an optional upstreamProtocol: "" (default)
+        keeps byte-for-byte passthrough; "chat" converts the request to the
+        DeepSeek Chat upstream. Any other value is rejected with 400.
       tags: [admin]
       security: [{ adminToken: [] }]
       requestBody:
@@ -886,6 +914,20 @@ components:
               type: string
               examples: [gateway_error]
   responses:
+    Unavailable:
+      description: |
+        Capacity exhausted, or a configured mandatory governance dependency is
+        unavailable. Capacity rejection occurs before upstream submission and
+        includes Retry-After: 1 in the unreleased working tree. Clients should
+        back off; the gateway does not queue or automatically resubmit the request.
+      headers:
+        Retry-After:
+          description: Optional backoff advice in seconds; capacity rejection uses 1.
+          schema: { type: string, example: '1' }
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GatewayError'
     BadRequest:
       description: Invalid JSON body (or unknown protocol config value).
       content:

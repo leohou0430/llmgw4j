@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>llmgw control plane</title>
+  <style>
+    body { font-family: ui-monospace, monospace; margin: 2rem; background: #0f1115; color: #e6e6e6; }
+    h1 { font-size: 1.1rem; } h2 { font-size: .95rem; margin-top: 1rem; }
+    fieldset { border: 1px solid #2a2f3a; border-radius: 6px; margin-bottom: 1rem; }
+    input, button { font: inherit; padding: .3rem .5rem; margin: .2rem 0; background: #171a21; color: #e6e6e6; border: 1px solid #2a2f3a; border-radius: 4px; }
+    pre { background: #171a21; padding: .6rem; border-radius: 6px; overflow: auto; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <h1>llmgw control plane</h1>
+  <p>Same-process static console (no Node). Session cookie + CSRF; RBAC enforced server-side.</p>
+
+  <fieldset><legend>Login</legend>
+    <input id="user" placeholder="username"><input id="pass" type="password" placeholder="password">
+    <button onclick="login()">Login</button> <button onclick="logout()">Logout</button> <span id="authstate"></span>
+  </fieldset>
+
+  <fieldset><legend>Status / Usage</legend>
+    <button onclick="status()">Refresh status</button><pre id="status">not loaded</pre>
+  </fieldset>
+
+  <fieldset><legend>Tenants</legend>
+    <input id="tid" placeholder="tenant id"><input id="tname" placeholder="name">
+    <button onclick="createTenant()">Create</button><button onclick="listTenants()">List</button>
+    <pre id="tenants"></pre>
+  </fieldset>
+
+  <fieldset><legend>Projects</legend>
+    <input id="pid" placeholder="project id"><input id="ptenant" placeholder="tenant id"><input id="pname" placeholder="name">
+    <button onclick="createProject()">Create</button><button onclick="listProjects()">List</button>
+    <pre id="projects"></pre>
+  </fieldset>
+
+  <fieldset><legend>Catalog</legend>
+    <input id="cgid" placeholder="gateway id"><input id="ctype" placeholder="type">
+    <button onclick="createCatalog()">Create</button><button onclick="listCatalog()">List</button>
+    <pre id="catalog"></pre>
+  </fieldset>
+
+  <fieldset><legend>API Keys (one-time plaintext, masked on read)</legend>
+    <input id="kid" placeholder="key id"><input id="kname" placeholder="name">
+    <button onclick="createKey()">Create</button><button onclick="listKeys()">List</button>
+    <pre id="keys"></pre>
+  </fieldset>
+
+  <fieldset><legend>Route version</legend>
+    <input id="config" placeholder="routes JSON" value="routes-A"><input id="expected" placeholder="expectedVersion" value="0">
+    <button onclick="publish()">Publish</button><button onclick="routeStatus()">Status</button><pre id="route"></pre>
+  </fieldset>
+
+  <fieldset><legend>Usage</legend>
+    <button onclick="usage()">Refresh usage</button><pre id="usage"></pre>
+  </fieldset>
+
+  <fieldset><legend>Audit (masked)</legend>
+    <button onclick="audit()">Refresh audit</button><pre id="audit"></pre>
+  </fieldset>
+
+  <script>
+    var csrf = null;
+    function out(id, v) { document.getElementById(id).textContent = typeof v === 'string' ? v : JSON.stringify(v, null, 2); }
+    function api(method, path, body) {
+      var headers = { 'Content-Type': 'application/json', 'X-CSRF-Token': csrf || '' };
+      return fetch(path, { method: method, headers: headers, body: body ? JSON.stringify(body) : undefined })
+        .then(function (r) { return r.text().then(function (t) { return r.status + ' ' + t; }); });
+    }
+    function login() {
+      fetch('/control/login', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: document.getElementById('user').value, password: document.getElementById('pass').value }) })
+        .then(function (r) { if (!r.ok) throw new Error('login ' + r.status); return r.json(); })
+        .then(function (j) { csrf = j.csrfToken; document.getElementById('authstate').textContent = 'logged in'; status(); })
+        .catch(function (e) { document.getElementById('authstate').textContent = 'error: ' + e.message; });
+    }
+    function logout() {
+      return fetch('/control/logout', { method: 'POST', headers: { 'X-CSRF-Token': csrf || '' } })
+        .then(function (r) { csrf = null; document.getElementById('authstate').textContent = 'logged out (' + r.status + ')'; });
+    }
+    function status() { return api('GET','/control/status').then(function (t) { out('status', t); return t; }); }
+    function createTenant() { return api('POST','/control/tenants',{id:document.getElementById('tid').value,name:document.getElementById('tname').value}).then(function(t){out('tenants',t);return t;}); }
+    function listTenants() { return api('GET','/control/tenants').then(function(t){out('tenants',t);return t;}); }
+    function createProject() { return api('POST','/control/projects',{id:document.getElementById('pid').value,tenantId:document.getElementById('ptenant').value,name:document.getElementById('pname').value}).then(function(t){out('projects',t);return t;}); }
+    function listProjects() { return api('GET','/control/projects').then(function(t){out('projects',t);return t;}); }
+    function createCatalog() { return api('POST','/control/catalog',{gatewayId:document.getElementById('cgid').value,type:document.getElementById('ctype').value}).then(function(t){out('catalog',t);return t;}); }
+    function listCatalog() { return api('GET','/control/catalog').then(function(t){out('catalog',t);return t;}); }
+    function createKey() { return api('POST','/control/keys',{tenantId:'t1',projectId:'p1',keyId:document.getElementById('kid').value,name:document.getElementById('kname').value,quotaTokens:1000}).then(function(t){out('keys',t);return t;}); }
+    function listKeys() { return api('GET','/control/keys').then(function(t){out('keys',t);return t;}); }
+    function publish() { return api('POST','/control/routes/publish',{tenantId:'t1',projectId:'p1',expectedVersion:Number(document.getElementById('expected').value),config:document.getElementById('config').value}).then(function(t){out('route',t);return t;}); }
+    function routeStatus() { return api('GET','/control/routes').then(function(t){out('route',t);return t;}); }
+    function audit() { return api('GET','/control/audit').then(function(t){out('audit',t);return t;}); }
+    function usage() { return api('GET','/control/usage').then(function(t){out('usage',t);return t;}); }
+  </script>
+</body>
+</html>

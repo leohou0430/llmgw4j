@@ -22,6 +22,14 @@ Java 包名 `io.github.leohou0430.llmgw`，采用 [Apache-2.0](LICENSE) 许可�
 
 > v0.3.1 引入项目内原生 SPI / 多模块重构；从 v0.2.0 升级的 Java 扩展作者请阅读 [扩展与迁移说明](docs/EXTENSIONS.md)。
 
+> 未发布工作区的三步审查与产物证据见[执行清单](docs/plans/2026-11-11-three-stage-review.md)、[多副本治理](docs/verification/multi-replica/2026-11-11/README.md)和[官方 SDK 兼容矩阵](docs/verification/compatibility/2026-11-11/README.md)。Redis 凭据哈希升级需协调迁移；最新功能回归不能替代旧产物之外的 native/性能复测。
+
+> 后续补验已完成：[最新本机 WebFlux native](docs/verification/native-compatibility/2026-11-11/README.md)通过26项官方SDK及流式/协议/租户回归；[DeepSeek 实际调用](docs/verification/live-provider/2026-11-11/README.md)完成指定模型的JSON与SSE两次验收。native与真实供应商的覆盖范围分别记录，不混用性能结论。
+
+> Linux amd64 双引擎 native 后续验收已完成，见[Linux/VT 报告](docs/verification/linux-native/2026-11-11/README.md)；功能验证不等于容量或公网 TLS 验证。
+
+> [Linux WebFlux G1 补验](docs/verification/native-g1/2026-11-12/README.md)完成2C2G三方稳态对照、慢客户端和TLS：本批G1相较Serial native端到端p99降低16.7%，CPU与内存开销增加。使用已有显式G1选项，默认配置不变；[早期容量报告](docs/verification/native-capacity/2026-11-12/README.md)的各产物结论分别保留。
+
 ## 核心能力（对照主流网关差距分析补齐，详见 [docs/gap-analysis.md](docs/gap-analysis.md)）
 
 - **转发治理**：同路由重试+指数退避、三段式超时（connect/首字节/空闲读）、双向 header
@@ -43,7 +51,7 @@ Java 包名 `io.github.leohou0430.llmgw`，采用 [Apache-2.0](LICENSE) 许可�
   识别（跳过同路由重试直达 fallback）、三段式超时、加权 LB + failover + 熔断
 - **管理面**：审计导出（`/admin/audit/export`）、**审计导出只读 token**、请求日志、
   指标、路由与治理参数双热更新、控制台
-- **工程化**：117 个 JUnit（含真实 Redis 验证）+ 双引擎契约与隔离/鉴权回归+ Docker/compose
+- **工程化**：模块级 JUnit（含真实 Redis 验证，当前计数见审查证据）+ 双引擎契约与隔离/鉴权回归+ Docker/compose
   + TLS 前置部署文档（[docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)）+ 可选 tokenizer
   （`-Pjtokkit`）与 OTel（`-Potel`）
 
@@ -295,7 +303,7 @@ mock 上游支持受控故障注入（对**全部流式协议**生效，images /
 ## 四、Native 编译
 
 > **GC 说明（实测）**：native-image 的 G1 GC 仅支持 Linux AMD64/AArch64，macOS 上 `--gc=G1` 直接报错
-> 「only supported on Linux AMD64 and AArch64」，本机（macOS）只能用默认 Serial GC——native SSE p99 高于 JVM 的主因之一即在此。
+> 「only supported on Linux AMD64 and AArch64」，本机（macOS）构建默认使用 Serial GC。不能仅凭 GC 类型不同归因 SSE 延迟；当前 Linux 数据见[稳态补测](docs/verification/native-sse-steady/2026-11-12/README.md)。
 > `NATIVE_GC=g1 ./bin/build-native.sh webflux` 保留给 Linux 构建（profile `native-g1`）。
 > **坑**：① `--gc=G1` 大小写敏感（小写 `g1` 报 invalid value）；② spring-boot-maven-plugin 与
 > native-maven-plugin 的 AOT 自动装配只认名字**恰好叫 `native`** 的 profile，任何其他 profile id
@@ -334,6 +342,16 @@ JVM 冷启动 **3.538–6.946s**、native **0.387–0.560s**（矩阵实测，�
 
 
 ## 五、性能
+
+后续 [过载拒绝成本审查](docs/verification/perf/2026-11-11/overload/README.md)将 WebFlux 准入移到参数解析前，局部拒绝分配减少约 18%；两引擎的容量拒绝新增 `Retry-After: 1`。合作式客户端实验与忽略提示的压力场景分开报告，不将退避收益当成服务器容量提升。
+
+心跳开启场景另完成[背压与超时隔离修复](docs/verification/backpressure/2026-11-11/README.md)：避免提前提交 200、VT 心跳拖住共享超时，以及 WebFlux 慢消费者触发心跳溢出。
+
+上游 SSE 已补齐[单行字节边界](docs/verification/sse/2026-11-11/README.md)：默认 1 MiB，可配置；在解码缓冲前拒绝超长无换行正文，不限制合法长流累计大小。
+
+最新未发布的[生命周期与大帧补审](docs/verification/lifecycle/2026-11-11/README.md)修复线性行解码、WebFlux大行出口预取OOM、VT断开误记熔断，以及未完成行的空闲误判；211项三profile与固定JAR契约通过，64慢读/45秒及2C2G容量已复验，当前WebFlux native构建与功能契约也已通过。性能数据与边界见[本轮复验](docs/verification/lifecycle/2026-11-11/capacity-results.md)，不宣称全面提速。
+
+当前未发布工作区已完成 [2C2G 单副本容量与能力审查](docs/verification/capacity/2026-11-11/README.md)，已修复动态 URI 缓存无界、VT 错误体绕过大小限制、流式空闲计时和正文整体超时；这些修复不属于 v0.3.1 发布资产。
 
 历史冻结性能审查减少 SSE 字符串复制和 WebFlux header 集合创建，局部分配分别下降约 22%–48% 和 32%。64 个 A/B 样本、约 422 万请求零错误。WebFlux SSE 吞吐中位数在治理开/关两批分别 +7.3% / +5.2%，但范围重叠；JSON 一正一负，不能声称全面稳定提速。
 
@@ -387,7 +405,7 @@ JVM 冷启动 **3.538–6.946s**、native **0.387–0.560s**（矩阵实测，�
 | 文档 | 内容 |
 |---|---|
 | [docs/EXTENSIONS.md](docs/EXTENSIONS.md) | 原生 SPI、多模块、配置与内部 API 迁移 |
-| [docs/PERFORMANCE.md](docs/PERFORMANCE.md) | 历史性能结果、v0.3.1 未复测范围及证据归档 |
+| [docs/PERFORMANCE.md](docs/PERFORMANCE.md) | 历史性能结果、当前容量审查及证据归档 |
 | [docs/gap-analysis.md](docs/gap-analysis.md) | 当前能力边界、优先级与历史统一容器对照 |
 | [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) | 部署拓扑 / TLS 立场 / 多副本 |
 | [docs/USER_GUIDE.md](docs/USER_GUIDE.md) / [docs/CONFIGURATION.md](docs/CONFIGURATION.md) | 接口与配置全典 |

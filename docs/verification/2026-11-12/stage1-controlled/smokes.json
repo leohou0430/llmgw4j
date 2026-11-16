@@ -1,0 +1,18 @@
+{
+  "task": "T1.17 stage-1 full regression - dual-engine controlled smokes",
+  "run_date": "2026-11-14",
+  "runner": "/tmp/run-stage1-smokes.sh (background id b0z0sp04k, exit 0; completion monitor b2va6twll)",
+  "tested_jar": "llmgw-app/target/llmgw-app-0.3.1.jar (LLMGW_TEST_JAR pinned for the whole batch)",
+  "engines": ["webflux", "vt"],
+  "note": "All counts are THIS run's actual script-reported totals across both engines, read from /tmp/stage1-smokes/<name>.log. Sequential execution (fixed ports 8080/9090). No historical measurement reused.",
+  "smokes": [
+    {"name": "multi-protocol", "script": "bin/smoke-multi-protocol.sh", "exit": 0, "pass": 56, "fail": 0, "covers": "chat/responses/messages/images/videos happy+truncation+failure injection, per-protocol metering, sticky video routing"},
+    {"name": "v13-extensions", "script": "bin/smoke-v13-extensions.sh", "exit": 0, "pass": 54, "fail": 0, "covers": "named extension discovery/replace/failure paths"},
+    {"name": "v13-hardening", "script": "bin/smoke-v13-hardening.sh", "exit": 0, "pass": 46, "fail": 0, "covers": "header policy, credential boundaries, hardening"},
+    {"name": "stream-errors", "script": "bin/smoke-stream-errors.sh", "exit": 0, "pass": 67, "fail": 0, "covers": "SSE error/truncation/EOF/fallback/circuit-breaker/weighted-routing/disconnect billing"},
+    {"name": "tenant-isolation", "script": "bin/smoke-tenant-isolation.py", "exit": 0, "pass_lines": ["webflux", "vt"], "covers": "cache, task ownership, uploads, listing and concurrency boundaries"},
+    {"name": "admin-auth", "script": "bin/smoke-admin-auth.py", "exit": 0, "pass_lines": ["webflux/protected", "webflux/read-only", "webflux/demo", "vt/protected", "vt/read-only", "vt/demo"], "covers": "administrative credential boundaries"},
+    {"name": "jwt-auth", "script": "bin/smoke-jwt-auth.py", "exit": 0, "pass_lines": ["webflux", "vt"], "covers": "JWT JSON/SSE claims, audience, expiry and static-key compatibility"}
+  ],
+  "all_green": true
+}

@@ -1,0 +1,9 @@
+{
+  "id": "resp-7",
+  "object": "chat.completion",
+  "model": "deepseek-flash",
+  "choices": [
+    {"index": 0, "message": {"role": "assistant", "content": "partial"}, "finish_reason": "aborted"}
+  ],
+  "usage": {"prompt_tokens": 5, "completion_tokens": 2, "total_tokens": 7}
+}

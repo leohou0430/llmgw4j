@@ -1,0 +1,90 @@
+{
+  "profiles": {
+    "default-final": {
+      "tests": 158,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "redis": {
+      "tests": 158,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "combined": {
+      "tests": 158,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "contracts": {
+    "smoke-stream-errors.sh": {
+      "exit": 0,
+      "assertions": 67
+    },
+    "smoke-v13-extensions.sh": {
+      "exit": 0,
+      "assertions": 54
+    },
+    "smoke-v13-hardening.sh": {
+      "exit": 0,
+      "assertions": 46
+    },
+    "smoke-multi-protocol.sh": {
+      "exit": 0,
+      "assertions": 56
+    },
+    "smoke-v13-provider.sh": {
+      "exit": 0,
+      "assertions": 24
+    },
+    "smoke-v13-platform.sh": {
+      "exit": 0,
+      "assertions": 48
+    },
+    "smoke-tenant-isolation.py": 0,
+    "smoke-admin-auth.py": 0,
+    "smoke-jwt-auth.py": 0
+  },
+  "native_contracts": {
+    "smoke-stream-errors.sh": 0,
+    "smoke-multi-protocol.sh": 0
+  },
+  "scope": {
+    "native": "WebFlux only, fresh build; no native capacity measurement",
+    "redis": "owned single-node Redis; two replicas, no Sentinel/Cluster or in-flight crash settlement proof"
+  },
+  "native_binary_sha256": "9012c97d60f55732ff44bf9ff2e40e89cd1989b32233a2178d1fa79ce22034b2",
+  "source_sha256": {
+    "llmgw-provider/llmgw-provider-http-jdk/src/main/java/io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream.java": "c1de14d1c4fa4e12250aaaa7b2723883966f3ea5f7c251506fd2c3638c6927d3",
+    "llmgw-provider/llmgw-provider-http-jdk/src/test/java/io/github/leohou0430/llmgw/provider/http/jdk/TransportCapacityTest.java": "b782aa95b69bd2153df890d1212e52a2b128c0d27ab70327ab2c4346c8b0402f",
+    "bin/smoke-redis-cluster.sh": "bb7a83edee9873f408b81ddef177ed6cc3852093f9d09e583a84f7b1a13c9b28",
+    "bin/smoke-redis-recovery.py": "d5651b8af4c5fbc36a7313041f8bc9c398070ef074445fe1e72120a57770e33f"
+  },
+  "load_tool": "k6 v2.3.0 (commit/devel, go1.27.1, darwin/amd64)",
+  "functional_probes": {
+    "redis_recovery": "final script rerun passed: shared usage, replica restart, outage no-upstream, saved Redis restart, cross-replica ownership and explicit 501 boundaries",
+    "redis_cluster": {
+      "pass": 7,
+      "fail": 0
+    },
+    "slow_clients": "both engines active=0, recovery=200, oom=0; concurrent functional checks, not a latency measurement"
+  },
+  "capacity": {
+    "nominal_samples": 110,
+    "formal_short_samples": 96,
+    "successes_all_samples": 770467,
+    "capacity_rejections": 750151,
+    "unexpected": 0,
+    "invalid_samples": 0,
+    "followup_samples": 11,
+    "followup_successes": 73519,
+    "followup_unexpected": 0,
+    "prior_probe_unexpected_completed_samples": [
+      67,
+      75
+    ]
+  }
+}

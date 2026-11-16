@@ -19,7 +19,12 @@ import java.util.Set;
  * configured lists: the gateway owns Authorization (route credentials, never
  * caller credentials) and transport headers (Content-Type/Accept/Host/
  * Content-Length/hop-by-hop) -- forwarding those would corrupt the proxy
- * contract or leak caller credentials to upstreams.
+ * contract or leak caller credentials to upstreams. The gateway-owned
+ * {@code x-llmgw-*} namespace (telemetry and control hints) is also stripped
+ * unconditionally so a caller cannot spoof it upstream even under a wildcard
+ * allowlist; the gateway still reads those hints from the client headers
+ * directly. Raw uploads retain their structural Content-Type because it
+ * carries the unchanged multipart boundary.
  *
  * <p>PERF (v13): patterns are compiled ONCE into an exact HashSet + a prefix
  * list, and the deny set is a HashSet -- per-header cost is two hash lookups
@@ -74,15 +79,21 @@ public class AllowListHeaderPolicy implements HeaderPolicy {
 
     @Override
     public Map<String, String> toUpstream(ProtocolKind kind, Map<String, String> clientHeaders) {
+        boolean upload = kind == ProtocolKind.FILES || kind == ProtocolKind.TRANSCRIPTIONS;
         if (clientHeaders == null || clientHeaders.isEmpty()
-                || upstreamAllow.exact.isEmpty() && upstreamAllow.prefixes.isEmpty()) {
+                || !upload && upstreamAllow.exact.isEmpty() && upstreamAllow.prefixes.isEmpty()) {
             return Map.of();
         }
         Map<String, String> out = null;
         for (Map.Entry<String, String> entry : clientHeaders.entrySet()) {
             String name = entry.getKey() == null ? "" : entry.getKey().toLowerCase(Locale.ROOT);
-            if (name.isEmpty() || ALWAYS_DENY.contains(name) || entry.getValue() == null
-                    || entry.getValue().isBlank()) {
+            if (upload && name.equals("content-type") && entry.getValue() != null && !entry.getValue().isBlank()) {
+                if (out == null) out = new HashMap<>();
+                out.put(name, entry.getValue());
+                continue;
+            }
+            if (name.isEmpty() || ALWAYS_DENY.contains(name) || name.startsWith("x-llmgw-")
+                    || entry.getValue() == null || entry.getValue().isBlank()) {
                 continue;
             }
             if (upstreamAllow.matches(name)) {

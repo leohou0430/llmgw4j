@@ -1,0 +1,12 @@
+{"decoder":"io.github.leohou0430.llmgw.provider.http.jdk.SseLineDecoder","round":0,"line_bytes":16384,"iterations":10,"cpu_ns_per_line":25800.0,"wall_ns_per_line":24916.6}
+{"decoder":"io.github.leohou0430.llmgw.provider.http.jdk.SseLineDecoder","round":0,"line_bytes":65536,"iterations":10,"cpu_ns_per_line":73200.0,"wall_ns_per_line":73029.2}
+{"decoder":"io.github.leohou0430.llmgw.provider.http.jdk.SseLineDecoder","round":0,"line_bytes":262144,"iterations":10,"cpu_ns_per_line":304300.0,"wall_ns_per_line":305112.3}
+{"decoder":"io.github.leohou0430.llmgw.provider.http.jdk.SseLineDecoder","round":0,"line_bytes":1048448,"iterations":10,"cpu_ns_per_line":2713900.0,"wall_ns_per_line":2753390.9}
+{"decoder":"io.github.leohou0430.llmgw.provider.http.jdk.SseLineDecoder","round":1,"line_bytes":1048448,"iterations":10,"cpu_ns_per_line":3144100.0,"wall_ns_per_line":3151026.1}
+{"decoder":"io.github.leohou0430.llmgw.provider.http.jdk.SseLineDecoder","round":1,"line_bytes":262144,"iterations":10,"cpu_ns_per_line":754500.0,"wall_ns_per_line":756138.0}
+{"decoder":"io.github.leohou0430.llmgw.provider.http.jdk.SseLineDecoder","round":1,"line_bytes":65536,"iterations":10,"cpu_ns_per_line":198800.0,"wall_ns_per_line":199036.4}
+{"decoder":"io.github.leohou0430.llmgw.provider.http.jdk.SseLineDecoder","round":1,"line_bytes":16384,"iterations":10,"cpu_ns_per_line":46100.0,"wall_ns_per_line":46016.5}
+{"decoder":"io.github.leohou0430.llmgw.provider.http.jdk.SseLineDecoder","round":2,"line_bytes":16384,"iterations":10,"cpu_ns_per_line":44400.0,"wall_ns_per_line":44354.0}
+{"decoder":"io.github.leohou0430.llmgw.provider.http.jdk.SseLineDecoder","round":2,"line_bytes":65536,"iterations":10,"cpu_ns_per_line":178400.0,"wall_ns_per_line":178381.2}
+{"decoder":"io.github.leohou0430.llmgw.provider.http.jdk.SseLineDecoder","round":2,"line_bytes":262144,"iterations":10,"cpu_ns_per_line":704100.0,"wall_ns_per_line":705411.4}
+{"decoder":"io.github.leohou0430.llmgw.provider.http.jdk.SseLineDecoder","round":2,"line_bytes":1048448,"iterations":10,"cpu_ns_per_line":2952600.0,"wall_ns_per_line":2956162.0}

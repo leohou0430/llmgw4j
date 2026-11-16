@@ -1,0 +1,51 @@
+{
+  "complete": true,
+  "date": "2026-11-12",
+  "scope": "Linux amd64 WebFlux G1 native option: SDK/protocols, three-way 2C2G SSE comparison, slow readers and local TLS",
+  "build_verification": "build-completion.json",
+  "performance_verification": "results-summary.json",
+  "slow_verification": "slow-summary.json",
+  "tls_verification": "../../../../bench/results/native-g1-2026-11-12/tls/results.json",
+  "native_sha256": "35a2069407ebc823cf04fef464633eaf4b480aa2ad7179b1355254283e1b6eca",
+  "performance_samples": 13,
+  "formal_samples": 9,
+  "sdk_checks": 26,
+  "stream_checks": 34,
+  "protocol_checks": 28,
+  "tenant_check": true,
+  "idle_progress_cases": 3,
+  "slow_reader_cases": 2,
+  "local_tls_cases": 4,
+  "g1_vs_serial": {
+    "e2e_p99_percent": -16.666959361352973,
+    "success_rate_percent": 2.593650134268155,
+    "http_ttfb_p99_percent": -45.89852325219961,
+    "cpu_ms_per_success_percent": 5.0629010115254,
+    "process_peak_memory_mib_delta": 212.6875
+  },
+  "optional_command": "NATIVE_GC=g1 ./bin/build-native.sh webflux",
+  "production_java_changed": false,
+  "default_runtime_changed": false,
+  "new_supplier_requests": 0,
+  "committed": false,
+  "pushed": false,
+  "released": false,
+  "limitations": [
+    "Controlled local SSE load only; no production SLO claim",
+    "G1 VT/Redis variants and JSON performance not measured",
+    "No G1 live supplier generation requested or executed"
+  ],
+  "optional_sse_variant_validated": true,
+  "all_task_resources_cleaned": true,
+  "structural_checks": {
+    "module_layout_pass": 71,
+    "module_layout_fail": 0,
+    "native_boundaries": true,
+    "native_rule_tests": 6,
+    "python_syntax": true,
+    "git_diff_check": true,
+    "evidence_verifier": true,
+    "new_report_local_links": true
+  },
+  "completed_at": "2026-11-12T08:46:21.485853+08:00"
+}

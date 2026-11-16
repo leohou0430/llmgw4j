@@ -1,0 +1,7 @@
+{
+  "model": "client-model",
+  "instructions": "be helpful",
+  "input": "hello",
+  "max_output_tokens": 256,
+  "user": "user-1"
+}

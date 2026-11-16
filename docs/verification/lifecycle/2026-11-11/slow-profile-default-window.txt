@@ -1,0 +1,18 @@
+
+Execution stacks inclusive (can include OS wait) total=0
+
+Execution stacks first application frame total=0
+
+Allocation sampled bytes by class total=133488
+  52.22%	69712	[I
+  12.33%	16464	jdk.internal.classfile.impl.AbstractPoolEntry$FieldRefEntryImpl
+  11.85%	15824	jdk.internal.classfile.impl.AbstractPoolEntry$Utf8EntryImpl
+  11.85%	15824	jdk.internal.classfile.impl.AbstractPoolEntry$ClassEntryImpl
+  11.73%	15664	[B
+
+Allocation sampled bytes by site total=133488
+  52.22%	69712	<framework-only stack> :: jdk.internal.classfile.impl.EntryMap.<init> <- jdk.internal.classfile.impl.SplitConstantPool.map <- jdk.internal.classfile.impl.SplitConstantPool.tryFindClassOrInterface <- jdk.internal.classfile.impl.SplitConstantPool.classEntryForClassOrInterface <- jdk.internal.classfile.impl.SplitConstantPool.classEntry
+  12.33%	16464	<framework-only stack> :: jdk.internal.classfile.impl.SplitConstantPool.fieldRefEntry <- java.lang.invoke.InnerClassLambdaMetafactory$3.accept <- java.lang.invoke.InnerClassLambdaMetafactory$3.accept <- jdk.internal.classfile.impl.DirectCodeBuilder.build <- jdk.internal.classfile.impl.DirectMethodBuilder.withCode
+  11.85%	15824	<framework-only stack> :: jdk.internal.classfile.impl.SplitConstantPool.utf8Entry <- jdk.internal.classfile.impl.SplitConstantPool.utf8Entry <- java.lang.classfile.ClassBuilder.withMethod <- java.lang.classfile.ClassBuilder.withMethodBody <- java.lang.invoke.InnerClassLambdaMetafactory.generateConstructor
+  11.85%	15824	<framework-only stack> :: jdk.internal.classfile.impl.SplitConstantPool.classEntryForClassOrInterface <- jdk.internal.classfile.impl.SplitConstantPool.classEntry <- java.lang.classfile.constantpool.ConstantPoolBuilder.methodRefEntry <- java.lang.classfile.CodeBuilder.invoke <- java.lang.invoke.InvokerBytecodeGenerator.emitStaticInvoke
+  11.73%	15664	<framework-only stack> :: jdk.internal.classfile.impl.BufWriterImpl.join <- jdk.internal.classfile.impl.DirectClassBuilder.build <- jdk.internal.classfile.impl.ClassFileImpl.build <- java.lang.invoke.InnerClassLambdaMetafactory.generateInnerClass <- java.lang.invoke.InnerClassLambdaMetafactory.spinInnerClass

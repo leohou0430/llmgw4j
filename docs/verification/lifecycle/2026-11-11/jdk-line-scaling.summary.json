@@ -1,0 +1,108 @@
+{
+  "rows": [
+    {
+      "decoder": "jdk",
+      "round": 0,
+      "line_bytes": 16384,
+      "iterations": 10,
+      "cpu_ns_per_line": 103800.0,
+      "wall_ns_per_line": 105170.1
+    },
+    {
+      "decoder": "jdk",
+      "round": 0,
+      "line_bytes": 65536,
+      "iterations": 10,
+      "cpu_ns_per_line": 1139700.0,
+      "wall_ns_per_line": 1155878.1
+    },
+    {
+      "decoder": "jdk",
+      "round": 0,
+      "line_bytes": 262144,
+      "iterations": 10,
+      "cpu_ns_per_line": 16228400.0,
+      "wall_ns_per_line": 16382113.6
+    },
+    {
+      "decoder": "jdk",
+      "round": 0,
+      "line_bytes": 1048448,
+      "iterations": 10,
+      "cpu_ns_per_line": 341171200.0,
+      "wall_ns_per_line": 343406250.3
+    },
+    {
+      "decoder": "jdk",
+      "round": 1,
+      "line_bytes": 1048448,
+      "iterations": 10,
+      "cpu_ns_per_line": 369238200.0,
+      "wall_ns_per_line": 371587029.2
+    },
+    {
+      "decoder": "jdk",
+      "round": 1,
+      "line_bytes": 262144,
+      "iterations": 10,
+      "cpu_ns_per_line": 23015800.0,
+      "wall_ns_per_line": 23153532.1
+    },
+    {
+      "decoder": "jdk",
+      "round": 1,
+      "line_bytes": 65536,
+      "iterations": 10,
+      "cpu_ns_per_line": 1646100.0,
+      "wall_ns_per_line": 1649442.4
+    },
+    {
+      "decoder": "jdk",
+      "round": 1,
+      "line_bytes": 16384,
+      "iterations": 10,
+      "cpu_ns_per_line": 134700.0,
+      "wall_ns_per_line": 135936.4
+    },
+    {
+      "decoder": "jdk",
+      "round": 2,
+      "line_bytes": 16384,
+      "iterations": 10,
+      "cpu_ns_per_line": 136900.0,
+      "wall_ns_per_line": 137331.8
+    },
+    {
+      "decoder": "jdk",
+      "round": 2,
+      "line_bytes": 65536,
+      "iterations": 10,
+      "cpu_ns_per_line": 1635700.0,
+      "wall_ns_per_line": 1656531.3
+    },
+    {
+      "decoder": "jdk",
+      "round": 2,
+      "line_bytes": 262144,
+      "iterations": 10,
+      "cpu_ns_per_line": 23691000.0,
+      "wall_ns_per_line": 23837926.1
+    },
+    {
+      "decoder": "jdk",
+      "round": 2,
+      "line_bytes": 1048448,
+      "iterations": 10,
+      "cpu_ns_per_line": 369556700.0,
+      "wall_ns_per_line": 371868478.7
+    }
+  ],
+  "cpu_median_ns_by_line_bytes": {
+    "16384": 134700.0,
+    "65536": 1635700.0,
+    "262144": 23015800.0,
+    "1048448": 369238200.0
+  },
+  "bytes_ratio": 63.9921875,
+  "cpu_ratio": 2741.1893095768373
+}

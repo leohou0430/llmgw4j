@@ -1,0 +1,71 @@
+{
+  "schema": "llmgw-acceptance-fixture/v1",
+  "id": "responses-s1-text-multiturn",
+  "entry": "responses",
+  "scenario": 1,
+  "slug": "text-multiturn",
+  "title": "非流式文本+多轮",
+  "mock": {
+    "chunks": 4
+  },
+  "markers": [
+    "mock-deepseek"
+  ],
+  "steps": [
+    {
+      "name": "initial",
+      "request": {
+        "model": "mock-model",
+        "instructions": "You are a concise assistant.",
+        "input": [
+          {
+            "type": "message",
+            "role": "user",
+            "content": "What is the capital of France?"
+          },
+          {
+            "type": "message",
+            "role": "assistant",
+            "content": [
+              {
+                "type": "output_text",
+                "text": "The capital of France is Paris."
+              }
+            ]
+          },
+          {
+            "type": "message",
+            "role": "user",
+            "content": "mock-deepseek: And what is the population?"
+          }
+        ],
+        "max_output_tokens": 1024,
+        "stream": false
+      },
+      "expected": {
+        "transport": "json",
+        "terminal": {
+          "object": "response",
+          "status": "completed",
+          "output_item_types": [
+            "message"
+          ]
+        },
+        "text": {
+          "equals": "Hello world"
+        },
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 1,
+          "total_tokens": 8,
+          "input_tokens_details": {
+            "cached_tokens": 3
+          },
+          "absent_fields": [
+            "usage.output_tokens_details"
+          ]
+        }
+      }
+    }
+  ]
+}

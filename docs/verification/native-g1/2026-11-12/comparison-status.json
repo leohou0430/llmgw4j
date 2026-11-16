@@ -1,0 +1,157 @@
+{
+  "status": "finished",
+  "checks": [
+    {
+      "time": "2026-11-12T08:18:05+0800",
+      "compilers": 0,
+      "build_drivers": 0,
+      "loadavg": [
+        3.56787109375,
+        9.9072265625,
+        13.04931640625
+      ],
+      "quiet_samples": 1
+    },
+    {
+      "time": "2026-11-12T08:18:35+0800",
+      "compilers": 0,
+      "build_drivers": 0,
+      "loadavg": [
+        2.703125,
+        9.08740234375,
+        12.64208984375
+      ],
+      "quiet_samples": 2
+    },
+    {
+      "time": "2026-11-12T08:19:05+0800",
+      "compilers": 0,
+      "build_drivers": 0,
+      "loadavg": [
+        1.8876953125,
+        8.28125,
+        12.2255859375
+      ],
+      "quiet_samples": 3
+    },
+    {
+      "time": "2026-11-12T08:19:35+0800",
+      "compilers": 0,
+      "build_drivers": 0,
+      "loadavg": [
+        1.7763671875,
+        7.64697265625,
+        11.8583984375
+      ],
+      "quiet_samples": 4
+    },
+    {
+      "time": "2026-11-12T08:20:05+0800",
+      "compilers": 0,
+      "build_drivers": 0,
+      "loadavg": [
+        1.96728515625,
+        7.13671875,
+        11.52685546875
+      ],
+      "quiet_samples": 5
+    },
+    {
+      "time": "2026-11-12T08:20:35+0800",
+      "compilers": 0,
+      "build_drivers": 0,
+      "loadavg": [
+        1.58935546875,
+        6.56201171875,
+        11.166015625
+      ],
+      "quiet_samples": 6
+    },
+    {
+      "time": "2026-11-12T08:21:05+0800",
+      "compilers": 0,
+      "build_drivers": 0,
+      "loadavg": [
+        2.87255859375,
+        6.43359375,
+        10.96142578125
+      ],
+      "quiet_samples": 7
+    },
+    {
+      "time": "2026-11-12T08:21:36+0800",
+      "compilers": 0,
+      "build_drivers": 0,
+      "loadavg": [
+        3.599609375,
+        6.2900390625,
+        10.7529296875
+      ],
+      "quiet_samples": 8
+    },
+    {
+      "time": "2026-11-12T08:22:06+0800",
+      "compilers": 0,
+      "build_drivers": 0,
+      "loadavg": [
+        4.2958984375,
+        6.18603515625,
+        10.55810546875
+      ],
+      "quiet_samples": 9
+    },
+    {
+      "time": "2026-11-12T08:22:36+0800",
+      "compilers": 0,
+      "build_drivers": 0,
+      "loadavg": [
+        3.548828125,
+        5.83056640625,
+        10.27734375
+      ],
+      "quiet_samples": 10
+    },
+    {
+      "time": "2026-11-12T08:23:06+0800",
+      "compilers": 0,
+      "build_drivers": 0,
+      "loadavg": [
+        6.5458984375,
+        6.26220703125,
+        10.2744140625
+      ],
+      "quiet_samples": 11
+    }
+  ],
+  "command": [
+    "python3",
+    "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/docs/verification/native-g1/2026-11-12/run-threeway.py",
+    "--before",
+    "bench/results/linux-native-2026-11-11/evidence/jvm-default.jar",
+    "--after",
+    "bench/results/linux-native-2026-11-11/evidence/jvm-default.jar",
+    "--native-dir",
+    "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/native-g1-2026-11-12/perf-bin",
+    "--output",
+    "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/native-g1-2026-11-12/threeway",
+    "--rounds",
+    "3",
+    "--duration",
+    "60s",
+    "--warmup",
+    "60s",
+    "--warmup-vus",
+    "64",
+    "--vus",
+    "64",
+    "--modes",
+    "sse",
+    "--labels",
+    "jvm-webflux,before-webflux,after-webflux",
+    "--skip-long",
+    "--respect-retry-after",
+    "--max-host-load-ratio",
+    "0.75"
+  ],
+  "exit_code": 0
+}

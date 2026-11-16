@@ -1,0 +1,37 @@
+[
+  {"id": "s-1", "object": "chat.completion.chunk", "model": "deepseek-flash",
+   "choices": [{"index": 0, "delta": {"role": "assistant", "reasoning_content": "Let me"}, "finish_reason": null}]},
+  {"id": "s-1", "object": "chat.completion.chunk", "model": "deepseek-flash",
+   "choices": [{"index": 0, "delta": {"reasoning_content": " think"}, "finish_reason": null}]},
+  {"id": "s-1", "object": "chat.completion.chunk", "model": "deepseek-flash",
+   "choices": [{"index": 0, "delta": {"content": "Hello"}, "finish_reason": null}]},
+  {"id": "s-1", "object": "chat.completion.chunk", "model": "deepseek-flash",
+   "choices": [{"index": 0, "delta": {"content": " world"}, "finish_reason": null}]},
+  {"id": "s-1", "object": "chat.completion.chunk", "model": "deepseek-flash",
+   "choices": [{"index": 0, "delta": {"tool_calls": [
+     {"index": 0, "id": "call_1", "type": "function", "function": {"name": "get_weather", "arguments": ""}}
+   ]}, "finish_reason": null}]},
+  {"id": "s-1", "object": "chat.completion.chunk", "model": "deepseek-flash",
+   "choices": [{"index": 0, "delta": {"tool_calls": [
+     {"index": 0, "function": {"arguments": "{\"city\":"}}
+   ]}, "finish_reason": null}]},
+  {"id": "s-1", "object": "chat.completion.chunk", "model": "deepseek-flash",
+   "choices": [{"index": 0, "delta": {"tool_calls": [
+     {"index": 0, "function": {"arguments": "\"SF\"}"}}
+   ]}, "finish_reason": null}]},
+  {"id": "s-1", "object": "chat.completion.chunk", "model": "deepseek-flash",
+   "choices": [{"index": 0, "delta": {"tool_calls": [
+     {"index": 1, "id": "call_2", "type": "function", "function": {"name": "ping", "arguments": "{}"}}
+   ]}, "finish_reason": null}]},
+  {"id": "s-1", "object": "chat.completion.chunk", "model": "deepseek-flash",
+   "choices": [{"index": 0, "delta": {}, "finish_reason": "tool_calls"}],
+   "usage": {
+     "prompt_tokens": 20,
+     "completion_tokens": 9,
+     "total_tokens": 29,
+     "prompt_tokens_details": {"cached_tokens": 5},
+     "prompt_cache_hit_tokens": 5,
+     "prompt_cache_miss_tokens": 15,
+     "completion_tokens_details": {"reasoning_tokens": 6}
+   }}
+]

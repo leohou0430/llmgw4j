@@ -8,7 +8,10 @@ llmgw-app/target/native/
 bin/native/
 
 # ---- Local JDK / GraalVM toolchains (NOT redistributable, hundreds of MB) ----
-tools/
+# Ignore toolchain children but keep the versioned acceptance fixtures (T1.9/T1.13)
+# under tools/acceptance/ trackable: a parent-dir exclusion cannot be re-included.
+tools/*
+!tools/acceptance/
 *.tar.gz
 *.tgz
 *.zip

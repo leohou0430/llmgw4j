@@ -23,7 +23,13 @@ public record Route(
         String apiKey,
         String provider,
         int weight,
-        List<String> fallbackIds) {
+        List<String> fallbackIds,
+        /**
+         * Upstream protocol dimension (T1.10): "" = existing byte-for-byte
+         * passthrough; "chat" = convert to the DeepSeek Chat upstream.
+         * Validated by {@code RouteTable.of}; never null in a stored route.
+         */
+        String upstreamProtocol) {
 
     public Route(String id, String model, String targetModel, String targetUrl,
                  String apiKey, int weight, List<String> fallbackIds) {
@@ -33,6 +39,13 @@ public record Route(
     public Route(String id, String protocol, String model, String targetModel,
                  String targetUrl, String apiKey, int weight, List<String> fallbackIds) {
         this(id, protocol, model, targetModel, targetUrl, apiKey, "", weight, fallbackIds);
+    }
+
+    /** Legacy 9-component shape: defaults upstreamProtocol to "" (passthrough). */
+    public Route(String id, String protocol, String model, String targetModel,
+                 String targetUrl, String apiKey, String provider,
+                 int weight, List<String> fallbackIds) {
+        this(id, protocol, model, targetModel, targetUrl, apiKey, provider, weight, fallbackIds, "");
     }
 
     /** "" normalizes to "*"; unknown values are rejected by RouteTable.of. */

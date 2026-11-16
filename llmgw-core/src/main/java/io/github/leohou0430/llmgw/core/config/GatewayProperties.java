@@ -95,6 +95,7 @@ public class GatewayProperties {
     private final Observability observability = new Observability();
     private final Guardrails guardrails = new Guardrails();
     private final Cache cache = new Cache();
+    private final Conversion conversion = new Conversion();
     /** B4: per-group hard budgets (micro-USD, cumulative spend across keys). */
     private final List<GroupBudget> groupBudgets = new ArrayList<>();
     /** B4: per-model token-bucket overrides (matched like routes: exact > prefix > *). */
@@ -155,6 +156,7 @@ public class GatewayProperties {
     public Observability getObservability() { return observability; }
     public Guardrails getGuardrails() { return guardrails; }
     public Cache getCache() { return cache; }
+    public Conversion getConversion() { return conversion; }
     public List<GroupBudget> getGroupBudgets() { return groupBudgets; }
     public List<ModelLimit> getModelLimits() { return modelLimits; }
     public List<RouteDef> getRoutes() { return routes; }
@@ -199,6 +201,8 @@ public class GatewayProperties {
         private int connectTimeoutMs = 10_000;
         private int firstByteTimeoutMs = 0;
         private int idleReadTimeoutMs = 0;
+        /** Raw UTF-8 bytes per upstream SSE line, excluding CR/LF; not a stream total. */
+        private int maxSseLineBytes = 1024 * 1024;
         /**
          * SSE keep-alive: inject an SSE comment frame ({@code : keep-alive}) on
          * idle streams so intermediate LBs/proxies with ~60s idle timeouts stop
@@ -218,6 +222,11 @@ public class GatewayProperties {
         public void setFirstByteTimeoutMs(int v) { this.firstByteTimeoutMs = v; }
         public int getIdleReadTimeoutMs() { return idleReadTimeoutMs; }
         public void setIdleReadTimeoutMs(int v) { this.idleReadTimeoutMs = v; }
+        public int getMaxSseLineBytes() { return maxSseLineBytes; }
+        public void setMaxSseLineBytes(int v) {
+            if (v < 1) throw new IllegalArgumentException("max-sse-line-bytes must be positive");
+            this.maxSseLineBytes = v;
+        }
         public int getHeartbeatIntervalMs() { return heartbeatIntervalMs; }
         public void setHeartbeatIntervalMs(int v) { this.heartbeatIntervalMs = v; }
 
@@ -339,6 +348,19 @@ public class GatewayProperties {
     }
 
     /**
+     * Protocol conversion (T1.11). {@code continuation-key} is the HMAC secret for the
+     * gateway-namespaced thinking continuation envelope; it belongs to the runtime
+     * (ExtensionContext), never to a codec. Blank = a per-process random key, so continuation
+     * tokens are process-scoped (stage-1 default); production injects a stable secret via env.
+     */
+    public static class Conversion {
+        private String continuationKey = "";
+
+        public String getContinuationKey() { return continuationKey; }
+        public void setContinuationKey(String v) { this.continuationKey = v == null ? "" : v; }
+    }
+
+    /**
      * Bidirectional header pass-through whitelists (v13). Names are matched
      * case-insensitively; a trailing {@code *} matches any suffix
      * (e.g. {@code x-ratelimit-*}). Auth/transport headers are always stripped
@@ -456,6 +478,8 @@ public class GatewayProperties {
         private String apiKey = "";
         /** v13 upstream dialect for auth: ""/"openai" = Bearer, "anthropic" = x-api-key. */
         private String provider = "";
+        /** T1.10 upstream protocol: "" = passthrough, "chat" = convert to DeepSeek Chat. */
+        private String upstreamProtocol = "";
         private int weight = 1;
         private List<String> fallbacks = new ArrayList<>();
 
@@ -474,6 +498,8 @@ public class GatewayProperties {
         public void setApiKey(String v) { this.apiKey = v; }
         public String getProvider() { return provider; }
         public void setProvider(String v) { this.provider = v; }
+        public String getUpstreamProtocol() { return upstreamProtocol; }
+        public void setUpstreamProtocol(String v) { this.upstreamProtocol = v; }
         public int getWeight() { return weight; }
         public void setWeight(int v) { this.weight = v; }
         public List<String> getFallbacks() { return fallbacks; }

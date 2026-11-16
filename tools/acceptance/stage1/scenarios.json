@@ -1,0 +1,35 @@
+{
+  "schema": "llmgw-acceptance-scenarios/v1",
+  "description": "T1.16 real-acceptance plan: 27 planned calls (9 per entry). 60 is a hard cap, not a quota. Each scenario maps to a versioned controlled fixture step; the real driver re-templates model/max_tokens and sends to the live route. text=2 (one must-succeed multiturn + one expected-rejection unknown-field), stream=1, tool=2 (initial+continuation), thinking=2 (initial+continuation), image=1, cancel=1 (post-cancel recovery leg).",
+  "scenarios": [
+    {"id": "chat-text-initial", "entry": "chat", "kind": "text", "expectation": "must-succeed", "fixture": "chat/s1-text-multiturn.json", "step": "initial"},
+    {"id": "chat-text-unknown-field", "entry": "chat", "kind": "text", "expectation": "expected-rejection", "fixture": "chat/s7-contract-negatives.json", "step": "unknown-field"},
+    {"id": "chat-stream-initial", "entry": "chat", "kind": "stream", "expectation": "must-succeed", "fixture": "chat/s2-stream-text-usage.json", "step": "initial"},
+    {"id": "chat-tool-initial", "entry": "chat", "kind": "tool", "expectation": "must-succeed", "fixture": "chat/s3-tool-call-continuation.json", "step": "initial"},
+    {"id": "chat-tool-continuation", "entry": "chat", "kind": "tool", "expectation": "must-succeed", "fixture": "chat/s3-tool-call-continuation.json", "step": "continuation"},
+    {"id": "chat-thinking-initial", "entry": "chat", "kind": "thinking", "expectation": "must-succeed", "fixture": "chat/s4-thinking-continuation.json", "step": "initial"},
+    {"id": "chat-thinking-continuation", "entry": "chat", "kind": "thinking", "expectation": "must-succeed", "fixture": "chat/s4-thinking-continuation.json", "step": "continuation"},
+    {"id": "chat-image-initial", "entry": "chat", "kind": "image", "expectation": "must-succeed", "fixture": "chat/s5-image-understanding.json", "step": "initial"},
+    {"id": "chat-cancel-recovery", "entry": "chat", "kind": "cancel", "expectation": "must-succeed", "fixture": "chat/s6-cancel-recover.json", "step": "recovery"},
+
+    {"id": "responses-text-initial", "entry": "responses", "kind": "text", "expectation": "must-succeed", "fixture": "responses/s1-text-multiturn.json", "step": "initial"},
+    {"id": "responses-text-unknown-field", "entry": "responses", "kind": "text", "expectation": "expected-rejection", "fixture": "responses/s7-contract-negatives.json", "step": "unknown-field"},
+    {"id": "responses-stream-initial", "entry": "responses", "kind": "stream", "expectation": "must-succeed", "fixture": "responses/s2-stream-text-usage.json", "step": "initial"},
+    {"id": "responses-tool-initial", "entry": "responses", "kind": "tool", "expectation": "must-succeed", "fixture": "responses/s3-tool-call-continuation.json", "step": "initial"},
+    {"id": "responses-tool-continuation", "entry": "responses", "kind": "tool", "expectation": "must-succeed", "fixture": "responses/s3-tool-call-continuation.json", "step": "continuation"},
+    {"id": "responses-thinking-initial", "entry": "responses", "kind": "thinking", "expectation": "must-succeed", "fixture": "responses/s4-thinking-continuation.json", "step": "initial"},
+    {"id": "responses-thinking-continuation", "entry": "responses", "kind": "thinking", "expectation": "must-succeed", "fixture": "responses/s4-thinking-continuation.json", "step": "continuation"},
+    {"id": "responses-image-initial", "entry": "responses", "kind": "image", "expectation": "must-succeed", "fixture": "responses/s5-image-understanding.json", "step": "initial"},
+    {"id": "responses-cancel-recovery", "entry": "responses", "kind": "cancel", "expectation": "must-succeed", "fixture": "responses/s6-cancel-recover.json", "step": "recovery"},
+
+    {"id": "messages-text-initial", "entry": "messages", "kind": "text", "expectation": "must-succeed", "fixture": "messages/s1-text-multiturn.json", "step": "initial"},
+    {"id": "messages-text-unknown-field", "entry": "messages", "kind": "text", "expectation": "expected-rejection", "fixture": "messages/s7-contract-negatives.json", "step": "unknown-field"},
+    {"id": "messages-stream-initial", "entry": "messages", "kind": "stream", "expectation": "must-succeed", "fixture": "messages/s2-stream-text-usage.json", "step": "initial"},
+    {"id": "messages-tool-initial", "entry": "messages", "kind": "tool", "expectation": "must-succeed", "fixture": "messages/s3-tool-call-continuation.json", "step": "initial"},
+    {"id": "messages-tool-continuation", "entry": "messages", "kind": "tool", "expectation": "must-succeed", "fixture": "messages/s3-tool-call-continuation.json", "step": "continuation"},
+    {"id": "messages-thinking-initial", "entry": "messages", "kind": "thinking", "expectation": "must-succeed", "fixture": "messages/s4-thinking-continuation.json", "step": "initial"},
+    {"id": "messages-thinking-continuation", "entry": "messages", "kind": "thinking", "expectation": "must-succeed", "fixture": "messages/s4-thinking-continuation.json", "step": "continuation"},
+    {"id": "messages-image-initial", "entry": "messages", "kind": "image", "expectation": "must-succeed", "fixture": "messages/s5-image-understanding.json", "step": "initial"},
+    {"id": "messages-cancel-recovery", "entry": "messages", "kind": "cancel", "expectation": "must-succeed", "fixture": "messages/s6-cancel-recover.json", "step": "recovery"}
+  ]
+}

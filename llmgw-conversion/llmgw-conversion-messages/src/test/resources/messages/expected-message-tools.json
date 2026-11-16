@@ -1,0 +1,20 @@
+{
+  "id": "msg_fixed",
+  "type": "message",
+  "role": "assistant",
+  "model": "client-model",
+  "content": [
+    {"type": "thinking", "thinking": "reason", "signature": ""},
+    {"type": "text", "text": "answer"},
+    {"type": "tool_use", "id": "call_9", "name": "ping", "input": {"a": 1}}
+  ],
+  "stop_reason": "tool_use",
+  "stop_sequence": null,
+  "usage": {
+    "input_tokens": 40,
+    "cache_read_input_tokens": 80,
+    "cache_creation_input_tokens": 0,
+    "output_tokens": 40,
+    "output_tokens_details": {"thinking_tokens": 12}
+  }
+}

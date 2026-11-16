@@ -1,0 +1,19 @@
+{
+  "image": "sha256:194dca284068f64c9bb6f0c672d204ffd0a76c9401c61040c0f028fb93846962",
+  "builder": "b22c048ee8130e1e21feeafc0b19a23e866e39a88c5df1d97f690edcb619465d",
+  "exit_code": 0,
+  "state": {
+    "Status": "running",
+    "Running": true,
+    "Paused": false,
+    "Restarting": false,
+    "OOMKilled": false,
+    "Dead": false,
+    "Pid": 36278,
+    "ExitCode": 0,
+    "Error": "",
+    "StartedAt": "2026-11-12T00:06:02.796835836Z",
+    "FinishedAt": "0001-01-01T00:00:00Z"
+  },
+  "cleaned_builder": "b22c048ee8130e1e21feeafc0b19a23e866e39a88c5df1d97f690edcb619465d"
+}

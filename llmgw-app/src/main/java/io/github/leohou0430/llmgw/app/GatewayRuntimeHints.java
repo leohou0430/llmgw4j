@@ -37,6 +37,18 @@ public class GatewayRuntimeHints {
             // POST /admin/routes/reload binds this record; without a hint the
             // AOT image cannot call Class.getRecordComponents() on it.
             hints.reflection().registerType(AdminController.RouteSpec.class, all);
+            // Control-plane records: request bodies and response rows Jackson serializes
+            // (a missing hint is an HTTP 500 in native, found on /control/secrets in vt).
+            hints.reflection().registerType(io.github.leohou0430.llmgw.catalog.ResourceEntry.class, all);
+            hints.reflection().registerType(SecretStore.SecretSummary.class, all);
+            hints.reflection().registerType(ControlCatalogController.EntryBody.class, all);
+            hints.reflection().registerType(ControlKeyController.CreateBody.class, all);
+            hints.reflection().registerType(ControlLoginController.LoginBody.class, all);
+            hints.reflection().registerType(ControlOrgController.TenantBody.class, all);
+            hints.reflection().registerType(ControlOrgController.ProjectBody.class, all);
+            hints.reflection().registerType(ControlRouteController.PublishBody.class, all);
+            hints.reflection().registerType(ControlRouteController.RollbackBody.class, all);
+            hints.reflection().registerType(ControlSecretController.SecretBody.class, all);
             hints.resources().registerPattern("application*.yml");
             hints.resources().registerPattern("application*.yaml");
         }

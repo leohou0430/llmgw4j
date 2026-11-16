@@ -1,0 +1,93 @@
+{
+  "paused": null,
+  "vus": null,
+  "duration": null,
+  "iterations": null,
+  "stages": null,
+  "scenarios": {
+    "load": {
+      "executor": "constant-arrival-rate",
+      "startTime": null,
+      "gracefulStop": "40s",
+      "env": null,
+      "exec": null,
+      "tags": null,
+      "rate": 6000,
+      "timeUnit": "1s",
+      "duration": "15s",
+      "preAllocatedVUs": 256,
+      "maxVUs": 256
+    }
+  },
+  "executionSegment": null,
+  "executionSegmentSequence": null,
+  "noSetup": null,
+  "setupTimeout": null,
+  "noTeardown": null,
+  "teardownTimeout": null,
+  "handleSummaryTimeout": null,
+  "rps": null,
+  "dns": {
+    "ttl": null,
+    "select": null,
+    "policy": null
+  },
+  "maxRedirects": null,
+  "userAgent": null,
+  "batch": null,
+  "batchPerHost": null,
+  "httpDebug": null,
+  "insecureSkipTLSVerify": null,
+  "tlsCipherSuites": null,
+  "tlsVersion": null,
+  "tlsAuth": null,
+  "tlsAIAFetch": null,
+  "throw": null,
+  "thresholds": {
+    "audit_unexpected_failure": [
+      "rate==0"
+    ],
+    "dropped_iterations": [
+      "count==0"
+    ]
+  },
+  "blacklistIPs": null,
+  "blockHostnames": null,
+  "hosts": null,
+  "noConnectionReuse": null,
+  "noVUConnectionReuse": null,
+  "minIterationDuration": null,
+  "ext": null,
+  "summaryTrendStats": [
+    "avg",
+    "min",
+    "med",
+    "max",
+    "p(90)",
+    "p(95)"
+  ],
+  "summaryTimeUnit": null,
+  "systemTags": [
+    "check",
+    "error",
+    "error_code",
+    "expected_response",
+    "group",
+    "method",
+    "name",
+    "proto",
+    "scenario",
+    "service",
+    "status",
+    "subproto",
+    "tls_version",
+    "url"
+  ],
+  "tags": null,
+  "metricSamplesBufferSize": null,
+  "noCookiesReset": null,
+  "discardResponseBodies": null,
+  "features": null,
+  "totalDuration": "55s",
+  "maxVUs": 256
+}

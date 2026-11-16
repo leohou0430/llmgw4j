@@ -1,0 +1,106 @@
+{
+  "task": "T1.17 stage-1 full regression - profile verification",
+  "date": "2026-11-14",
+  "runner": "/tmp/run-stage1-profiles.sh (background id b8onspiha, exit 0)",
+  "command_prefix": "mvn -o [-P<profile>] test",
+  "java_home": "/Users/leo/Library/Java/JavaVirtualMachines/graalvm-jdk-25/Contents/Home",
+  "maven": "/Users/leo/work/maven/apache-maven-3.9.16",
+  "source_state": "pristine stage-1 (no Java source edits during the whole verification batch)",
+  "note": "All numbers below are THIS run's actual measurements, independently recounted from surefire XML (aggregate) and from redis.log per-class lines (per-module), not copied from historical reports. default/jtokkit/otel skip the 26 redis-gated tests; redis profile executes them (superset). build.sh runs `clean package -DskipTests`, so it wipes surefire XML afterward; the per-profile recounts were captured before build ran.",
+  "profiles": [
+    {
+      "profile": "default",
+      "command": "mvn -o test",
+      "exit_code": 0,
+      "build": "BUILD SUCCESS",
+      "tests_run": 830,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 26,
+      "executed": 804,
+      "surefire_xml_files": 76,
+      "skipped_reason": "llmgw-governance-redis 26 tests gated by LLMGW_TEST_REDIS_PORT (unset in default profile)",
+      "source": "separate full mvn -o test run earlier this session (ConversionContractTest 49/0/0/0)"
+    },
+    {
+      "profile": "jtokkit",
+      "command": "mvn -o -Pjtokkit test",
+      "exit_code": 0,
+      "build": "BUILD SUCCESS",
+      "tests_run": 830,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 26,
+      "executed": 804,
+      "surefire_xml_files": 76
+    },
+    {
+      "profile": "otel",
+      "command": "mvn -o -Potel test",
+      "exit_code": 0,
+      "build": "BUILD SUCCESS",
+      "tests_run": 830,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 26,
+      "executed": 804,
+      "surefire_xml_files": 76
+    },
+    {
+      "profile": "redis",
+      "command": "LLMGW_TEST_REDIS_PORT=6391 mvn -o -Predis test",
+      "exit_code": 0,
+      "build": "BUILD SUCCESS",
+      "tests_run": 830,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "executed": 830,
+      "surefire_xml_files": 76,
+      "isolated_instance": {
+        "port": 6391,
+        "pid": 82401,
+        "start": "redis-server --bind 127.0.0.1 --port 6391 --save '' --appendonly no --dir /tmp/stage1-profiles",
+        "ping_before": "PONG",
+        "shutdown": "redis-cli -p 6391 shutdown nosave",
+        "ping_after": "Could not connect to Redis at 127.0.0.1:6391 (self-cleaned)",
+        "post_check": "pgrep redis-server.*6391 -> none"
+      },
+      "redis_gated_suites_executed": {
+        "RedisConsistencyTest": 20,
+        "RedisTokenLimiterTest": 6
+      }
+    }
+  ],
+  "build_sh": {
+    "command": "bash bin/build.sh",
+    "exit_code": 0,
+    "build": "BUILD SUCCESS",
+    "total_time": "22.763 s",
+    "artifact": "llmgw-app/target/llmgw-app-0.3.1.jar",
+    "artifact_bytes": 133175908,
+    "artifact_sha256": "2d5acbec5bfb1331bf9d8532d9461178d1af29e299b7a7181093a5ee7e0cacc3",
+    "note": "clean package -DskipTests; rebuilds the same pristine stage-1 source the smokes ran against. Smoke batch jar sha256 prefix a95cb47e07c4324a (earlier build of identical source); sha differs only by rebuild, source unchanged."
+  },
+  "per_module_redis_superset": {
+    "llmgw-app": 145,
+    "llmgw-conversion/llmgw-conversion-api": 84,
+    "llmgw-conversion/llmgw-conversion-chat": 68,
+    "llmgw-conversion/llmgw-conversion-deepseek": 42,
+    "llmgw-conversion/llmgw-conversion-messages": 118,
+    "llmgw-conversion/llmgw-conversion-responses": 90,
+    "llmgw-core": 53,
+    "llmgw-engine/llmgw-engine-api": 15,
+    "llmgw-engine/llmgw-engine-vt": 21,
+    "llmgw-engine/llmgw-engine-webflux": 29,
+    "llmgw-governance/llmgw-governance-api": 9,
+    "llmgw-governance/llmgw-governance-default": 64,
+    "llmgw-governance/llmgw-governance-redis": 26,
+    "llmgw-provider/llmgw-provider-anthropic": 3,
+    "llmgw-provider/llmgw-provider-http-jdk": 58,
+    "llmgw-provider/llmgw-provider-openai-sdk": 1,
+    "llmgw-tokenizer/llmgw-tokenizer-jtokkit": 4,
+    "total": 830,
+    "surefire_xml_files": 76
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "task": "T3 stage-3 catalog gate - full reactor regression",
+  "date": "2026-11-15",
+  "command": "mvn -o test (full reactor, 33 modules incl new llmgw-persistence + llmgw-catalog)",
+  "java_home": "/Users/leo/Library/Java/JavaVirtualMachines/graalvm-jdk-25/Contents/Home",
+  "maven": "/Users/leo/work/maven/apache-maven-3.9.16",
+  "result": {
+    "xml_files": 103,
+    "tests_run": 961,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 26,
+    "executed": 935,
+    "build": "BUILD SUCCESS",
+    "skipped_reason": "llmgw-governance-redis 26 tests gated by LLMGW_TEST_REDIS_PORT (unset in default profile)",
+    "source_log": "/tmp/stage3-fulltest.log"
+  },
+  "delta_from_stage2": {
+    "stage2_tests": 908,
+    "stage3_tests": 961,
+    "added": 53,
+    "breakdown": {"llmgw-persistence-sqlite": 23, "llmgw-catalog-default": 30}
+  },
+  "verification_trio": {
+    "check_module_layout": {"command": "bash bin/check-module-layout.sh", "result": "PASS=128 FAIL=0"},
+    "check_native_boundaries": {"command": "python3 bin/check-native-boundaries.py", "result": "PASS: 326 module Java files, 33 modules, 15 descriptors, 27 named extensions"},
+    "native_unittest": {"command": "python3 -m unittest discover -s bin -p 'test_native_*.py'", "result": "6 tests OK"}
+  },
+  "task_evidence": [
+    "t3.1-sqlite-foundation.md",
+    "t3.2-schema-migrations.md",
+    "t3.3-sqlite-keystore.md",
+    "t3.4-catalog-model-auth.md",
+    "t3.5-creation-consistency.md",
+    "t3.6-stable-pagination.md",
+    "t3.7-task-catalog.md",
+    "t3.8-deletion-state-machine.md",
+    "t3.9-legacy-migration.md",
+    "t3.10-retention-disk.md"
+  ],
+  "note": "Every T3 task was TDD (red->green) with mutation self-checks proving non-vacuity. The full reactor test (961/0/0/26) + trio gate the aggregated Stage-3 code. build.sh + dual-engine e2e smokes (openapi/multi-protocol/v13-extensions/v13-hardening/stream-errors/tenant-isolation/admin-auth/jwt-auth) are run once in the final combined gate over the complete (stage 3 + stage 4) codebase, which is a stricter superset; the Stage-2 gate already exercised those smokes on the unchanged streaming surface.",
+  "not_covered": [
+    "Real DeepSeek upstream (T1.18 hard gate, user-gated)",
+    "Full GraalVM native-image build (heavy native gate)",
+    "OS-level SIGKILL / real full-disk FS (T3.10 covers WAL durability + logical cap/margin)"
+  ]
+}

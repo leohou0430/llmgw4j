@@ -1,0 +1,62 @@
+{
+  "complete": true,
+  "date": "2026-11-12",
+  "scope": "Linux amd64 native 2C2G single replica capacity, slow readers, TLS and two authorized DeepSeek generations",
+  "production_java_changed_this_round": false,
+  "artifacts": {
+    "webflux": {
+      "path": "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/linux-native-2026-11-11/evidence/llmgw-webflux-linux",
+      "sha256": "e3de8eb77261b694fc541cecefd8ee0c03e7ce66e481f793305b3757b20d696d"
+    },
+    "vt": {
+      "path": "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/linux-native-2026-11-11/evidence/llmgw-vt-linux",
+      "sha256": "a966913fe96f6f0c684bc68dbe7c9453d2c3eb7e596153f43cc6e1f859912d1a"
+    }
+  },
+  "capacity": {
+    "samples": 62,
+    "failed_assertions": [],
+    "report": "capacity-summary.json"
+  },
+  "slow_readers": {
+    "matrix": 4,
+    "clients_each": 64,
+    "hold_seconds": 45,
+    "header_deadline_seconds": 10,
+    "cancelled_each": 64,
+    "recovery_status": 200,
+    "report": "slow-summary.json"
+  },
+  "tls": {
+    "cases": 8,
+    "passed": 8,
+    "negative_failure_causes_verified": true,
+    "report": "../../../../bench/results/native-capacity-2026-11-12/tls/results.json"
+  },
+  "live": {
+    "requests": 2,
+    "maximum_output_tokens_each": 32,
+    "actual_total_tokens": 20,
+    "sdk_retries": 0,
+    "gateway_attempts": 1,
+    "report": "live/live-results.json"
+  },
+  "structural_checks": {
+    "module_layout": {
+      "passed": 71,
+      "failed": 0
+    },
+    "native_boundaries": true,
+    "native_rule_tests": 6,
+    "git_diff_check": true
+  },
+  "limitations": [
+    "Short controlled-upstream closed-loop benchmark; not production QPS or long-term SLO",
+    "Native WebFlux SSE throughput/p99 regressed versus JVM in this batch; no default runtime change",
+    "Two real supplier generations only; not supplier load testing",
+    "Linux ABI and CPU constraints from original build still apply"
+  ],
+  "committed": false,
+  "pushed": false,
+  "released": false
+}

@@ -1,0 +1,27 @@
+{
+  "model": "client-model",
+  "instructions": "be helpful",
+  "input": [
+    { "type": "message", "role": "user", "content": [{ "type": "input_text", "text": "hi" }] }
+  ],
+  "max_output_tokens": 512,
+  "temperature": 0.7,
+  "top_p": 0.95,
+  "reasoning": { "effort": "high" },
+  "text": { "format": { "type": "json_object" } },
+  "tools": [
+    { "type": "function", "name": "ping", "parameters": { "type": "object" }, "strict": false }
+  ],
+  "tool_choice": "auto",
+  "parallel_tool_calls": true,
+  "include": ["reasoning.encrypted_content"],
+  "prompt_cache_key": "cache-1",
+  "prompt_cache_retention": "24h",
+  "metadata": { "trace": "abc" },
+  "service_tier": "auto",
+  "top_logprobs": 2,
+  "stream": true,
+  "stream_options": { "include_usage": true },
+  "user": "u-1",
+  "safety_identifier": "u-1"
+}

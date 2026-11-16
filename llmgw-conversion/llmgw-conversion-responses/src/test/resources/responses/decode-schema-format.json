@@ -1,0 +1,12 @@
+{
+  "model": "client-model",
+  "input": "hi",
+  "text": {
+    "format": {
+      "type": "json_schema",
+      "name": "answer",
+      "strict": true,
+      "schema": { "type": "object", "properties": { "ok": { "type": "boolean" } } }
+    }
+  }
+}

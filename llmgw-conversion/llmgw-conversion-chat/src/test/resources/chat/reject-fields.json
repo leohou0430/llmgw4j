@@ -1,0 +1,13 @@
+{
+  "seed": 42,
+  "n": 2,
+  "store": true,
+  "modalities": ["text", "audio"],
+  "audio": {"voice": "alloy", "format": "mp3"},
+  "prediction": {"type": "content", "content": "x"},
+  "web_search_options": {"search_context_size": "medium"},
+  "moderation": {"model": "omni-moderation-latest"},
+  "verbosity": "high",
+  "logit_bias": {"123": -10},
+  "prompt_cache_options": {"mode": "auto"}
+}

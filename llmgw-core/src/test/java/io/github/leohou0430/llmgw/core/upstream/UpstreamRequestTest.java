@@ -8,6 +8,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -16,6 +17,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * buggy) HeaderPolicy lets slip.
  */
 class UpstreamRequestTest {
+
+    @Test
+    void batchCreationMustNotAcquireATopLevelModelFromTheRoute() {
+        var route = new Route("r", "*", "*", "upstream-model", "http://u", "route-key", "openai", 1, List.of());
+        String body = "{\"input_file_id\":\"file_1\",\"endpoint\":\"/v1/chat/completions\",\"completion_window\":\"24h\"}";
+        var request = new UpstreamRequest(body, "http://u", "key", "", "batch", false, 1000,
+                "/batches", UpstreamMethod.POST, Map.of()).forRoute(route);
+        assertEquals(body, request.rawJson());
+        assertEquals("route-key", request.apiKey());
+    }
 
     @Test
     void protectedHeadersAreStrippedRegardlessOfPolicy() {
@@ -60,5 +71,30 @@ class UpstreamRequestTest {
         UpstreamRequest legacy = new UpstreamRequest("{}", "http://u", "key", "m", true, 5);
         assertEquals("/chat/completions", legacy.path());
         assertTrue(legacy.passHeaders().isEmpty());
+    }
+
+    @Test
+    void streamingBinaryBodyKeepsContentTypeAndSkipsModelRewrite() {
+        Route route = new Route("r", "*", "*", "upstream-model", "http://u", "route-key", "openai", 1, List.of());
+        ByteStream body = ByteStream.ofByteArray(new byte[]{1, 2, 3});
+        UpstreamRequest request = new UpstreamRequest("", "http://u", "key", "", "gpt-x", false, 1000,
+                "/files", UpstreamMethod.POST,
+                Map.of("Content-Type", "multipart/form-data; boundary=abc",
+                        "Authorization", "Bearer caller-secret",
+                        "Content-Length", "999",
+                        "X-Api-Key", "caller-key"),
+                body, 3);
+        // A binary body keeps its multipart Content-Type (the boundary lives there)...
+        assertEquals("multipart/form-data; boundary=abc", request.passHeaders().get("Content-Type"));
+        // ...but protected names still never ride through.
+        assertFalse(request.passHeaders().containsKey("Authorization"));
+        assertFalse(request.passHeaders().containsKey("Content-Length"));
+        assertFalse(request.passHeaders().containsKey("X-Api-Key"));
+
+        UpstreamRequest routed = request.forRoute(route);
+        assertSame(body, routed.body(), "the same cold stream rides through routing");
+        assertEquals(3, routed.bodyLength());
+        assertEquals("", routed.rawJson(), "a binary body has no rewritable top-level model");
+        assertEquals("route-key", routed.apiKey());
     }
 }

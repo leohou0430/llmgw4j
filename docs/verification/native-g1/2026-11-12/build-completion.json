@@ -1,0 +1,24 @@
+{
+  "complete": true,
+  "profile": "native-g1",
+  "engine": "webflux",
+  "source_files_verified": 249,
+  "native": {
+    "sha256": "35a2069407ebc823cf04fef464633eaf4b480aa2ad7179b1355254283e1b6eca",
+    "bytes": 389286288,
+    "compared_jvm_classes": 174,
+    "class_mismatches": []
+  },
+  "sdk_checks": 26,
+  "stream_checks": 34,
+  "protocol_checks": 28,
+  "tenant_check": true,
+  "idle_progress_cases": 3,
+  "build_cpu": 12,
+  "build_memory_bytes": 17179869184,
+  "build_memory_peak_bytes": 12376510464,
+  "oom_events": 0,
+  "builder_cleaned": true,
+  "performance_complete": false,
+  "supplier_requests": 0
+}

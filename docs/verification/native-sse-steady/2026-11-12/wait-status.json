@@ -1,0 +1,245 @@
+{
+  "status": "finished",
+  "checks": [
+    {
+      "time": "2026-11-12T07:46:45+0800",
+      "active_compilers": 0,
+      "build_drivers": 0,
+      "loadavg": [
+        137.40771484375,
+        58.06982421875,
+        32.93212890625
+      ],
+      "quiet_samples": 0
+    },
+    {
+      "time": "2026-11-12T07:47:15+0800",
+      "active_compilers": 0,
+      "build_drivers": 0,
+      "loadavg": [
+        104.96923828125,
+        58.04150390625,
+        33.8076171875
+      ],
+      "quiet_samples": 0
+    },
+    {
+      "time": "2026-11-12T07:47:46+0800",
+      "active_compilers": 0,
+      "build_drivers": 0,
+      "loadavg": [
+        73.1220703125,
+        55.029296875,
+        33.568359375
+      ],
+      "quiet_samples": 0
+    },
+    {
+      "time": "2026-11-12T07:48:17+0800",
+      "active_compilers": 0,
+      "build_drivers": 0,
+      "loadavg": [
+        70.72802734375,
+        55.75341796875,
+        34.548828125
+      ],
+      "quiet_samples": 0
+    },
+    {
+      "time": "2026-11-12T07:48:47+0800",
+      "active_compilers": 0,
+      "build_drivers": 0,
+      "loadavg": [
+        61.4072265625,
+        55.72607421875,
+        35.43115234375
+      ],
+      "quiet_samples": 0
+    },
+    {
+      "time": "2026-11-12T07:49:17+0800",
+      "active_compilers": 0,
+      "build_drivers": 0,
+      "loadavg": [
+        41.2490234375,
+        51.4296875,
+        34.46826171875
+      ],
+      "quiet_samples": 0
+    },
+    {
+      "time": "2026-11-12T07:49:47+0800",
+      "active_compilers": 0,
+      "build_drivers": 0,
+      "loadavg": [
+        26.1435546875,
+        46.78515625,
+        33.37109375
+      ],
+      "quiet_samples": 0
+    },
+    {
+      "time": "2026-11-12T07:50:17+0800",
+      "active_compilers": 0,
+      "build_drivers": 0,
+      "loadavg": [
+        15.35205078125,
+        41.80126953125,
+        32.09375
+      ],
+      "quiet_samples": 0
+    },
+    {
+      "time": "2026-11-12T07:50:48+0800",
+      "active_compilers": 0,
+      "build_drivers": 0,
+      "loadavg": [
+        10.88525390625,
+        38.62060546875,
+        31.2275390625
+      ],
+      "quiet_samples": 1
+    },
+    {
+      "time": "2026-11-12T07:51:18+0800",
+      "active_compilers": 0,
+      "build_drivers": 0,
+      "loadavg": [
+        7.904296875,
+        35.24658203125,
+        30.26025390625
+      ],
+      "quiet_samples": 2
+    },
+    {
+      "time": "2026-11-12T07:51:48+0800",
+      "active_compilers": 0,
+      "build_drivers": 0,
+      "loadavg": [
+        5.7431640625,
+        32.10107421875,
+        29.29052734375
+      ],
+      "quiet_samples": 3
+    },
+    {
+      "time": "2026-11-12T07:52:18+0800",
+      "active_compilers": 0,
+      "build_drivers": 0,
+      "loadavg": [
+        4.0634765625,
+        29.1748046875,
+        28.32666015625
+      ],
+      "quiet_samples": 4
+    },
+    {
+      "time": "2026-11-12T07:52:48+0800",
+      "active_compilers": 0,
+      "build_drivers": 0,
+      "loadavg": [
+        3.44287109375,
+        26.6240234375,
+        27.43017578125
+      ],
+      "quiet_samples": 5
+    },
+    {
+      "time": "2026-11-12T07:53:18+0800",
+      "active_compilers": 0,
+      "build_drivers": 0,
+      "loadavg": [
+        2.83251953125,
+        24.25439453125,
+        26.5419921875
+      ],
+      "quiet_samples": 6
+    },
+    {
+      "time": "2026-11-12T07:53:48+0800",
+      "active_compilers": 0,
+      "build_drivers": 0,
+      "loadavg": [
+        2.3603515625,
+        22.09326171875,
+        25.6787109375
+      ],
+      "quiet_samples": 7
+    },
+    {
+      "time": "2026-11-12T07:54:18+0800",
+      "active_compilers": 0,
+      "build_drivers": 0,
+      "loadavg": [
+        2.0244140625,
+        20.12353515625,
+        24.83935546875
+      ],
+      "quiet_samples": 8
+    },
+    {
+      "time": "2026-11-12T07:54:48+0800",
+      "active_compilers": 0,
+      "build_drivers": 0,
+      "loadavg": [
+        1.83349609375,
+        18.3427734375,
+        24.029296875
+      ],
+      "quiet_samples": 9
+    },
+    {
+      "time": "2026-11-12T07:55:19+0800",
+      "active_compilers": 0,
+      "build_drivers": 0,
+      "loadavg": [
+        2.7578125,
+        16.99951171875,
+        23.34521484375
+      ],
+      "quiet_samples": 10
+    },
+    {
+      "time": "2026-11-12T07:55:49+0800",
+      "active_compilers": 0,
+      "build_drivers": 0,
+      "loadavg": [
+        3.61669921875,
+        15.626953125,
+        22.5869140625
+      ],
+      "quiet_samples": 11
+    }
+  ],
+  "command": [
+    "python3",
+    "bench/capacity/run.py",
+    "--before",
+    "bench/results/linux-native-2026-11-11/evidence/jvm-default.jar",
+    "--after",
+    "bench/results/linux-native-2026-11-11/evidence/jvm-default.jar",
+    "--native-dir",
+    "bench/results/linux-native-2026-11-11/evidence",
+    "--output",
+    "bench/results/native-sse-steady-2026-11-12/serial-vs-jvm-stable-window",
+    "--rounds",
+    "3",
+    "--duration",
+    "60s",
+    "--warmup",
+    "60s",
+    "--warmup-vus",
+    "64",
+    "--vus",
+    "64",
+    "--modes",
+    "sse",
+    "--labels",
+    "before-webflux,after-webflux",
+    "--skip-long",
+    "--respect-retry-after",
+    "--max-host-load-ratio",
+    "0.75"
+  ],
+  "exit_code": 0
+}

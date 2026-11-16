@@ -1,0 +1,14 @@
+{
+  "bogus_top_level": 1,
+  "compaction": {"type": "auto"},
+  "thinking": {"type": "enabled"},
+  "top_k": 5,
+  "seed": 42,
+  "n": 2,
+  "logprobs": true,
+  "messages": [{"role": "user", "content": "hi"}],
+  "response_format": {"type": "json_object"},
+  "reasoning_effort": "high",
+  "max_tokens": 256,
+  "modalities": ["text"]
+}

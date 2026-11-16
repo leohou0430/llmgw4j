@@ -1,0 +1,9 @@
+{
+  "model": "client-model",
+  "messages": [{"role": "user", "content": "think"}],
+  "reasoning_effort": "high",
+  "temperature": 0.2,
+  "top_p": 0.97,
+  "stream": true,
+  "stream_options": {"include_usage": true}
+}

@@ -1,0 +1,17 @@
+{
+  "model": "client-model",
+  "max_tokens": 4096,
+  "thinking": {"type": "adaptive"},
+  "messages": [
+    {"role": "user", "content": "hi"},
+    {"role": "assistant", "content": [
+      {"type": "thinking", "thinking": "step one", "signature": "llmgw1:cGF5bG9hZA.c2ln"},
+      {"type": "text", "text": "answer"},
+      {"type": "tool_use", "id": "call_2", "name": "ping", "input": {}}
+    ]},
+    {"role": "user", "content": [
+      {"type": "tool_result", "tool_use_id": "call_2", "content": [{"type": "text", "text": "pong"}]}
+    ]}
+  ],
+  "tools": [{"name": "ping", "input_schema": {"type": "object"}}]
+}

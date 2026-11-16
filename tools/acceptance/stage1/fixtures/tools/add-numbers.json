@@ -1,0 +1,97 @@
+{
+  "schema": "llmgw-acceptance-tool/v1",
+  "name": "add_numbers",
+  "description": "Deterministic integer addition for controlled acceptance runs.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "a": {
+        "type": "integer"
+      },
+      "b": {
+        "type": "integer"
+      }
+    },
+    "required": [
+      "a",
+      "b"
+    ],
+    "additionalProperties": false
+  },
+  "known_result": {
+    "arguments": {
+      "a": 17,
+      "b": 25
+    },
+    "result": 42,
+    "result_text": "42"
+  },
+  "wire": {
+    "chat": {
+      "type": "function",
+      "function": {
+        "name": "add_numbers",
+        "description": "Deterministic integer addition for controlled acceptance runs.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "a": {
+              "type": "integer"
+            },
+            "b": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "a",
+            "b"
+          ],
+          "additionalProperties": false
+        },
+        "strict": false
+      }
+    },
+    "responses": {
+      "type": "function",
+      "name": "add_numbers",
+      "description": "Deterministic integer addition for controlled acceptance runs.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "a": {
+            "type": "integer"
+          },
+          "b": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "a",
+          "b"
+        ],
+        "additionalProperties": false
+      },
+      "strict": false
+    },
+    "messages": {
+      "name": "add_numbers",
+      "description": "Deterministic integer addition for controlled acceptance runs.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "a": {
+            "type": "integer"
+          },
+          "b": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "a",
+          "b"
+        ],
+        "additionalProperties": false
+      }
+    }
+  }
+}

@@ -1,0 +1,93 @@
+
+Execution stacks inclusive (can include OS wait) total=275
+  96.36%	265	java.lang.Thread.runWith
+  94.91%	261	java.lang.Thread.run
+  87.64%	241	java.util.concurrent.ThreadPoolExecutor$Worker.run
+  87.64%	241	java.util.concurrent.ThreadPoolExecutor.runWorker
+  85.82%	236	jdk.internal.net.http.common.SequentialScheduler$SchedulableTask.run
+  85.45%	235	jdk.internal.net.http.common.SequentialScheduler$LockingRestartableTask.run
+  85.45%	235	jdk.internal.net.http.common.SequentialScheduler$CompleteRestartableTask.run
+  84.36%	232	jdk.internal.net.http.Http1AsyncReceiver$$Lambda.0x00000000558226e0.run
+  84.36%	232	jdk.internal.net.http.Http1AsyncReceiver.flush
+  84.00%	231	jdk.internal.net.http.Http1Response$Receiver.accept
+  82.18%	226	jdk.internal.net.http.Http1Response$BodyReader.handle
+  82.18%	226	jdk.internal.net.http.common.SequentialScheduler.runOrSchedule
+  82.18%	226	jdk.internal.net.http.Http1Response$BodyReader.tryAsyncReceive
+  81.82%	225	jdk.internal.net.http.ResponseContent$ChunkedBodyParser.accept
+  81.45%	224	jdk.internal.net.http.common.HttpBodySubscriberWrapper.onNext
+  81.45%	224	io.github.leohou0430.llmgw.provider.http.jdk.SseLineLimitSubscriber.onNext
+  81.09%	223	jdk.internal.net.http.LineSubscriberAdapter.onNext
+  81.09%	223	jdk.internal.net.http.LineSubscriberAdapter$LineSubscription.submit
+  81.09%	223	jdk.internal.net.http.ResponseSubscribers$MappingSubscriber.onNext
+  80.73%	222	jdk.internal.net.http.LineSubscriberAdapter$LineSubscription.nextLine
+  80.73%	222	jdk.internal.net.http.LineSubscriberAdapter$LineSubscription$$Lambda.0x0000000055860000.run
+  80.73%	222	jdk.internal.net.http.LineSubscriberAdapter$LineSubscription.loop
+  70.55%	194	jdk.internal.net.http.LineSubscriberAdapter$LineSubscription.endOfLine
+  24.36%	67	jdk.internal.net.http.common.SequentialScheduler$TryEndDeferredCompleter.complete
+   9.82%	27	java.lang.StringBuilder.charAt
+
+Execution stacks first application frame total=275
+  81.45%	224	io.github.leohou0430.llmgw.provider.http.jdk.SseLineLimitSubscriber.onNext
+  14.91%	41	<framework-only stack>
+   0.73%	2	io.github.leohou0430.llmgw.provider.http.jdk.JdkHttpUpstream.build
+   0.73%	2	io.github.leohou0430.llmgw.engine.webflux.WebfluxGatewayController.lambda$upstreamLines$3
+   0.36%	1	io.github.leohou0430.llmgw.engine.webflux.WebfluxCapacityAdmission.lambda$handle$0
+   0.36%	1	io.github.leohou0430.llmgw.governance.inmemory.GovernanceMetrics.lambda$latency$0
+   0.36%	1	io.github.leohou0430.llmgw.core.protocol.ProtocolCodec.collectPrompt
+   0.36%	1	io.github.leohou0430.llmgw.governance.inmemory.GovernanceMetrics.count
+   0.36%	1	io.github.leohou0430.llmgw.engine.webflux.WebfluxGatewayController.handleKind
+   0.36%	1	io.github.leohou0430.llmgw.engine.webflux.WebfluxGatewayController.lambda$upstreamLines$1
+
+Allocation sampled bytes by class total=200550576
+  74.63%	149676408	[B
+   2.94%	5905232	java.util.ArrayList
+   1.55%	3111184	jdk.internal.net.http.SocketTube$InternalReadPublisher$ReadSubscription
+   1.42%	2840544	java.lang.String
+   0.94%	1889120	[I
+   0.79%	1587976	[Ljava.lang.classfile.constantpool.PoolEntry;
+   0.76%	1515216	java.util.stream.ReferencePipeline$Head
+   0.72%	1445856	io.netty.channel.DefaultChannelPromise
+   0.71%	1429464	jdk.internal.net.http.SocketTube$InternalReadPublisher$InternalReadSubscription$$Lambda.0x000000005583b978
+   0.69%	1380416	java.nio.HeapByteBuffer
+   0.59%	1191808	java.util.ArrayList$Itr
+   0.51%	1026824	[Ljava.lang.Object;
+   0.49%	980744	jdk.internal.net.http.common.MinimalFuture
+   0.42%	850184	[C
+   0.42%	840576	java.net.URL
+   0.42%	838864	java.util.HashMap$Node
+   0.41%	830920	java.util.stream.ReferencePipeline$2
+   0.41%	829864	io.netty.channel.ChannelOutboundBuffer$Entry
+   0.40%	792408	java.util.HashMap$KeySpliterator
+   0.36%	713800	java.util.stream.ReferencePipeline$2$1
+   0.35%	711880	[Ljava.lang.management.MemoryUsage;
+   0.35%	698160	io.netty.util.concurrent.PromiseCombiner
+   0.34%	678336	jdk.internal.classfile.impl.StackMapGenerator$Type
+   0.33%	655432	java.util.LinkedHashMap$Entry
+   0.30%	608128	io.netty.buffer.AdaptivePoolingAllocator$AdaptiveByteBuf
+
+Allocation sampled bytes by site total=200550576
+  52.56%	105408616	io.github.leohou0430.llmgw.provider.http.jdk.SseLineLimitSubscriber.onNext :: java.util.Arrays.copyOf <- java.lang.AbstractStringBuilder.ensureCapacitySameCoder <- java.lang.AbstractStringBuilder.append <- java.lang.StringBuilder.append <- java.lang.StringBuilder.append
+  18.12%	36330560	<framework-only stack> :: java.nio.HeapByteBuffer.<init> <- java.nio.ByteBuffer.allocate <- jdk.internal.net.http.common.Utils.getBuffer <- jdk.internal.net.http.PlainHttpConnection$$Lambda.0x0000000055816838.get <- jdk.internal.net.http.SocketTube$SliceBufferSource.getBuffer
+   2.82%	5657080	<framework-only stack> :: jdk.internal.net.http.ResponseContent$ChunkedBodyParser.accept <- jdk.internal.net.http.ResponseContent$ChunkedBodyParser.accept <- jdk.internal.net.http.Http1Response$BodyReader.handle <- jdk.internal.net.http.Http1Response$BodyReader.handle <- jdk.internal.net.http.Http1Response$Receiver.accept
+   1.55%	3111184	<framework-only stack> :: jdk.internal.net.http.SocketTube$InternalReadPublisher.subscribe <- jdk.internal.net.http.SocketTube.subscribe <- jdk.internal.net.http.SocketTube.connectFlows <- jdk.internal.net.http.Http1Exchange.connectFlows <- jdk.internal.net.http.Http1Exchange.lambda$sendHeadersAsync$2
+   0.76%	1515216	<framework-only stack> :: java.util.stream.StreamSupport.stream <- java.util.Collection.stream <- jdk.internal.net.http.HttpClientImpl$SelectorAttachment.events <- jdk.internal.net.http.HttpClientImpl$SelectorManager.run
+   0.72%	1445856	<framework-only stack> :: io.netty.channel.AbstractChannelHandlerContext.newPromise <- io.netty.channel.AbstractChannelHandlerContext.write <- io.netty.channel.CombinedChannelDuplexHandler$DelegatingChannelHandlerContext.write <- io.netty.handler.codec.http.HttpObjectEncoder.writePromiseCombiner <- io.netty.handler.codec.http.HttpObjectEncoder.writeOutList
+   0.68%	1359632	<framework-only stack> :: java.lang.invoke.DirectMethodHandle.allocateInstance <- java.lang.invoke.DirectMethodHandle$Holder.newInvokeSpecial <- java.lang.invoke.Invokers$Holder.linkToTargetMethod <- jdk.internal.net.http.SocketTube$InternalReadPublisher$InternalReadSubscription.resumeReadEvent <- jdk.internal.net.http.SocketTube$InternalReadPublisher$InternalReadSubscription.request
+   0.49%	980744	<framework-only stack> :: jdk.internal.net.http.common.MinimalFuture.completedFuture <- jdk.internal.net.http.PlainHttpConnection.checkRetryConnect <- jdk.internal.net.http.PlainHttpConnection.lambda$connectAsync$0 <- jdk.internal.net.http.PlainHttpConnection$$Lambda.0x0000000055830480.apply <- java.util.concurrent.CompletableFuture.uniHandle
+   0.47%	941104	<framework-only stack> :: java.nio.HeapByteBuffer.slice <- io.netty.buffer.UnpooledHeapByteBuf.nioBuffer <- io.netty.buffer.AdaptivePoolingAllocator$AdaptiveByteBuf.setBytes <- io.netty.buffer.AbstractByteBuf.writeBytes <- io.netty.channel.epoll.AbstractEpollChannel.newDirectBuffer0
+   0.41%	830920	<framework-only stack> :: java.util.stream.ReferencePipeline.filter <- jdk.internal.net.http.HttpClientImpl$SelectorAttachment.events <- jdk.internal.net.http.HttpClientImpl$SelectorManager.run
+   0.41%	829864	<framework-only stack> :: io.netty.channel.ChannelOutboundBuffer$Entry$1.newObject <- io.netty.channel.ChannelOutboundBuffer$Entry$1.newObject <- io.netty.util.Recycler$GuardedLocalPool.getWith <- io.netty.util.Recycler.get <- io.netty.channel.ChannelOutboundBuffer$Entry.newInstance
+   0.40%	806344	io.github.leohou0430.llmgw.provider.http.jdk.SseLineLimitSubscriber.onSubscribe :: jdk.internal.net.http.LineSubscriberAdapter$LineSubscription.<init> <- jdk.internal.net.http.LineSubscriberAdapter$LineSubscription.create <- jdk.internal.net.http.LineSubscriberAdapter.onSubscribe <- jdk.internal.net.http.ResponseSubscribers$MappingSubscriber.onSubscribe <- io.github.leohou0430.llmgw.provider.http.jdk.SseLineLimitSubscriber.onSubscribe
+   0.40%	792408	<framework-only stack> :: java.util.HashSet.spliterator <- java.util.Collection.stream <- jdk.internal.net.http.HttpClientImpl$SelectorAttachment.events <- jdk.internal.net.http.HttpClientImpl$SelectorManager.run
+   0.36%	719384	<framework-only stack> :: 
+   0.36%	713800	<framework-only stack> :: java.util.stream.ReferencePipeline$2.opWrapSink <- java.util.stream.AbstractPipeline.wrapSink <- java.util.stream.AbstractPipeline.wrapAndCopyInto <- java.util.stream.ForEachOps$ForEachOp.evaluateSequential <- java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential
+   0.35%	698160	<framework-only stack> :: io.netty.handler.codec.http.HttpObjectEncoder.writePromiseCombiner <- io.netty.handler.codec.http.HttpObjectEncoder.writeOutList <- io.netty.handler.codec.http.HttpObjectEncoder.write <- io.netty.handler.codec.http.HttpServerCodec$HttpServerResponseEncoder.write <- io.netty.channel.CombinedChannelDuplexHandler.write
+   0.35%	694904	<framework-only stack> :: jdk.internal.classfile.impl.EntryMap.<init> <- jdk.internal.classfile.impl.SplitConstantPool.map <- jdk.internal.classfile.impl.SplitConstantPool.tryFindClassOrInterface <- jdk.internal.classfile.impl.SplitConstantPool.classEntryForClassOrInterface <- jdk.internal.classfile.impl.SplitConstantPool.classEntry
+   0.34%	673440	<framework-only stack> :: java.util.HashMap.newNode <- java.util.HashMap.putVal <- java.util.HashMap.put <- java.util.HashSet.add <- sun.nio.ch.SelectorImpl.processReadyEvents
+   0.30%	608128	<framework-only stack> :: io.netty.buffer.AdaptivePoolingAllocator$Magazine$AdaptiveRecycler.newObject <- io.netty.buffer.AdaptivePoolingAllocator$Magazine$AdaptiveRecycler.newObject <- io.netty.util.Recycler$UnguardedLocalPool.getWith <- io.netty.util.Recycler.get <- io.netty.buffer.AdaptivePoolingAllocator$Magazine.newBuffer
+   0.29%	571704	io.github.leohou0430.llmgw.engine.webflux.WebfluxGatewayController.lambda$dispatch$8 :: java.lang.String.encodeUTF8 <- java.lang.String.encode <- java.lang.String.getBytes <- io.github.leohou0430.llmgw.engine.webflux.WebfluxGatewayController.lambda$dispatch$8 <- io.github.leohou0430.llmgw.engine.webflux.WebfluxGatewayController$$Lambda.0x00000000557fc910.apply
+   0.28%	570216	<framework-only stack> :: reactor.util.concurrent.Queues.lambda$static$2 <- reactor.util.concurrent.Queues$$Lambda.0x00000000553f8000.get <- reactor.core.publisher.FluxFlatMap$FlatMapMain.getOrCreateInnerQueue <- reactor.core.publisher.FluxFlatMap$FlatMapMain.tryEmit <- reactor.core.publisher.FluxFlatMap$FlatMapInner.onNext
+   0.28%	559560	<framework-only stack> :: java.util.concurrent.CompletableFuture.uniComposeStage <- java.util.concurrent.CompletableFuture.thenCompose <- jdk.internal.net.http.Exchange.responseAsyncImpl <- jdk.internal.net.http.Exchange.responseAsync <- jdk.internal.net.http.MultiExchange.responseAsyncImpl
+   0.28%	552400	<framework-only stack> :: java.util.ArrayList.iterator <- jdk.jfr.internal.periodic.PeriodicEvents.doPeriodic <- jdk.jfr.internal.PlatformRecorder.periodicTask <- jdk.jfr.internal.PlatformRecorder.lambda$startDiskMonitor$0 <- jdk.jfr.internal.PlatformRecorder$$Lambda.0x0000000055077368.run
+   0.27%	544480	<framework-only stack> :: io.netty.buffer.UnreleasableByteBuf.duplicate <- io.netty.handler.codec.http.HttpObjectEncoder.encodeChunkedHttpContent <- io.netty.handler.codec.http.HttpObjectEncoder.encodeByteBufAndTrailers <- io.netty.handler.codec.http.HttpObjectEncoder.encodeByteBufContent <- io.netty.handler.codec.http.HttpObjectEncoder.encodeNotHttpMessageContentTypes
+   0.25%	495128	<framework-only stack> :: io.netty.buffer.UnsafeByteBufUtil.newDirectByteBuf <- io.netty.buffer.AdaptiveByteBufAllocator$DirectChunkAllocator.allocate <- io.netty.buffer.AdaptivePoolingAllocator$SizeClassChunkController.newChunkAllocation <- io.netty.buffer.AdaptivePoolingAllocator$Magazine.allocate <- io.netty.buffer.AdaptivePoolingAllocator$Magazine.tryAllocate

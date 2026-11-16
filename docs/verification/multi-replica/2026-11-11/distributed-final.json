@@ -1,0 +1,32 @@
+{
+  "jars": {
+    "bench/results/multi-replica-2026-11-11/redis-fixed.jar": "a3ce61f4adf7910e824e2feea98eb997ce66d10a9dd62857a55f26eca6580b01",
+    "bench/results/multi-replica-2026-11-11/default.jar": "801baab0bb0bdf605ab43aedb075c41255d4eb8aa49c0c3152aa878150585304"
+  },
+  "ports": {
+    "REDIS_PORT": "54740",
+    "P1": "54741",
+    "P2": "54742",
+    "MOCK_PORT": "54743"
+  },
+  "checks": [
+    {
+      "name": "cluster",
+      "command": [
+        "bash",
+        "bin/smoke-redis-cluster.sh"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "recovery-final",
+      "command": [
+        "python3",
+        "bin/smoke-redis-recovery.py",
+        "--jar",
+        "/Users/leo/WorkBuddy/2026-11-06-01-50-12/llm-gateway/bench/results/multi-replica-2026-11-11/redis-fixed.jar"
+      ],
+      "exit_code": 0
+    }
+  ]
+}

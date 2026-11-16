@@ -1,0 +1,32 @@
+{
+  "task": "T1.17 stage-1 full regression",
+  "plan_ref": "docs/plans/2026-11-12-gateway-four-stage.md line 276",
+  "date": "2026-11-14",
+  "scope": "三检查 + bash bin/build.sh + 默认/Redis/jtokkit/otel profile + 双引擎流式/扩展/加固/租户隔离/管理/JWT smoke (LLMGW_TEST_JAR 固定) + T1.14/T1.15 全绿; Redis 用本次独立实例并清理",
+  "environment": {
+    "java_home": "/Users/leo/Library/Java/JavaVirtualMachines/graalvm-jdk-25/Contents/Home",
+    "maven": "/Users/leo/work/maven/apache-maven-3.9.16",
+    "maven_mode": "offline (mvn -o)",
+    "sdk_venv": "/tmp/llmgw-sdk-venv/bin/python (openai==3.49.0, anthropic==2.8.0, httpx2==2.16.0)"
+  },
+  "source_state": "pristine stage-1; no Java source edited during verification",
+  "checks": {
+    "module_layout": {"command": "bash bin/check-module-layout.sh", "pass": 114, "fail": 0},
+    "native_boundaries": {"command": "python3 bin/check-native-boundaries.py", "module_java_files": 250, "modules": 27, "descriptors": 14, "named_extensions": 26},
+    "native_unit": {"command": "python3 -m unittest discover -s bin -p 'test_native_*.py'", "ran": 6, "result": "OK"},
+    "acceptance_fixtures": {"command": "python3 -m unittest discover -s bin -p 'test_acceptance_fixtures.py'", "ran": 41, "result": "OK"}
+  },
+  "full_test_default": {"command": "mvn -o test", "exit": 0, "tests": 830, "failures": 0, "errors": 0, "skipped": 26, "surefire_xml_files": 76, "ConversionContractTest": "49/0/0/0"},
+  "profiles": {"file": "profiles.json", "jtokkit": "830/0/0/26", "otel": "830/0/0/26", "redis": "830/0/0/0 (26 gated executed)", "all_exit": 0},
+  "redis_isolated_instance": {"port": 6391, "pid": 82401, "ping_before": "PONG", "shutdown": "redis-cli -p 6391 shutdown nosave", "ping_after": "could not connect (self-cleaned)", "post_check": "no redis-server on 6391"},
+  "build_sh": {"command": "bash bin/build.sh", "exit": 0, "build": "BUILD SUCCESS", "artifact": "llmgw-app/target/llmgw-app-0.3.1.jar", "artifact_bytes": 133175908, "artifact_sha256": "2d5acbec5bfb1331bf9d8532d9461178d1af29e299b7a7181093a5ee7e0cacc3"},
+  "t1_14": {"desc": "三入口×六场景受控合同 (双引擎) + s7 反例", "result": "ConversionContractTest 全绿", "evidence": "llmgw-app 145 tests in redis superset"},
+  "t1_15": {"desc": "SDK 兼容 (受控)", "live_checks": "36/36 (3 入口 × 6 场景 × 2 引擎)", "pure_logic": "16 OK"},
+  "smokes": {"file": "smokes.json", "engines": ["webflux", "vt"], "all_green": true, "tested_jar_pinned": "LLMGW_TEST_JAR=llmgw-app-0.3.1.jar (smoke-build sha256 prefix a95cb47e07c4324a, identical pristine source)"},
+  "all_green": true,
+  "uncovered_hard_gate": {
+    "T1.18": "真实 10 分钟窗口 — 用户硬门，需显式 go + 经安全环境提供 DeepSeek 凭据 (LLMGW_ACCEPTANCE_API_KEY); 本轮未执行, 无真实生成调用",
+    "provider_files_download": "阶段 2 按供应商能力记录, 不声称 DeepSeek 下载"
+  },
+  "historical_measurement_reuse": false
+}

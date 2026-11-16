@@ -1,0 +1,67 @@
+{
+  "jvm": {
+    "smoke-stream-errors.sh": {
+      "exit_code": 0,
+      "pass": 67,
+      "pass_lines": 0
+    },
+    "smoke-v13-extensions.sh": {
+      "exit_code": 0,
+      "pass": 54,
+      "pass_lines": 0
+    },
+    "smoke-v13-hardening.sh": {
+      "exit_code": 0,
+      "pass": 46,
+      "pass_lines": 0
+    },
+    "smoke-multi-protocol.sh": {
+      "exit_code": 0,
+      "pass": 56,
+      "pass_lines": 0
+    },
+    "smoke-v13-provider.sh": {
+      "exit_code": 0,
+      "pass": 24,
+      "pass_lines": 0
+    },
+    "smoke-v13-platform.sh": {
+      "exit_code": 0,
+      "pass": 48,
+      "pass_lines": 0
+    },
+    "smoke-tenant-isolation.py": {
+      "exit_code": 0,
+      "pass": null,
+      "pass_lines": 2
+    },
+    "smoke-admin-auth.py": {
+      "exit_code": 0,
+      "pass": null,
+      "pass_lines": 6
+    },
+    "smoke-jwt-auth.py": {
+      "exit_code": 0,
+      "pass": null,
+      "pass_lines": 2
+    }
+  },
+  "native": {
+    "smoke-stream-errors.sh": {
+      "exit_code": 0,
+      "pass": 34,
+      "pass_lines": 0
+    },
+    "smoke-multi-protocol.sh": {
+      "exit_code": 0,
+      "pass": 28,
+      "pass_lines": 0
+    },
+    "smoke-tenant-isolation.py": {
+      "exit_code": 0,
+      "pass": null,
+      "pass_lines": 1
+    }
+  },
+  "jvm_jar_sha256": "5acdebc59a5c4013fdb6f17f81bdf048b960b18455c9cb46938b969da5d34d98"
+}

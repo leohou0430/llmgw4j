@@ -13,7 +13,8 @@ import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-JAR = Path(os.environ.get('LLMGW_TEST_JAR', str(ROOT / 'llmgw-app/target/llmgw-app-0.3.1.jar')))
+JAR = Path(os.environ.get('LLMGW_TEST_JAR', str(ROOT / 'llmgw-app/target/llmgw-app-0.3.1.jar'))).resolve()
+BINARY = os.environ.get('BINARY')
 
 
 def free_port():
@@ -24,8 +25,9 @@ def free_port():
 
 def verify(engine):
     port, mock = free_port(), free_port()
+    while mock == port:mock = free_port()
     with tempfile.TemporaryDirectory(prefix='llmgw-tenant-') as folder:
-        command = ['java', '-jar', str(JAR), f'--spring.profiles.active={engine}',
+        command = ([str(Path(BINARY).resolve())] if BINARY else ['java', '-jar', str(JAR)]) + [f'--spring.profiles.active={engine}',
                    f'--server.port={port}', f'--gateway.mock.port={mock}',
                    f'--gateway.upstream.base-url=http://127.0.0.1:{mock}/mock/v1',
                    '--gateway.routes[0].id=mock', '--gateway.routes[0].model=*',
@@ -40,7 +42,7 @@ def verify(engine):
         with open(Path(folder) / 'gateway.log', 'w+') as log:
             process = subprocess.Popen(command, cwd=folder, stdout=log, stderr=subprocess.STDOUT)
 
-            def request(path, method='GET', body=None, tenant=None, headers=None):
+            def request(path, method='GET', body=None, tenant=None, headers=None, response_headers=None):
                 req_headers = {'Content-Type': 'application/json', **(headers or {})}
                 if tenant is not None:
                     req_headers['Authorization'] = f'Bearer test-{tenant}'
@@ -49,8 +51,10 @@ def verify(engine):
                                              headers=req_headers, method=method)
                 try:
                     with urllib.request.urlopen(req, timeout=15) as response:
+                        if response_headers is not None:response_headers.update({k.lower():v for k,v in response.headers.items()})
                         return response.status, response.read()
                 except urllib.error.HTTPError as error:
+                    if response_headers is not None:response_headers.update({k.lower():v for k,v in error.headers.items()})
                     return error.code, error.read()
 
             try:
@@ -111,7 +115,9 @@ def verify(engine):
                 with ThreadPoolExecutor(max_workers=1) as executor:
                     pending = executor.submit(hold_stream)
                     assert started.wait(10), 'stream did not start'
-                    assert request('/v1/chat/completions', 'POST', chat, 1)[0] == 503
+                    retry_headers={}
+                    assert request('/v1/chat/completions', 'POST', chat, 1,response_headers=retry_headers)[0] == 503
+                    assert retry_headers.get('retry-after')=='1',retry_headers
                     pending.result(timeout=15)
                 print(f'PASS {engine}: cache, task ownership, uploads, listing and concurrency boundaries', flush=True)
             except Exception:
@@ -129,5 +135,7 @@ def verify(engine):
 
 
 if __name__ == '__main__':
-    for name in ('webflux', 'vt'):
+    engines=(os.environ.get('ENGINE','webflux'),) if BINARY else ('webflux','vt')
+    for name in engines:
+        if name not in ('webflux','vt'):raise ValueError('ENGINE must be webflux or vt')
         verify(name)

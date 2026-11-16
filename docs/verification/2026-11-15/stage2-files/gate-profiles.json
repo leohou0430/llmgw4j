@@ -1,0 +1,102 @@
+{
+  "task": "T2 stage-2 full gate - profile verification",
+  "date": "2026-11-15",
+  "runner": "/tmp/run-stage2-gate.sh (background id b5ipgy420)",
+  "command_prefix": "mvn -o [-P<profile>] test",
+  "java_home": "/Users/leo/Library/Java/JavaVirtualMachines/graalvm-jdk-25/Contents/Home",
+  "maven": "/Users/leo/work/maven/apache-maven-3.9.16",
+  "source_state": "pristine stage-2 source for the profile matrix and build.sh (no Java source edits during the batch). T3.1 inert module files were created under llmgw-persistence/ but NOT wired into the root POM until after this gate, so they do not affect these measurements.",
+  "note": "All numbers below are THIS run's actual measurements, independently recounted from surefire XML (aggregate) via the runner recount() and from redis.log per-class lines (redis-gated suites), not copied from historical reports. jtokkit/otel skip the 26 redis-gated tests; redis profile executes them (superset). build.sh runs `clean package -DskipTests`, so it wipes surefire XML afterward; the per-profile recounts were captured before build ran. The default test profile is run separately AFTER the timing-sensitive smokes complete (to avoid CPU contention) and recorded in the default entry below.",
+  "profiles": [
+    {
+      "profile": "default",
+      "command": "mvn -o test",
+      "exit_code": 0,
+      "build": "BUILD SUCCESS",
+      "tests_run": 908,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 26,
+      "executed": 882,
+      "surefire_xml_files": 92,
+      "skipped_reason": "llmgw-governance-redis 26 tests gated by LLMGW_TEST_REDIS_PORT (unset in default profile)",
+      "source": "/tmp/stage2-gate/default.count (recount); run by /tmp/stage2-land-default.sh (background id b1i6h0y6j, exit 0) AFTER the smoke batch to avoid CPU contention",
+      "note": "Run separately after the timing-sensitive dual-engine smokes finished; default_exit=0 recorded in exits.txt."
+    },
+    {
+      "profile": "jtokkit",
+      "command": "mvn -o -Pjtokkit test",
+      "exit_code": 0,
+      "build": "BUILD SUCCESS",
+      "tests_run": 908,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 26,
+      "executed": 882,
+      "surefire_xml_files": 92,
+      "skipped_reason": "llmgw-governance-redis 26 tests gated by LLMGW_TEST_REDIS_PORT (unset in jtokkit profile)",
+      "source": "/tmp/stage2-gate/jtokkit.count (recount before build)"
+    },
+    {
+      "profile": "otel",
+      "command": "mvn -o -Potel test",
+      "exit_code": 0,
+      "build": "BUILD SUCCESS",
+      "tests_run": 908,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 26,
+      "executed": 882,
+      "surefire_xml_files": 92,
+      "source": "/tmp/stage2-gate/otel.count (recount before build)"
+    },
+    {
+      "profile": "redis",
+      "command": "LLMGW_TEST_REDIS_PORT=6392 mvn -o -Predis test",
+      "exit_code": 0,
+      "build": "BUILD SUCCESS",
+      "tests_run": 908,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "executed": 908,
+      "surefire_xml_files": 92,
+      "isolated_instance": {
+        "port": 6392,
+        "start": "redis-server --bind 127.0.0.1 --port 6392 --save '' --appendonly no --dir /tmp/stage2-gate --daemonize yes --pidfile /tmp/stage2-gate/redis.pid",
+        "ping_before": "PONG",
+        "shutdown": "redis-cli -p 6392 shutdown nosave",
+        "ping_after": "Could not connect to Redis at 127.0.0.1:6392 (self-cleaned)",
+        "post_check": "pgrep redis-server.*6392 -> none (redis_pgrep.txt empty)"
+      },
+      "redis_gated_suites_executed": {
+        "RedisConsistencyTest": 20,
+        "RedisTokenLimiterTest": 6
+      },
+      "source": "/tmp/stage2-gate/redis.count + redis.log per-class lines"
+    }
+  ],
+  "build_sh": {
+    "command": "bash bin/build.sh",
+    "exit_code": 0,
+    "build": "BUILD SUCCESS",
+    "total_time": "13.150 s",
+    "artifact": "llmgw-app/target/llmgw-app-0.3.1.jar",
+    "artifact_bytes": 133223599,
+    "artifact_sha256": "3f03abedd504589f79a4e32000829f95b1621d7ee14fc7cdadb45b3a5533c4be",
+    "note": "clean package -DskipTests; this is the jar the 7 dual-engine smokes ran against (LLMGW_TEST_JAR pinned). Distinct sha from the T2.10 container-stress jar (3f9c018a...) because build.sh rebuilt; each evidence records its own actual artifact."
+  },
+  "fixture_validation": {
+    "command": "python3 -m unittest discover -s bin -p 'test_acceptance_fixtures.py'",
+    "exit_code": 0,
+    "tests_run": 41,
+    "result": "OK",
+    "source": "/tmp/stage2-gate/fixtures.log"
+  },
+  "verification_trio": {
+    "check_module_layout": {"command": "bash bin/check-module-layout.sh", "exit_code": 0, "result": "PASS=121 FAIL=0", "note": "llmgw-persistence inert skeleton recognized and compliant (not yet wired into root POM modules)"},
+    "check_native_boundaries": {"command": "python3 bin/check-native-boundaries.py", "exit_code": 0, "result": "PASS native boundaries: 277 module Java files, 30 modules, 14 descriptors, 26 named extensions"},
+    "native_unittest": {"command": "python3 -m unittest discover -s bin -p 'test_native_*.py'", "exit_code": 0, "tests_run": 6, "result": "OK"},
+    "note": "Run after the smoke batch (with the default profile); all three green. Confirms the inert T3.1 files do not violate module-layout or native-boundary rules."
+  }
+}

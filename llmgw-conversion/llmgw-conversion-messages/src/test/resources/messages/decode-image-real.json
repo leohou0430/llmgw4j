@@ -1,0 +1,9 @@
+{
+  "model": "client-model",
+  "max_tokens": 256,
+  "messages": [
+    {"role": "user", "content": [
+      {"type": "image", "source": {"type": "base64", "media_type": "image/png", "data": "iVBORw0KGgoAAAANSUhEUgAAAIQAAAAsCAIAAAAraYdzAAAArUlEQVR42u3bSw6AIAwFQC7jyTy+h9CtGw0EKh/npStCauMsUBPTth9qkEpuAQwFYyKMUz4PDBgCYwWMdEvNxXr1ydmfMhI9DwwYMGDAiO3z1LN0T838MGDAgAFjvgO81XqvBwoYMGDAgDEfRukLYKt1GDBgwIAx7oEZ3QcGDBgwYMCo/SgJAwYMGH/BKE10n1Z4I8wDAwYMGCtgyDeBAUNgzIqh/O2qYMBQL3UBgEWIVMaFMTEAAAAASUVORK5CYII="}}
+    ]}
+  ]
+}

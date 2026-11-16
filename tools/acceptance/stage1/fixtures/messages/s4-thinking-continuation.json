@@ -1,0 +1,168 @@
+{
+  "schema": "llmgw-acceptance-fixture/v1",
+  "id": "messages-s4-thinking-continuation",
+  "entry": "messages",
+  "scenario": 4,
+  "slug": "thinking-continuation",
+  "title": "思考输出+携带状态续轮",
+  "mock": {
+    "chunks": 4
+  },
+  "markers": [
+    "mock-deepseek-thinking"
+  ],
+  "steps": [
+    {
+      "name": "initial",
+      "request": {
+        "model": "mock-model",
+        "messages": [
+          {
+            "role": "user",
+            "content": "mock-deepseek-thinking: Explain the answer."
+          }
+        ],
+        "thinking": {
+          "type": "adaptive"
+        },
+        "max_tokens": 1024,
+        "stream": true
+      },
+      "expected": {
+        "transport": "sse",
+        "terminal": {
+          "message_stop_count": 1,
+          "stop_reason_event": "message_delta",
+          "stop_reason": "end_turn",
+          "done_marker": false,
+          "usage_location": "message_delta.usage",
+          "block_indices": "contiguous_from_0"
+        },
+        "text": {
+          "equals": "Hello world"
+        },
+        "thinking": {
+          "equals": "Let me think",
+          "before_text": true
+        },
+        "usage": {
+          "input_tokens": 4,
+          "cache_read_input_tokens": 3,
+          "cache_creation_input_tokens": 0,
+          "output_tokens": 4,
+          "output_tokens_details": {
+            "thinking_tokens": 2
+          },
+          "absent_fields": [
+            "usage.total_tokens"
+          ]
+        },
+        "sse": {
+          "framing": "event+data",
+          "event_type_equals_data_type": true,
+          "preamble": [
+            "message_start"
+          ],
+          "message_start_usage": {
+            "input_tokens": 0,
+            "output_tokens": 0
+          },
+          "block_indices": "contiguous_from_0",
+          "thinking_block": {
+            "start_type": "thinking",
+            "delta_type": "thinking_delta",
+            "delta_concat": "Let me think",
+            "signature_delta_prefix": "llmgw1:",
+            "closed": true
+          },
+          "text_block": {
+            "start_type": "text",
+            "delta_type": "text_delta",
+            "delta_concat": "Hello world",
+            "closed": true
+          },
+          "terminal": {
+            "message_delta_stop_reason": "end_turn",
+            "message_stop_count": 1,
+            "usage_location": "message_delta.usage"
+          },
+          "done_marker": false
+        }
+      }
+    },
+    {
+      "name": "continuation",
+      "request": {
+        "model": "mock-model",
+        "messages": [
+          {
+            "role": "user",
+            "content": "mock-deepseek-thinking: Explain the answer."
+          },
+          {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "thinking",
+                "thinking": "Let me think",
+                "signature": "llmgw1:eyJwcm9qZWN0SWQiOiJmaXh0dXJlLXByb2plY3QiLCJpdGVtSWQiOiJ0aF9maXh0dXJlXzEiLCJyZWFzb25pbmdTaGEyNTYiOiI3MDY3ODAwZWRlMmE2Nzc1YWE3ZmIxYjlmNzZjYjYwODQxOTQ5YTJjMDFiMjVhODA4YTI4MTljZjA0MjU2ZjQ0In0.oJJNoxO6ygwq19c-s93u9XmXRdHEDHvcaniZSuZdAAE"
+              },
+              {
+                "type": "text",
+                "text": "Hello world"
+              }
+            ]
+          },
+          {
+            "role": "user",
+            "content": "mock-deepseek-thinking: Continue."
+          }
+        ],
+        "thinking": {
+          "type": "adaptive"
+        },
+        "max_tokens": 1024,
+        "stream": false
+      },
+      "expected": {
+        "transport": "json",
+        "terminal": {
+          "type": "message",
+          "role": "assistant",
+          "stop_reason": "end_turn",
+          "stop_sequence_null": true,
+          "content_block_types": [
+            "thinking",
+            "text"
+          ],
+          "thinking_signature_prefix": "llmgw1:"
+        },
+        "text": {
+          "equals": "Hello world"
+        },
+        "thinking": {
+          "equals": "Let me think",
+          "before_text": true
+        },
+        "usage": {
+          "input_tokens": 4,
+          "cache_read_input_tokens": 3,
+          "cache_creation_input_tokens": 0,
+          "output_tokens": 1,
+          "output_tokens_details": {
+            "thinking_tokens": 2
+          },
+          "absent_fields": [
+            "usage.total_tokens"
+          ]
+        }
+      }
+    }
+  ],
+  "notes": "Step 1 streams thinking; step 2 carries the reasoning state back. Responses/Messages tokens are pre-minted with the documented fixture key/project (manifest.continuation_envelope); T1.14 may substitute the runtime-minted token from step 1 because verify() binds projectId + reasoning text, not the runtime item id. Chat carries native reasoning_content plaintext.",
+  "continuation": {
+    "token_source": "preminted_fixture_key",
+    "envelope_ref": "manifest.continuation_envelope",
+    "item_id": "th_fixture_1"
+  }
+}

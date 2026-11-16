@@ -1,0 +1,17 @@
+{
+  "pid": 86259,
+  "port": 51385,
+  "process_identity_verified": true,
+  "command": [
+    "mvn",
+    "-B",
+    "-pl",
+    "llmgw-governance/llmgw-governance-redis",
+    "-am",
+    "-Dtest=RedisConsistencyTest,RedisTokenLimiterTest",
+    "-Dsurefire.failIfNoSpecifiedTests=false",
+    "test"
+  ],
+  "test_exit_code": 0,
+  "redis_cleanup_exit_code": 0
+}

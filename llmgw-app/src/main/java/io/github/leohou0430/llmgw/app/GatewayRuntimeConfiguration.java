@@ -7,6 +7,7 @@ import io.github.leohou0430.llmgw.core.model.ModelCatalog;
 import io.github.leohou0430.llmgw.core.routing.*;
 import io.github.leohou0430.llmgw.core.upstream.CircuitBreaker;
 import io.github.leohou0430.llmgw.core.upstream.HeaderPolicy;
+import io.github.leohou0430.llmgw.conversion.ConversionService;
 import io.github.leohou0430.llmgw.governance.inmemory.DynamicGovernanceSettings;
 import io.github.leohou0430.llmgw.governance.inmemory.GovernanceMetrics;
 import io.micrometer.core.instrument.MeterRegistry;
@@ -30,6 +31,7 @@ public class GatewayRuntimeConfiguration {
             context.loadModule("in-memory");
             if (properties.getRedis().isEnabled()) context.loadModule("redis");
             context.loadModule("jdk-http");
+            context.loadModule("conversion");
             for (String module : properties.getExtensionModules()) context.loadModule(module);
             context.seal();
             if (properties.getGovernance().isSnapshotAutoRestore()) context.get(SnapshotStore.class).load();
@@ -78,4 +80,5 @@ public class GatewayRuntimeConfiguration {
     @Bean(destroyMethod = "") public GovernanceChain governanceChain(ExtensionContext c) { return c.get(GovernanceChain.class); }
     @Bean(destroyMethod = "") public ExecutorService executorService(ExtensionContext c) { return c.get(ExecutorService.class); }
     @Bean(destroyMethod = "") public DynamicGovernanceSettings dynamicGovernanceSettings(ExtensionContext c) { return c.get(DynamicGovernanceSettings.class); }
+    @Bean(destroyMethod = "") public ConversionService conversionService(ExtensionContext c) { return c.get(ConversionService.class); }
 }

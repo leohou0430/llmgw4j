@@ -1,0 +1,46 @@
+{
+  "frozen_jar_sha256": "cd7980dd63e2e3150e366a22bbfaaf3043bd3ccae56897087ea892534d19cf24",
+  "stage": "contracts",
+  "checks": [
+    {
+      "name": "final-smoke-heartbeat-deadline",
+      "command": [
+        "python3",
+        "bin/smoke-heartbeat-deadline.py"
+      ],
+      "started": 1794397604.284641,
+      "exit_code": 0,
+      "seconds": 21.24836301803589
+    },
+    {
+      "name": "final-smoke-sse-line-limit",
+      "command": [
+        "python3",
+        "bin/smoke-sse-line-limit.py"
+      ],
+      "started": 1794397625.533528,
+      "exit_code": 0,
+      "seconds": 15.547164916992188
+    },
+    {
+      "name": "final-smoke-stream-errors",
+      "command": [
+        "bash",
+        "bin/smoke-stream-errors.sh"
+      ],
+      "started": 1794397641.081297,
+      "exit_code": 1,
+      "seconds": 404.86478996276855
+    }
+  ],
+  "frozen_module_classes": {
+    "BOOT-INF/lib/llmgw-provider-http-jdk-0.3.1.jar": "a759be26606db1d87fd9f0193c0a1e63d86b9ae425a698653349be20f0f236f5",
+    "BOOT-INF/lib/llmgw-core-0.3.1.jar": "c50e921a438c16cc8aa0c04d6be1fd7c064d572631cf7e3d12162fffa86c4ee0",
+    "BOOT-INF/lib/llmgw-governance-default-0.3.1.jar": "177dbba343b490be241cdb48050bb99856658b51cf814882a74ad12104d51cda",
+    "BOOT-INF/lib/llmgw-governance-api-0.3.1.jar": "c9fefc1991fe15cc3b78e5a53d452153471c789c22ac569fcb24ce59db51f390",
+    "BOOT-INF/lib/llmgw-engine-webflux-0.3.1.jar": "810a8a5561f300a9fab8db93a6c80e8fe3e38fc140ed91d9e5055927108c341a",
+    "BOOT-INF/lib/llmgw-engine-api-0.3.1.jar": "22e79e722ea1fee8c7602011bf632fae04c34f25aefc9fee684b56cc6874f389",
+    "BOOT-INF/lib/llmgw-engine-vt-0.3.1.jar": "76dce41cdb70bf7ffa610fe0cbd0d84572294da18e1855bfe40e84a2afe5c760"
+  },
+  "failure": "RuntimeError('final-smoke-stream-errors failed; inspect its log')"
+}

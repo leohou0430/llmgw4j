@@ -4,81 +4,83 @@ import io.github.leohou0430.llmgw.core.governance.UsageLedger;
 import io.github.leohou0430.llmgw.governance.QuotaMath;
 import io.github.leohou0430.llmgw.governance.UsageSummaries;
 import java.util.Map;
+import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.concurrent.atomic.LongAdder;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class InMemoryUsageLedger implements UsageLedger {
-
     private static final class Counters {
-        final LongAdder requests = new LongAdder();
-        final LongAdder promptTokens = new LongAdder();
-        final LongAdder completionTokens = new LongAdder();
-        final LongAdder errors = new LongAdder();
-        /** Tokens held by admitted but not-yet-finished requests. */
-        final AtomicLong reserved = new AtomicLong();
+        long requests, promptTokens, completionTokens, errors, reserved;
     }
-
     private final Map<String, Counters> byKey = new ConcurrentHashMap<>();
+    // Normal operations remain concurrent across keys; restore excludes all of them.
+    private final ReentrantReadWriteLock lifecycle = new ReentrantReadWriteLock();
 
-    @Override
-    public void record(UsageRecord record) {
-        Counters counters = byKey.computeIfAbsent(record.keyId(), k -> new Counters());
-        counters.requests.increment();
-        if (QuotaMath.chargeable(record)) {
-            // A failed request produced nothing billable. Keeping the prompt
-            // tokens would charge customers for upstream outages.
-            counters.promptTokens.add(record.promptTokens());
-            counters.completionTokens.add(record.completionTokens());
-        } else {
-            counters.errors.increment();
-        }
-        // Release exactly what was held at admission.
-        counters.reserved.updateAndGet(v -> Math.max(0, v - QuotaMath.released(record.reservedTokens())));
-    }
-
-    @Override
-    public Map<String, UsageSummary> snapshot() {
-        Map<String, UsageSummary> out = new ConcurrentHashMap<>();
-        byKey.forEach((key, c) -> out.put(key, UsageSummaries.of(
-                c.requests.sum(), c.promptTokens.sum(), c.completionTokens.sum(), c.errors.sum())));
-        return out;
-    }
-
-    @Override
-    public long used(String keyId) {
-        Counters c = byKey.get(keyId);
-        return c == null ? 0
-                : c.promptTokens.sum() + c.completionTokens.sum() + Math.max(0, c.reserved.get());
-    }
-
-    @Override
-    public boolean tryReserve(String keyId, long tokens, long quota) {
-        long want = QuotaMath.normalize(tokens);
-        Counters c = byKey.computeIfAbsent(keyId, k -> new Counters());
-        while (true) {
-            long committed = c.promptTokens.sum() + c.completionTokens.sum();
-            long held = c.reserved.get();
-            if (!QuotaMath.admits(committed, held, want, quota)) {
-                return false;
+    @Override public void record(UsageRecord record) {
+        var gate = lifecycle.readLock(); gate.lock();
+        try {
+            Counters c = byKey.computeIfAbsent(record.keyId(), k -> new Counters());
+            synchronized (c) {
+                // Settlement transfers reserved credit into committed usage atomically.
+                c.requests++;
+                if (QuotaMath.chargeable(record)) {
+                    c.promptTokens += record.promptTokens();
+                    c.completionTokens += record.completionTokens();
+                } else c.errors++;
+                c.reserved = Math.max(0, c.reserved - QuotaMath.released(record.reservedTokens()));
             }
-            if (c.reserved.compareAndSet(held, held + want)) {
+        } finally { gate.unlock(); }
+    }
+
+    @Override public Map<String, UsageSummary> snapshot() {
+        var gate = lifecycle.readLock(); gate.lock();
+        try {
+            Map<String, UsageSummary> out = new HashMap<>();
+            byKey.forEach((key, c) -> {
+                synchronized (c) { out.put(key, UsageSummaries.of(c.requests, c.promptTokens, c.completionTokens, c.errors)); }
+            });
+            return out;
+        } finally { gate.unlock(); }
+    }
+
+    @Override public long used(String keyId) {
+        var gate = lifecycle.readLock(); gate.lock();
+        try {
+            Counters c = byKey.get(keyId);
+            if (c == null) return 0;
+            synchronized (c) { return c.promptTokens + c.completionTokens + c.reserved; }
+        } finally { gate.unlock(); }
+    }
+
+    @Override public boolean tryReserve(String keyId, long tokens, long quota) {
+        long want = QuotaMath.normalize(tokens);
+        var gate = lifecycle.readLock(); gate.lock();
+        try {
+            Counters c = byKey.computeIfAbsent(keyId, k -> new Counters());
+            synchronized (c) {
+                if (!QuotaMath.admits(c.promptTokens + c.completionTokens, c.reserved, want, quota)) return false;
+                c.reserved += want;
                 return true;
             }
-        }
+        } finally { gate.unlock(); }
     }
 
-    @Override
-    public void load(Map<String, UsageSummary> data) {
-        // REPLACE, not accumulate: /admin/snapshot/load used to double the
-        // counters on every call and eventually 429'd every request.
-        data.forEach((key, summary) -> {
-            Counters c = new Counters();
-            c.requests.add(summary.requests());
-            c.promptTokens.add(summary.promptTokens());
-            c.completionTokens.add(summary.completionTokens());
-            c.errors.add(summary.errors());
-            byKey.put(key, c);
+    @Override public void load(Map<String, UsageSummary> data) {
+        Map<String, UsageSummary> supplied = Map.copyOf(data);
+        UsageSummaries.validateSnapshot(supplied);
+        Map<String, Counters> restored = new HashMap<>();
+        supplied.forEach((key, value) -> {
+            Counters c = new Counters();c.requests=value.requests();c.promptTokens=value.promptTokens();
+            c.completionTokens=value.completionTokens();c.errors=value.errors();restored.put(key,c);
         });
+        var gate = lifecycle.writeLock(); gate.lock();
+        try {
+            for (String key : restored.keySet()) {
+                Counters current = byKey.get(key);
+                if (current != null && current.reserved != 0) throw new IllegalStateException("cannot restore usage with active reservations");
+            }
+            // Replace supplied records, preserving unrelated IDs, as in the original in-memory contract.
+            byKey.putAll(restored);
+        } finally { gate.unlock(); }
     }
 }

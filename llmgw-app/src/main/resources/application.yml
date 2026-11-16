@@ -53,6 +53,8 @@ gateway:
     connect-timeout-ms: 10000
     first-byte-timeout-ms: 0
     idle-read-timeout-ms: 0
+    # Per upstream SSE line, before UTF-8 decoding; CR/LF excluded, no total stream cap.
+    max-sse-line-bytes: 1048576
     # SSE keep-alive comment frame on idle streams (0 = off). The only bytes
     # this gateway ever fabricates; excluded from accounting and contracts.
     heartbeat-interval-ms: 0
@@ -84,6 +86,13 @@ gateway:
     # circuit-failure-threshold <= 0 disables breaking.
     circuit-failure-threshold: 5
     circuit-cooldown-ms: 30000
+  # Protocol conversion (T1.11). continuation-key is the HMAC secret for the
+  # gateway-namespaced thinking continuation envelope. Blank = a per-process
+  # random key, so continuation tokens are process-scoped (single instance / dev).
+  # Production MUST inject a stable secret via env so tokens survive restarts and
+  # verify across instances; never inline the secret here.
+  conversion:
+    continuation-key: ${LLMGW_CONTINUATION_KEY:}
   mock:
     enabled: true
     port: 9090

@@ -13,6 +13,29 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static org.junit.jupiter.api.Assertions.*;
 
 class JdkFlowTransportTest {
+    @Test void slowFiniteDemandKeepsTheFinalCompletionLineWithoutNewline() throws Exception {
+        try (var fixture = new Fixture(exchange -> {
+            byte[] body = "data: one\ndata: two\ndata: [DONE]".getBytes(StandardCharsets.UTF_8);
+            exchange.getResponseHeaders().set("Content-Type", "text/event-stream");
+            exchange.sendResponseHeaders(200, body.length);
+            try (var output = exchange.getResponseBody()) { output.write(body); }
+            finally { exchange.close(); }
+        })) {
+            for (int i = 0; i < 4; i++) {
+                var probe = new Probe(1); fixture.publisher().subscribe(probe);
+                assertEquals("data: one\n", probe.values.poll(2, TimeUnit.SECONDS));
+                // Hold line demand so the small HTTP body reaches EOF before draining it.
+                Thread.sleep(100);
+                probe.subscription.request(1);
+                assertEquals("data: two\n", probe.values.poll(1, TimeUnit.SECONDS));
+                probe.subscription.request(1);
+                assertEquals("data: [DONE]\n", probe.values.poll(1, TimeUnit.SECONDS));
+                probe.ended.get(1, TimeUnit.SECONDS);
+            }
+            assertEquals(4, fixture.requests.get());
+        }
+    }
+
     static class Probe implements Flow.Subscriber<String> {
         final BlockingQueue<String> values = new LinkedBlockingQueue<>();
         final CompletableFuture<Void> ended = new CompletableFuture<>();

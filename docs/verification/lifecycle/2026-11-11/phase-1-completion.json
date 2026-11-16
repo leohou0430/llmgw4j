@@ -1,0 +1,19 @@
+{
+  "checked_at": "2026-11-11T09:46:38.405867+00:00",
+  "complete": true,
+  "jar_sha256": "34425d57569f47690b11dd6748d1410477076dd2f442f8c55323ff3e829a9482",
+  "native_sha256": "6a73673783a2f40dda4b9aca0ac85d4d30af89517bc2dee9f7a8e4e28787cd94",
+  "gates": {
+    "resource_bounds": true,
+    "flow_future_demand_cancel_eof_completion": true,
+    "timeouts_read_progress_and_callback_isolation": true,
+    "close_and_instance_isolation": true,
+    "three_profiles_and_boundaries": true,
+    "fixed_jar_contracts": true,
+    "strict_2c2g_slow_overload_long_capacity": true,
+    "fresh_webflux_native_contracts": true,
+    "artifact_and_scope_audit": true
+  },
+  "limits": "controlled local upstream, selected capacities and encodings; no universal production SLO or native throughput claim; old failures/candidates retained",
+  "phase_2_or_3_included": false
+}
