@@ -1,0 +1,639 @@
+llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/multipart/MultipartUploadTest.java
+  s_5f251bc0a17928::t_c5956d8f1d801f 118
+  s_5f251bc0a17928::t_cee64752e801c9 263
+docs/reviews/2026-11-16-remediation/evidence/stream-completed-assertions.txt
+  s_5f251bc0a17928::t_d001c70f2ba84a 1-99
+llmgw-persistence/llmgw-persistence-sqlite/src/test/java/io/github/leohou0430/llmgw/persistence/sqlite/TransactionIsolationTest.java
+  s_5f251bc0a17928::t_854a7c4413cd5f 1-53
+llmgw-persistence/llmgw-persistence-sqlite/src/main/java/io/github/leohou0430/llmgw/persistence/sqlite/SqliteKeyStore.java
+  s_5f251bc0a17928::t_b40e4ae399d646 112-116,261,263
+  s_5f251bc0a17928::t_00fafc8a2f87ff 82-109
+  s_5f251bc0a17928::t_cee64752e801c9 272
+llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/ControlLoginControllerCookieTest.java
+  s_5f251bc0a17928::t_8aabd90637cc6e 73-86
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/ControlKeyController.java
+  s_5f251bc0a17928::t_762949a39fb4da 74-76,82-84,98-102,104-114,116-122
+  s_5f251bc0a17928::t_21bb1ef6bca2c5 40,47,51,64,85,103,115
+  s_5f251bc0a17928::t_cee64752e801c9 126
+  s_5f251bc0a17928::t_c24e3dd5c97e43 123
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/GatewayRuntimeConfiguration.java
+  s_5f251bc0a17928::t_c9e128591efbda 35,38-39,68
+  s_5f251bc0a17928::t_a373d4dc3541d6 65-67
+docs/reviews/2026-11-16-remediation/evidence/redis-control.jsonl
+  s_5f251bc0a17928::t_bb5b0183d95895 1-2
+docs/reviews/2026-11-16-remediation/evidence/conversion-sdk-summary.txt
+  s_5f251bc0a17928::t_d001c70f2ba84a 1-36
+llmgw-tokenizer/llmgw-tokenizer-heuristic/pom.xml
+  s_5f251bc0a17928::t_371ded94f2d4ed 3
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/SqliteAccountStore.java
+  s_5f251bc0a17928::t_d2c8d43330b7a3 32-33,50-51,74-75,85-86,98-99,105,130-131,140
+  s_5f251bc0a17928::t_cee64752e801c9 49,84,155
+  s_5f251bc0a17928::t_32b9a4531c965d 111-124
+llmgw-catalog/llmgw-catalog-api/src/main/java/io/github/leohou0430/llmgw/catalog/ResourceLifecycle.java
+  s_5f251bc0a17928::t_07a4151f30d2bd 13-26
+  s_5f251bc0a17928::t_681d5c6be7f6ba 31,36,41,53-77,101,111,118,126,129,131,134,144,147,149
+  s_5f251bc0a17928::t_4dd708a3c8ee1b 1-12,27-30,32-35,37-40,42-52,78-100,102-110,112-117,119-125,127-128,130,132-133,135-143,145-146,148,150
+bin/bench-matrix.sh
+  s_5f251bc0a17928::t_371ded94f2d4ed 5
+llmgw-app/pom.xml
+  s_5f251bc0a17928::t_371ded94f2d4ed 9
+llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/SqliteApiKeyRegistryTest.java
+  s_5f251bc0a17928::t_2a272e36b5ed4e 1-45,63-72
+  s_5f251bc0a17928::t_c056ab0e33838e 46-62
+docs/reviews/2026-11-16-remediation/evidence/multi-protocol-summary.txt
+  s_5f251bc0a17928::t_d001c70f2ba84a 1-57
+llmgw-persistence/llmgw-persistence-sqlite/src/test/java/io/github/leohou0430/llmgw/persistence/sqlite/WalStorageGuardTest.java
+  s_5f251bc0a17928::t_2a272e36b5ed4e 1-18
+bin/run-webflux.sh
+  s_5f251bc0a17928::t_371ded94f2d4ed 4
+.github/workflows/ci.yml
+  s_5f251bc0a17928::t_371ded94f2d4ed 75
+  s_5f251bc0a17928::t_1d6059b0e4b08f 21,69
+llmgw-governance/pom.xml
+  s_5f251bc0a17928::t_371ded94f2d4ed 9
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/ControlQuotaController.java
+  s_5f251bc0a17928::t_a70c5e34f366db 6
+  s_5f251bc0a17928::t_752b5d647894b6 19-21,35-37,40-42,61-63
+  s_5f251bc0a17928::t_99ca5c08efb1a8 46-60,64-66
+  s_5f251bc0a17928::t_32b73df81f9d04 1-5,7-18,22-30,39,43-45,67-68
+  s_5f251bc0a17928::t_2f5719a10987f4 31-34,38
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/ControlAccountController.java
+  s_5f251bc0a17928::t_32b9a4531c965d 1-60
+docs/reviews/2026-11-16-remediation/evidence/admin-auth-summary.txt
+  s_5f251bc0a17928::t_d001c70f2ba84a 1-6
+llmgw-provider/llmgw-provider-http-jdk/pom.xml
+  s_5f251bc0a17928::t_371ded94f2d4ed 3
+llmgw-conversion/llmgw-conversion-module/pom.xml
+  s_5f251bc0a17928::t_371ded94f2d4ed 4
+llmgw-engine/llmgw-engine-webflux/src/test/java/io/github/leohou0430/llmgw/engine/webflux/FileReferenceOwnershipTest.java
+  s_5f251bc0a17928::t_a1d1de01d757ea 38-67,94,98
+  s_5f251bc0a17928::t_cee64752e801c9 151
+bin/smoke-v13-extensions.sh
+  s_5f251bc0a17928::t_371ded94f2d4ed 8
+  s_5f251bc0a17928::t_a6ae7b9a3cebac 69-71
+  s_5f251bc0a17928::t_3880d68ab4d4bc 72
+llmgw-provider/llmgw-provider-anthropic/pom.xml
+  s_5f251bc0a17928::t_371ded94f2d4ed 9
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/ControlRuntimeModule.java
+  s_5f251bc0a17928::t_2fcea49ba51656 52
+  s_5f251bc0a17928::t_227e4c7d265c04 1-21,23-51,53-74,76,78-80
+  s_5f251bc0a17928::t_58b33af5220a04 22,75,77
+  s_5f251bc0a17928::t_1cf214cc6f7f56 81-86
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/GatewayContext.java
+  s_5f251bc0a17928::t_cb60eff2aa2d40 31-35,185
+llmgw-persistence/llmgw-persistence-sqlite/src/main/java/io/github/leohou0430/llmgw/persistence/sqlite/Migrations.java
+  s_5f251bc0a17928::t_b40e4ae399d646 71-77
+  s_5f251bc0a17928::t_40c66c5857d018 78
+  s_5f251bc0a17928::t_00fafc8a2f87ff 79
+  s_5f251bc0a17928::t_cee64752e801c9 99
+llmgw-control/llmgw-control-api/src/main/java/io/github/leohou0430/llmgw/control/RouteVersionStore.java
+  s_5f251bc0a17928::t_7954a116ca8deb 16-18
+  s_5f251bc0a17928::t_cee64752e801c9 19
+bin/smoke-sse-line-limit.py
+  s_5f251bc0a17928::t_371ded94f2d4ed 162
+docs/reviews/2026-11-16-remediation/evidence/optional-control.jsonl
+  s_5f251bc0a17928::t_bb5b0183d95895 1-2
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/ControlPlaneManagementConfiguration.java
+  s_5f251bc0a17928::t_c9e128591efbda 3-9,14-15,17-56
+  s_5f251bc0a17928::t_cee64752e801c9 79
+llmgw-engine/llmgw-engine-vt/src/test/java/io/github/leohou0430/llmgw/engine/vt/FileReferenceOwnershipTest.java
+  s_5f251bc0a17928::t_a1d1de01d757ea 40-68,96,160
+  s_5f251bc0a17928::t_cee64752e801c9 185
+CONTRIBUTING.md
+  s_5f251bc0a17928::t_371ded94f2d4ed 29,92-93
+llmgw-conversion/llmgw-conversion-messages/pom.xml
+  s_5f251bc0a17928::t_371ded94f2d4ed 3
+docs/reviews/2026-11-16-remediation/evidence/source-hashes.json
+  s_5f251bc0a17928::t_d001c70f2ba84a 1-101
+llmgw-governance/llmgw-governance-api/pom.xml
+  s_5f251bc0a17928::t_371ded94f2d4ed 9
+bin/smoke-multi-protocol.sh
+  s_5f251bc0a17928::t_371ded94f2d4ed 9
+  s_5f251bc0a17928::t_3880d68ab4d4bc 73-75,77
+docs/reviews/2026-11-16-remediation/evidence/native-webflux-control.json
+  s_5f251bc0a17928::t_d001c70f2ba84a 1-17
+bin/smoke-heartbeat-deadline.py
+  s_5f251bc0a17928::t_371ded94f2d4ed 116
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/ControlBlockingConfiguration.java
+  s_5f251bc0a17928::t_32b73df81f9d04 1-31
+llmgw-identity/pom.xml
+  s_5f251bc0a17928::t_371ded94f2d4ed 9
+llmgw-persistence/llmgw-persistence-sqlite/src/main/java/io/github/leohou0430/llmgw/persistence/sqlite/RetentionPolicy.java
+  s_5f251bc0a17928::t_4b30730ad70ba9 33,46
+  s_5f251bc0a17928::t_40c66c5857d018 51
+docker-compose.yml
+  s_5f251bc0a17928::t_6984ca1c73724d 5,16-21
+docs/reviews/2026-11-16-remediation/evidence/native-vt-build-summary.txt
+  s_5f251bc0a17928::t_d001c70f2ba84a 1-13
+docs/releases/v0.4.0-verification.md
+  s_5f251bc0a17928::t_60fab647236804 1-31
+llmgw-control/llmgw-control-default/pom.xml
+  s_5f251bc0a17928::t_371ded94f2d4ed 9
+docs/reviews/2026-11-16-remediation/evidence/default-control.jsonl
+  s_5f251bc0a17928::t_bb5b0183d95895 1-2
+llmgw-provider/llmgw-provider-openai-sdk/pom.xml
+  s_5f251bc0a17928::t_371ded94f2d4ed 3
+llmgw-provider/llmgw-provider-openai/pom.xml
+  s_5f251bc0a17928::t_371ded94f2d4ed 9
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/SqliteSessionStore.java
+  s_5f251bc0a17928::t_d2c8d43330b7a3 38-39,53-54,70-71,89,107-108,116-117
+  s_5f251bc0a17928::t_cee64752e801c9 52,115,122
+bin/smoke-v13-hardening.sh
+  s_5f251bc0a17928::t_a6ae7b9a3cebac 70-72
+  s_5f251bc0a17928::t_371ded94f2d4ed 9
+  s_5f251bc0a17928::t_3880d68ab4d4bc 73
+docs/reviews/2026-11-16-remediation/evidence/native-vt-contracts.txt
+  s_5f251bc0a17928::t_d001c70f2ba84a 1-20
+llmgw-conversion/llmgw-conversion-deepseek/pom.xml
+  s_5f251bc0a17928::t_371ded94f2d4ed 3
+bin/check-openapi.py
+  s_5f251bc0a17928::t_0c433b2c531fd5 37-39
+  s_5f251bc0a17928::t_adf6867da83d01 36
+llmgw-identity/llmgw-identity-default/src/test/java/io/github/leohou0430/llmgw/identity/BoundedLoginRateLimiterTest.java
+  s_5f251bc0a17928::t_0a1677bba529be 1-17
+llmgw-engine/llmgw-engine-vt/src/test/java/io/github/leohou0430/llmgw/engine/vt/VirtualThreadConversionTest.java
+  s_5f251bc0a17928::t_cee64752e801c9 633
+  s_5f251bc0a17928::t_ab8d756bc1b398 475
+llmgw-identity/llmgw-identity-default/src/main/java/io/github/leohou0430/llmgw/identity/RequestAuthorizer.java
+  s_5f251bc0a17928::t_cee64752e801c9 75
+  s_5f251bc0a17928::t_021291760212dd 36-56
+docs/reviews/2026-11-16-remediation/evidence/stream-followup.json
+  s_5f251bc0a17928::t_d001c70f2ba84a 1-9
+llmgw-tokenizer/pom.xml
+  s_5f251bc0a17928::t_371ded94f2d4ed 3
+bench/README.md
+  s_5f251bc0a17928::t_1f7d1fced44f03 9
+llmgw-engine/llmgw-engine-api/src/test/java/io/github/leohou0430/llmgw/engine/AuthoritativeInputUsageTest.java
+  s_5f251bc0a17928::t_257c5c76a231d8 1-29
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/multipart/SpoolManager.java
+  s_5f251bc0a17928::t_cee64752e801c9 141
+  s_5f251bc0a17928::t_927cb49709a7a5 4-7,39-40,48-66,81,131,135-137
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/ControlRouteController.java
+  s_5f251bc0a17928::t_21bb1ef6bca2c5 64,74-75,84,87-88
+  s_5f251bc0a17928::t_dac660e94599f0 69
+  s_5f251bc0a17928::t_cee64752e801c9 122
+  s_5f251bc0a17928::t_2f5719a10987f4 94,108-109
+docs/reviews/2026-11-16-full-audit/evidence/stream-retry-result.json
+  s_5f251bc0a17928::t_b8bbcbf39e0a48 1
+bin/stress-files-container.py
+  s_5f251bc0a17928::t_371ded94f2d4ed 162
+  s_5f251bc0a17928::t_1318106537595d 26,141,163,165-168,171,182,347
+docs/reviews/2026-11-16-full-audit/report-summary.json
+  s_5f251bc0a17928::t_b8bbcbf39e0a48 1,4-7
+  s_5f251bc0a17928::t_e9279599a10449 2-3
+docs/reviews/2026-11-16-remediation/evidence/tenant-isolation-summary.txt
+  s_5f251bc0a17928::t_d001c70f2ba84a 1-2
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/GatewayRuntimeHints.java
+  s_5f251bc0a17928::t_2f5719a10987f4 57-59,61-62
+  s_5f251bc0a17928::t_99ca5c08efb1a8 60
+llmgw-catalog/llmgw-catalog-default/pom.xml
+  s_5f251bc0a17928::t_371ded94f2d4ed 9
+llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/ControlScopeIsolationTest.java
+  s_5f251bc0a17928::t_56267b4eb07c60 26
+  s_5f251bc0a17928::t_580db7c00aa834 1-25,27-43
+llmgw-core/pom.xml
+  s_5f251bc0a17928::t_371ded94f2d4ed 9
+llmgw-governance/llmgw-governance-redis/pom.xml
+  s_5f251bc0a17928::t_371ded94f2d4ed 9
+README.md
+  s_5f251bc0a17928::t_dac660e94599f0 399-402
+  s_5f251bc0a17928::t_26c7d36674e956 157,161,225,227,337,339,350,352
+  s_5f251bc0a17928::t_6984ca1c73724d 23
+  s_5f251bc0a17928::t_1f7d1fced44f03 108-113,124,127,132
+  s_5f251bc0a17928::t_371ded94f2d4ed 21-22,24-25,32,35,43,60,151,159,248
+  s_5f251bc0a17928::t_eb5e5457ebabb2 194
+llmgw-persistence/llmgw-persistence-api/pom.xml
+  s_5f251bc0a17928::t_371ded94f2d4ed 9
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/OrgStore.java
+  s_5f251bc0a17928::t_9581dbb50d81cd 55-57,62-64,106-108,113-117
+  s_5f251bc0a17928::t_d2c8d43330b7a3 33-34,45-46,60-61,73-74,83-84,96-97,111-112,127-128
+  s_5f251bc0a17928::t_cee64752e801c9 44,72,95,126,134
+docs/reviews/2026-11-16-full-audit/evidence/current-source-hashes.json
+  s_5f251bc0a17928::t_b8bbcbf39e0a48 1-298
+llmgw-persistence/llmgw-persistence-sqlite/src/main/java/io/github/leohou0430/llmgw/persistence/sqlite/AuditedChange.java
+  s_5f251bc0a17928::t_cee64752e801c9 45
+  s_5f251bc0a17928::t_b40e4ae399d646 28,31,39-40
+bin/smoke-redis-cluster.sh
+  s_5f251bc0a17928::t_371ded94f2d4ed 9
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/ControlSecretController.java
+  s_5f251bc0a17928::t_21bb1ef6bca2c5 33,37,39,46-50,52,66-67,69-70,88-89,91-92,110
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/ControlCatalogController.java
+  s_5f251bc0a17928::t_ea5288302993d9 48-50,52-53,71-72,74,81-82,87
+  s_5f251bc0a17928::t_3e5b2b57fb49ac 54-59
+  s_5f251bc0a17928::t_21bb1ef6bca2c5 32,37,40,51,70
+  s_5f251bc0a17928::t_cee64752e801c9 89
+llmgw-engine/llmgw-engine-vt/src/main/java/io/github/leohou0430/llmgw/engine/vt/VirtualThreadGatewayController.java
+  s_5f251bc0a17928::t_9765decd15f5d0 721-722,724-734,738,788
+  s_5f251bc0a17928::t_5a9bd286704620 636-640
+  s_5f251bc0a17928::t_07a4151f30d2bd 400-402,405-406,486,594,612,719-720,723,736-737,787
+  s_5f251bc0a17928::t_c5956d8f1d801f 112
+  s_5f251bc0a17928::t_f9cbdbd808c623 111,113-114,116-120,468-473,644
+  s_5f251bc0a17928::t_d5720e87ed6e9e 424
+  s_5f251bc0a17928::t_bef7d1a1767206 110,115,425-426
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/SqliteRouteVersionStore.java
+  s_5f251bc0a17928::t_7954a116ca8deb 3,5-6,8,11-16,18-23,30-33,35-36
+  s_5f251bc0a17928::t_59d1ac83221a09 24-27
+llmgw-control/llmgw-control-default/src/main/java/io/github/leohou0430/llmgw/control/RouteVersionService.java
+  s_5f251bc0a17928::t_2fcea49ba51656 10,16,18-20,31-33,35,37,39,44,47
+  s_5f251bc0a17928::t_7954a116ca8deb 3,5,7,11-12,14-15,22-24,26-29,36,40-43,45,48-51
+llmgw-catalog/llmgw-catalog-default/src/test/java/io/github/leohou0430/llmgw/catalog/local/ResourceLifecycleTest.java
+  s_5f251bc0a17928::t_681d5c6be7f6ba 17-18,22-46,48,68,70,81
+  s_5f251bc0a17928::t_0b1e6dc16b8e27 1-16,19-21,47,49-67,69,71-80,82
+llmgw-control/llmgw-control-default/src/main/java/io/github/leohou0430/llmgw/control/InMemoryRouteVersionStore.java
+  s_5f251bc0a17928::t_7954a116ca8deb 32-33
+  s_5f251bc0a17928::t_cee64752e801c9 35
+docs/reviews/2026-11-16-remediation/evidence/extensions-summary.txt
+  s_5f251bc0a17928::t_d001c70f2ba84a 1-55
+CHANGELOG.md
+  s_5f251bc0a17928::t_371ded94f2d4ed 9-19
+bin/smoke-v13-platform.sh
+  s_5f251bc0a17928::t_371ded94f2d4ed 8
+  s_5f251bc0a17928::t_b8f9c56e7d624a 2,61-66,86-87,97,108-110,116,236,242
+llmgw-control/llmgw-control-default/src/test/java/io/github/leohou0430/llmgw/control/AtomicRoutePublicationTest.java
+  s_5f251bc0a17928::t_23d3b2b74eef89 1-29
+llmgw-persistence/llmgw-persistence-sqlite/src/main/java/io/github/leohou0430/llmgw/persistence/sqlite/StorageGuard.java
+  s_5f251bc0a17928::t_cee64752e801c9 52
+  s_5f251bc0a17928::t_58b33af5220a04 25-28,30-37,44
+llmgw-identity/llmgw-identity-api/src/main/java/io/github/leohou0430/llmgw/identity/AccountStore.java
+  s_5f251bc0a17928::t_cee64752e801c9 23
+  s_5f251bc0a17928::t_32b9a4531c965d 19-20
+llmgw-app/src/main/resources/META-INF/llmgw/extensions/io.github.leohou0430.llmgw.core.extension.ExtensionModule
+  s_5f251bc0a17928::t_c9e128591efbda 1
+docs/reviews/2026-11-16-remediation/evidence/container-webflux.json
+  s_5f251bc0a17928::t_bb5b0183d95895 1-135
+bin/smoke-tenant-isolation.py
+  s_5f251bc0a17928::t_371ded94f2d4ed 18
+  s_5f251bc0a17928::t_bd6f5cba027e77 4-5,45
+  s_5f251bc0a17928::t_3880d68ab4d4bc 39
+  s_5f251bc0a17928::t_8aabd90637cc6e 102-109
+docs/reviews/2026-11-16-remediation/evidence/native-webflux-build-summary.txt
+  s_5f251bc0a17928::t_d001c70f2ba84a 1-13
+docs/reviews/2026-11-16-remediation/evidence/native-vt-control.json
+  s_5f251bc0a17928::t_d001c70f2ba84a 1-17
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/SecretStore.java
+  s_5f251bc0a17928::t_b40e4ae399d646 186,188-189,194
+  s_5f251bc0a17928::t_227e4c7d265c04 160-173
+llmgw-engine/llmgw-engine-webflux/src/test/java/io/github/leohou0430/llmgw/engine/webflux/CapacityAdmissionTest.java
+  s_5f251bc0a17928::t_cee64752e801c9 161
+bin/smoke-hot-reload.sh
+  s_5f251bc0a17928::t_371ded94f2d4ed 9
+llmgw-conversion/llmgw-conversion-chat/pom.xml
+  s_5f251bc0a17928::t_371ded94f2d4ed 3
+llmgw-provider/llmgw-provider-api/pom.xml
+  s_5f251bc0a17928::t_371ded94f2d4ed 4
+llmgw-persistence/llmgw-persistence-api/src/main/java/io/github/leohou0430/llmgw/persistence/DatabaseContext.java
+  s_5f251bc0a17928::t_63f70f8d5d8292 20-49,56
+  s_5f251bc0a17928::t_40c66c5857d018 18-19
+bin/smoke-control-plane.py
+  s_5f251bc0a17928::t_2f5719a10987f4 218-219
+  s_5f251bc0a17928::t_81f857ef4cc2d1 1-3,6-32,40-48,51-55,60-71,73-75,77-93,95-100,103-108,111-185,195,214-217,220,222-246,248-254,257-272,275-277
+  s_5f251bc0a17928::t_371ded94f2d4ed 273
+  s_5f251bc0a17928::t_bd6f5cba027e77 4-5,109
+  s_5f251bc0a17928::t_c5e10f5b56bd61 94,110,255,274,278
+  s_5f251bc0a17928::t_8a82cb3eb3a558 33-39,49-50,56-59,72,76,101-102,186-194,196-213,221,247,256
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/ControlOrgController.java
+  s_5f251bc0a17928::t_ea5288302993d9 44-45,59-60,67-68,83-84
+  s_5f251bc0a17928::t_9581dbb50d81cd 46,69
+  s_5f251bc0a17928::t_cee64752e801c9 102
+llmgw-identity/llmgw-identity-default/src/main/java/io/github/leohou0430/llmgw/identity/FixedWindowRateLimiter.java
+  s_5f251bc0a17928::t_cee64752e801c9 39
+  s_5f251bc0a17928::t_021291760212dd 26-30,35
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/GatewayPipeline.java
+  s_5f251bc0a17928::t_cb60eff2aa2d40 42,47,61
+llmgw-identity/llmgw-identity-default/src/test/java/io/github/leohou0430/llmgw/identity/ManagedKeyServiceTest.java
+  s_5f251bc0a17928::t_ec676654c0704f 32,94,109-135
+  s_5f251bc0a17928::t_d0c69b483cc1dc 35-39,97-108
+  s_5f251bc0a17928::t_cee64752e801c9 136
+bin/smoke-stream-errors.sh
+  s_5f251bc0a17928::t_371ded94f2d4ed 7
+  s_5f251bc0a17928::t_3880d68ab4d4bc 70-72,74,347,352-353
+docs/reviews/2026-11-16-remediation/evidence/native-webflux-contracts.txt
+  s_5f251bc0a17928::t_d001c70f2ba84a 1-20
+llmgw-persistence/llmgw-persistence-sqlite/src/main/java/io/github/leohou0430/llmgw/persistence/sqlite/SchemaMigrator.java
+  s_5f251bc0a17928::t_4b30730ad70ba9 29-38,40,44
+  s_5f251bc0a17928::t_cee64752e801c9 75
+bin/smoke-v13-provider.sh
+  s_5f251bc0a17928::t_371ded94f2d4ed 9
+  s_5f251bc0a17928::t_4cd4cf0a4692cb 62-67
+llmgw-tokenizer/llmgw-tokenizer-api/pom.xml
+  s_5f251bc0a17928::t_371ded94f2d4ed 3
+docs/reviews/2026-11-16-remediation/evidence/jvm-tests.json
+  s_5f251bc0a17928::t_d001c70f2ba84a 3,6,819,939-945,974,1938
+  s_5f251bc0a17928::t_bb5b0183d95895 1-2,4-5,7-818,820-938,946-973,975-1937,1939-2908
+llmgw-persistence/llmgw-persistence-sqlite/src/main/java/io/github/leohou0430/llmgw/persistence/sqlite/SqliteContext.java
+  s_5f251bc0a17928::t_63f70f8d5d8292 21,23-24,47-68,70-75,77,81-87,89-93,108-113,121,123
+  s_5f251bc0a17928::t_58b33af5220a04 22,69,76,94-99
+  s_5f251bc0a17928::t_40c66c5857d018 25,78-80,88,100-107
+.github/workflows/release.yml
+  s_5f251bc0a17928::t_371ded94f2d4ed 58,62-63,73,90-91,112,119
+  s_5f251bc0a17928::t_2d41cbf8106e73 13,56
+pom.xml
+  s_5f251bc0a17928::t_371ded94f2d4ed 16
+bin/smoke-admin-auth.py
+  s_5f251bc0a17928::t_371ded94f2d4ed 94
+  s_5f251bc0a17928::t_32b73df81f9d04 5
+README.en.md
+  s_5f251bc0a17928::t_371ded94f2d4ed 3,21,23,27,38-40
+  s_5f251bc0a17928::t_6984ca1c73724d 25,175,179
+  s_5f251bc0a17928::t_26c7d36674e956 139
+llmgw-identity/llmgw-identity-default/pom.xml
+  s_5f251bc0a17928::t_371ded94f2d4ed 9
+docs/reviews/2026-11-16-full-audit/evidence/current-contract-results.json
+  s_5f251bc0a17928::t_b8bbcbf39e0a48 1-14
+docs/reviews/2026-11-16-full-audit/evidence/source-binary-provenance.json
+  s_5f251bc0a17928::t_e9279599a10449 1-12
+llmgw-catalog/llmgw-catalog-default/src/main/java/io/github/leohou0430/llmgw/catalog/local/SqliteResourceCatalog.java
+  s_5f251bc0a17928::t_dbea7fe5cce575 57-64,72-73,86,99,133-134,160,182-183,185,278,280,285
+  s_5f251bc0a17928::t_dca96897e31fe6 31
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/ControlAccess.java
+  s_5f251bc0a17928::t_21bb1ef6bca2c5 18-19,23-25
+  s_5f251bc0a17928::t_dac660e94599f0 20-21
+  s_5f251bc0a17928::t_9581dbb50d81cd 22
+  s_5f251bc0a17928::t_ea5288302993d9 1-17,26-36
+docs/superpowers/plans/2026-11-16-audit-remediation.md
+  s_5f251bc0a17928::t_004d03dd392783 1-6,16-18
+  s_5f251bc0a17928::t_2c5598df22d2f1 15,20
+  s_5f251bc0a17928::t_a19366b3dc0c3f 7-14,19
+llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/ControlPlaneControllerTest.java
+  s_5f251bc0a17928::t_32b73df81f9d04 18
+  s_5f251bc0a17928::t_cee64752e801c9 27
+docs/reviews/2026-11-16-remediation/README.md
+  s_5f251bc0a17928::t_7c9061e429e8e7 1-33
+  s_5f251bc0a17928::t_2c5598df22d2f1 34-56
+bin/build.sh
+  s_5f251bc0a17928::t_371ded94f2d4ed 5
+llmgw-control/pom.xml
+  s_5f251bc0a17928::t_371ded94f2d4ed 9
+llmgw-identity/llmgw-identity-api/pom.xml
+  s_5f251bc0a17928::t_371ded94f2d4ed 9
+llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/multipart/SpoolManagerTest.java
+  s_5f251bc0a17928::t_cee64752e801c9 321
+  s_5f251bc0a17928::t_5a9bd286704620 88-116,129
+  s_5f251bc0a17928::t_9e8e11804c36b7 117-128,130
+bin/smoke-jwt-auth.py
+  s_5f251bc0a17928::t_676ea76cd5e958 60-64,67,133-138
+  s_5f251bc0a17928::t_371ded94f2d4ed 132
+  s_5f251bc0a17928::t_f764442795750c 6-7,35-59,70,125-126
+llmgw-persistence/llmgw-persistence-sqlite/pom.xml
+  s_5f251bc0a17928::t_371ded94f2d4ed 9
+SECURITY.md
+  s_5f251bc0a17928::t_6984ca1c73724d 5,11-27
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/ControlAuditController.java
+  s_5f251bc0a17928::t_ea5288302993d9 37-39,47
+  s_5f251bc0a17928::t_21bb1ef6bca2c5 26,29,31,40
+  s_5f251bc0a17928::t_cee64752e801c9 49
+docs/reviews/2026-11-16-full-audit/report.md
+  s_5f251bc0a17928::t_10053653d42191 1-8,12-182,199-204
+  s_5f251bc0a17928::t_e9279599a10449 10,205-206
+  s_5f251bc0a17928::t_b8bbcbf39e0a48 9,11,183-198
+docs/reviews/2026-11-16-remediation/evidence/artifacts.json
+  s_5f251bc0a17928::t_d001c70f2ba84a 1-34
+docs/reviews/2026-11-16-remediation/evidence/hardening-summary.txt
+  s_5f251bc0a17928::t_d001c70f2ba84a 1-47
+llmgw-catalog/pom.xml
+  s_5f251bc0a17928::t_371ded94f2d4ed 9
+llmgw-persistence/llmgw-persistence-sqlite/src/test/java/io/github/leohou0430/llmgw/persistence/sqlite/BackupRestoreTest.java
+  s_5f251bc0a17928::t_cee64752e801c9 68,71
+docs/reviews/2026-11-16-full-audit/evidence/artifact-class-delta.txt
+  s_5f251bc0a17928::t_b8bbcbf39e0a48 1-20
+llmgw-tokenizer/llmgw-tokenizer-jtokkit/pom.xml
+  s_5f251bc0a17928::t_371ded94f2d4ed 9
+docs/openapi.yaml
+  s_5f251bc0a17928::t_0c433b2c531fd5 33-1008,1861,1863,1866,1870,1872,1874-1879,1881,1888,1894-1897
+  s_5f251bc0a17928::t_26c7d36674e956 1570-1571,1580-1581,1611,1613-1614,1630-1631
+  s_5f251bc0a17928::t_371ded94f2d4ed 4
+  s_5f251bc0a17928::t_65e49c11dcae19 1860,1862,1864-1865,1867-1869,1871,1873,1880,1882-1887,1889-1891
+docs/CONFIGURATION.md
+  s_5f251bc0a17928::t_26c7d36674e956 3,589,615,617,619-620
+  s_5f251bc0a17928::t_371ded94f2d4ed 6-7,202,224,233-234,245,489
+  s_5f251bc0a17928::t_6984ca1c73724d 238,545,547,549,569-571
+  s_5f251bc0a17928::t_bae6fc4278d98e 312,316-319
+  s_5f251bc0a17928::t_05427dd29e681e 204-206,254-257
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/AuditLog.java
+  s_5f251bc0a17928::t_cee64752e801c9 101,109
+  s_5f251bc0a17928::t_d2c8d43330b7a3 19,28-29,31-35,37,41-81,85-86,94,102-103
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/ControlExceptionHandler.java
+  s_5f251bc0a17928::t_2fcea49ba51656 10
+  s_5f251bc0a17928::t_0a1677bba529be 1-9,11,15-21
+  s_5f251bc0a17928::t_3df552995ae4c1 12-14
+llmgw-engine/llmgw-engine-api/pom.xml
+  s_5f251bc0a17928::t_371ded94f2d4ed 9
+docs/DEPLOYMENT.md
+  s_5f251bc0a17928::t_371ded94f2d4ed 1
+  s_5f251bc0a17928::t_26c7d36674e956 3,5,88,136,141-142,146,150-152
+  s_5f251bc0a17928::t_bae6fc4278d98e 7
+  s_5f251bc0a17928::t_24d48083dd4a08 6
+llmgw-persistence/pom.xml
+  s_5f251bc0a17928::t_371ded94f2d4ed 9
+docs/reviews/2026-11-16-full-audit/evidence/current-tenant-stable-result.json
+  s_5f251bc0a17928::t_b8bbcbf39e0a48 1-5
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/protocol/ParsedRequest.java
+  s_5f251bc0a17928::t_d5720e87ed6e9e 30-41
+llmgw-engine/pom.xml
+  s_5f251bc0a17928::t_371ded94f2d4ed 9
+docs/USER_GUIDE.md
+  s_5f251bc0a17928::t_371ded94f2d4ed 1,13,36,50,105
+  s_5f251bc0a17928::t_6984ca1c73724d 17,68,82-83,87,89,91-95,97,99,111,153,156,158
+llmgw-engine/llmgw-engine-vt/pom.xml
+  s_5f251bc0a17928::t_371ded94f2d4ed 9
+  s_5f251bc0a17928::t_f7df46b2d6fa90 16
+docs/reviews/2026-11-16-full-audit/evidence/README.md
+  s_5f251bc0a17928::t_b8bbcbf39e0a48 1-11
+  s_5f251bc0a17928::t_e9279599a10449 12
+llmgw-engine/llmgw-engine-webflux/src/test/java/io/github/leohou0430/llmgw/engine/webflux/WebfluxConversionTest.java
+  s_5f251bc0a17928::t_cee64752e801c9 659
+  s_5f251bc0a17928::t_5183a6d21231f0 555
+docs/reviews/2026-11-16-remediation/evidence/structural-checks.json
+  s_5f251bc0a17928::t_bb5b0183d95895 1-2,5-6
+  s_5f251bc0a17928::t_2c5598df22d2f1 3-4
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/ControlPlaneController.java
+  s_5f251bc0a17928::t_32b73df81f9d04 34-38
+  s_5f251bc0a17928::t_cee64752e801c9 56
+llmgw-catalog/llmgw-catalog-default/src/test/java/io/github/leohou0430/llmgw/catalog/local/SqliteResourceCatalogTest.java
+  s_5f251bc0a17928::t_dbea7fe5cce575 36-40,66-75
+  s_5f251bc0a17928::t_f5c4c05e5e463c 76-77
+llmgw-engine/llmgw-engine-webflux/pom.xml
+  s_5f251bc0a17928::t_371ded94f2d4ed 9
+  s_5f251bc0a17928::t_b0533563908e72 16
+docs/reviews/2026-11-16-full-audit/evidence-sha256.json
+  s_5f251bc0a17928::t_e9279599a10449 32,37
+  s_5f251bc0a17928::t_b8bbcbf39e0a48 1-31,33-36,38-47
+docs/control-plane-operations.md
+  s_5f251bc0a17928::t_dac660e94599f0 1-4,7-8,10-14,16,18-26
+  s_5f251bc0a17928::t_bae6fc4278d98e 9
+  s_5f251bc0a17928::t_6984ca1c73724d 17
+  s_5f251bc0a17928::t_05427dd29e681e 5-6,15
+llmgw-engine/llmgw-engine-api/src/main/java/io/github/leohou0430/llmgw/engine/SseChunkAccounting.java
+  s_5f251bc0a17928::t_105fc947e05c9d 35-50
+docs/reviews/2026-11-16-full-audit/evidence/current-runtime-results.json
+  s_5f251bc0a17928::t_b8bbcbf39e0a48 1-398
+docs/reviews/2026-11-16-remediation/evidence/jwt-auth-summary.txt
+  s_5f251bc0a17928::t_d001c70f2ba84a 1-2
+llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/VersionedRouteConfigSourceTest.java
+  s_5f251bc0a17928::t_19bc9ea58fc9e7 23-30
+  s_5f251bc0a17928::t_23d3b2b74eef89 1-22,31-33,35-47
+  s_5f251bc0a17928::t_b5701feeeeee6a 34
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/ControlLoginController.java
+  s_5f251bc0a17928::t_021291760212dd 42-43,64-70,92-96,111-119
+  s_5f251bc0a17928::t_cee64752e801c9 124
+  s_5f251bc0a17928::t_fa2f1b64ca237e 120-121
+Dockerfile
+  s_5f251bc0a17928::t_371ded94f2d4ed 13
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/EncryptedResourceCatalog.java
+  s_5f251bc0a17928::t_227e4c7d265c04 1-30
+llmgw-control/llmgw-control-api/pom.xml
+  s_5f251bc0a17928::t_371ded94f2d4ed 9
+llmgw-engine/llmgw-engine-webflux/src/main/java/io/github/leohou0430/llmgw/engine/webflux/WebfluxGatewayController.java
+  s_5f251bc0a17928::t_5a9bd286704620 1188-1192
+  s_5f251bc0a17928::t_f9cbdbd808c623 119,121-122,124-128,474-480,1196
+  s_5f251bc0a17928::t_d5720e87ed6e9e 423,1362
+  s_5f251bc0a17928::t_07a4151f30d2bd 398,400-401,403-404,492,958-959,962,973-974,1043,1135,1169
+  s_5f251bc0a17928::t_c5956d8f1d801f 120
+  s_5f251bc0a17928::t_9765decd15f5d0 960-961,963-971,975,1044
+  s_5f251bc0a17928::t_cdcac9632cd296 394-396,399
+  s_5f251bc0a17928::t_9e8e65c291d628 118,123,424-425
+bin/smoke-conversion-sdk.py
+  s_5f251bc0a17928::t_371ded94f2d4ed 20,184
+docs/EXTENSIONS.md
+  s_5f251bc0a17928::t_1f7d1fced44f03 15-19
+  s_5f251bc0a17928::t_26c7d36674e956 84,136
+  s_5f251bc0a17928::t_6984ca1c73724d 1,23-25
+  s_5f251bc0a17928::t_e92db79f1b411c 26
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/GatewayDecision.java
+  s_5f251bc0a17928::t_cb60eff2aa2d40 22,27-28,41-47,49
+  s_5f251bc0a17928::t_07a4151f30d2bd 23-25,29-40,48,71,76,81
+  s_5f251bc0a17928::t_945499fb9fc0ba 26
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/UsageLedger.java
+  s_5f251bc0a17928::t_cb60eff2aa2d40 38-49
+llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/DefaultGovernanceChain.java
+  s_5f251bc0a17928::t_07a4151f30d2bd 382-383
+  s_5f251bc0a17928::t_105fc947e05c9d 360-361,497,499-500
+  s_5f251bc0a17928::t_d5720e87ed6e9e 381,627,650
+  s_5f251bc0a17928::t_374ef229b973ac 362-363
+llmgw-persistence/llmgw-persistence-sqlite/src/test/java/io/github/leohou0430/llmgw/persistence/sqlite/SqliteUsageLedgerTest.java
+  s_5f251bc0a17928::t_bd6f5cba027e77 29-30
+  s_5f251bc0a17928::t_9df3d65ab92f84 1-28,31-39,42-59,61,64,69-70,73-74,77,83-93
+  s_5f251bc0a17928::t_31f5635d9601fa 40-41,60,62-63,65-68,71-72,75-76,78-82
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/VersionedRouteConfigSource.java
+  s_5f251bc0a17928::t_2fcea49ba51656 30-34
+  s_5f251bc0a17928::t_ed663a13983fb0 85
+  s_5f251bc0a17928::t_564ec81f5b2b4b 44,81-84
+  s_5f251bc0a17928::t_a26a680d6bbcd9 1-29,35-43,45-80,86-95
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/ControlUsageController.java
+  s_5f251bc0a17928::t_762949a39fb4da 31,37,42-44,47
+  s_5f251bc0a17928::t_21bb1ef6bca2c5 29,33,35,45
+  s_5f251bc0a17928::t_0c433b2c531fd5 53-56
+  s_5f251bc0a17928::t_cee64752e801c9 66
+llmgw-governance/llmgw-governance-default/pom.xml
+  s_5f251bc0a17928::t_371ded94f2d4ed 9
+docs/reviews/2026-11-16-full-audit/verification.json
+  s_5f251bc0a17928::t_b8bbcbf39e0a48 1-21,26-95,98-139,142-177,186
+  s_5f251bc0a17928::t_e9279599a10449 22-25,96-97,140-141,178-185
+docs/reviews/2026-11-16-remediation/evidence/contracts.json
+  s_5f251bc0a17928::t_d001c70f2ba84a 1-38
+bin/smoke-observability.sh
+  s_5f251bc0a17928::t_371ded94f2d4ed 10
+llmgw-conversion/llmgw-conversion-api/pom.xml
+  s_5f251bc0a17928::t_371ded94f2d4ed 4
+llmgw-persistence/llmgw-persistence-sqlite/src/test/java/io/github/leohou0430/llmgw/persistence/sqlite/SchemaMigratorTest.java
+  s_5f251bc0a17928::t_cee64752e801c9 81-82,146
+llmgw-app/src/main/resources/static/control/index.html
+  s_5f251bc0a17928::t_a70c5e34f366db 2-3,5-8,10,12-20,22-24,27-39,41,43-47
+  s_5f251bc0a17928::t_99ca5c08efb1a8 11,40
+  s_5f251bc0a17928::t_4a5bebfa1fbd46 4,9,21,25-26,42
+llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/EncryptedResourceCatalogTest.java
+  s_5f251bc0a17928::t_457e36a427e9c3 1-28
+llmgw-persistence/llmgw-persistence-sqlite/src/main/java/io/github/leohou0430/llmgw/persistence/sqlite/SqliteUsageLedger.java
+  s_5f251bc0a17928::t_8a51cbf292b4f0 1-17,21-40,68-69,72-80,82-86,92-96,98-100,104-105,111-138
+  s_5f251bc0a17928::t_99ca5c08efb1a8 41-46,48-55,57-58,60-67
+  s_5f251bc0a17928::t_ec676654c0704f 101-103,107-110
+  s_5f251bc0a17928::t_bd6f5cba027e77 88-91,106
+  s_5f251bc0a17928::t_acca7441300329 56
+  s_5f251bc0a17928::t_6c2a0976c20f6f 18-20,47,59,70-71,81,87,97
+llmgw-catalog/llmgw-catalog-api/pom.xml
+  s_5f251bc0a17928::t_371ded94f2d4ed 9
+llmgw-provider/pom.xml
+  s_5f251bc0a17928::t_371ded94f2d4ed 4
+bin/bench-paired-ab.sh
+  s_5f251bc0a17928::t_371ded94f2d4ed 27
+docs/PRODUCTION_BEST_PRACTICES.md
+  s_5f251bc0a17928::t_371ded94f2d4ed 54
+  s_5f251bc0a17928::t_26c7d36674e956 65,73,80,82
+  s_5f251bc0a17928::t_eb5e5457ebabb2 83
+  s_5f251bc0a17928::t_6984ca1c73724d 3,5,9,11-13
+docs/PERFORMANCE.md
+  s_5f251bc0a17928::t_6984ca1c73724d 3-4
+llmgw-identity/llmgw-identity-default/src/main/java/io/github/leohou0430/llmgw/identity/ManagedKeyService.java
+  s_5f251bc0a17928::t_2f5719a10987f4 31-32,57
+  s_5f251bc0a17928::t_a70c5e34f366db 33-36
+  s_5f251bc0a17928::t_d0c69b483cc1dc 38-43,93-98
+  s_5f251bc0a17928::t_762949a39fb4da 49,65,67,74-76,79-80,82-92
+  s_5f251bc0a17928::t_cee64752e801c9 105
+  s_5f251bc0a17928::t_0a1677bba529be 68-70,77-78,81
+  s_5f251bc0a17928::t_d631845044cb5e 99
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/SqliteApiKeyRegistry.java
+  s_5f251bc0a17928::t_c056ab0e33838e 26-30,70-72
+  s_5f251bc0a17928::t_00fafc8a2f87ff 1-25,31-65,67-69,77-83
+  s_5f251bc0a17928::t_227e4c7d265c04 66,73-76
+llmgw-persistence/llmgw-persistence-sqlite/src/main/java/io/github/leohou0430/llmgw/persistence/sqlite/OnlineBackup.java
+  s_5f251bc0a17928::t_4b30730ad70ba9 28-34
+  s_5f251bc0a17928::t_cee64752e801c9 39
+docs/reviews/2026-11-16-remediation/evidence/container-vt.json
+  s_5f251bc0a17928::t_bb5b0183d95895 1-135
+llmgw-conversion/pom.xml
+  s_5f251bc0a17928::t_371ded94f2d4ed 4
+bin/run-vt.sh
+  s_5f251bc0a17928::t_371ded94f2d4ed 4
+llmgw-conversion/llmgw-conversion-responses/pom.xml
+  s_5f251bc0a17928::t_371ded94f2d4ed 3
+bench/capacity/rejection_micro.py
+  s_5f251bc0a17928::t_da0678550d3e20 21
+bench/cross-gateway/README.md
+  s_5f251bc0a17928::t_20026076b96a17 7
+bench/cross-gateway/compare.py
+  s_5f251bc0a17928::t_ed23b6be109e95 53
+bench/cross-gateway/cross-gateway-benchmark.sh
+  s_5f251bc0a17928::t_ca678a5508d93b 58
+bin/smoke-sdk-compatibility.py
+  s_5f251bc0a17928::t_85f74ab56cd3c3 5,127,205,210
+docs/releases/v0.4.0.md
+  s_5f251bc0a17928::t_d983fb2beffead 1-44
+docs/reviews/2026-11-16-full-audit/evidence/StructuralProbe.java
+  s_5f251bc0a17928::t_98414b7f364f80 1-71
+docs/reviews/2026-11-16-full-audit/evidence/combined-test-summary.json
+  s_5f251bc0a17928::t_802e66fc449111 1-879
+docs/reviews/2026-11-16-full-audit/evidence/contract-results.json
+  s_5f251bc0a17928::t_877ffd71944a3e 1-34
+docs/reviews/2026-11-16-full-audit/evidence/default-test-summary.json
+  s_5f251bc0a17928::t_b8fa4fa84996f5 1-7
+docs/reviews/2026-11-16-full-audit/evidence/run_contracts.py
+  s_5f251bc0a17928::t_41ba14ab5ea948 1-47
+docs/reviews/2026-11-16-full-audit/evidence/runtime-results.json
+  s_5f251bc0a17928::t_971a7292fdfdcf 1-398
+docs/reviews/2026-11-16-full-audit/evidence/runtime_probe.py
+  s_5f251bc0a17928::t_c759b98b02dbbd 1-129
+docs/reviews/2026-11-16-full-audit/evidence/source-hashes.json
+  s_5f251bc0a17928::t_7008b1ee1aacb4 1-298
+docs/reviews/2026-11-16-full-audit/evidence/spool-crash-result.json
+  s_5f251bc0a17928::t_77ff272e0b0abb 1-6
+docs/reviews/2026-11-16-full-audit/evidence/spool_crash_probe.py
+  s_5f251bc0a17928::t_37b41aec250b9a 1-58
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/AdminController.java
+  s_5f251bc0a17928::t_f60c490ccafcef 147-150
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "30bf1a10a7467d7eb3d164427c88028269325273",
+  "prompts": {},
+  "sessions": {
+    "s_5f251bc0a17928": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1e304-332e-7000-9e0e-b3015846561c",
+        "model": "gpt-6.1-sol"
+      },
+      "human_author": "leohou0430 <leohou0430@users.noreply.github.com>"
+    }
+  }
+}
