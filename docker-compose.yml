@@ -2,7 +2,7 @@
 # docs/DEPLOYMENT.md for the nginx topology (the gateway itself stays plain
 # HTTP by design, same stance as LiteLLM).
 #
-#   docker compose up gateway          # in-memory, single replica
+#   docker compose up gateway          # Java + SQLite, single replica
 #   docker compose -f docker-compose.yml -f docker-compose.redis.yml up --build
 # This file is a loopback-only demo. For production see docs/DEPLOYMENT.md.
 services:
@@ -13,8 +13,12 @@ services:
       SPRING_PROFILES_ACTIVE: ${LLMGW_ENGINE:-webflux}
       LLMGW_ADMIN_TOKEN: ${LLMGW_ADMIN_TOKEN:-}
       DASHSCOPE_API_KEY: ${DASHSCOPE_API_KEY:-}
-      # Opt-in usage-ledger restore; the file lives on the llmgw-data volume.
-      GATEWAY_GOVERNANCE_SNAPSHOT_AUTO_RESTORE: ${LLMGW_SNAPSHOT_AUTO_RESTORE:-false}
+      LLMGW_CONTROL_DB: /app/data/llmgw-control.db
+      LLMGW_ADMIN_USERNAME: ${LLMGW_ADMIN_USERNAME:-}
+      LLMGW_ADMIN_PASSWORD: ${LLMGW_ADMIN_PASSWORD:-}
+      LLMGW_ROOT_KEY: ${LLMGW_ROOT_KEY:-}
+      # SQLite is authoritative; JSON snapshots must not replace its ledger.
+      GATEWAY_GOVERNANCE_SNAPSHOT_AUTO_RESTORE: "false"
     ports:
       - "127.0.0.1:8080:8080"
     volumes:

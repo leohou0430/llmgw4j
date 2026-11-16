@@ -1,0 +1,186 @@
+{
+  "review_date": "2026-11-16",
+  "timezone": "Asia/Shanghai",
+  "finalized_at": "2026-11-16T15:09:16.301217+08:00",
+  "base_commit": "88e460f67a9077d2f2c82bcad8198f5ace96769e",
+  "scope": "whole repository risk-based audit; no business code edited by this audit",
+  "artifacts": {
+    "baseline": {
+      "path": "/tmp/llmgw-audit-20261116/audited.jar",
+      "sha256": "54d64a2e6ef616afcabad771fbfa276471c3e18fabdba180fdf289c5d7b9ca6c",
+      "bytes": 145870062,
+      "scope": "initial management reproductions, structural/spool probes, data-plane suites"
+    },
+    "current_snapshot": {
+      "path": "/tmp/llmgw-audit-20261116/current/audited.jar",
+      "sha256": "3d0ca2be37265776d02e5e34035567dd807166ac03b0cc7fc98a9b2ceac7c980",
+      "bytes": 145870742,
+      "scope": "repeat management reproductions and explicit --jar admin/JWT tests; built at 15:00:34 +08:00"
+    }
+  },
+  "source_snapshot": "evidence/current-source-hashes.json",
+  "source_drift_after_current_snapshot": [
+    "llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/SecretStore.java",
+    "llmgw-control/llmgw-control-api/src/main/java/io/github/leohou0430/llmgw/control/RootKeyMismatchException.java"
+  ],
+  "drift_note": "Other work continued during this audit. Later edits are not automatically covered by prior JAR/JUnit results; review applicable unchanged paths separately.",
+  "checks": {
+    "layout": {
+      "exit": 0,
+      "result": "PASS=142 FAIL=0"
+    },
+    "native_boundaries": {
+      "exit": 0,
+      "result": "PASS native boundaries: 421 module Java files, 39 modules, 15 descriptors, 27 named extensions"
+    },
+    "native_boundary_unittests": {
+      "exit": 0,
+      "tests": 6
+    },
+    "openapi_yaml": {
+      "exit": 0,
+      "files": 5,
+      "note": "syntax and declared operations only; /control absent"
+    },
+    "acceptance_fixture_unittests": {
+      "exit": 0,
+      "tests": 77,
+      "network": "dry-run only"
+    },
+    "benchmark_parser_unittests": {
+      "exit": 0,
+      "tests": 8
+    },
+    "default_junit": {
+      "tests": 1054,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 26,
+      "suites": 125
+    },
+    "combined_profiles_junit": {
+      "profiles": [
+        "redis",
+        "jtokkit",
+        "otel"
+      ],
+      "tests": 1050,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suites": 124,
+      "redis": "task-owned local instance, terminated after test; no pre-existing data touched"
+    },
+    "initial_default_failure": {
+      "status": "superseded",
+      "test": "RestrictedNetworksTest.invalidEntryFailsAtConstruction",
+      "note": "External source update during audit; subsequent default and combined tests passed. Not an outstanding finding."
+    },
+    "current_contracts": [
+      {
+        "suite": "admin-auth",
+        "exit": 0
+      },
+      {
+        "suite": "tenant-isolation",
+        "exit": 1
+      },
+      {
+        "suite": "jwt-auth",
+        "exit": 0
+      }
+    ],
+    "current_tenant_stable_port_rerun": {
+      "suite": "tenant-isolation-stable-port",
+      "exit": 0,
+      "note": "original verifier; only free_port replaced with task-owned non-ephemeral port selection",
+      "result": "PASS both engines; initial startup-port failure superseded"
+    },
+    "baseline_contracts": [
+      {
+        "suite": "multi-protocol",
+        "exit": 0,
+        "pass": 56,
+        "fail": 0
+      },
+      {
+        "suite": "extensions",
+        "exit": 0,
+        "pass": 54,
+        "fail": 0
+      },
+      {
+        "suite": "hardening",
+        "exit": 0,
+        "pass": 46,
+        "fail": 0
+      },
+      {
+        "suite": "conversion-sdk",
+        "exit": 0,
+        "cases": 36,
+        "note": "controlled upstream; three entry protocols, JSON/SSE, tools, thinking, images, cancel/recovery"
+      },
+      {
+        "suite": "jwt-auth",
+        "exit": 0,
+        "note": "initial invocation defaulted to mutable target JAR; explicit pinned rerun recorded above"
+      },
+      {
+        "suite": "stream-errors-retry",
+        "timeout": true,
+        "observed_pass_lines": 43,
+        "observed_fail_lines": 0,
+        "note": "900s harness timeout; partial WebFlux/VT coverage only, not counted as suite pass. Owned orphan process terminated."
+      }
+    ],
+    "invalid_initial_batches": [
+      "stream-errors initial custom mock port not propagated, then address-in-use; excluded and retried",
+      "tenant-isolation initial startup deadline exceeded under concurrent runs; pinned rerun recorded above",
+      "admin-auth initial invocation defaulted to mutable target JAR, external rebuild caused class-loading failure; explicit --jar rerun above",
+      "current tenant-isolation initial pinned run hit BindException; original verifier rerun with non-ephemeral task ports passed both engines"
+    ],
+    "current_management_observations": 22,
+    "structural_probe": {
+      "exit": 0,
+      "draft_cross_publish": true,
+      "cross_request_rollback": true,
+      "pagination_rowid_reuse": true,
+      "wal_cap_bypass": true
+    },
+    "spool_crash_probe": {
+      "engine": "webflux",
+      "spooled_bytes_before_crash": 223232,
+      "old_spool_exists_after_restart": true,
+      "old_spool_bytes_after_restart": 223232
+    }
+  },
+  "findings": {
+    "P1": 13,
+    "P2": 3,
+    "total": 16,
+    "new_requirement_gap": [
+      "persistent project/key cumulative token quotas"
+    ]
+  },
+  "not_verified": [
+    "current native/AOT rebuild",
+    "Linux native",
+    "paid/live DeepSeek",
+    "all protocol fields equivalence",
+    "public TLS",
+    "2C2G full container capacity",
+    "long-duration load",
+    "dependency vulnerability scan",
+    "interactive browser menu walkthrough",
+    "individual Redis-only and jtokkit/otel-only profile builds"
+  ],
+  "business_changes_made_by_this_audit": false,
+  "source_snapshot_note": "Hashes captured at artifact-copy time, not a transactional source/build snapshot. Concurrent editing occurred; known source/binary divergence below is excluded from binary verification claims.",
+  "known_source_binary_divergence": [
+    {
+      "file": "llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/ControlPlaneManagementConfiguration.java",
+      "detail": "Source contains LLMGW_CONTROL_DB_MIN_FREE_BYTES; both fixed JAR classes do not. Later margin configurability was not runtime-verified by this audit and does not address WAL accounting."
+    }
+  ]
+}

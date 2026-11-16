@@ -28,6 +28,11 @@ public final class GatewayContext {
     private final long startNanos;
     private final int promptTokens;
     private final int units;
+    private final AtomicInteger reportedPrompt = new AtomicInteger(-1);
+    private String reservationId = "";
+    public void setPromptTokens(int tokens) { reportedPrompt.set(Math.max(0, tokens)); }
+    public void setReservationId(String id) { reservationId = id; }
+    public String reservationId() { return reservationId; }
     private final AtomicInteger estimatedCompletion = new AtomicInteger();
     /** -1 = the upstream never reported usage; otherwise the authoritative value. */
     private final AtomicInteger reportedCompletion = new AtomicInteger(-1);
@@ -177,7 +182,7 @@ public final class GatewayContext {
     public int units() { return units; }
     /** Correlation id echoed to the client and written into audit events. */
     public String requestId() { return requestId; }
-    public int promptTokens() { return promptTokens; }
+    public int promptTokens() { return reportedPrompt.get() >= 0 ? reportedPrompt.get() : promptTokens; }
     /** The exact amount charged to the token bucket / reserved at admission. */
     public int reservedTokens() { return Math.max(1, promptTokens); }
     public int completionTokens() {

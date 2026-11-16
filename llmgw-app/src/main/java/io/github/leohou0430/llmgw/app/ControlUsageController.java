@@ -26,24 +26,34 @@ import java.util.Map;
 @RequestMapping("/control")
 public class ControlUsageController {
     private final RequestAuthorizer authorizer;
+    private final OrgStore orgs;
     private final UsageLedger usage;
+    private final io.github.leohou0430.llmgw.identity.local.ManagedKeyService keys;
 
-    public ControlUsageController(RequestAuthorizer authorizer, UsageLedger usage) {
+    public ControlUsageController(RequestAuthorizer authorizer, OrgStore orgs, UsageLedger usage, io.github.leohou0430.llmgw.identity.local.ManagedKeyService keys) {
         this.authorizer = authorizer;
+        this.orgs = orgs;
         this.usage = usage;
+        this.keys = keys;
     }
 
     @GetMapping("/usage")
     public ResponseEntity<Map<String, Object>> usage(
-            @CookieValue(name = "llmgw_sid", required = false) String sessionId) {
+            @CookieValue(name = "llmgw_sid", required = false) String sessionId,
+            @org.springframework.web.bind.annotation.RequestParam(required = false) String tenantId,
+            @org.springframework.web.bind.annotation.RequestParam(required = false) String projectId) {
+        var target = ControlAccess.resolve(authorizer, orgs, sessionId, tenantId, projectId);
         AuthOutcome outcome = authorizer.authorize(
-                new AuthenticatedRequest(sessionId, null, false, Action.CATALOG_READ, new Target("t1", "p1")));
+                new AuthenticatedRequest(sessionId, null, false, Action.USAGE_READ, target));
         if (outcome != AuthOutcome.ALLOW) {
             HttpStatus status = outcome == AuthOutcome.UNAUTHENTICATED ? HttpStatus.UNAUTHORIZED : HttpStatus.FORBIDDEN;
             throw new ResponseStatusException(status, outcome.name());
         }
         Map<String, Object> out = new LinkedHashMap<>();
-        usage.snapshot().forEach((keyId, summary) -> {
+        var scoped = usage instanceof io.github.leohou0430.llmgw.persistence.sqlite.SqliteUsageLedger durable
+                ? durable.snapshot(target.tenantId(), target.projectId()) : usage.snapshot().entrySet().stream()
+                .filter(entry -> keys.belongsTo(entry.getKey(), target)).collect(java.util.stream.Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        scoped.forEach((keyId, summary) -> {
             Map<String, Object> row = new LinkedHashMap<>();
             row.put("requests", summary.requests());
             row.put("promptTokens", summary.promptTokens());

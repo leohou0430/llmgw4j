@@ -33,6 +33,10 @@ def validate(path):
     paths = document.get("paths", {})
     if not paths:
         raise ValueError("paths must not be empty")
+    required_control = {'/control/quotas/pending': {'get'}, '/control/quotas/reconcile': {'post'}, '/control/status': {'get'}, '/control/login': {'post'}, '/control/session': {'get'}, '/control/logout': {'post'}, '/control/tenants': {'post', 'get'}, '/control/projects': {'post', 'get'}, '/control/accounts': {'post', 'get'}, '/control/keys': {'post', 'get'}, '/control/keys/{id}/rotate': {'post'}, '/control/keys/{id}/revoke': {'post'}, '/control/quotas': {'post'}, '/control/catalog': {'post', 'get'}, '/control/usage': {'get'}, '/control/audit': {'get'}, '/control/secrets': {'post', 'get'}, '/control/secrets/{id}/rotate': {'post'}, '/control/routes': {'get'}, '/control/routes/publish': {'post'}, '/control/routes/rollback': {'post'}}
+    for name, methods in required_control.items():
+        if not methods.issubset(paths.get(name, {})):
+            raise ValueError(f"missing control-plane operations: {name} {sorted(methods)}")
     for name, item in paths.items():
         if not isinstance(item, dict):
             raise ValueError(f"{name}: path item must contain operations")

@@ -115,6 +115,17 @@ public class WebfluxGatewayController implements AutoCloseable {
     private final GatewayProperties properties;
     /** W3.6: sticky store is an injectable SPI (in-memory default, Redis pack). */
     private final TaskRouteSticky taskRoutes;
+    private io.github.leohou0430.llmgw.catalog.ResourceLifecycle resources;
+
+    @org.springframework.beans.factory.annotation.Autowired(required = false)
+    public void resourceCatalog(io.github.leohou0430.llmgw.catalog.ResourceCatalog catalog,
+                                io.github.leohou0430.llmgw.core.governance.ApiKeyRegistry keys) {
+        this.resources = new io.github.leohou0430.llmgw.catalog.ResourceLifecycle(catalog, keys);
+    }
+
+    @org.springframework.beans.factory.annotation.Value("${llmgw.spool-directory:${java.io.tmpdir}/llmgw-spool/${server.port:8080}}")
+    private String spoolDirectory;
+
     private final HeaderPolicy headerPolicy;
     private final ForwardingPolicy.RetryConfig retryConfig;
     /**
@@ -380,13 +391,17 @@ public class WebfluxGatewayController implements AutoCloseable {
                                 long arrivedNanos) {
         String requestId = GatewayPipeline.requestId(incomingRequestId);
         response.getHeaders().set(EngineHeaders.REQUEST_ID, requestId);
-        GatewayDecision decision = GatewayPipeline.enter(chain, router, kind, auth, rawJson);
-        if (!decision.allowed()) {
-            return writeError(response, decision);
+        GatewayDecision admitted = GatewayPipeline.enter(chain, router, kind, auth, rawJson);
+        if (!admitted.allowed()) {
+            return writeError(response, admitted);
         }
-        ParsedRequest parsed = decision.parsed();
+        var requestResources = resources == null ? null : resources.scoped(admitted);
+        ParsedRequest parsed = admitted.parsed();
+        GatewayDecision decision = requestResources == null ? admitted : admitted.withRoute(
+                requestResources.referencedRoute(parsed, admitted.keyId(), admitted.route()));
         GatewayContext context = GatewayPipeline.context(decision, requestId, arrivedNanos);
-        if (!EngineRoutes.ownsReferencedFiles(parsed, decision.keyId(), decision.route(), taskRoutes)) {
+        if (!(requestResources == null ? EngineRoutes.ownsReferencedFiles(parsed, decision.keyId(), decision.route(), taskRoutes)
+                : requestResources.ownsFiles(parsed, decision.keyId(), decision.route()))) {
             GatewayPipeline.finish(chain, context, false);
             return writeError(response, GatewayDecision.deny(404, "referenced file not found on this route"));
         }
@@ -405,7 +420,9 @@ public class WebfluxGatewayController implements AutoCloseable {
                 // Stage-1 degenerate mapping: tenantId = projectId = decision.keyId().
                 // TODO(stage 3): replace with the real tenant/project split from the decision.
                 DegradationGrant grant = DegradationGrant.parse(degradationGrantValue(clientHeaders));
-                prepared = conversion.prepare(parsed, route, decision.keyId(), decision.keyId(), grant);
+                prepared = conversion.prepare(parsed, route,
+                        decision.tenantId().isBlank() ? decision.keyId() : decision.tenantId(),
+                        decision.projectId().isBlank() ? decision.keyId() : decision.projectId(), grant);
             } catch (CapabilityException | UpstreamException error) {
                 GatewayPipeline.finish(chain, context, false);
                 return writeConversionError(response, kind, error);
@@ -454,7 +471,13 @@ public class WebfluxGatewayController implements AutoCloseable {
                         // the same tree. The body previously went through
                         // readTree twice more (tokens + cache check).
                         JsonNode root = ProtocolCodec.tryParse(entryBody);
-                        context.setCompletionTokensIfAbsent(
+                        JsonNode authoritativeUsage = root.path("usage");
+                if (authoritativeUsage.isMissingNode()) authoritativeUsage = root.path("response").path("usage");
+                if (authoritativeUsage.has("prompt_tokens") || authoritativeUsage.has("input_tokens")) {
+                    context.setPromptTokens(authoritativeUsage.has("prompt_tokens")
+                            ? authoritativeUsage.path("prompt_tokens").asInt() : authoritativeUsage.path("input_tokens").asInt());
+                }
+                context.setCompletionTokensIfAbsent(
                                 ProtocolCodec.completionTokensFromResponse(kind, root));
                         if (cached.isEmpty() && !cacheBypass) {
                             chain.cache(decision.keyId(), parsed, entryBody,
@@ -466,6 +489,7 @@ public class WebfluxGatewayController implements AutoCloseable {
                         String taskId = cached.isEmpty() ? Protocols.of(kind).taskId(root) : "";
                         if (!taskId.isEmpty()) {
                             taskRoutes.bind(decision.keyId(), kind.wireName(), taskId, winner.get().id());
+                            if (requestResources != null) requestResources.created(decision.keyId(), kind, winner.get(), entryBody);
                         }
                         return writeJson(response, entryBody, context);
                     })
@@ -931,8 +955,24 @@ public class WebfluxGatewayController implements AutoCloseable {
         if (!admission.allowed()) {
             return writeError(response, admission);
         }
+        var requestResources = resources == null ? null : resources.scoped(admission);
+        if (requestResources != null && taskId == null && (kind == ProtocolKind.FILES || kind == ProtocolKind.BATCHES)) {
+            GatewayContext listedContext = GatewayPipeline.context(admission, requestId, arrived);
+            try {
+                String body = requestResources.list(admission.keyId(), kind, request.getQueryParams().getFirst("limit"),
+                        request.getQueryParams().getFirst("after"));
+                response.setStatusCode(HttpStatus.OK); response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
+                return response.writeWith(Mono.just(response.bufferFactory().wrap(body.getBytes(StandardCharsets.UTF_8))))
+                        .doFinally(signal -> GatewayPipeline.finish(chain, listedContext, signal == SignalType.ON_COMPLETE));
+            } catch (IllegalArgumentException failure) {
+                GatewayPipeline.finish(chain, listedContext, false);
+                return writeError(response, GatewayDecision.deny(400, failure.getMessage()));
+            }
+        }
         Route pinned = taskId == null ? null
-                : router.byId(taskRoutes.resolve(admission.keyId(), kind.wireName(), taskId));
+                : requestResources != null && (kind == ProtocolKind.FILES || kind == ProtocolKind.BATCHES)
+                    ? requestResources.route(admission.keyId(), kind, taskId)
+                    : router.byId(taskRoutes.resolve(admission.keyId(), kind.wireName(), taskId));
         if ((taskId != null && pinned == null)
                 || (taskId == null && (kind == ProtocolKind.FILES || kind == ProtocolKind.BATCHES))) {
             GatewayPipeline.finish(chain, GatewayPipeline.context(admission, requestId, arrived), false);
@@ -1000,6 +1040,8 @@ public class WebfluxGatewayController implements AutoCloseable {
                     }
                 })
                 .flatMap(body -> {
+                    if (requestResources != null && taskId != null) requestResources.observed(admission.keyId(), kind, taskId, route,
+                            new String(body, StandardCharsets.UTF_8), method == UpstreamMethod.DELETE);
                     context.markUpstreamEnd();
                     String upstream = EngineTimings.upstreamOrNull(context);
                     if (upstream != null) {
@@ -1090,6 +1132,7 @@ public class WebfluxGatewayController implements AutoCloseable {
         if (!decision.allowed()) {
             return writeError(response, decision);
         }
+        var requestResources = resources == null ? null : resources.scoped(decision);
         GatewayContext context = GatewayPipeline.context(decision, requestId, arrived);
         Map<String, String> pass = headerPolicy.toUpstream(kind, clientHeaders);
         AtomicBoolean settled = new AtomicBoolean(false);
@@ -1123,6 +1166,7 @@ public class WebfluxGatewayController implements AutoCloseable {
                                 .path("id").asText("");
                         if (!resourceId.isBlank()) {
                             taskRoutes.bind(decision.keyId(), kind.wireName(), resourceId, decision.route().id());
+                            if (requestResources != null) requestResources.created(decision.keyId(), kind, decision.route(), new String(bytes, StandardCharsets.UTF_8));
                         }
                     }
                     response.getHeaders().set(EngineHeaders.OVERHEAD_MS,
@@ -1141,10 +1185,15 @@ public class WebfluxGatewayController implements AutoCloseable {
                         signal == SignalType.ON_COMPLETE));
     }
 
+    @jakarta.annotation.PostConstruct
+    public void recoverUploads() throws IOException {
+        if (spoolDirectory != null) spools();
+    }
+
     /** Lazily create the per-engine spool manager owning one restricted temp dir. */
     private synchronized SpoolManager spools() throws IOException {
         if (spools == null) {
-            spoolDir = Files.createTempDirectory("llmgw-webflux-spool-");
+            spoolDir = spoolDirectory == null ? Files.createTempDirectory("llmgw-webflux-spool-") : Path.of(spoolDirectory, "webflux");
             spools = new SpoolManager(SpoolManager.Config.defaults(spoolDir));
         }
         return spools;
@@ -1310,7 +1359,7 @@ public class WebfluxGatewayController implements AutoCloseable {
         for (String name : headers.headerNames()) {
             String value = headers.getFirst(name);
             if (value != null) {
-                out.put(name, value);
+                out.put(name.toLowerCase(Locale.ROOT), value);
             }
         }
         return out;

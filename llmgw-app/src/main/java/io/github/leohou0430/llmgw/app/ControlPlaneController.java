@@ -31,7 +31,11 @@ public class ControlPlaneController {
 
     private final AuthorizationService authorization = new RbacAuthorizationService();
     private final CredentialIssuer credentials = new CredentialIssuer();
-    private final RouteVersionService routeVersions = new RouteVersionService(new InMemoryRouteVersionStore());
+    private final RouteVersionService routeVersions;
+
+    public ControlPlaneController(RouteVersionService routeVersions) {
+        this.routeVersions = routeVersions;
+    }
     private final ConfigValidator configValidator = new DefaultConfigValidator();
 
     @GetMapping("/status")

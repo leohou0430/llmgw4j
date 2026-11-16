@@ -29,6 +29,7 @@ public final class InMemoryRouteVersionStore implements RouteVersionStore {
 
     @Override
     public void append(RouteVersion version) {
-        versions.put(version.version(), version);
+        if (versions.putIfAbsent(version.version(), version) != null)
+            throw new io.github.leohou0430.llmgw.control.VersionConflictException("route version already exists");
     }
 }

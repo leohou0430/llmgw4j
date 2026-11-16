@@ -15,6 +15,38 @@ import java.sql.SQLException;
  */
 public interface DatabaseContext extends AutoCloseable {
 
+    default void afterCommit(Runnable action) { action.run(); }
+
+    @FunctionalInterface
+    interface SqlWork<T> {
+        T run(Connection connection) throws SQLException;
+    }
+
+    default <T> T read(SqlWork<T> work) throws SQLException {
+        Connection connection = connection();
+        synchronized (connection) {
+            return work.run(connection);
+        }
+    }
+
+    default <T> T transaction(SqlWork<T> work) throws SQLException {
+        Connection connection = connection();
+        synchronized (connection) {
+            if (!connection.getAutoCommit()) return work.run(connection);
+            connection.setAutoCommit(false);
+            try {
+                T result = work.run(connection);
+                connection.commit();
+                return result;
+            } catch (SQLException | RuntimeException | Error failure) {
+                try { connection.rollback(); } catch (SQLException rollback) { failure.addSuppressed(rollback); }
+                throw failure;
+            } finally {
+                connection.setAutoCommit(true);
+            }
+        }
+    }
+
     /** The live connection for short transactions; never null while open. */
     Connection connection() throws SQLException;
 

@@ -65,7 +65,7 @@ class BackupRestoreTest {
         assertTrue(Files.exists(backupFile), "backup file must be created");
         try (SqliteContext restored = new SqliteContext(backupFile, 1000L)) {
             assertTrue(rowExists(restored.connection(), "resource_catalog", "r1"), "data survives into the backup");
-            assertEquals(6, new SchemaMigrator(restored).currentVersion(), "schema version survives into the backup");
+            assertEquals(9, new SchemaMigrator(restored).currentVersion(), "schema version survives into the backup");
         }
     }
 }

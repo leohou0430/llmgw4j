@@ -33,7 +33,11 @@ class SqliteResourceCatalogTest {
                     + " type TEXT NOT NULL, upstream_id TEXT NOT NULL, source_route TEXT NOT NULL,"
                     + " provider TEXT NOT NULL, config_version TEXT NOT NULL, created_at INTEGER NOT NULL,"
                     + " observable_status TEXT NOT NULL, metadata TEXT, last_synced_at INTEGER,"
-                    + " deleted INTEGER NOT NULL DEFAULT 0)");
+                    + " deleted INTEGER NOT NULL DEFAULT 0, creation_seq INTEGER NOT NULL DEFAULT 0)");
+        }
+        try (Statement ddl = connection.createStatement()) {
+            ddl.execute("CREATE TABLE catalog_sequence(id INTEGER PRIMARY KEY, value INTEGER NOT NULL)");
+            ddl.execute("INSERT INTO catalog_sequence VALUES(1,0)");
         }
         DatabaseContext database = new DatabaseContext() {
             @Override
@@ -57,6 +61,18 @@ class SqliteResourceCatalogTest {
         return new ResourceEntry(gatewayId, projectId, type, "up-" + gatewayId, "route-a",
                 "deepseek", "v1", 1_700_000_000_000L, "ready",
                 Map.of("k", "v=1&2"), 1_700_000_000_001L, false);
+    }
+
+    @Test
+    void oldCursorExcludesNewRowsAfterDeletingHighestSequence() {
+        catalog.create(entry("one", "p1", "file"));
+        catalog.create(entry("two", "p1", "file"));
+        catalog.create(entry("three", "p1", "file"));
+        var first = catalog.page("t1", "p1", PageRequest.of(1), null);
+        catalog.delete("p1", "three");
+        catalog.create(entry("new", "p1", "file"));
+        var rest = catalog.page("t1", "p1", PageRequest.of(50), first.nextCursor());
+        assertEquals(List.of("two"), rest.items().stream().map(ResourceEntry::gatewayId).toList());
     }
 
     @Test

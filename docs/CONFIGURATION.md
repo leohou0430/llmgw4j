@@ -1,10 +1,10 @@
 # llmgw4j 配置说明
 
-> v0.3.1 使用项目内原生 SPI。内部 API、模块及 Redis 配置升级方式见 [扩展与迁移说明](EXTENSIONS.md)。
+> v0.4.0 使用项目内原生 SPI。内部 API、模块及 Redis 配置升级方式见 [扩展与迁移说明](EXTENSIONS.md)。
 
 审查修复补充：`gateway.production=true`（或 `LLMGW_PRODUCTION=true`）启用生产启动校验。
-`gateway.max-response-bytes` 默认 `4194304`，独立限制上游非流式响应；当前工作区还统一限制流式调用的非成功状态错误体，VT 不再无界等待 EOF。成功 SSE 不按累计大小套用此上限。当前未发布工作区另以 `gateway.upstream.max-sse-line-bytes` 限制上游 SSE 单行，默认 `1048576` 字节，CR/LF 不计入；超长行在 UTF-8 解码缓冲前中止。该值必须为正整数；使用较大单帧的供应商需按实际帧大小配置。
-`gateway.max-concurrent-requests` 默认 `64`，达到上限返回 `503`，请求结束或取消后释放容量。当前未发布工作区的容量拒绝增加 `Retry-After: 1`，建议客户端至少退避一秒后再发起尝试；服务端不排队、不自动重试上游。WebFlux 在已匹配到数据面控制器后、参数解析前准入，名额保持到响应结束/取消；管理接口与未知路径不占用数据面名额。
+`gateway.max-response-bytes` 默认 `4194304`，独立限制上游非流式响应；当前工作区还统一限制流式调用的非成功状态错误体，VT 不再无界等待 EOF。成功 SSE 不按累计大小套用此上限。v0.4.0另以 `gateway.upstream.max-sse-line-bytes` 限制上游 SSE 单行，默认 `1048576` 字节，CR/LF 不计入；超长行在 UTF-8 解码缓冲前中止。该值必须为正整数；使用较大单帧的供应商需按实际帧大小配置。
+`gateway.max-concurrent-requests` 默认 `64`，达到上限返回 `503`，请求结束或取消后释放容量。v0.4.0的容量拒绝增加 `Retry-After: 1`，建议客户端至少退避一秒后再发起尝试；服务端不排队、不自动重试上游。WebFlux 在已匹配到数据面控制器后、参数解析前准入，名额保持到响应结束/取消；管理接口与未知路径不占用数据面名额。
 当前金额预算仅为演示估算账本，生产启用会被拒绝；未知模型价格不能当作免费。
 未知资源返回 `404`，文件和批任务列表暂不支持并返回 `501`。
 
@@ -199,9 +199,11 @@ api-keys:
 
 覆盖 `TokenLimiter` / `UsageLedger` / `CircuitBreaker` / `ApiKeyRegistry` / `SemanticCache` / `TaskRouteSticky`；`BudgetLedger` / `RequestLogSink` / `SnapshotStore` 仍是本地实现。每请求 2–4 次 Redis 往返，无流水线合并。
 
-未发布工作区的多副本加固：共享熔断在整个冷却期拒绝请求，冷却结束后以 10 秒租约竞争单个探测；探测失败立即重新冷却，成功清理共享状态，失联探测在租约到期后可重试。探测超过 10 秒仍未结束时可能出现下一次探测；这不是无限期独占锁。升级需统一副本版本，旧脚本不识别新增的 `cb:tripped:*` 标记。限流使用 Redis 服务端时间；所有副本必须使用一致的限流参数及凭据策略。启动种子仅新增凭据，已有同 token 的策略冲突会使启动失败，整批校验失败不会发布其中的新凭据。路由、模型目录、策略和管理接口的更新仍作用于单个进程，没有版本化分布式控制面。
+v0.4.0的多副本加固：共享熔断在整个冷却期拒绝请求，冷却结束后以 10 秒租约竞争单个探测；探测失败立即重新冷却，成功清理共享状态，失联探测在租约到期后可重试。探测超过 10 秒仍未结束时可能出现下一次探测；这不是无限期独占锁。升级需统一副本版本，旧脚本不识别新增的 `cb:tripped:*` 标记。限流使用 Redis 服务端时间；所有副本必须使用一致的限流参数及凭据策略。启动种子仅新增凭据，已有同 token 的策略冲突会使启动失败，整批校验失败不会发布其中的新凭据。路由、模型目录、策略和管理接口的更新仍作用于单个进程，没有版本化分布式控制面。
 
-`gateway.auth.hash-keys-at-rest=true` 现在也应用于 Redis：`llmgw:keys:sha256` 的字段为 SHA-256(token)，值保留策略及 metadata；`false` 使用旧的 `llmgw:keys` 明文字段。检测到另一种存储模式时启动失败，禁止滚动混用。旧实现即使配置 true 也写明文；已有部署升级时可先在所有副本显式设 false 保持旧模式，或停流量、停止所有副本后备份并离线转换字段至哈希表、核对策略、移除旧表，最后统一启用 true。应用不会自动迁移或删除已有 Redis 数据；历史备份/AOF 中的明文需另行处置。
+当前应用不使用 Redis 密钥注册表或 Redis token 账本；这两项以 SQLite 为权威。以下存储格式说明适用于独立使用原生 Redis SPI 的调用方，不表示应用支持多网关副本共享数据库。
+
+`gateway.auth.hash-keys-at-rest=true` 应用于原生 Redis 密钥实现：`llmgw:keys:sha256` 的字段为 SHA-256(token)，值保留策略及 metadata；`false` 使用旧的 `llmgw:keys` 明文字段。检测到另一种存储模式时启动失败，禁止滚动混用。旧实现即使配置 true 也写明文；已有部署升级时可先在所有副本显式设 false 保持旧模式，或停流量、停止所有副本后备份并离线转换字段至哈希表、核对策略、移除旧表，最后统一启用 true。应用不会自动迁移或删除已有 Redis 数据；历史备份/AOF 中的明文需另行处置。
 
 API key ID 不得使用 `model:` / `group:` 前缀，以免与模型限流、群组预算作用域相撞；Redis 额外禁止 ID `keys`，它与内部用量索引冲突。已有冲突 ID 必须协调改名和迁移归属/用量，不能直接重置账本。Redis 配额及导入用量每个计数、prompt+completion 总和上限为 `2^53-1`，超出时拒绝，避免 Lua 数值舍入。
 
@@ -219,7 +221,7 @@ API key ID 不得使用 `model:` / `group:` 前缀，以免与模型限流、群
 ---
 
 
-## 3.1 转发配置项（含未发布工作区安全边界）
+## 3.1 转发配置项（含v0.4.0安全边界）
 
 ### 转发治理（gateway.upstream.*）
 
@@ -228,19 +230,19 @@ API key ID 不得使用 `model:` / `group:` 前缀，以免与模型限流、群
 | `connect-timeout-ms` | int | `10000` | TCP 连接超时 |
 | `first-byte-timeout-ms` | int | `0`（关） | 流式调用响应头到达超时：悬挂上游在 200 提交前失败，保住 fallback 窗口 |
 | `idle-read-timeout-ms` | int | `0`（关） | 从收到响应头开始，以正文读取进展刷新（含未完成 SSE 行和错误体）；不必等待完整行。超过空闲阈值中止流；整体超时仍提供总时长上限 |
-| `max-sse-line-bytes` | int | `1048576` | 未发布工作区：上游 SSE 单行原始字节上限，CR/LF 不计，必须大于 0；不限制合法长流累计大小 |
-| `heartbeat-interval-ms` | int | `0`（关） | SSE comment 心跳帧；仅成功响应头到达后启用。未发布工作区：VT 在请求线程空闲等行时发送，WebFlux 在背压下丢弃多余心跳 tick，真实数据不丢弃 |
+| `max-sse-line-bytes` | int | `1048576` | v0.4.0：上游 SSE 单行原始字节上限，CR/LF 不计，必须大于 0；不限制合法长流累计大小 |
+| `heartbeat-interval-ms` | int | `0`（关） | SSE comment 心跳帧；仅成功响应头到达后启用。v0.4.0：VT 在请求线程空闲等行时发送，WebFlux 在背压下丢弃多余心跳 tick，真实数据不丢弃 |
 | `retry.attempts` | int | `1` | 同路由重试次数；1=关闭（v12 语义） |
 | `retry.backoff-base-ms` / `backoff-max-ms` | int | `200` / `2000` | 指数退避 + 全抖动 |
 
-当前工作区的整体 deadline 在持续有 token 的流中也会到期；生成可能超过默认 60s 时需显式增加 `timeout-ms`。心跳不会延长整体期限，重试/回退会分别使用各自的尝试预算。该行为修复尚未包含在 v0.3.1 发布资产中。
+当前工作区的整体 deadline 在持续有 token 的流中也会到期；生成可能超过默认 60s 时需显式增加 `timeout-ms`。心跳不会延长整体期限，重试/回退会分别使用各自的尝试预算。该行为包含在v0.4.0中，历史测量仍按原产物记录。
 
 ### 双向 header 透传（gateway.headers.*）
 
 `upstream-allow`（默认 `anthropic-version`/`openai-beta`/`x-request-id`/`traceparent`/
 `tracestate`/`baggage`）与 `client-allow`（`x-ratelimit-*`/`retry-after` 等）。尾部
 `*` 前缀匹配；`Authorization`/Host/逐跳头/Content-Type 等受保护头**无论配置如何都
-不透传**（文件/转写上传体例外：Content-Type 携带 boundary，即使可选白名单为空也保留）。未发布工作区已修复该上传头原先被删除的问题；通过白名单的 `anthropic-version` 替换 provider 默认值，只发送一个版本头。
+不透传**（文件/转写上传体例外：Content-Type 携带 boundary，即使可选白名单为空也保留）。v0.4.0已修复该上传头原先被删除的问题；通过白名单的 `anthropic-version` 替换 provider 默认值，只发送一个版本头。
 
 ### 模型目录与预算（gateway.models[] / api-keys[].budget-micro-usd）
 
@@ -249,8 +251,10 @@ API key ID 不得使用 `model:` / `group:` 前缀，以免与模型限流、群
 
 ### 密钥管理（gateway.keys-store-path）
 
-运行时 `POST /admin/keys` 创建的 key 持久化到该 0600 JSON 文件并随启动恢复；
-空值关闭持久化。
+当前应用的 Key 统一落 SQLite；`gateway.keys-store-path` 指向旧 JSON 导入源，空值仅关闭旧文件导入，不关闭 SQLite 持久化。
+新库首次启动导入旧 JSON 与配置 Key，并记录一次性引导标记。之后新增、轮换和吊销通过控制面完成，重启不会以配置恢复已吊销凭据。
+默认数据库位于该路径的父目录（路径为空时 `./data/llmgw-control.db`），可用 `LLMGW_CONTROL_DB` 显式指定。
+迁移时保持旧 `hash-keys-at-rest` 设置，以正确识别旧明文/摘要及轮换链；导入后的 SQLite 始终仅保存摘要。
 
 ### 观测（gateway.observability.request-log-capacity / traceparent）
 
@@ -305,12 +309,14 @@ POST `{model,prompt}` → `{action,reason}`，不可达或无效响应时返回 
 ### 治理参数热更新
 
 `POST /admin/governance`（JSON 体，null 字段保持现值）原子换表：限流速率/桶容量、
-缓存大小/TTL、熔断阈值/冷却。路由表热更新仍是 `POST /admin/routes/reload`。
+缓存大小/TTL、熔断阈值/冷却。当前应用的路由统一通过 `/control/routes/publish` 发布；旧 `/admin/routes/reload` 对 SQLite 权威路由源返回409。
 
 ### 快照自动恢复（gateway.governance.snapshot-auto-restore）
 
-`true` 时启动时从 snapshot-path 恢复用量账本（与 `POST /admin/snapshot/save`
-配合）；默认 `false` 保持基准纯净。未发布工作区在启用自动恢复时要求文件存在且有效，缺失、损坏或恢复冲突会使启动失败；首次部署应先生成有效快照或保持关闭。
+当前应用使用 SQLite 持久累计用量，必须保持 `gateway.governance.snapshot-auto-restore=false`（默认）。
+重启直接恢复数据库账本，不能以 JSON 快照覆盖累计用量或在途预留；开启旧自动恢复会阻止启动。
+`/admin/snapshot/save` 可导出观测数据，`/admin/snapshot/load` 对此账本返回409。
+未知结果通过控制面核对接口处理，核对必须给出原因且不能核销当前在途请求。
 
 ## 4. 代码默认 ≠ 随仓库发布值（重要）
 
@@ -480,7 +486,7 @@ gateway:
 
 ```bash
 export DASHSCOPE_API_KEY='<密钥>'
-java -jar llmgw-app/target/llmgw-app-0.3.1.jar \
+java -jar llmgw-app/target/llmgw-app-0.4.0.jar \
   --spring.profiles.active=webflux,real \
   --gateway.upstream.base-url=http://127.0.0.1:8000/v1 \
   --gateway.routes[0].target-url=http://127.0.0.1:8000/v1 \
@@ -536,17 +542,11 @@ gateway:
 
 `weight` 是负载比例（3:1），不是优先级；精确 `model` 匹配优先于 `*`；精确 model 的同组路由之间才参与加权。
 
-### 9.5 运行时热替换路由（JSON 形式）
+### 9.5 运行时发布路由
 
-```bash
-curl -sS -X POST http://127.0.0.1:8080/admin/routes/reload \
-  -H "X-Admin-Token: $LLMGW_ADMIN_TOKEN" \
-  -H 'Content-Type: application/json' \
-  -d '[{"id":"a","model":"*","targetUrl":"http://127.0.0.1:9090/mock/v1","weight":1},
-       {"id":"b","model":"*","targetUrl":"http://127.0.0.1:9090/mock/v1","weight":3}]'
-```
+使用`/control/`平台管理员会话，获取当前版本，然后携带当前CSRF和`expectedVersion`提交完整结构化JSON到`POST /control/routes/publish`。字段使用camelCase，供应商凭据使用`secretId`与其`tenantId/projectId`，禁止明文`apiKey`。回滚调用`POST /control/routes/rollback`并追加新版本；冲突返回409后重新读取候选版本。
 
-字段名是 **camelCase**（`targetUrl` / `targetModel` / `apiKey`），与 yml 里的 kebab-case（`target-url`）不同——这是 Jackson record 绑定，别写错。校验规则见 [使用手册 5.1](USER_GUIDE.md#51-路由热替换)。
+SQLite提交与审计成功后才激活真实数据面，重启恢复最新已发布版本。旧`POST /admin/routes/reload`对当前权威路由源返回409。完整示例与权限见[控制面操作](control-plane-operations.md)和[OpenAPI](openapi.yaml)。
 
 ### 9.6 压测口径（脚本自动注入，不要手写）
 
@@ -566,9 +566,9 @@ curl -sS -X POST http://127.0.0.1:8080/admin/routes/reload \
 
 | 配置 / 状态 | 能否运行时热更 | 机制 |
 | --- | --- | --- |
-| **路由表** | ✅ 能 | `POST /admin/routes/reload`，先全量校验再一次 CAS 换 `AtomicReference<RouteTable>`，在途 SSE 不中断；`GET /admin/routes` 的 `X-LLMGW-Config-Version` 递增 |
-| 快照用量账本 | ✅ 能（手动、非幂等安全） | `POST /admin/snapshot/load`，按 ID 替换；目标有在途预留时整批拒绝，建议停流量后操作 |
-| 静态 `api-keys` 配置 | 配置文件修改需重启 | 内存默认包可通过 `/admin/keys` 管理运行时 key；Redis CRUD 尚返回 501 |
+| **路由表** | ✅ 能 | `/control/routes/publish`或`rollback`，版本冲突409；持久提交后激活，在途SSE保持原路由 |
+| 累计用量账本 | 不能用快照覆盖 | SQLite自动恢复；未知结果通过`/control/quotas/reconcile`核对，不能清除在途 |
+| 客户端key | 能 | 首次引导后由`/control/keys`管理；配置/旧JSON不在重启时覆盖已持久状态 |
 | rate/burst/cache/circuit 支持字段 | ✅ 能 | `POST /admin/governance` 更新 DynamicGovernanceSettings；不支持的构造期字段仍需重启 |
 | `governance-enabled` / `admin-token` / `max-request-bytes` | ❌ 不能 | 启动时绑定 |
 | `upstream.*` / `mock.*` / `server.port` | ❌ 不能 | 启动时绑定；mock 是构造期决定是否起服务 |
@@ -586,7 +586,7 @@ curl -sS -X POST http://127.0.0.1:8080/admin/routes/reload \
 | 请求打到 404 / 上游路径重复 | 上游基址与协议端点不匹配 | 通常配置到 `/v1`；已经以正确协议后缀结尾的完整 URL 会复用 |
 | 上游返回 401 | `api-key` 为空或仍是字面量 `${...}`；此时网关**不发** `Authorization` 头 | 通过 `DASHSCOPE_API_KEY` 注入真实值 |
 | `/admin/routes/reload` 400 | `specs` 为空；`id` 空白/重复；`targetUrl` 非 http(s)；`fallback` 引用了不存在的 id | 按 `AdminController.reloadRoutes` 的校验逐条修；字段名用 camelCase |
-| `/admin/routes/reload` 409 | `RouteConfigSource` 只读或不可用 | 默认 `InMemoryRouteConfigSource` 可写；检查是否替换成了只读实现 |
+| `/admin/routes/reload` 409 | `RouteConfigSource` 只读或不可用 | 当前SQLite权威源不接受旧入口替换；使用/control/routes/publish |
 | `/admin/*` 401 | 设置了 `LLMGW_ADMIN_TOKEN` 但请求没带 `X-Admin-Token` | 补头；未设置令牌时是放行 |
 | 指标里 `engine=unknown` | `llmgw.engine` 未通过 profile 正确设置 | 用 `--spring.profiles.active=webflux|vt` 启动，别手改 `llmgw.engine` |
 | 压测全是 429 | 用了演示默认配额 | 走 `bench-matrix.sh`，或手动注入 `BENCH_*` 四个极大阈值 |
@@ -612,12 +612,12 @@ bench/results/ / target/ / bin/native/
 
 配置层面的硬性要求（`SECURITY.md`）：
 
-1. `LLMGW_ADMIN_TOKEN` 在**任何共享环境**必须设置，否则 `/admin/*` 全员可读写（含路由热替换、快照恢复、查看 keys）。
+1. `LLMGW_ADMIN_TOKEN` 在**任何共享环境**必须设置，否则 `/admin/*` 全员可读写（其中路由替换及快照覆盖仍被SQLite权威源拒绝）。
 2. 删除字面量 `sk-demo`，替换 `gateway.api-keys`。
-3. 上游密钥只走 `DASHSCOPE_API_KEY` 环境变量；`/admin/routes` 只回 `apiKeyConfigured` 布尔值，不回显密钥。
+3. 上游密钥通过外部环境或/control/secrets的加密存储注入；`/admin/routes` 只回 `apiKeyConfigured` 布尔值，不回显密钥。
 4. 无内建 TLS / mTLS / WAF，传输加密与入口防护由前置反向代理或服务网格承担。
-5. 上游响应头不透传（`x-ratelimit-*` 等），不要依赖网关传递厂商配额语义。
-6. 配额不是硬上限；需要财务级上限请自行替换 `UsageLedger` SPI。
+5. 响应头按gateway.headers.client-allow白名单透传，受保护头始终剥离。
+6. 配额不是硬上限；累计token治理不是财务硬预算。
 
 ---
 

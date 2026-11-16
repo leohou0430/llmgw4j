@@ -18,27 +18,21 @@ Java 包名 `io.github.leohou0430.llmgw`，采用 [Apache-2.0](LICENSE) 许可�
 > 部署前的安全边界见 [SECURITY.md](SECURITY.md)。
 > 生产必须启用 `gateway.production=true`；默认配置仅用于本地演示。金额硬预算尚无内建持久共享账本，不能作为生产财务保证。
 
-> 当前发布：**v0.3.1**。升级变化与兼容边界见 [发布说明](docs/releases/v0.3.1.md)，性能证据见 [性能说明](docs/PERFORMANCE.md)。
-
-> v0.3.1 引入项目内原生 SPI / 多模块重构；从 v0.2.0 升级的 Java 扩展作者请阅读 [扩展与迁移说明](docs/EXTENSIONS.md)。
-
-> 未发布工作区的三步审查与产物证据见[执行清单](docs/plans/2026-11-11-three-stage-review.md)、[多副本治理](docs/verification/multi-replica/2026-11-11/README.md)和[官方 SDK 兼容矩阵](docs/verification/compatibility/2026-11-11/README.md)。Redis 凭据哈希升级需协调迁移；最新功能回归不能替代旧产物之外的 native/性能复测。
-
-> 后续补验已完成：[最新本机 WebFlux native](docs/verification/native-compatibility/2026-11-11/README.md)通过26项官方SDK及流式/协议/租户回归；[DeepSeek 实际调用](docs/verification/live-provider/2026-11-11/README.md)完成指定模型的JSON与SSE两次验收。native与真实供应商的覆盖范围分别记录，不混用性能结论。
-
-> Linux amd64 双引擎 native 后续验收已完成，见[Linux/VT 报告](docs/verification/linux-native/2026-11-11/README.md)；功能验证不等于容量或公网 TLS 验证。
-
-> [Linux WebFlux G1 补验](docs/verification/native-g1/2026-11-12/README.md)完成2C2G三方稳态对照、慢客户端和TLS：本批G1相较Serial native端到端p99降低16.7%，CPU与内存开销增加。使用已有显式G1选项，默认配置不变；[早期容量报告](docs/verification/native-capacity/2026-11-12/README.md)的各产物结论分别保留。
+> 当前发布：**v0.4.0**。详见[发布与升级说明](docs/releases/v0.4.0.md)。应用面向单进程 Java + SQLite：密钥、项目/key累计token账本、资源目录和已发布路由统一持久化；Redis为可选治理后端，不代表支持多网关副本共享此数据库。
+>
+> `/control/` 提供基于账号、会话、CSRF和角色范围的管理闭环。首次设置 `LLMGW_ADMIN_USERNAME`、`LLMGW_ADMIN_PASSWORD`，凭据加密另需 `LLMGW_ROOT_KEY`，详见[控制面操作](docs/control-plane-operations.md)。旧`/admin`无凭据本地演示例外不可暴露；生产配置legacy凭据后默认禁用token访问，迁移需显式受限模式。
+>
+> [16项审查修复与验证](docs/reviews/2026-11-16-remediation/README.md)记录默认/Redis/可选profile、双引擎native行为及2CPU/2GiB上传场景；本批未重做通用吞吐A/B或真实供应商测量，历史数字仍属于原始冻结产物。
 
 ## 核心能力（对照主流网关差距分析补齐，详见 [docs/gap-analysis.md](docs/gap-analysis.md)）
 
 - **转发治理**：同路由重试+指数退避、三段式超时（connect/首字节/空闲读）、双向 header
   白名单透传、SSE 心跳、加权负载均衡 + failover + 窗口熔断、路由表与治理参数双热更新
 - **协议面（8 协议字节透传）**：chat / responses / messages / images / videos /
-  embeddings / rerank / audio-speech——协议是**路由维度而非转换维度**
+  embeddings / rerank / audio-speech；默认字节透传，可显式启用chat/responses/messages到DeepSeek Chat的受控转换
 - **密钥与预算**：API key 运行时管理（创建/吊销/TTL/metadata，**SHA-256 哈希存储**，
   重启恢复）、**key 轮换**（overlap 窗口）、**HS256 JWT 入口认证**（issuer/audience 与时间声明校验；
-  其他算法可用 `TokenValidator` SPI 自行扩展）、token 配额（在途预留+退款）、**金额预算实验**（模型价目 → 内存微美元记账，生产硬预算暂不支持）、**per-model 限流**与 **per-group 金额预算实验**、按组花费聚合
+  其他算法可用 `TokenValidator` SPI 自行扩展）、项目/key两级持久累计token配额（原子在途预留、已知结果结算、未知结果保守占额）、**金额预算实验**（模型价目 → 内存微美元记账，生产硬预算暂不支持）、**per-model 限流**与 **per-group 金额预算实验**、按组花费聚合
 - **provider 适配**：`UpstreamAuthenticator` SPI——OpenAI 兼容 Bearer 与 Anthropic
   原生（x-api-key + anthropic-version）方言随路由选择
 - **可观测**：Micrometer/Prometheus 指标、TTFT/上游耗时/网关开销、审计环、
@@ -46,7 +40,7 @@ Java 包名 `io.github.leohou0430.llmgw`，采用 [Apache-2.0](LICENSE) 许可�
 - **内容与缓存**：Guardrail SPI（本地正则 + 外接审核引擎，均带决策/向量缓存）、
   **语义缓存**（Embedder SPI + 请求分区 + **进程内余弦相似度检索**，实测同义改写命中）、
   精确缓存、`DELETE /admin/cache` 失效 + `X-LLMGW-No-Cache` 旁路
-- **多副本**：`-Predis`（Lua 原子限流/配额/熔断 + 跨副本 key 表与响应缓存）
+- **可选 Redis**：`-Predis`提供限流、熔断、缓存等治理实现；当前应用密钥与token账本仍由SQLite统一管理，部署范围为单副本
 - **转发韧性**：同路由重试 + 指数退避、**上游 `Retry-After` 感知**、context-overflow
   识别（跳过同路由重试直达 fallback）、三段式超时、加权 LB + failover + 熔断
 - **管理面**：审计导出（`/admin/audit/export`）、**审计导出只读 token**、请求日志、
@@ -63,7 +57,7 @@ llmgw4j 是**模型数据面网关**：字节保真透传 + LLM 语义治理。�
 - WebSocket / gRPC 入口、HTTP/2 上游（南北向流量治理交给前置代理）
 - Prompt 模板管理、SSE 流内容改写（与字节透传契约冲突）
 - MCP / A2A Agent 协议、内置 PII 改写（PII 走外接 Guardrail 引擎）
-- DB-first 持久化（默认零依赖 JSON/内存，SQLite/Redis 为可选 SPI 实现）
+- 多网关副本共享SQLite、分布式配置发布、财务级硬预算
 
 ## 一、架构
 
@@ -111,7 +105,12 @@ llmgw4j 是**模型数据面网关**：字节保真透传 + LLM 语义治理。�
 | └ `llmgw-provider-openai` / `anthropic` | 无框架认证方言，经 按名称选择 |
 | └ `llmgw-provider-openai-sdk` | SDK 校验/显式连通性检查，与轻量认证模块分离 |
 | `llmgw-tokenizer` | tokenizer-api + heuristic / 可选 jtokkit，经项目命名扩展选择准入估算器 |
-| `llmgw-app` | 组合根：启动类、profile 配置、mock 上游、管理 API、native hints |
+| `llmgw-identity` | identity-api + default：账号、会话、RBAC、凭据签发和登录治理 |
+| `llmgw-control` | control-api + default：路由版本、平台策略、根密钥与加密契约 |
+| `llmgw-persistence` | persistence-api + sqlite：连接/事务、迁移、持久key与token账本、备份和空间保护 |
+| `llmgw-catalog` | catalog-api + default：项目资源生命周期、固定来源和分页目录 |
+| `llmgw-conversion` | conversion-api、chat/messages/responses入口、DeepSeek适配与显式组合模块 |
+| `llmgw-app` | 组合根：`control-sqlite`统一权威实例、HTTP管理桥、mock与native hints |
 
 各能力域的依赖方向均由 Maven 强制为**单向无环**：
 
@@ -122,16 +121,15 @@ llmgw-core   领域核心：SPI、协议 DTO、路由、请求管线（engine / 
     └──> llmgw-governance-api ───> llmgw-governance-default
                             └────> llmgw-governance-redis（仅 -Predis 链入）
 
-llmgw-app   组合根：同一 fat jar 装两个数据面实现（profile 二选一）+ 一个治理实现包
+llmgw-app   组合根：同一fat jar装两个数据面实现（profile二选一），基础治理/可选Redis与control-sqlite显式组装
 ```
 
-同域实现之间**互不依赖**，跨域也**不互相引用**（数据面只看 `llmgw-core` 的 SPI，
-治理实现包不出现在数据面的 POM 里）。
+同域实现之间互不依赖。跨域通过core或对应api契约连接：数据面使用catalog/conversion等契约，不能依赖同域其他引擎实现或扫描治理实现。基础模块不引入Spring/Reactor，HTTP适配留在app与两引擎实现。
 
 **边界判断**：`GatewayPipeline` / `UpstreamProvider` / `ChunkSink` 以及
 `GovernanceChain` / `TokenLimiter` / `UsageLedger` 等 SPI 都留在 `llmgw-core`，
 因为它们被 engine、governance、provider、app 共同依赖；搬进任一子系统都会让
-下层模块反向依赖上层，形成环。两个 `-api` 承载的是「**只有本域实现需要、
+下层模块反向依赖上层，形成环。各域`-api`承载的是「**只有本域实现需要、
 且多个实现逐字重复**」的部分，不是 SPI 定义本身。
 
 ### 模块布局与 SPI 扩展
@@ -150,17 +148,17 @@ llmgw-app   组合根：同一 fat jar 装两个数据面实现（profile 二选
 2. **为什么热点链路不让 SDK 碰**：SDK 会反序列化再序列化，厂商扩展字段（`reasoning_content` 等）会丢。网关的价值是协议保真，所以网关按协议各解析少量字段（model / stream / prompt 类文本）用于路由和计量，原始 chunk 与响应体原样透传，网关不做任何协议翻译。
 3. **为什么治理分热路径/旁路**：鉴权、配额、限流是纯内存原子操作，留在热路径；SSE 计量、账单、审计、快照交给公共 `VirtualThreadPerTaskExecutor`，避免阻塞事件循环，也让两个引擎的对照公平。
 4. **为什么不用 Spring AI / LangChain4j**：它们是应用框架（`ChatModel` / `AiServices`），目标是帮应用「调模型」；网关要的是「原样转发字节流」。选官方 `openai-java` 只做校验与连通性验证，是折中且克制的选择。
-5. **为什么全内存**：零外部依赖、native 编译最干净。持久化通过 `SnapshotStore` SPI + JSON 快照导出，README 明说这是单机演示。
+5. **状态权威**：基础模块保持框架中立，应用由命名 `control-sqlite` 模块统一装配持久密钥、账本、路由和目录；HTTP只导出同一个原生实例图，JSON快照不能覆盖累计账本。
 6. **推理延迟与代理开销应分场景测量**：历史内嵌 mock 的 8 组结果只适用于当时配置，不能推广到所有运行时或竞品。当前统一容器测试分别保留低延迟与模拟推理场景；当代理开销相对较小时，端到端差距会缩小，但不能据此假定网关永远不是瓶颈。当前结果和范围见 [对比报告](docs/gap-analysis.md)。
 7. **流式失败要按「首字节是否已出」分层处理**：HTTP 状态在第一个字节写出后才不可逆。网关在首 chunk 前保持响应未提交（VT 不再提前 `flushBuffer()`），上游失败就返回真正的 **502 + JSON**；一旦已发 chunk，只能带内报错 `event: error` 再补 `[DONE]`。**fallback 只允许在首 chunk 前发生**，否则两个上游的 chunk 会拼成一段语义错乱的回答。`bin/smoke-stream-errors.sh` 用 mock 的 `mock-fail-after-N` / `mock-eof-after-N` 标记覆盖这些边界，v5 扩充为 JVM 双引擎 55 项、单个 native 28 项断言。
 8. **请求体只解析一次**：`GatewayPipeline.enter` 解析出的 `ParsedRequest` 挂在 `GatewayDecision` 上，两个 controller 直接复用，不再各 parse 一遍同一个 JSON。准入与转发共用一次反序列化结果，是网关热路径最基本的节约。
 9. **传输层 EOF ≠ 协议层完成**：上游干净关闭连接时 HTTP 客户端不会抛异常，代理若把「没报错」当成功、甚至替上游补一帧终止帧，就会把被截断的回答伪装成完整回答——客户端不报错、账单不记失败、上游故障被静默吞掉。本项目把「上游是否显式发出**该协议自己的终止帧**」作为唯一完成判据（chat=`data: [DONE]`、Responses=`response.completed`、Messages=`message_stop`；images / videos 无流式），两个引擎共用 `ProtocolCodec.truncatedMessage(kind)`；网关**永远不伪造终止帧**——带内错误后的 `[DONE]` 只对 CHAT 追加，responses / messages 的错误事件之后直接干净断流，绝不替上游补另一种协议的终止帧。这是透明代理与「自作主张的中间件」的分界线。
 
-10. **透明代理要同时守住三条资源契约**：上游非 2xx 在 BodyHandler 收到响应头时判定；下游 demand 透传给 JDK Flow.Subscription；正常结束不取消 transport，只有取消/超时等终止路径才中止实际 HTTP future/订阅。v0.3.1 将该逻辑移入无 Reactor 的 provider-http-jdk。账单和审计必须覆盖取消，退还预留；单元测试与双引擎「40 路并发 SSE」契约覆盖连接复用竞态。
+10. **透明代理要同时守住三条资源契约**：上游非 2xx 在 BodyHandler 收到响应头时判定；下游 demand 透传给 JDK Flow.Subscription；正常结束不取消 transport，只有取消/超时等终止路径才中止实际 HTTP future/订阅。v0.3.1 将该逻辑移入无 Reactor 的 provider-http-jdk。账单和审计覆盖取消；未知上游结果保留预留；单元测试与双引擎「40 路并发 SSE」契约覆盖连接复用竞态。
 
-11. **计量以 usage 为准，准入以原子预留为准**：SSE 的 `usage.completion_tokens` 是权威值，必须**覆盖**而非叠加逐 delta 估算（否则 8 个 chunk 记成 16）；非流式要从 `usage` 取真实值，不能拿整个 JSON 信封（id/时间戳/object）估算。配额检查 `used()+estimate>quota` 是读-改-写竞态，并发下会把额度超卖 N 倍，改成含在途请求的 CAS 预留、`finish` 时释放；令牌桶按实际用量结算，失败 / 取消 / 缓存命中退还预扣；refill 的时间戳只在真的铸出整数 token 时推进，否则高频调用会把不足 1 token 的时间片永久丢掉。
+11. **计量以 usage 为准，准入以原子预留为准**：SSE 的 `usage.prompt_tokens` 和 `usage.completion_tokens` 是权威值，必须**覆盖**而非叠加逐 delta 估算（否则 8 个 chunk 记成 16）；非流式要从 `usage` 取真实值，不能拿整个 JSON 信封（id/时间戳/object）估算。配额检查 `used()+estimate>quota` 是读-改-写竞态，并发下会把额度超卖 N 倍，改成含在途请求的 CAS 预留、`finish` 时释放；令牌桶按实际用量结算，失败 / 取消 / 缓存命中退还预扣；refill 的时间戳只在真的铸出整数 token 时推进，否则高频调用会把不足 1 token 的时间片永久丢掉。
 12. **缓存键必须是完整请求，不是 prompt**：`model + 文本 prompt` 会让 `temperature` / `max_tokens` / `tools` / 多模态 content 不同但文本相同的两个请求互串答案，并让截断答案污染后续 300 秒。改成完整请求体的 SHA-256（保守精确缓存：宁可 miss 不可错答），且只缓存校验过 `choices` 的合法响应。
-13. **管理面按默认最小暴露**：`/admin/routes` 原本直接序列化 `Route` record，里面的 `apiKey` 就是 `${DASHSCOPE_API_KEY}` —— 一个未鉴权 GET 会把上游厂商密钥交出去。现在只回显 `apiKeyConfigured` 布尔值，并支持 `LLMGW_ADMIN_TOKEN` 网关管理接口（本地演示默认空）。快照恢复改替换语义、SDK 客户端用后关闭、请求体有 4MB 上限。
+13. **管理面按默认最小暴露**：`/admin/routes` 原本直接序列化 `Route` record，里面的 `apiKey` 就是 `${DASHSCOPE_API_KEY}` —— 一个未鉴权 GET 会把上游厂商密钥交出去。现在只回显 `apiKeyConfigured` 布尔值，并支持 `LLMGW_ADMIN_TOKEN` 网关管理接口（本地演示默认空）。SQLite账本禁止快照覆盖、SDK 客户端用后关闭、请求体有 4MB 上限。
 
 ## 三、跑起来
 
@@ -193,7 +191,7 @@ curl -N -X POST http://127.0.0.1:8080/v1/chat/completions \
   -H 'Content-Type: application/json' -H 'Authorization: Bearer sk-demo' \
   -d '{"model":"qwen-plus","messages":[{"role":"user","content":"hi"}],"stream":true}'
 
-# 每个端点只路由到说同一种协议的上游，网关不做协议翻译
+# 默认透传路由指向同协议上游；受控转换须显式设置upstreamProtocol=chat
 # OpenAI Responses（流式终止帧是 response.completed，没有 [DONE]）
 curl -N -X POST http://127.0.0.1:8080/v1/responses \
   -H 'Content-Type: application/json' -H 'Authorization: Bearer sk-demo' \
@@ -222,24 +220,11 @@ curl -sS http://127.0.0.1:8080/admin/routes   # 只回显 apiKeyConfigured，不
 curl -sS http://127.0.0.1:8080/admin/keys
 curl -X POST http://127.0.0.1:8080/admin/snapshot/save
 
-# 热配置：整表替换（先校验后原子换引用，在途 SSE 不中断）
-curl -sS -X POST http://127.0.0.1:8080/admin/routes/reload \
-  -H 'Content-Type: application/json' \
-  -d '[{"id":"a","model":"*","targetUrl":"http://127.0.0.1:9090/mock/v1","weight":1},
-       {"id":"b","model":"*","targetUrl":"http://127.0.0.1:9090/mock/v1","weight":3}]'
-# GET /admin/routes 的响应头 X-LLMGW-Config-Version 会随之递增
 ```
 
-设置管理令牌后，所有 `/admin/*` 都要带 `X-Admin-Token`，否则 401：
+运行时路由由平台管理员通过`/control/routes/publish`发布完整JSON，使用当前会话CSRF与`expectedVersion`；回滚追加新版本，在途SSE不受影响。Key、项目额度和未知用量通过同一控制面管理，见[操作指南](docs/control-plane-operations.md)。
 
-```bash
-LLMGW_ADMIN_TOKEN=change-me ./bin/run-webflux.sh
-curl -sS -H 'X-Admin-Token: change-me' http://127.0.0.1:8080/admin/routes
-```
-
-请求体默认上限 4MB（`gateway.max-request-bytes`），超限返回 413。
-快照恢复是**手动**的（`POST /admin/snapshot/load`，替换语义、可重复调用）；
-不做启动时自动恢复，因为压测每组都单独起进程，一份残留快照会把配额变成不可控变量。
+旧`/admin`仅作为本地演示/受限迁移入口：未配置legacy凭据时不可暴露到共享网络；配置token后默认disabled，需要显式迁移模式才能使用。SQLite用量自动恢复，`/admin/snapshot/load`不能覆盖权威账本。请求体默认4MiB，超限413。
 
 **v6 能力**：
 
@@ -260,7 +245,7 @@ curl -sS -H 'X-Admin-Token: change-me' http://127.0.0.1:8080/admin/routes
 接真实上游（阿里百炼 OpenAI 兼容端点，读环境变量 `DASHSCOPE_API_KEY`）：
 
 ```bash
-java -jar llmgw-app/target/llmgw-app-0.3.1.jar \
+java -jar llmgw-app/target/llmgw-app-0.4.0.jar \
   --spring.profiles.active=webflux,real
 curl -sS http://127.0.0.1:8080/admin/verify   # SDK 连通性验证
 ```
@@ -349,9 +334,9 @@ JVM 冷启动 **3.538–6.946s**、native **0.387–0.560s**（矩阵实测，�
 
 上游 SSE 已补齐[单行字节边界](docs/verification/sse/2026-11-11/README.md)：默认 1 MiB，可配置；在解码缓冲前拒绝超长无换行正文，不限制合法长流累计大小。
 
-最新未发布的[生命周期与大帧补审](docs/verification/lifecycle/2026-11-11/README.md)修复线性行解码、WebFlux大行出口预取OOM、VT断开误记熔断，以及未完成行的空闲误判；211项三profile与固定JAR契约通过，64慢读/45秒及2C2G容量已复验，当前WebFlux native构建与功能契约也已通过。性能数据与边界见[本轮复验](docs/verification/lifecycle/2026-11-11/capacity-results.md)，不宣称全面提速。
+历史[生命周期与大帧补审](docs/verification/lifecycle/2026-11-11/README.md)修复线性行解码、WebFlux大行出口预取OOM、VT断开误记熔断，以及未完成行的空闲误判；211项三profile与固定JAR契约通过，64慢读/45秒及2C2G容量已复验，当前WebFlux native构建与功能契约也已通过。性能数据与边界见[本轮复验](docs/verification/lifecycle/2026-11-11/capacity-results.md)，不宣称全面提速。
 
-当前未发布工作区已完成 [2C2G 单副本容量与能力审查](docs/verification/capacity/2026-11-11/README.md)，已修复动态 URI 缓存无界、VT 错误体绕过大小限制、流式空闲计时和正文整体超时；这些修复不属于 v0.3.1 发布资产。
+已完成历史 [2C2G 单副本容量与能力审查](docs/verification/capacity/2026-11-11/README.md)，已修复动态 URI 缓存无界、VT 错误体绕过大小限制、流式空闲计时和正文整体超时；这些修复包含在v0.4.0；本批报告仍按原产物归属。
 
 历史冻结性能审查减少 SSE 字符串复制和 WebFlux header 集合创建，局部分配分别下降约 22%–48% 和 32%。64 个 A/B 样本、约 422 万请求零错误。WebFlux SSE 吞吐中位数在治理开/关两批分别 +7.3% / +5.2%，但范围重叠；JSON 一正一负，不能声称全面稳定提速。
 
@@ -362,9 +347,9 @@ JVM 冷启动 **3.538–6.946s**、native **0.387–0.560s**（矩阵实测，�
 | 风险 | 现状 / 预案 |
 |---|---|
 | **官方 SDK 很重** | `com.openai:openai-java` 4.100.0 SDK 对产物体积有明显影响；旧构建的大小不能代替 v0.3.1 资产测量。SDK 只在校验/连通性路径，轻量认证已独立拆包 |
-| **默认全内存，多副本用 `-Predis`** | `-Predis` 覆盖 TokenLimiter/UsageLedger/CircuitBreaker/**ApiKeyRegistry/SemanticCache/TaskRouteSticky**；仍是本地实现的 SPI：`BudgetLedger` / `RequestLogSink` / `SnapshotStore`（生产替换为 JDBC/Redis） |
+| **应用单进程SQLite，可选`-Predis`** | Redis提供限流/熔断/缓存等实现；应用Key、累计token账本与发布路由始终归SQLite；无多网关副本部署承诺 |
 | **配额不是最终用量硬上限** | 准入按估算做含在途的原子预留，成功后按实际用量结算；并发下最终 used 可能略超 quota（预留+结算语义，非超卖竞态）。需要硬上限改「按估算上限结算」 |
-| **Redis 模式是延迟换一致性** | 每请求 2–4 次 Redis 往返，未做流水线合并；只需跨副本一致时启用，默认全内存零影响 |
+| **Redis 模式是延迟换一致性** | 每请求 2–4 次 Redis 往返，未做流水线合并；按治理需要启用；默认不链接Redis，SQLite仍持久化本实例权威状态 |
 | **Native 需按引擎分编** | AOT 构建期求值 `@Profile`，两个引擎各一个二进制 |
 | **token 计量在无 usage 帧时是估算** | `estimateTokens` 启发式（len/4 + CJK）；可用 `-Pjtokkit` 接入可选 tokenizer，模型覆盖需验证 |
 | **压测口径要一致** | 单机 directional；A/B 结论以同 worktree 基线为准，数据质量红线见 `bench/README.md` |
@@ -411,3 +396,7 @@ JVM 冷启动 **3.538–6.946s**、native **0.387–0.560s**（矩阵实测，�
 | [docs/USER_GUIDE.md](docs/USER_GUIDE.md) / [docs/CONFIGURATION.md](docs/CONFIGURATION.md) | 接口与配置全典 |
 | [CHANGELOG.md](CHANGELOG.md) | 版本变更史 |
 | [docs/archive/](docs/archive/) | 历史归档：逐版本压测演进、第一轮差距分析、执行看板 |
+
+### 持久控制面
+
+浏览器访问 `/control/`。首次启动须显式设置管理员环境凭据；建立租户/项目、设置项目累计 token 额度后再发放项目 Key。网页支持项目选择、分级账号创建、Key 轮换/吊销、额度调整、用量/目录/审计和平台全局路由发布/回滚。会话通过 `/control/session` 恢复 CSRF；无默认账号。部署、升级、权限矩阵和固定 JAR 验证见 [控制面操作说明](docs/control-plane-operations.md)，接口见 [OpenAPI](docs/openapi.yaml)。

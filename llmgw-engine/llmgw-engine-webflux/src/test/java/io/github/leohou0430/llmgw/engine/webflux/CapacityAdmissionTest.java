@@ -158,6 +158,7 @@ class CapacityAdmissionTest {
             context.register(WebConfig.class,WebfluxEngineConfiguration.class);
             context.registerBean(ProbeAdminController.class);
             context.registerBean(WebfluxGatewayController.class,()->new WebfluxGatewayController(chain,router,provider,CircuitBreaker.noop(),properties,headers,tasks));
+            context.getEnvironment().getPropertySources().addFirst(new org.springframework.core.env.MapPropertySource("spool-instance", java.util.Map.of("llmgw.spool-directory", java.nio.file.Path.of(System.getProperty("java.io.tmpdir"), "llmgw-capacity-" + java.util.UUID.randomUUID()).toString())));
             context.refresh();handler=WebHttpHandlerBuilder.applicationContext(context).build();
         }
         CountingAdapter adapter(){return (CountingAdapter)context.getBean(RequestMappingHandlerAdapter.class);}

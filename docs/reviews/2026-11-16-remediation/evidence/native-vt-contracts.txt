@@ -1,0 +1,20 @@
+PASS vt: JWT JSON/SSE claims, audience, expiry and static-key compatibility
+
+PASS vt chat-s1-text-multiturn
+PASS vt chat-s2-stream-usage
+PASS vt chat-s3-tool-continuation
+PASS vt chat-s4-thinking-continuation
+PASS vt chat-s5-image
+PASS vt chat-s6-cancel-recover
+PASS vt responses-s1-text
+PASS vt responses-s2-stream
+PASS vt responses-s3-tool-continuation
+PASS vt responses-s4-thinking
+PASS vt responses-s5-image
+PASS vt responses-s6-cancel-recover
+PASS vt messages-s1-text
+PASS vt messages-s2-stream-usage
+PASS vt messages-s3-tool-continuation
+PASS vt messages-s4-thinking
+PASS vt messages-s5-image
+PASS vt messages-s6-cancel-recover

@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# v13 platform regression: $ hard budgets, governance hot reload, request log,
+# v13 platform regression: $ estimated budgets, governance hot reload, request log,
 # admin console, runtime key lifecycle (create/use/revoke) and group spend.
 # Usage: ./bin/smoke-v13-platform.sh [webflux|vt]   (default: both)
 set -uo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-JAR="${LLMGW_TEST_JAR:-$ROOT/llmgw-app/target/llmgw-app-0.3.1.jar}"
+JAR="${LLMGW_TEST_JAR:-$ROOT/llmgw-app/target/llmgw-app-0.4.0.jar}"
 PORT="${PORT:-8080}"
 MOCK_PORT="${MOCK_PORT:-9090}"
 ENGINES="${1:-webflux vt}"
@@ -58,7 +58,12 @@ stop() {
 start() {
   local engine="$1"; shift
   stop
-  java -jar "$JAR" --spring.profiles.active="$engine" --server.port="$PORT" \
+  local state_dir
+  state_dir="$(mktemp -d "$TMP/state.XXXXXX")"
+  DASHSCOPE_API_KEY="" LLMGW_CONTROL_DB="$state_dir/control.db" GATEWAY_KEYS_STORE_PATH="$state_dir/keys.json" java -jar "$JAR" --spring.profiles.active="$engine" --server.port="$PORT" \
+    --gateway.admin-token-mode=migration --gateway.mock.port="$MOCK_PORT" \
+    --gateway.upstream.base-url="http://127.0.0.1:$MOCK_PORT/mock/v1" \
+    '--gateway.routes[0].target-url='"http://127.0.0.1:$MOCK_PORT/mock/v1" \
     "$@" > "$TMP/gateway.log" 2>&1 &
   PID=$!
   wait_health
@@ -78,8 +83,8 @@ echo "======== v13 platform: budget / hot reload / requests / console / keys ===
 
 for engine in $ENGINES; do
   echo "--- engine=$engine ---"
-  # Model catalog prices everything at $1/M in+out; demo key budget = 300 micro-USD.
-  # One request (est ~250 micro reserved, ~127 settled) exhausts it on the next call.
+  # Controlled model prices use $1/M in+out; a 200 micro-USD estimate
+  # reservation fits once, then the positive actual usage blocks the next reservation.
   start "$engine" \
     --gateway.governance.snapshot-path="$TMP/snapshot.json" \
     --gateway.keys-store-path="$TMP/keys.json" \
@@ -89,7 +94,7 @@ for engine in $ENGINES; do
     '--gateway.api-keys[0].id=demo' \
     '--gateway.api-keys[0].token=sk-demo' \
     '--gateway.api-keys[0].group=team-a' \
-    '--gateway.api-keys[0].budget-micro-usd=250' \
+    '--gateway.api-keys[0].budget-micro-usd=200' \
     '--gateway.api-keys[0].quota-tokens=100000000' \
     '--gateway.auth.jwt-secret=jwt-bench-secret' \
     '--gateway.auth.jwt-issuer=bench' \
@@ -100,16 +105,15 @@ for engine in $ENGINES; do
     '--gateway.group-budgets[0].group=team-b' \
     '--gateway.group-budgets[0].budget-micro-usd=500000'
 
-  # 1. Budget, with exact arithmetic: a 400-char ASCII prompt estimates to
-  # ceil(400/4)=100 tokens. Admission reserves cost(100,100)=200 micro-USD;
-  # settle books cost(100 prompt, 1 completion)=101. Budget 250 -> request 1
-  # fits (200<=250), request 2 denies (101+200=301>250). Deterministic.
+  # 1. Estimated budget admission: reserve 100+100=200 micro-USD.
+  # The mock reports authoritative usage (1+1); the first call fits 200,
+  # but any positive settlement makes the next 200-token reservation fail.
   longPrompt=""
   longPrompt=$(printf 'B%.0s' $(seq 1 400))
   body=$(chat "{\"model\":\"m\",\"messages\":[{\"content\":\"$longPrompt\"}]}")
   assert_contains "$body" '"object":"chat.completion"' "$engine first request inside budget succeeds"
   body=$(chat "{\"model\":\"m\",\"messages\":[{\"content\":\"$longPrompt\"}]}")
-  assert_contains "$body" 'spend budget exceeded' "$engine second request hits the hard budget stop"
+  assert_contains "$body" 'spend budget exceeded' "$engine second request hits the estimated budget admission stop"
 
   # 2. Spend bookkeeping lands in the snapshot, rolled up by group.
   snap=$(curl -s --noproxy '*' "http://127.0.0.1:$PORT/admin/snapshot")
@@ -229,13 +233,13 @@ JEOF
   [[ "$location" == *"/control/index.html" ]] && ok "$engine admin console redirects" \
     || bad "$engine admin console expected redirect to /control/index.html, got $location"
   page=$(curl -s --noproxy '*' "http://127.0.0.1:$PORT/control/index.html")
-  assert_contains "$page" 'llmgw control plane' "$engine control console serves"
+  assert_contains "$page" 'llmgw 控制台' "$engine control console serves"
   stop
 
   # 7. W4.1 guardrails: local pattern deny + external engine deny, clean passes.
   start "$engine" \
     '--gateway.guardrails.deny-patterns[0]=secret-project' \
-    '--gateway.guardrails.http-url=http://127.0.0.1:9090/mock/v1/guardrail'
+    "--gateway.guardrails.http-url=http://127.0.0.1:$MOCK_PORT/mock/v1/guardrail"
   body=$(chat '{"model":"m","messages":[{"content":"tell me about the secret-project"}]}')
   assert_contains "$body" 'blocked by guardrail pattern-deny' "$engine pattern guardrail blocks locally"
   body=$(chat '{"model":"m","messages":[{"content":"deny-me please"}]}')

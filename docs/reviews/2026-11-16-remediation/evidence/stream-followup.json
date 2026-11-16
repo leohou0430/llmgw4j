@@ -1,0 +1,9 @@
+{
+  "result": "PASS",
+  "engine": "vt",
+  "scenario": "remaining weighted-routing and single-parse assertions after suite wall-clock deadline",
+  "requests": 200,
+  "light": 52,
+  "heavy": 148,
+  "jarSha256": "e0b34013f367825dd08c009a81a60998eb02582c345a5546f92de61769c1c116"
+}

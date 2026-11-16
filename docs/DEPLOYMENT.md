@@ -1,8 +1,10 @@
-# llmgw4j 部署指南（v0.3.1）
+# llmgw4j 部署指南（v0.4.0）
 
-> v0.3.1 使用项目内原生 SPI。内部 API、模块及 Redis 配置升级方式见 [扩展与迁移说明](EXTENSIONS.md)。
+> v0.4.0 使用项目内原生 SPI。内部 API、模块及 Redis 配置升级方式见 [扩展与迁移说明](EXTENSIONS.md)。
 
-当前未发布工作区的 [2C2G 单副本审查](verification/capacity/2026-11-11/README.md)记录默认 64 并发保护下的容量与恢复边界。正文整体超时等修复尚不属于 v0.3.1 发布资产；长生成应按 [配置说明](CONFIGURATION.md)显式设置尝试期限。
+当前版本的单进程2CPU/2GiB上传与恢复场景见[本轮修复验证](reviews/2026-11-16-remediation/README.md)。[较早容量审查](verification/capacity/2026-11-11/README.md)保留原产物归属；长生成按[配置说明](CONFIGURATION.md)显式设置整体尝试期限。
+
+当前工作区采用单进程 Java + SQLite 控制面，部署前按 [控制面说明](control-plane-operations.md) 配置数据库持久卷、独占暂存目录、管理员账号及根密钥。Redis profile 仅替换其治理能力，密钥、累计 token 账本与已发布路由仍以本实例 SQLite 为权威；本轮不支持多网关副本共享此库。历史容量报告不能替代当前产物验收。
 
 ## TLS 立场
 
@@ -83,9 +85,7 @@ Redis 包替换 `TokenLimiter` / `UsageLedger` / `CircuitBreaker` / `ApiKeyRegis
 `SemanticCache` / `TaskRouteSticky`，任务归属与路由绑定可跨副本共享。
 Redis 服务使用 AOF 数据卷，但仍需自行定义备份、故障恢复和一致性验证方案。
 **金额 `BudgetLedger`、请求日志与快照文件仍为本地实现，不提供分布式财务级预算。**
-未发布工作区已收紧凭据初始化与存储模式：升级既有 Redis 部署前，请先阅读[哈希模式迁移、ID 和快照限制](CONFIGURATION.md#38-redis-分布式状态可选仅--predis-产物)。所有副本必须统一配置；路由、策略、模型目录等管理变更不会自动传播，Redis key CRUD 仍返回 501。
-基础 compose 使用固定演示端口；实际扩容应由部署平台分配实例端口并在内网负载均衡，
-不能直接对基础 compose 执行 `--scale gateway=2` 而继续共用一个宿主端口。
+Redis提供可选限流、熔断和缓存等能力，密钥、累计token账本和发布路由仍以本实例SQLite为权威。部署范围为单进程，不运行多个网关共享SQLite；独立Redis原生SPI的历史迁移说明见配置文档。
 
 ## 生产配置
 
@@ -133,26 +133,23 @@ gateway:
 
 `main` CI 执行默认、Redis 和 Redis/jtokkit/otel 组合 profile 的 clean verify、真实 Redis JUnit、YAML/OpenAPI/模块布局、Python 基准测试，以及双引擎契约、隔离和管理/JWT 鉴权回归。
 
-tag 必须与 Maven 版本一致（本版 `v0.3.1` / `0.3.1`）。推送 tag 后，Release workflow 先验证默认 JAR 及契约，再验证 Redis JAR；随后构建 Linux amd64 WebFlux native 并运行其流式错误与多协议契约。全部通过后才统一发布默认/Redis JAR、native、文档包及 SHA256SUMS。VT native 及其他平台需自行构建；native 契约不等于性能复测。
+tag 必须与 Maven 版本一致（本版 `v0.4.0` / `0.4.0`）。推送 tag 后，Release workflow 先验证默认 JAR 及契约，再验证 Redis JAR；随后构建 Linux amd64 WebFlux native 并运行其流式错误与多协议契约。全部通过后才统一发布默认/Redis JAR、native、文档包及 SHA256SUMS。VT native 及其他平台需自行构建；native 契约不等于性能复测。
 
 ```sh
 git push origin main
 # 等待 main CI 通过后再标记已经验证的 commit
-git tag -a v0.3.1 -m 'llmgw4j v0.3.1'
-git push origin v0.3.1
+git tag -a v0.4.0 -m 'llmgw4j v0.4.0'
+git push origin v0.4.0
 gh run list --workflow release.yml
 ```
 
-[版本说明](releases/v0.3.1.md)列出资产和兼容边界。发布产物下载后校验 SHA256SUMS；日志和 Actions 的 commit SHA 是验收依据，不能只看 tag 存在。本流程不发布容器镜像或 Maven Central；后者需要另行配置签名、命名空间、凭据及部署插件并独立验收。
+[版本说明](releases/v0.4.0.md)列出资产和兼容边界。发布产物下载后校验 SHA256SUMS；日志和 Actions 的 commit SHA 是验收依据，不能只看 tag 存在。本流程不发布容器镜像或 Maven Central；后者需要另行配置签名、命名空间、凭据及部署插件并独立验收。
 
 ### 资源和内存限制补充
 
-文件与任务归属按稳定 key ID 和协议分区；遗留未分区绑定不授权访问，未知或失效归属返回 404。
-请求体里的 `file_id` / `input_file_id` 也必须属于调用方，并位于当前路由；携带文件引用的请求不做跨上游 fallback。
-文件和批任务列表暂返回 501，不能列出共享上游的所有资源。
-默认 `gateway.max-response-bytes=4194304`、`gateway.max-concurrent-requests=64`；响应整包缓冲，超过大小上限报上游错误，超过并发上限报 503。
-这两项限制同样作用于演示/压测，增加压测 VU 前应显式调整并检查错误率，历史吞吐数据不代表本次修复后的性能。
-JSON 密钥文件仅支持单进程写入。Redis 包的运行时密钥管理接口暂返回 501；不能用共享 JSON 文件补成分布式密钥管理。
+文件与批任务按持久项目目录授权，同项目多key共享；列表只返回项目目录。创建来源配置固定，文件引用不会跨上游fallback。未知/跨项目404。
+
+默认`gateway.max-response-bytes=4194304`、`gateway.max-concurrent-requests=64`；成功SSE另有单行边界，上传有界暂存，受支持的文件下载流式转发。放宽边界前验证并发总内存、取消与恢复。SQLite持久卷包含WAL/SHM，根密钥单独管理；不能通过共享旧JSON文件获得分布式一致性。
 
 ## Linux WebFlux G1 可选构建
 

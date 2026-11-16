@@ -1,0 +1,17 @@
+{
+  "engine": "webflux",
+  "result": "PASS",
+  "artifactSha256": "791d6b2d1053898ed451aad8c4257b946b337bba50f93e971573b508f776f3ce",
+  "scenarios": [
+    "four-project scope matrix",
+    "key create/call/rotate/revoke",
+    "in-flight revoke settles",
+    "in-flight reconciliation rejected",
+    "same-project resources and pinned source survive restart",
+    "durable usage",
+    "route publish/rollback actual source",
+    "audit rollback",
+    "restart session/CSRF",
+    "HTTP login limit"
+  ]
+}

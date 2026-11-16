@@ -15,7 +15,7 @@ class ControlPlaneControllerTest {
 
     @Test
     void statusReportsWiredControlPlaneAndSafetyInvariant() {
-        Map<String, Object> status = new ControlPlaneController().status();
+        Map<String, Object> status = new ControlPlaneController(new io.github.leohou0430.llmgw.control.local.RouteVersionService(new io.github.leohou0430.llmgw.control.local.InMemoryRouteVersionStore())).status();
 
         assertEquals("RbacAuthorizationService", status.get("rbac"));
         assertEquals("CredentialIssuer", status.get("keyLifecycle"));

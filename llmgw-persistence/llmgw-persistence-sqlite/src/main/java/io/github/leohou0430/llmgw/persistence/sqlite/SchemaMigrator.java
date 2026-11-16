@@ -26,45 +26,22 @@ public final class SchemaMigrator {
     /** Applies every migration with a version above the recorded one; returns the resulting version. */
     public int migrate(List<Migration> migrations) throws SQLException {
         Objects.requireNonNull(migrations, "migrations");
-        Connection connection = database.connection();
-        ensureVersionTable(connection);
-        int current = readVersion(connection);
-
-        List<Migration> pending = migrations.stream()
-                .filter(migration -> migration.version() > current)
-                .sorted(Comparator.comparingInt(Migration::version))
-                .toList();
-        if (pending.isEmpty()) {
-            return current;
+        database.read(connection -> { ensureVersionTable(connection); return null; });
+        int current = currentVersion();
+        List<Migration> pending = migrations.stream().filter(m -> m.version() > current)
+                .sorted(Comparator.comparingInt(Migration::version)).toList();
+        for (Migration migration : pending) {
+            database.transaction(connection -> {
+                migration.apply(connection);
+                writeVersion(connection, migration.version());
+                return null;
+            });
         }
-
-        boolean previousAutoCommit = connection.getAutoCommit();
-        try {
-            int version = current;
-            for (Migration migration : pending) {
-                connection.setAutoCommit(false);
-                try {
-                    migration.apply(connection);
-                    writeVersion(connection, migration.version());
-                    connection.commit();
-                    version = migration.version();
-                } catch (SQLException failure) {
-                    connection.rollback();
-                    throw failure;
-                } finally {
-                    connection.setAutoCommit(true);
-                }
-            }
-            return version;
-        } finally {
-            connection.setAutoCommit(previousAutoCommit);
-        }
+        return currentVersion();
     }
 
     public int currentVersion() throws SQLException {
-        Connection connection = database.connection();
-        ensureVersionTable(connection);
-        return readVersion(connection);
+        return database.read(connection -> { ensureVersionTable(connection); return readVersion(connection); });
     }
 
     private static void ensureVersionTable(Connection connection) throws SQLException {

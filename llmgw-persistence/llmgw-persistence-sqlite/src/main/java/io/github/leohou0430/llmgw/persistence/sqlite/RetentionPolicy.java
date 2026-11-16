@@ -30,10 +30,7 @@ public record RetentionPolicy(long tombstoneDays, long auditDays) {
         long auditCutoff = nowEpochMs - auditDays * DAY_MS;
         long tombstoneCutoff = nowEpochMs - tombstoneDays * DAY_MS;
         try {
-            Connection connection = database.connection();
-            boolean previousAutoCommit = connection.getAutoCommit();
-            connection.setAutoCommit(false);
-            try {
+            return database.transaction(connection -> {
                 int removed = 0;
                 try (PreparedStatement statement =
                              connection.prepareStatement("DELETE FROM audit_event WHERE created_at < ?")) {
@@ -45,14 +42,8 @@ public record RetentionPolicy(long tombstoneDays, long auditDays) {
                     statement.setLong(1, tombstoneCutoff);
                     removed += statement.executeUpdate();
                 }
-                connection.commit();
                 return removed;
-            } catch (SQLException failure) {
-                connection.rollback();
-                throw failure;
-            } finally {
-                connection.setAutoCommit(previousAutoCommit);
-            }
+            });
         } catch (SQLException failure) {
             throw new IllegalStateException("retention purge failed", failure);
         }

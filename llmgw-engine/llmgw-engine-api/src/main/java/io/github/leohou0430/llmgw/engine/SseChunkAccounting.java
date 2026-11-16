@@ -32,6 +32,22 @@ public final class SseChunkAccounting {
     public static boolean apply(ProtocolKind kind, String rawSseLine, GatewayContext context) {
         ChunkParser.SseChunk chunk = io.github.leohou0430.llmgw.core.protocol.Protocols
                 .of(kind).parseChunk(rawSseLine);
+        // Input usage may arrive separately (Messages message_start) from output usage.
+        if (rawSseLine != null) {
+            for (String line : rawSseLine.split("\\r?\\n")) {
+                if (!line.stripLeading().startsWith("data:")) continue;
+                try {
+                    var root = io.github.leohou0430.llmgw.core.protocol.ProtocolCodec.mapper()
+                            .readTree(line.stripLeading().substring(5).trim());
+                    var usage = root.path("usage");
+                    if (usage.isMissingNode()) usage = root.path("response").path("usage");
+                    if (usage.isMissingNode()) usage = root.path("message").path("usage");
+                    var input = usage.path(kind == ProtocolKind.CHAT ? "prompt_tokens" : "input_tokens");
+                    if (input.isIntegralNumber() && input.canConvertToInt() && input.intValue() >= 0)
+                        context.setPromptTokens(input.intValue());
+                } catch (RuntimeException ignored) { /* passthrough */ }
+            }
+        }
         if (chunk.hasUsage()) {
             context.setCompletionTokens(chunk.completionTokens());
         } else if (!chunk.done() && !chunk.delta().isEmpty()) {

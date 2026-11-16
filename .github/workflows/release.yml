@@ -10,7 +10,7 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 60
     services:
       redis:
         image: redis:7-alpine
@@ -53,13 +53,14 @@ jobs:
           python3 bin/smoke-tenant-isolation.py
           python3 bin/smoke-admin-auth.py
           python3 bin/smoke-jwt-auth.py
+          python3 bin/smoke-control-plane.py
           mkdir -p dist
-          cp llmgw-app/target/llmgw-app-0.3.1.jar dist/
+          cp llmgw-app/target/llmgw-app-0.4.0.jar dist/
       - name: Verify and package Redis variant
         run: |
           mvn -B -Predis clean verify
-          cp llmgw-app/target/llmgw-app-0.3.1.jar dist/llmgw-app-0.3.1-redis.jar
-          tar -czf dist/llmgw-docs-0.3.1.tar.gz README.md README.en.md CHANGELOG.md CONTRIBUTING.md SECURITY.md LICENSE NOTICE docs bench/cross-gateway bench/jfr bench/micro
+          cp llmgw-app/target/llmgw-app-0.4.0.jar dist/llmgw-app-0.4.0-redis.jar
+          tar -czf dist/llmgw-docs-0.4.0.tar.gz README.md README.en.md CHANGELOG.md CONTRIBUTING.md SECURITY.md LICENSE NOTICE docs bench/cross-gateway bench/jfr bench/micro
       - uses: actions/upload-artifact@v4
         with:
           name: release-jvm-and-docs
@@ -69,7 +70,7 @@ jobs:
   native:
     needs: build
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v5
       - uses: graalvm/setup-graalvm@v1
@@ -86,6 +87,8 @@ jobs:
           test -x llmgw-app/target/llmgw-webflux
           BINARY="$PWD/llmgw-app/target/llmgw-webflux" bash bin/smoke-stream-errors.sh webflux
           BINARY="$PWD/llmgw-app/target/llmgw-webflux" bash bin/smoke-multi-protocol.sh webflux
+          python3 bin/smoke-control-plane.py --binary "$PWD/llmgw-app/target/llmgw-webflux" --engine webflux
+          python3 bin/smoke-jwt-auth.py --binary "$PWD/llmgw-app/target/llmgw-webflux" --engine webflux
       - uses: actions/upload-artifact@v4
         with:
           name: release-native-linux-amd64
@@ -106,13 +109,13 @@ jobs:
           merge-multiple: true
       - name: Name platform binary and calculate checksums
         run: |
-          mv dist/llmgw-webflux dist/llmgw-webflux-0.3.1-linux-amd64
+          mv dist/llmgw-webflux dist/llmgw-webflux-0.4.0-linux-amd64
           cd dist
           sha256sum * > SHA256SUMS
       - name: Publish complete release
         uses: softprops/action-gh-release@v2
         with:
           name: llmgw4j ${{ github.ref_name }}
-          body_path: docs/releases/v0.3.1.md
+          body_path: docs/releases/v0.4.0.md
           fail_on_unmatched_files: true
           files: dist/*

@@ -30,7 +30,8 @@ public final class OrgStore {
 
     public void createTenant(String id, String name) {
         try {
-            PreparedStatement statement = database.connection().prepareStatement(
+            database.transaction(connection -> {
+            PreparedStatement statement = connection.prepareStatement(
                     "INSERT INTO tenant (id, name, created_at) VALUES (?,?,?)");
             try {
                 statement.setString(1, id);
@@ -40,6 +41,9 @@ public final class OrgStore {
             } finally {
                 statement.close();
             }
+
+            return null;
+            });
         } catch (SQLException failure) {
             if (SqliteErrors.isStorageFull(failure)) {
                 throw new StorageLimitException("database or disk is full");
@@ -48,11 +52,16 @@ public final class OrgStore {
         }
     }
 
-    public List<Tenant> tenants() {
+    public List<Tenant> tenants() { return tenants(""); }
+
+    public List<Tenant> tenants(String tenantId) {
         List<Tenant> out = new ArrayList<>();
         try {
-            PreparedStatement statement = database.connection().prepareStatement(
-                    "SELECT id, name, created_at FROM tenant ORDER BY created_at");
+            database.read(connection -> {
+            PreparedStatement statement = connection.prepareStatement(
+                    "SELECT id, name, created_at FROM tenant WHERE (? = '' OR id = ?) ORDER BY created_at");
+            statement.setString(1, tenantId);
+            statement.setString(2, tenantId);
             try (ResultSet rows = statement.executeQuery()) {
                 while (rows.next()) {
                     out.add(new Tenant(rows.getString("id"), rows.getString("name"), rows.getLong("created_at")));
@@ -60,6 +69,9 @@ public final class OrgStore {
             } finally {
                 statement.close();
             }
+
+            return null;
+            });
         } catch (SQLException failure) {
             throw new IllegalStateException("failed to read tenants", failure);
         }
@@ -68,7 +80,8 @@ public final class OrgStore {
 
     public void createProject(String id, String tenantId, String name) {
         try {
-            PreparedStatement statement = database.connection().prepareStatement(
+            database.transaction(connection -> {
+            PreparedStatement statement = connection.prepareStatement(
                     "INSERT INTO project (id, tenant_id, name, created_at) VALUES (?,?,?,?)");
             try {
                 statement.setString(1, id);
@@ -79,6 +92,9 @@ public final class OrgStore {
             } finally {
                 statement.close();
             }
+
+            return null;
+            });
         } catch (SQLException failure) {
             if (SqliteErrors.isStorageFull(failure)) {
                 throw new StorageLimitException("database or disk is full");
@@ -87,11 +103,18 @@ public final class OrgStore {
         }
     }
 
-    public List<Project> projects() {
+    public List<Project> projects() { return projects("", ""); }
+
+    public List<Project> projects(String tenantId, String projectId) {
         List<Project> out = new ArrayList<>();
         try {
-            PreparedStatement statement = database.connection().prepareStatement(
-                    "SELECT id, tenant_id, name, created_at FROM project ORDER BY created_at");
+            database.read(connection -> {
+            PreparedStatement statement = connection.prepareStatement(
+                    "SELECT id, tenant_id, name, created_at FROM project WHERE (? = '' OR tenant_id = ?) AND (? = '' OR id = ?) ORDER BY created_at");
+            statement.setString(1, tenantId);
+            statement.setString(2, tenantId);
+            statement.setString(3, projectId);
+            statement.setString(4, projectId);
             try (ResultSet rows = statement.executeQuery()) {
                 while (rows.next()) {
                     out.add(new Project(rows.getString("id"), rows.getString("tenant_id"),
@@ -100,6 +123,9 @@ public final class OrgStore {
             } finally {
                 statement.close();
             }
+
+            return null;
+            });
         } catch (SQLException failure) {
             throw new IllegalStateException("failed to read projects", failure);
         }

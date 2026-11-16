@@ -29,7 +29,8 @@ public final class SqliteAccountStore implements AccountStore {
     @Override
     public Account create(Account account) {
         try {
-            PreparedStatement statement = database.connection().prepareStatement(
+            database.transaction(connection -> {
+            PreparedStatement statement = connection.prepareStatement(
                     "INSERT INTO account (id, username, password_hash, role, tenant_id, project_id, enabled, created_at)"
                             + " VALUES (?,?,?,?,?,?,?,?)");
             try {
@@ -45,6 +46,9 @@ public final class SqliteAccountStore implements AccountStore {
             } finally {
                 statement.close();
             }
+
+            return null;
+            });
         } catch (SQLException failure) {
             if (SqliteErrors.isStorageFull(failure)) {
                 throw new StorageLimitException("database or disk is full");
@@ -67,7 +71,8 @@ public final class SqliteAccountStore implements AccountStore {
     @Override
     public void updatePassword(String username, String newPasswordHash) {
         try {
-            PreparedStatement statement = database.connection().prepareStatement(
+            database.transaction(connection -> {
+            PreparedStatement statement = connection.prepareStatement(
                     "UPDATE account SET password_hash = ? WHERE username = ?");
             try {
                 statement.setString(1, newPasswordHash);
@@ -76,6 +81,9 @@ public final class SqliteAccountStore implements AccountStore {
             } finally {
                 statement.close();
             }
+
+            return null;
+            });
         } catch (SQLException failure) {
             if (SqliteErrors.isStorageFull(failure)) {
                 throw new StorageLimitException("database or disk is full");
@@ -87,15 +95,31 @@ public final class SqliteAccountStore implements AccountStore {
     @Override
     public boolean existsAny() {
         try {
-            PreparedStatement statement = database.connection().prepareStatement("SELECT 1 FROM account LIMIT 1");
+            return database.read(connection -> {
+            PreparedStatement statement = connection.prepareStatement("SELECT 1 FROM account LIMIT 1");
             try (ResultSet rows = statement.executeQuery()) {
                 return rows.next();
             } finally {
                 statement.close();
             }
+                    });
         } catch (SQLException failure) {
             throw new IllegalStateException("failed to query accounts", failure);
         }
+    }
+
+    @Override
+    public java.util.List<Account> list() {
+        try {
+            return database.read(connection -> {
+                var out = new java.util.ArrayList<Account>();
+                try (var statement = connection.prepareStatement("SELECT * FROM account ORDER BY username");
+                     var rows = statement.executeQuery()) {
+                    while (rows.next()) out.add(read(rows));
+                }
+                return out;
+            });
+        } catch (SQLException failure) { throw new IllegalStateException("failed to list accounts", failure); }
     }
 
     private Optional<Account> queryOne(String sql, String parameter) {
@@ -103,7 +127,8 @@ public final class SqliteAccountStore implements AccountStore {
             return Optional.empty();
         }
         try {
-            PreparedStatement statement = database.connection().prepareStatement(sql);
+            return database.read(connection -> {
+            PreparedStatement statement = connection.prepareStatement(sql);
             try {
                 statement.setString(1, parameter);
                 try (ResultSet rows = statement.executeQuery()) {
@@ -112,6 +137,7 @@ public final class SqliteAccountStore implements AccountStore {
             } finally {
                 statement.close();
             }
+                    });
         } catch (SQLException failure) {
             throw new IllegalStateException("failed to read account", failure);
         }

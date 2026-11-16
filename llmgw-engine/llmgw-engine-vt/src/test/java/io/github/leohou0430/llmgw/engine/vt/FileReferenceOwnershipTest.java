@@ -37,6 +37,35 @@ class FileReferenceOwnershipTest {
             "{\"model\":\"m\",\"messages\":[{\"role\":\"user\",\"content\":[{\"type\":\"file\",\"file\":{\"file_id\":\"f\"}}]}]}";
     static final String OK = "{\"choices\":[{\"message\":{\"content\":\"ok\"}}],\"usage\":{\"completion_tokens\":1}}";
 
+    static io.github.leohou0430.llmgw.catalog.ResourceCatalog snapshotCatalog() {
+        var source = new Route("test", "*", "*", "*", "http://original", "old-secret", "openai", 1, List.of());
+        var file = new io.github.leohou0430.llmgw.catalog.ResourceEntry("f", "project", "files", "f", "test", "openai", "v1", 1,
+                "ready", Map.of("llmgw.tenantId", "organization", "llmgw.sourceRoute", ProtocolCodec.toJson(source)), 1, false);
+        return new io.github.leohou0430.llmgw.catalog.ResourceCatalog() {
+            public io.github.leohou0430.llmgw.catalog.ResourceEntry create(io.github.leohou0430.llmgw.catalog.ResourceEntry entry) { return entry; }
+            public Optional<io.github.leohou0430.llmgw.catalog.ResourceEntry> get(String project, String id) {
+                return project.equals("project") && id.equals("f") ? Optional.of(file) : Optional.empty();
+            }
+            public boolean delete(String project, String id) { return false; }
+            public List<io.github.leohou0430.llmgw.catalog.ResourceEntry> list(String project) { return List.of(file); }
+        };
+    }
+    static ApiKeyRegistry projectRegistry() {
+        var key = new ApiKeyRegistry.ApiKey("tenant", "second project key", 0, Set.of(), 0, "", 0,
+                Map.of("llmgw.tenantId", "organization", "llmgw.projectId", "project"));
+        return new ApiKeyRegistry() {
+            public Optional<ApiKey> find(String token) { return Optional.of(key); }
+            public Collection<ApiKey> all() { return List.of(key); }
+        };
+    }
+    @Test void sharedProjectReferenceUsesPersistedSourceInsteadOfCurrentRoute() throws Exception {
+        var harness = new Harness(FILE_BODY);
+        harness.controller.resourceCatalog(snapshotCatalog(), projectRegistry());
+        harness.dispatch();
+        assertEquals(200, harness.status[0]);
+        assertEquals("http://original", harness.last.targetUrl());
+        assertEquals("old-secret", harness.last.apiKey());
+    }
     @Test
     void crossTenantFileReferenceIsUnified404BeforeUpstream() throws Exception {
         var harness = new Harness(FILE_BODY);
@@ -64,6 +93,7 @@ class FileReferenceOwnershipTest {
         final int[] status = {0};
         final ByteArrayOutputStream body = new ByteArrayOutputStream();
         final AtomicInteger providerCalls = new AtomicInteger();
+        UpstreamRequest last;
         final InMemoryTaskRouteSticky tasks = new InMemoryTaskRouteSticky(10, 60);
         final VirtualThreadGatewayController controller;
         final HttpServletRequest request;
@@ -127,7 +157,7 @@ class FileReferenceOwnershipTest {
                 public String id() { return "ok"; }
                 public Flow.Publisher<String> streamRaw(UpstreamRequest req, HeaderListener listener) { throw new UnsupportedOperationException(); }
                 public void streamRawBlocking(UpstreamRequest req, ChunkSink sink) { throw new UnsupportedOperationException(); }
-                public String completeRaw(UpstreamRequest req, HeaderListener listener) { providerCalls.incrementAndGet(); return OK; }
+                public String completeRaw(UpstreamRequest req, HeaderListener listener) { last = req; providerCalls.incrementAndGet(); return OK; }
             };
             var properties = new GatewayProperties();
             properties.setMaxConcurrentRequests(10);

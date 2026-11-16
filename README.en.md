@@ -1,6 +1,6 @@
 # llmgw4j
 
-> Production requires `gateway.production=true`, non-demo client keys and an admin token.
+> Production requires `gateway.production=true`, non-demo client keys, administrator bootstrap credentials and the configured production checks.
 > Defaults are local demos. The built-in monetary ledger is in-memory, including with Redis;
 > durable distributed monetary hard budgets are not supported in production.
 > CI runs Maven verify, strict OpenAPI YAML/operation checks and both-engine stream contracts.
@@ -18,17 +18,13 @@
 
 llmgw4j is a **Java LLM API gateway** built on Spring Boot 4.1.2 / JDK 25.
 
-Current release: **v0.3.1**. See [release notes](docs/releases/v0.3.1.md) and [performance evidence](docs/PERFORMANCE.md).
+Current release: **v0.4.0**. See [release and upgrade notes](docs/releases/v0.4.0.md).
 
-Version 0.3.1: foundation discovery uses a project-owned named SPI inspired by Dubbo, without a Dubbo dependency. Services use explicit Java construction. Provider and tokenizer use aggregator/api/implementation modules; Spring/Reactor remain at HTTP adapters. See [extension and migration guide](docs/EXTENSIONS.md). Internal Java extension APIs changed since v0.2.0; HTTP routes remain compatible.
+The application targets **one Java process with SQLite**. Client keys, cumulative project/key token quotas, published routes and the file/batch catalog share one durable authority. Redis remains an optional governance backend; this release does not support multiple gateway replicas sharing the SQLite database.
 
-Unreleased work is tracked in the [three-stage audit](docs/plans/2026-11-11-three-stage-review.md), [multi-replica review](docs/verification/multi-replica/2026-11-11/README.md) and [official SDK matrix](docs/verification/compatibility/2026-11-11/README.md). Existing plaintext Redis credential stores require coordinated migration. New JVM function checks do not imply a new native or performance result.
+The `/control/` console provides account/session/CSRF authentication, scoped roles, organizations, keys, quota reconciliation, route publication/rollback, encrypted provider credentials and audit queries. Set `LLMGW_ADMIN_USERNAME` and `LLMGW_ADMIN_PASSWORD` for first use, and `LLMGW_ROOT_KEY` for encrypted credentials and routing snapshots. Configure the required production legacy token to leave the unauthenticated local-demo exception; legacy token access is then disabled unless restricted migration mode is explicitly enabled. See [operations](docs/control-plane-operations.md).
 
-Follow-up checks passed for the [current host WebFlux native](docs/verification/native-compatibility/2026-11-11/README.md) and [two live DeepSeek calls](docs/verification/live-provider/2026-11-11/README.md). Native checks use a controlled local upstream; live calls use the JVM engines. Neither is a new throughput benchmark.
-
-Linux amd64 native checks now pass for both engines; see the [Linux/VT report](docs/verification/linux-native/2026-11-11/README.md). This is functional verification, not a capacity benchmark.
-
-The [Linux WebFlux G1 follow-up](docs/verification/native-g1/2026-11-12/README.md) passed a three-way 2 CPU / 2 GiB SSE comparison, slow-reader checks and local TLS tests. G1 reduced end-to-end p99 by 16.7% versus Serial native in this batch, using more CPU and memory. The existing opt-in profile is validated for this scope; defaults are unchanged. Earlier [capacity evidence](docs/verification/native-capacity/2026-11-12/README.md) remains tied to its own artifacts.
+[Remediation evidence](docs/reviews/2026-11-16-remediation/README.md) records 16 fixes, JVM profiles, both native engines and bounded 2 CPU / 2 GiB upload tests. Historical performance and live-provider evidence retain their original artifact scope; no general speedup is claimed for v0.4.0.
 
 ## Capability overview (parity gaps vs mainstream gateways, see docs/gap-analysis.md)
 
@@ -39,9 +35,9 @@ The [Linux WebFlux G1 follow-up](docs/verification/native-g1/2026-11-12/README.m
 - **Protocol surface (8 byte-faithful protocols)**: chat / responses / messages /
   images / videos / embeddings / rerank / audio-speech — plus multipart uploads
   (audio transcriptions, file uploads), file lifecycle and batch jobs with
-  sticky routing. Protocols are a ROUTING dimension, never translated
-- **Keys & budgets**: runtime API key management (create/revoke/TTL, JSON store),
-  token quotas with in-flight reservation + refunds, **demo estimated $ budgets** priced
+  a project-scoped durable catalog. Byte-faithful forwarding is the default; controlled chat/responses/messages conversion to DeepSeek Chat is opt-in
+- **Keys & budgets**: runtime API key management (create/rotate/revoke, SQLite authority),
+  durable project/key token quotas with atomic reservations, known-outcome settlement and conservative unknown-outcome retention, **demo estimated $ budgets** priced
   from the model catalog (disabled in production), per-group spend rollups
 - **JWT**: optional HS256 verification with issuer/audience constraints and numeric expiry/not-before checks; shared JSON parsing avoids per-validation mapper creation. OIDC/JWKS are not built in.
 - **Provider adapters**: `UpstreamAuthenticator` SPI — OpenAI-compatible Bearer
@@ -138,16 +134,9 @@ curl -N -X POST http://127.0.0.1:8080/v1/chat/completions \
   -H 'Content-Type: application/json' -H 'Authorization: Bearer sk-demo' \
   -d '{"model":"qwen-plus","messages":[{"role":"user","content":"hi"}],"stream":true}'
 
-# hot reload of the routing table (atomic, in-flight streams are not interrupted)
-curl -sS -X POST http://127.0.0.1:8080/admin/routes/reload \
-  -H 'Content-Type: application/json' \
-  -d '[{"id":"a","model":"*","targetUrl":"http://127.0.0.1:9090/mock/v1","weight":1},
-       {"id":"b","model":"*","targetUrl":"http://127.0.0.1:9090/mock/v1","weight":3}]'
 ```
 
-> **Security before exposing anything**: `/admin/*` is unauthenticated by
-> default and `sk-demo` is a demo key. Set `LLMGW_ADMIN_TOKEN` and replace
-> the key in any shared environment. See [SECURITY.md](SECURITY.md).
+Publish or roll back routes through a platform-admin `/control` session with CSRF and `expectedVersion`. See [operations](docs/control-plane-operations.md). SQLite usage restores automatically; legacy JSON snapshot replacement returns409. Configure the production legacy token to leave the unauthenticated demo exception, keep token mode disabled, replace demo keys and isolate management traffic. See [SECURITY.md](SECURITY.md).
 
 ## The streaming contract (non-negotiable)
 
@@ -183,14 +172,11 @@ the governance virtual-thread side path, never on the hot path.
 
 - `RouteConfigSource` SPI + immutable `RouteTable` behind one
   `AtomicReference`. Validation happens before the table is built, then a
-  single CAS publishes it. In-flight requests keep their already-resolved
+  successful SQLite transaction publishes it through `/control/routes/publish`. In-flight requests keep their already-resolved
   `Route`; nothing is drained or re-routed. `POST /admin/governance` also updates the supported rate/burst/cache/circuit
   settings. Other startup configuration still requires a restart.
 - `llmgw-governance/llmgw-governance-redis` is **opt-in**: built with `-Predis` and activated
-  with `gateway.redis.enabled=true`. Lua scripts make shared rate limiting,
-  quota reservation and circuit breaking atomic across replicas. The default
-  fat jar contains no Redis dependency at all. This trades 2–4 Redis
-  round-trips per request for cross-replica consistency.
+  with `gateway.redis.enabled=true`. Lua scripts provide rate limiting, circuit breaking and cache governance. The application still uses SQLite for keys, token reservations and published routes; multi-replica application deployment is outside this release scope. The default jar contains no Redis dependency.
 
 ## Performance and measurement limits
 

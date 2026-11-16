@@ -1,0 +1,398 @@
+[
+  {
+    "engine": "webflux",
+    "case": "login_cookie",
+    "set_cookie": "llmgw_sid=<redacted>; Path=/control; Max-Age=3600; Expires=Mon, 16 Nov 2026 07:42:41 GMT; HttpOnly; SameSite=Lax"
+  },
+  {
+    "engine": "webflux",
+    "case": "viewer_cross_tenant_orgs",
+    "tenants": [
+      200,
+      {
+        "tenants": [
+          {
+            "id": "t1",
+            "name": "t1",
+            "createdAt": 1794811363573
+          },
+          {
+            "id": "t2",
+            "name": "t2",
+            "createdAt": 1794811363600
+          }
+        ]
+      }
+    ],
+    "projects": [
+      200,
+      {
+        "projects": [
+          {
+            "id": "p1",
+            "tenantId": "t1",
+            "name": "p1",
+            "createdAt": 1794811363632
+          },
+          {
+            "id": "p2",
+            "tenantId": "t2",
+            "name": "p2",
+            "createdAt": 1794811363648
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "engine": "webflux",
+    "case": "managed_key_data_plane",
+    "issued_key_status": 401,
+    "configured_key_status": 200,
+    "upstream_usage": {
+      "prompt_tokens": 1,
+      "completion_tokens": 1
+    },
+    "ledger": {
+      "audit-data": {
+        "requests": 1,
+        "promptTokens": 3,
+        "completionTokens": 1,
+        "errors": 0
+      }
+    }
+  },
+  {
+    "engine": "webflux",
+    "case": "viewer_usage_global",
+    "response": [
+      200,
+      {
+        "usage": {
+          "audit-data": {
+            "requests": 1,
+            "promptTokens": 3,
+            "completionTokens": 1,
+            "errors": 0
+          }
+        }
+      }
+    ]
+  },
+  {
+    "engine": "webflux",
+    "case": "project_admin_all_keys",
+    "response": [
+      200,
+      {
+        "keys": [
+          {
+            "name": "key-p1",
+            "id": "key-p1",
+            "masked": "****"
+          },
+          {
+            "name": "key-p2",
+            "id": "key-p2",
+            "masked": "****"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "engine": "webflux",
+    "case": "route_publish_disconnected",
+    "published": [
+      200,
+      {
+        "activeVersion": 1,
+        "version": 1
+      }
+    ],
+    "status": [
+      200,
+      {
+        "rbac": "RbacAuthorizationService",
+        "keyLifecycle": "CredentialIssuer",
+        "routeVersions": "RouteVersionService",
+        "configValidation": "DefaultConfigValidator",
+        "activeRouteVersion": 0,
+        "credentialReadDenied": true
+      }
+    ],
+    "actual_routes": [
+      200,
+      [
+        {
+          "id": "audit-mock",
+          "protocol": "",
+          "model": "*",
+          "targetModel": "",
+          "targetUrl": "http://127.0.0.1:59824/mock/v1",
+          "weight": 1,
+          "provider": "",
+          "upstreamProtocol": "",
+          "fallbackIds": [],
+          "apiKeyConfigured": false
+        }
+      ]
+    ]
+  },
+  {
+    "engine": "webflux",
+    "case": "route_list_unauthenticated",
+    "response": [
+      200,
+      {
+        "activeVersion": 1
+      }
+    ]
+  },
+  {
+    "engine": "webflux",
+    "case": "audit_failure_not_atomic",
+    "http_status": 500,
+    "tenant_persisted": 1
+  },
+  {
+    "engine": "webflux",
+    "case": "login_no_throttle",
+    "wrong_password_statuses": [
+      401,
+      401,
+      401,
+      401,
+      401,
+      401,
+      401,
+      401,
+      401,
+      401,
+      401,
+      401,
+      401,
+      401,
+      401
+    ]
+  },
+  {
+    "engine": "webflux",
+    "case": "restart_session_csrf_usage",
+    "read_status": 200,
+    "old_csrf_write_status": 403,
+    "usage_before": {
+      "audit-data": {
+        "requests": 1,
+        "promptTokens": 3,
+        "completionTokens": 1,
+        "errors": 0
+      }
+    },
+    "usage_after": {}
+  },
+  {
+    "engine": "webflux",
+    "case": "other_project_logout",
+    "login_status": 200,
+    "logout_status": 403
+  },
+  {
+    "engine": "vt",
+    "case": "login_cookie",
+    "set_cookie": "llmgw_sid=<redacted>; Path=/control; Max-Age=3600; Expires=Mon, 16 Nov 2026 07:43:47 GMT; HttpOnly; SameSite=Lax"
+  },
+  {
+    "engine": "vt",
+    "case": "viewer_cross_tenant_orgs",
+    "tenants": [
+      200,
+      {
+        "tenants": [
+          {
+            "id": "t1",
+            "name": "t1",
+            "createdAt": 1794811427634
+          },
+          {
+            "id": "t2",
+            "name": "t2",
+            "createdAt": 1794811427647
+          }
+        ]
+      }
+    ],
+    "projects": [
+      200,
+      {
+        "projects": [
+          {
+            "id": "p1",
+            "tenantId": "t1",
+            "name": "p1",
+            "createdAt": 1794811427665
+          },
+          {
+            "id": "p2",
+            "tenantId": "t2",
+            "name": "p2",
+            "createdAt": 1794811427687
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "engine": "vt",
+    "case": "managed_key_data_plane",
+    "issued_key_status": 401,
+    "configured_key_status": 200,
+    "upstream_usage": {
+      "prompt_tokens": 1,
+      "completion_tokens": 1
+    },
+    "ledger": {
+      "audit-data": {
+        "requests": 1,
+        "promptTokens": 3,
+        "completionTokens": 1,
+        "errors": 0
+      }
+    }
+  },
+  {
+    "engine": "vt",
+    "case": "viewer_usage_global",
+    "response": [
+      200,
+      {
+        "usage": {
+          "audit-data": {
+            "requests": 1,
+            "promptTokens": 3,
+            "completionTokens": 1,
+            "errors": 0
+          }
+        }
+      }
+    ]
+  },
+  {
+    "engine": "vt",
+    "case": "project_admin_all_keys",
+    "response": [
+      200,
+      {
+        "keys": [
+          {
+            "id": "key-p1",
+            "masked": "****",
+            "name": "key-p1"
+          },
+          {
+            "id": "key-p2",
+            "masked": "****",
+            "name": "key-p2"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "engine": "vt",
+    "case": "route_publish_disconnected",
+    "published": [
+      200,
+      {
+        "version": 1,
+        "activeVersion": 1
+      }
+    ],
+    "status": [
+      200,
+      {
+        "rbac": "RbacAuthorizationService",
+        "keyLifecycle": "CredentialIssuer",
+        "routeVersions": "RouteVersionService",
+        "configValidation": "DefaultConfigValidator",
+        "activeRouteVersion": 0,
+        "credentialReadDenied": true
+      }
+    ],
+    "actual_routes": [
+      200,
+      [
+        {
+          "id": "audit-mock",
+          "protocol": "",
+          "model": "*",
+          "targetModel": "",
+          "targetUrl": "http://127.0.0.1:60387/mock/v1",
+          "weight": 1,
+          "provider": "",
+          "upstreamProtocol": "",
+          "fallbackIds": [],
+          "apiKeyConfigured": false
+        }
+      ]
+    ]
+  },
+  {
+    "engine": "vt",
+    "case": "route_list_unauthenticated",
+    "response": [
+      200,
+      {
+        "activeVersion": 1
+      }
+    ]
+  },
+  {
+    "engine": "vt",
+    "case": "audit_failure_not_atomic",
+    "http_status": 500,
+    "tenant_persisted": 1
+  },
+  {
+    "engine": "vt",
+    "case": "login_no_throttle",
+    "wrong_password_statuses": [
+      401,
+      401,
+      401,
+      401,
+      401,
+      401,
+      401,
+      401,
+      401,
+      401,
+      401,
+      401,
+      401,
+      401,
+      401
+    ]
+  },
+  {
+    "engine": "vt",
+    "case": "restart_session_csrf_usage",
+    "read_status": 200,
+    "old_csrf_write_status": 403,
+    "usage_before": {
+      "audit-data": {
+        "requests": 1,
+        "promptTokens": 3,
+        "completionTokens": 1,
+        "errors": 0
+      }
+    },
+    "usage_after": {}
+  },
+  {
+    "engine": "vt",
+    "case": "other_project_logout",
+    "login_status": 200,
+    "logout_status": 403
+  }
+]

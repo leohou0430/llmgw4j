@@ -1,0 +1,5 @@
+{
+  "suite": "tenant-isolation-stable-port",
+  "exit": 0,
+  "note": "original verifier; only free_port replaced with task-owned non-ephemeral port selection"
+}

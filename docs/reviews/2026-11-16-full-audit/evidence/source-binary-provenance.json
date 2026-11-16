@@ -1,0 +1,12 @@
+{
+  "known_divergence": [
+    {
+      "file": "llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/ControlPlaneManagementConfiguration.java",
+      "detail": "Source contains LLMGW_CONTROL_DB_MIN_FREE_BYTES; both fixed JAR classes do not. Later margin configurability was not runtime-verified by this audit and does not address WAL accounting."
+    }
+  ],
+  "source_changes_or_additions_after_copy": [
+    "llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/SecretStore.java",
+    "llmgw-control/llmgw-control-api/src/main/java/io/github/leohou0430/llmgw/control/RootKeyMismatchException.java"
+  ]
+}

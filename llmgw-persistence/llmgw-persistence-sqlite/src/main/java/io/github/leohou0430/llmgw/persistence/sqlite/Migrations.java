@@ -68,7 +68,15 @@ public final class Migrations {
     public static List<Migration> all() {
         return List.of(ddl(1, FOUNDATIONAL_DDL), ddl(2, KEY_STORE_DDL),
                 ddl(3, ROUTE_VERSION_DDL), ddl(4, ACCOUNT_DDL), ddl(5, SESSION_DDL),
-                ddl(6, UPSTREAM_SECRET_DDL));
+                ddl(6, UPSTREAM_SECRET_DDL), ddl(7, List.of(
+                    "ALTER TABLE audit_event ADD COLUMN actor_id TEXT NOT NULL DEFAULT ''",
+                    "ALTER TABLE audit_event ADD COLUMN tenant_id TEXT NOT NULL DEFAULT ''",
+                    "ALTER TABLE resource_catalog ADD COLUMN creation_seq INTEGER NOT NULL DEFAULT 0",
+                    "UPDATE resource_catalog SET creation_seq=rowid WHERE creation_seq=0",
+                    "CREATE TABLE catalog_sequence(id INTEGER PRIMARY KEY CHECK(id=1), value INTEGER NOT NULL)",
+                    "INSERT INTO catalog_sequence(id,value) SELECT 1,COALESCE(MAX(creation_seq),0) FROM resource_catalog",
+                    "CREATE INDEX idx_resource_creation ON resource_catalog(project_id,creation_seq)")),
+                ddl(8, SqliteUsageLedger.SCHEMA), ddl(9, List.of("CREATE TABLE runtime_bootstrap (name TEXT PRIMARY KEY)")));
     }
 
     private static Migration ddl(int version, List<String> statements) {

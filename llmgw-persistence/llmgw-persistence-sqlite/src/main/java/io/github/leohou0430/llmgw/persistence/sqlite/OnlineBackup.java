@@ -25,10 +25,13 @@ public final class OnlineBackup {
         Objects.requireNonNull(targetFile, "targetFile");
         String escaped = targetFile.toAbsolutePath().toString().replace("'", "''");
         try {
-            Connection connection = source.connection();
-            try (Statement statement = connection.createStatement()) {
-                statement.execute("VACUUM INTO '" + escaped + "'");
-            }
+            source.read(connection -> {
+                if (!connection.getAutoCommit()) throw new SQLException("backup requires an idle transaction boundary");
+                try (Statement statement = connection.createStatement()) {
+                    statement.execute("VACUUM INTO '" + escaped + "'");
+                }
+                return null;
+            });
         } catch (SQLException failure) {
             throw new IllegalStateException("online backup failed: " + targetFile, failure);
         }

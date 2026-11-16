@@ -30,21 +30,26 @@ import java.util.Map;
 @RequestMapping("/control")
 public class ControlSecretController {
     private final RequestAuthorizer authorizer;
+    private final OrgStore orgs;
     private final SecretStore secrets;
     private final AuditLog audit;
 
-    public ControlSecretController(RequestAuthorizer authorizer, SecretStore secrets, AuditLog audit) {
+    public ControlSecretController(RequestAuthorizer authorizer, OrgStore orgs, SecretStore secrets, AuditLog audit) {
         this.authorizer = authorizer;
+        this.orgs = orgs;
         this.secrets = secrets;
         this.audit = audit;
     }
 
     @GetMapping("/secrets")
     public ResponseEntity<Map<String, Object>> list(
-            @CookieValue(name = "llmgw_sid", required = false) String sessionId) {
-        authorize(sessionId, null, false, "t1", "p1");
+            @CookieValue(name = "llmgw_sid", required = false) String sessionId,
+            @org.springframework.web.bind.annotation.RequestParam(required = false) String tenantId,
+            @org.springframework.web.bind.annotation.RequestParam(required = false) String projectId) {
+        var target = ControlAccess.resolve(authorizer, orgs, sessionId, tenantId, projectId);
+        authorize(sessionId, null, false, target.tenantId(), target.projectId());
         try {
-            return ResponseEntity.ok(Map.of("secrets", secrets.list("t1", "p1")));
+            return ResponseEntity.ok(Map.of("secrets", secrets.list(target.tenantId(), target.projectId())));
         } catch (RootKeyMissingException missing) {
             throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, missing.getMessage());
         }
@@ -58,10 +63,11 @@ public class ControlSecretController {
         if (body.name() == null || body.name().isBlank() || body.secret() == null || body.secret().isBlank()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "name and secret required");
         }
-        authorize(sessionId, csrfToken, true, "t1", "p1");
+        var target = ControlAccess.resolve(authorizer, orgs, sessionId, body.tenantId(), body.projectId());
+        authorize(sessionId, csrfToken, true, target.tenantId(), target.projectId());
         try {
-            String id = secrets.create("t1", "p1", body.name(), body.secret());
-            audit.record("p1", "secret.create", "id=" + id + " name=" + body.name());
+            String id = audit.change(ControlAccess.account(authorizer, sessionId).id(), target.tenantId(), target.projectId(),
+                    "secret.create", "name=" + body.name(), () -> secrets.create(target.tenantId(), target.projectId(), body.name(), body.secret()));
             return ResponseEntity.ok(Map.of("id", id));
         } catch (RootKeyMissingException missing) {
             throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, missing.getMessage());
@@ -79,10 +85,11 @@ public class ControlSecretController {
         if (body.secret() == null || body.secret().isBlank()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "secret required");
         }
-        authorize(sessionId, csrfToken, true, "t1", "p1");
+        var target = ControlAccess.resolve(authorizer, orgs, sessionId, body.tenantId(), body.projectId());
+        authorize(sessionId, csrfToken, true, target.tenantId(), target.projectId());
         try {
-            secrets.rotate("t1", "p1", id, body.secret());
-            audit.record("p1", "secret.rotate", "id=" + id);
+            audit.change(ControlAccess.account(authorizer, sessionId).id(), target.tenantId(), target.projectId(),
+                    "secret.rotate", "id=" + id, () -> { secrets.rotate(target.tenantId(), target.projectId(), id, body.secret()); return null; });
             return ResponseEntity.ok(Map.of("rotated", id));
         } catch (RootKeyMissingException missing) {
             throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, missing.getMessage());
@@ -100,6 +107,6 @@ public class ControlSecretController {
         }
     }
 
-    public record SecretBody(String name, String secret) {
+    public record SecretBody(String name, String secret, String tenantId, String projectId) {
     }
 }

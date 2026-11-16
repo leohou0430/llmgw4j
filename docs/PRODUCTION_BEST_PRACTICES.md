@@ -1,14 +1,16 @@
 # llmgw4j 生产环境最佳实践
 
-> v0.3.1 使用项目内原生 SPI。内部 API、模块及 Redis 配置升级方式见 [扩展与迁移说明](EXTENSIONS.md)。
+> v0.4.0 使用项目内原生 SPI。内部 API、模块及 Redis 配置升级方式见 [扩展与迁移说明](EXTENSIONS.md)。
 
-适用版本：**0.3.1**。更新：2026-11-10。配置字段以 [配置说明](CONFIGURATION.md)和源码为准，完整端点见 [OpenAPI](openapi.yaml)。
+适用版本：**0.4.0**。更新：2026-11-16。配置字段以 [配置说明](CONFIGURATION.md)和源码为准，完整端点见 [OpenAPI](openapi.yaml)。
 
 ## 部署边界
 
-llmgw4j 提供 Java 模型数据面、协议透传和可替换治理 SPI。默认配置是本地 mock 演示。企业 OIDC/JWKS/RBAC、持久化财务预算、跨副本配置发布和完整资源目录尚未内建，不能把参考实现直接当作完整多租户计费平台。
+llmgw4j 提供 Java 模型数据面、协议透传和可替换治理 SPI。默认配置是本地 mock 演示。账号/项目RBAC与文件/批任务目录已内建；企业OIDC/JWKS、财务硬预算及多网关副本配置发布不在当前范围，不能把参考实现直接当作完整多租户计费平台。
 
-推荐由 Nginx/Envoy/LB 终止 TLS、隔离管理入口。JVM 默认包支持 WebFlux 和 VT；native 必须按引擎构建。v0.3.1 Release 提供 Linux amd64 WebFlux native，其他平台自行编译。目标 OS、CPU、GC 和启动参数均需单独验证，历史 macOS 冷启动/RSS 数字不能推广到生产。
+推荐由 Nginx/Envoy/LB 终止 TLS、隔离管理入口。JVM 默认包支持 WebFlux 和 VT；native 必须按引擎构建。v0.4.0 Release 提供 Linux amd64 WebFlux native，其他平台自行编译。目标 OS、CPU、GC 和启动参数均需单独验证，历史 macOS 冷启动/RSS 数字不能推广到生产。
+
+首次设置`LLMGW_ADMIN_USERNAME`、`LLMGW_ADMIN_PASSWORD`和`LLMGW_ROOT_KEY`，为本实例独占数据库与暂存目录，按[控制面部署操作](control-plane-operations.md)备份、建立项目和额度。生产仍需`LLMGW_ADMIN_TOKEN`满足启动校验，保持旧token模式disabled；不要以迁移模式代替新控制面授权。
 
 ## 最小生产配置
 
@@ -49,7 +51,7 @@ gateway:
 
 ```sh
 java -XX:MaxGCPauseMillis=10 -Xms256m -Xmx1024m \
-  -jar llmgw-app/target/llmgw-app-0.3.1.jar \
+  -jar llmgw-app/target/llmgw-app-0.4.0.jar \
   --spring.profiles.active=webflux \
   --spring.config.additional-location=file:./application-prod.yml
 ```
@@ -60,7 +62,7 @@ java -XX:MaxGCPauseMillis=10 -Xms256m -Xmx1024m \
 
 - 生产模式必须配置完整管理 token；审计只读 token 仅用于审计导出，并且不能与完整 token 相同。只配置只读 token 不会开放管理写入。管理控制台页面不代表其数据接口免鉴权。
 - 可选 JWT 仅内建 HS256，明确配置共享密钥、issuer/audience；不是完整 OIDC/JWKS。key 的创建、轮换、吊销与重启恢复应纳入运行手册。
-- 文件/任务及文件引用按稳定 key ID、协议和路由验证；未知归属返回 404。files/batches 列表仍返回 501，不应绕过网关向调用方开放共享上游目录。
+- 文件/批任务及文件引用按项目与固定来源验证，视频继续使用独立sticky归属；未知归属返回 404。files/batches列表只返回本项目持久目录，不暴露共享上游完整资源列表。
 - 外部强制审核故障返回 503，不把审核不可用当作允许；语义缓存是优化能力，不承担授权。
 - 可能已经提交的付费操作，普通超时/5xx 不自动重发。fallback 不是幂等保证，业务端应处理未知提交结果。
 
@@ -68,17 +70,17 @@ java -XX:MaxGCPauseMillis=10 -Xms256m -Xmx1024m \
 
 token 配额使用估算预留和实际结算，估算误差可使最终用量略超配额。金额账本是本地演示估算；生产模式不能开启金额预算。需要财务硬控时应先实现持久共享预留、崩溃恢复、未知状态对账和价格覆盖。
 
-Redis 用 `-Predis` 构建，并启用 `gateway.redis.enabled=true`。它替换部分限流/使用量/熔断/key 表/响应缓存/sticky，不替换金额账本、请求日志、快照或完整控制面。模型桶按模型名跨 key 共享，不是 key×model 多级策略。Redis 运行时 key CRUD 暂返回 501；JSON key 文件只支持单进程写入，不能靠共享文件实现多副本管理。
+Redis用`-Predis`构建并显式启用，提供限流、熔断、响应缓存和sticky等实现；当前应用的Key、累计token账本和已发布路由仍由SQLite持久化，不能以此部署多个网关共享SQLite。JSON仅作为旧密钥导入源及观测导出，不作为分布式数据库。
 
 缓存按租户、协议、模型和参数分区；语义检索仅覆盖适合的纯文本请求。内存向量实现与 Redis 缓存能力不等价，不能宣称统一分布式 ANN。明确缓存 TTL、旁路和失效策略，勿用缓存命中降低上游计数的压测来冒充代理吞吐。
 
 ## 超时与容量
 
 - 默认整体超时 60s，connect/首字节/空闲读和心跳按实际上游间隔配置。LB 空闲超时应留出余量，Nginx 关闭 SSE 缓冲；先演练长推理与中途断连，再调整超时。
-- 默认全生命周期并发 64，超出返回 503；未发布工作区同时返回 `Retry-After: 1`，客户端应遵循提示并结合退避策略，避免拒绝后高速重发；请求和非流式响应分别默认限制 4 MiB。上传和二进制下载仍整包缓冲。提高任一边界前测峰值堆、RSS、GC、上游连接、取消与错误率。
+- 默认全生命周期并发 64，超出返回 503；同时返回 `Retry-After: 1`，客户端应遵循提示并结合退避策略，避免拒绝后高速重发；请求和非流式响应分别默认限制 4 MiB。上传使用有界暂存，受支持的文件下载流式转发。提高任一边界前测峰值堆、RSS、GC、上游连接、取消与错误率。
 - `executor-threads` 默认 32，不是所有 CPU 配额下的最优值。4 CPU 上缩到 4 的实验虽提高 JSON 吞吐，却有一次 SSE 截断，没有采用。按 CPU 配额及真实流长度测，不凭单一 RPS 调参。
-- 当前工作区将 URI 缓存限制为 1024 项；满后新路径仍可请求但不再缓存。整体超时覆盖响应正文，VT 流式错误体也受响应大小上限保护。发布版 v0.3.1 尚未包含这些修复。
-- [本轮性能审查](verification/perf/2026-11-10/perf-review/README.md)确认局部分配下降；整网关结果波动，不能作为生产 SLO、最大容量或统一性能优势。
+- 当前工作区将 URI 缓存限制为 1024 项；满后新路径仍可请求但不再缓存。整体超时覆盖响应正文，VT 流式错误体也受响应大小上限保护。这些修复已包含在v0.4.0。
+- [本轮性能审查](reviews/2026-11-16-remediation/README.md)确认局部分配下降；整网关结果波动，不能作为生产 SLO、最大容量或统一性能优势。
 
 ## 运维与上线验收
 

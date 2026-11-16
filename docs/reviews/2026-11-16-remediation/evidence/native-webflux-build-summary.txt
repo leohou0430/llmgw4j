@@ -1,0 +1,13 @@
+[1/8] Initializing...                                                                                   (36.8s @ 0.66GB)
+ Graal compiler: optimization level: 2, target machine: x86-64-v3, PGO: ML-inferred
+[2/8] Performing analysis...  [******]                                                                 (252.2s @ 5.16GB)
+[3/8] Building universe...                                                                              (32.4s @ 5.92GB)
+[4/8] Parsing methods...      [******]                                                                  (44.6s @ 6.57GB)
+[5/8] Inlining methods...     [***]                                                                      (6.2s @ 7.08GB)
+[6/8] Compiling methods...    [*****************]                                                      (294.0s @ 8.11GB)
+[7/8] Laying out methods...   [********]                                                                (62.4s @ 8.11GB)
+[8/8] Creating image...       [******]                                                                  (32.6s @ 6.61GB)
+Finished generating 'llmgw-webflux' in 12m 55s.
+[INFO] BUILD SUCCESS
+[INFO] Total time:  13:51 min
+[INFO] Finished at: 2026-11-16T21:23:56+08:00

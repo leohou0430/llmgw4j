@@ -3,6 +3,8 @@
 import argparse
 import base64
 import hashlib
+import http.server
+import threading
 import hmac
 import json
 import os
@@ -30,16 +32,42 @@ def token(claims):
     return (body + b'.' + base64.urlsafe_b64encode(hmac.new(SECRET, body, hashlib.sha256).digest()).rstrip(b'=')).decode()
 
 
-def verify(engine, jar):
-    gateway_port, mock_port = port(), port()
-    while mock_port == gateway_port:
-        mock_port = port()
+class LocalUpstream(http.server.BaseHTTPRequestHandler):
+    def do_POST(self):
+        request = json.loads(self.rfile.read(int(self.headers.get('Content-Length', 0))))
+        if request.get('stream'):
+            frames = [
+                {'choices': [{'index': 0, 'delta': {'content': 'ok'}, 'finish_reason': None}]},
+                {'choices': [{'index': 0, 'delta': {}, 'finish_reason': 'stop'}],
+                 'usage': {'prompt_tokens': 1, 'completion_tokens': 1}},
+            ]
+            payload = (''.join('data: ' + json.dumps(frame) + '\n\n' for frame in frames) + 'data: [DONE]\n\n').encode()
+            content_type = 'text/event-stream'
+        else:
+            payload = json.dumps({'choices': [{'message': {'role': 'assistant', 'content': 'ok'}, 'finish_reason': 'stop'}],
+                                  'usage': {'prompt_tokens': 1, 'completion_tokens': 1}}).encode()
+            content_type = 'application/json'
+        self.send_response(200)
+        self.send_header('Content-Type', content_type)
+        self.send_header('Content-Length', str(len(payload)))
+        self.end_headers()
+        self.wfile.write(payload)
+
+    def log_message(self, *args):
+        pass
+
+
+def verify(engine, jar, binary=False):
+    # Keep the mock's port bound from allocation through the last request.
+    mock = http.server.ThreadingHTTPServer(('127.0.0.1', 0), LocalUpstream)
+    threading.Thread(target=mock.serve_forever, daemon=True).start()
+    gateway_port, mock_port = port(), mock.server_port
     with tempfile.TemporaryDirectory(prefix='llmgw-jwt-auth-') as folder:
         log_path = Path(folder)/'gateway.log'
-        command = ['java', '-jar', str(jar),
+        command = ([str(jar)] if binary else ['java', '-jar', str(jar)]) + [
             f'--spring.profiles.active={engine}', f'--server.port={gateway_port}',
             '--server.address=127.0.0.1', '--gateway.production=false',
-            '--gateway.mock.enabled=true', f'--gateway.mock.port={mock_port}',
+            '--gateway.mock.enabled=false',
             f'--gateway.routes[0].target-url=http://127.0.0.1:{mock_port}/mock/v1',
             f'--gateway.auth.jwt-secret={SECRET.decode()}',
             '--gateway.auth.jwt-issuer=jwt-smoke', '--gateway.auth.jwt-audience=gateway',
@@ -94,11 +122,17 @@ def verify(engine, jar):
             try:process.wait(timeout=10)
             except subprocess.TimeoutExpired:
                 process.kill();process.wait()
+            mock.shutdown()
+            mock.server_close()
 
 
 if __name__=='__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--jar', type=Path, default=Path(os.environ.get(
-        'LLMGW_TEST_JAR', ROOT/'llmgw-app/target/llmgw-app-0.3.1.jar')))
-    jar = parser.parse_args().jar.resolve()
-    for engine in ['webflux','vt']:verify(engine, jar)
+        'LLMGW_TEST_JAR', ROOT/'llmgw-app/target/llmgw-app-0.4.0.jar')))
+    parser.add_argument('--binary', type=Path)
+    parser.add_argument('--engine', choices=['webflux','vt'])
+    args = parser.parse_args()
+    jar = (args.binary or args.jar).resolve()
+    for engine in [args.engine] if args.engine else ['webflux','vt']:
+        verify(engine, jar, bool(args.binary))

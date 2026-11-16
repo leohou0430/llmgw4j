@@ -61,18 +61,18 @@ public class ControlRouteController {
             @CookieValue(name = "llmgw_sid", required = false) String sessionId,
             @RequestHeader(name = "X-CSRF-Token", required = false) String csrfToken,
             @RequestBody PublishBody body) {
+        ControlAccess.platform(authorizer, sessionId);
         authorize(sessionId, csrfToken, Action.ROUTE_PUBLISH, body.tenantId(), body.projectId());
         if (body.upstream() != null) {
             var violations = candidateValidator.check(body.upstream(), platformPolicy);
             if (!violations.isEmpty()) {
-                audit.record(body.projectId(), "route.publish.rejected", String.join("; ", violations));
+                audit.record(ControlAccess.account(authorizer, sessionId).id(), "", "", "route.publish.rejected", String.join("; ", violations));
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "invalid upstream: " + violations);
             }
         }
         WriteGate.check(storage);
-        routeVersions.saveDraft(body.config());
-        RouteVersion published = tryConflict(() -> routeVersions.publish(body.expectedVersion()));
-        audit.record(body.projectId(), "route.publish", "version=" + published.version());
+        RouteVersion published = audit.change(ControlAccess.account(authorizer, sessionId).id(), "", "", "route.publish", "expectedVersion=" + body.expectedVersion(),
+                () -> tryConflict(() -> routeVersions.publish(body.config(), body.expectedVersion())));
         return ResponseEntity.ok(Map.of("version", published.version(), "activeVersion", routeVersions.activeVersion()));
     }
 
@@ -81,16 +81,17 @@ public class ControlRouteController {
             @CookieValue(name = "llmgw_sid", required = false) String sessionId,
             @RequestHeader(name = "X-CSRF-Token", required = false) String csrfToken,
             @RequestBody RollbackBody body) {
+        ControlAccess.platform(authorizer, sessionId);
         authorize(sessionId, csrfToken, Action.ROUTE_ROLLBACK, body.tenantId(), body.projectId());
         WriteGate.check(storage);
-        RouteVersion rolledBack = tryConflict(() -> routeVersions.rollback(body.targetVersion(), body.expectedVersion()));
-        audit.record(body.projectId(), "route.rollback", "version=" + rolledBack.version() + " base=" + rolledBack.baseVersion());
+        RouteVersion rolledBack = audit.change(ControlAccess.account(authorizer, sessionId).id(), "", "", "route.rollback", "base=" + body.targetVersion(),
+                () -> tryConflict(() -> routeVersions.rollback(body.targetVersion(), body.expectedVersion())));
         return ResponseEntity.ok(Map.of("version", rolledBack.version(), "baseVersion", rolledBack.baseVersion()));
     }
 
     private void authorize(String sessionId, String csrfToken, Action action, String tenantId, String projectId) {
         AuthOutcome outcome = authorizer.authorize(
-                new AuthenticatedRequest(sessionId, csrfToken, true, action, new Target(tenantId, projectId)));
+                new AuthenticatedRequest(sessionId, csrfToken, true, action, new Target("", "")));
         if (outcome != AuthOutcome.ALLOW) {
             HttpStatus status = outcome == AuthOutcome.UNAUTHENTICATED ? HttpStatus.UNAUTHORIZED : HttpStatus.FORBIDDEN;
             throw new ResponseStatusException(status, outcome.name());
@@ -104,6 +105,8 @@ public class ControlRouteController {
             throw new ResponseStatusException(HttpStatus.CONFLICT, conflict.getMessage());
         } catch (io.github.leohou0430.llmgw.persistence.sqlite.StorageLimitException full) {
             throw full;
+        } catch (IllegalArgumentException invalid) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, invalid.getMessage());
         } catch (Exception failure) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     failure.getClass().getSimpleName() + ": " + failure.getMessage());

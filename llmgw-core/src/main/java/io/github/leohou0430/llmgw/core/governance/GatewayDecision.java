@@ -19,7 +19,34 @@ public record GatewayDecision(
         ParsedRequest parsed,
         long budgetReservedMicroUsd,
         String keyGroup,
-        long groupBudgetReservedMicroUsd) {
+        long groupBudgetReservedMicroUsd,
+        String reservationId,
+        String tenantId,
+        String projectId) {
+
+    public GatewayDecision(boolean allowed, int status, String reason, String keyId, String model,
+                           Route route, ParsedRequest parsed, long budgetReservedMicroUsd,
+                           String keyGroup, long groupBudgetReservedMicroUsd, String reservationId) {
+        this(allowed, status, reason, keyId, model, route, parsed, budgetReservedMicroUsd,
+                keyGroup, groupBudgetReservedMicroUsd, reservationId, "", "");
+    }
+
+    public GatewayDecision withScope(String tenant, String project) {
+        return new GatewayDecision(allowed, status, reason, keyId, model, route, parsed,
+                budgetReservedMicroUsd, keyGroup, groupBudgetReservedMicroUsd, reservationId, tenant, project);
+    }
+
+    public GatewayDecision(boolean allowed, int status, String reason, String keyId, String model,
+                           Route route, ParsedRequest parsed, long budgetReservedMicroUsd,
+                           String keyGroup, long groupBudgetReservedMicroUsd) {
+        this(allowed, status, reason, keyId, model, route, parsed, budgetReservedMicroUsd,
+                keyGroup, groupBudgetReservedMicroUsd, "");
+    }
+
+    public GatewayDecision withReservation(String id) {
+        return new GatewayDecision(allowed, status, reason, keyId, model, route, parsed,
+                budgetReservedMicroUsd, keyGroup, groupBudgetReservedMicroUsd, id, tenantId, projectId);
+    }
 
     public GatewayDecision {
         if (budgetReservedMicroUsd < 0) {
@@ -41,16 +68,16 @@ public record GatewayDecision(
 
     public GatewayDecision withRoute(Route resolved) {
         return new GatewayDecision(allowed, status, reason, keyId, model, resolved, parsed,
-                budgetReservedMicroUsd, keyGroup, groupBudgetReservedMicroUsd);
+                budgetReservedMicroUsd, keyGroup, groupBudgetReservedMicroUsd, reservationId, tenantId, projectId);
     }
 
     public GatewayDecision withBudgetReserved(long microUsd) {
         return new GatewayDecision(allowed, status, reason, keyId, model, route, parsed,
-                microUsd, keyGroup, groupBudgetReservedMicroUsd);
+                microUsd, keyGroup, groupBudgetReservedMicroUsd, reservationId, tenantId, projectId);
     }
 
     public GatewayDecision withGroup(String group, long groupReservedMicroUsd) {
         return new GatewayDecision(allowed, status, reason, keyId, model, route, parsed,
-                budgetReservedMicroUsd, group, groupReservedMicroUsd);
+                budgetReservedMicroUsd, group, groupReservedMicroUsd, reservationId, tenantId, projectId);
     }
 }

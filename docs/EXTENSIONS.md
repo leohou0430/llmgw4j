@@ -1,4 +1,4 @@
-# 原生扩展与模块开发（v0.3.1）
+# 原生扩展与模块开发（v0.4.0）
 
 本项目参考 Dubbo SPI 的命名映射、默认实现、惰性实例化和别名机制，使用项目内的 JDK 实现；**不直接使用 Dubbo，也不声称兼容其 SPI 协议**。基础模块不依赖 Spring、Boot、Reactor，HTTP 框架保留在 app、engine-webflux、engine-vt。
 
@@ -12,8 +12,17 @@
 | governance | governance-api | default、redis |
 | provider | provider-api | http-jdk、openai、openai-sdk、anthropic |
 | tokenizer | tokenizer-api | heuristic、jtokkit |
+| identity | identity-api | default |
+| control | control-api | default |
+| persistence | persistence-api | sqlite |
+| catalog | catalog-api | default |
+| conversion | conversion-api | chat、messages、responses、deepseek及module组合 |
 
 统一前缀 `llmgw-`，聚合目录兼作 parent，根 POM 只列聚合层；api 依赖 core，实现显式依赖本域 api，不依赖同域其他实现，不共享 api 的裸 Java 包。未来多实现能力遵循相同规则。app 是组合根，轻量 OpenAI 认证与 SDK 校验分包，默认 app 为管理校验功能仍链接 SDK。
+
+## 应用组合根
+
+应用先加载基础、可选Redis、JDK HTTP和转换模块，再加载`control-sqlite`统一绑定持久权威，最后加载显式用户模块并seal。Spring桥只导出同一个ExtensionContext。状态和资源归该上下文；独立使用Redis原生SPI不等于应用支持分布式SQLite。
 
 ## 命名扩展
 
@@ -72,7 +81,7 @@ try (var runtime = new ExtensionContext()) {
 
 原生治理入口执行普通 POJO 的 validate；app 在 Boot 配置绑定后也执行校验。ExtensionContext 保存显式 typed suppliers，按需创建，每个 context 独立持有状态与资源。循环/重复/缺失定义、已创建对象的替换均失败；seal 后不能修改绑定。
 
-关闭时逆创建顺序关闭已创建的 AutoCloseable，每个对象只关一次；external 注册的绑定由调用者管理，不触发容器关闭；不要将同一外部资源再以普通 bind 注册为 owned 别名。app 只导出该原生图给 HTTP 控制器，不再扫描治理/provider/tokenizer 或读取它们的 Boot 自动配置。快照恢复在应用入口显式执行。
+关闭时逆创建顺序关闭已创建的 AutoCloseable，每个对象只关一次；external 注册的绑定由调用者管理，不触发容器关闭；不要将同一外部资源再以普通 bind 注册为 owned 别名。app 只导出该原生图给 HTTP 控制器，不再扫描治理/provider/tokenizer 或读取它们的 Boot 自动配置。当前应用从SQLite恢复权威状态，不允许JSON快照覆盖累计账本。
 
 自定义 factory 是无参、无状态 ExtensionModule，实现放入独立 child module：
 
@@ -124,6 +133,6 @@ app 边缘有限兼容旧 spring.data.redis 独立字段，新 gateway.redis 字
 | Boot 自动配置 / Component 覆盖基础实现 | ExtensionModule 显式构造及 replace |
 | v0.3.0 中间实现的 Dubbo 注解/描述文件 | 项目 ExtensionPoint / META-INF/llmgw/extensions；移除 Dubbo 依赖 |
 
-v0.3.0 tag 保留中间源码，其发布已取消；v0.3.1 才对应本说明。原生 AOT 只读取项目描述文件并登记公共构造器/配置类型，不需要 Dubbo 常量、scope bean 或 Fastjson2 元数据。Netty/JDK 25 的 shared arena 支持仍需保留，二进制按引擎构建并实际回归。
+v0.3.0 tag 保留中间源码，其发布已取消；v0.3.1首次引入项目内SPI，v0.4.0继续沿用并统一控制面组合根。原生 AOT 只读取项目描述文件并登记公共构造器/配置类型，不需要 Dubbo 常量、scope bean 或 Fastjson2 元数据。Netty/JDK 25 的 shared arena 支持仍需保留，二进制按引擎构建并实际回归。
 
 Maven Enforcer 禁止所有模块直接或间接引入 Dubbo，并阻止基础包引入 Spring/Reactor。模块/源码 guard 与新增负例约束后续实现。验证范围和逐文件清单见 [当前审查报告](verification/architecture/native-extension-mechanism/README.md)；不沿用中间实现或旧性能数字作为当前证据。

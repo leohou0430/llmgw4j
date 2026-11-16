@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: llmgw4j API
-  version: 0.3.1
+  version: 0.4.0
   description: |
     Java LLM API gateway (llmgw4j). Supported data-plane protocols use pass-through
     parity: each endpoint only routes to upstreams speaking the SAME protocol
@@ -30,6 +30,982 @@ servers:
 security:
   - bearerAuth: []
 paths:
+  /control/status:
+    get:
+      summary: 真实控制面状态
+      tags:
+      - control
+      security: []
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: 输入无效
+        '401':
+          description: 无效会话/凭据
+        '403':
+          description: 角色、scope、CSRF拒绝
+        '409':
+          description: 版本冲突
+        '429':
+          description: 登录限速
+        '503':
+          description: 空间、容量或根密钥不可用
+  /control/login:
+    post:
+      summary: 账号密码登录，10次/分钟超限429
+      tags:
+      - control
+      security: []
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: 输入无效
+        '401':
+          description: 无效会话/凭据
+        '403':
+          description: 角色、scope、CSRF拒绝
+        '409':
+          description: 版本冲突
+        '429':
+          description: 登录限速
+        '503':
+          description: 空间、容量或根密钥不可用
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+  /control/session:
+    get:
+      summary: 恢复有效会话与当前进程CSRF token，响应no-store
+      tags:
+      - control
+      security:
+      - controlSession: []
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: 输入无效
+        '401':
+          description: 无效会话/凭据
+        '403':
+          description: 角色、scope、CSRF拒绝
+        '409':
+          description: 版本冲突
+        '429':
+          description: 登录限速
+        '503':
+          description: 空间、容量或根密钥不可用
+  /control/logout:
+    post:
+      summary: 当前会话+CSRF退出，无租户角色限制
+      tags:
+      - control
+      security:
+      - controlSession: []
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: 输入无效
+        '401':
+          description: 无效会话/凭据
+        '403':
+          description: 角色、scope、CSRF拒绝
+        '409':
+          description: 版本冲突
+        '429':
+          description: 登录限速
+        '503':
+          description: 空间、容量或根密钥不可用
+      parameters:
+      - name: X-CSRF-Token
+        in: header
+        required: true
+        schema:
+          type: string
+  /control/tenants:
+    get:
+      summary: 主体可见租户列表
+      tags:
+      - control
+      security:
+      - controlSession: []
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: 输入无效
+        '401':
+          description: 无效会话/凭据
+        '403':
+          description: 角色、scope、CSRF拒绝
+        '409':
+          description: 版本冲突
+        '429':
+          description: 登录限速
+        '503':
+          description: 空间、容量或根密钥不可用
+    post:
+      summary: 平台管理员创建租户
+      tags:
+      - control
+      security:
+      - controlSession: []
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: 输入无效
+        '401':
+          description: 无效会话/凭据
+        '403':
+          description: 角色、scope、CSRF拒绝
+        '409':
+          description: 版本冲突
+        '429':
+          description: 登录限速
+        '503':
+          description: 空间、容量或根密钥不可用
+      parameters:
+      - name: X-CSRF-Token
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                name:
+                  type: string
+  /control/projects:
+    get:
+      summary: 主体可见项目列表
+      tags:
+      - control
+      security:
+      - controlSession: []
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: 输入无效
+        '401':
+          description: 无效会话/凭据
+        '403':
+          description: 角色、scope、CSRF拒绝
+        '409':
+          description: 版本冲突
+        '429':
+          description: 登录限速
+        '503':
+          description: 空间、容量或根密钥不可用
+    post:
+      summary: 平台管理员创建项目（初始项目token额度0）
+      tags:
+      - control
+      security:
+      - controlSession: []
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: 输入无效
+        '401':
+          description: 无效会话/凭据
+        '403':
+          description: 角色、scope、CSRF拒绝
+        '409':
+          description: 版本冲突
+        '429':
+          description: 登录限速
+        '503':
+          description: 空间、容量或根密钥不可用
+      parameters:
+      - name: X-CSRF-Token
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                tenantId:
+                  type: string
+                name:
+                  type: string
+  /control/accounts:
+    get:
+      summary: 按主体scope列出账号（无密码hash）
+      tags:
+      - control
+      security:
+      - controlSession: []
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: 输入无效
+        '401':
+          description: 无效会话/凭据
+        '403':
+          description: 角色、scope、CSRF拒绝
+        '409':
+          description: 版本冲突
+        '429':
+          description: 登录限速
+        '503':
+          description: 空间、容量或根密钥不可用
+    post:
+      summary: 按角色授予矩阵创建账号
+      tags:
+      - control
+      security:
+      - controlSession: []
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: 输入无效
+        '401':
+          description: 无效会话/凭据
+        '403':
+          description: 角色、scope、CSRF拒绝
+        '409':
+          description: 版本冲突
+        '429':
+          description: 登录限速
+        '503':
+          description: 空间、容量或根密钥不可用
+      parameters:
+      - name: X-CSRF-Token
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+                  minLength: 12
+                role:
+                  type: string
+                  enum:
+                  - PLATFORM_ADMIN
+                  - TENANT_ADMIN
+                  - PROJECT_ADMIN
+                  - PROJECT_VIEWER
+                tenantId:
+                  type: string
+                projectId:
+                  type: string
+  /control/keys:
+    get:
+      summary: 指定项目Key脱敏列表
+      tags:
+      - control
+      security:
+      - controlSession: []
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: 输入无效
+        '401':
+          description: 无效会话/凭据
+        '403':
+          description: 角色、scope、CSRF拒绝
+        '409':
+          description: 版本冲突
+        '429':
+          description: 登录限速
+        '503':
+          description: 空间、容量或根密钥不可用
+      parameters:
+      - name: tenantId
+        in: query
+        description: 省略使用账号scope；平台管理员须选择项目
+        schema:
+          type: string
+      - name: projectId
+        in: query
+        description: 省略使用账号scope；平台管理员须选择项目
+        schema:
+          type: string
+    post:
+      summary: 创建真实数据面Key，明文仅返回一次
+      tags:
+      - control
+      security:
+      - controlSession: []
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: 输入无效
+        '401':
+          description: 无效会话/凭据
+        '403':
+          description: 角色、scope、CSRF拒绝
+        '409':
+          description: 版本冲突
+        '429':
+          description: 登录限速
+        '503':
+          description: 空间、容量或根密钥不可用
+      parameters:
+      - name: X-CSRF-Token
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tenantId:
+                  type: string
+                projectId:
+                  type: string
+                keyId:
+                  type: string
+                name:
+                  type: string
+                quotaTokens:
+                  type: integer
+  /control/keys/{id}/rotate:
+    post:
+      summary: 轮换Key，旧凭据停止新请求，已受理请求继续
+      tags:
+      - control
+      security:
+      - controlSession: []
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: 输入无效
+        '401':
+          description: 无效会话/凭据
+        '403':
+          description: 角色、scope、CSRF拒绝
+        '409':
+          description: 版本冲突
+        '429':
+          description: 登录限速
+        '503':
+          description: 空间、容量或根密钥不可用
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: X-CSRF-Token
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tenantId:
+                  type: string
+                projectId:
+                  type: string
+  /control/keys/{id}/revoke:
+    post:
+      summary: 吊销Key，保留在途请求结算
+      tags:
+      - control
+      security:
+      - controlSession: []
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: 输入无效
+        '401':
+          description: 无效会话/凭据
+        '403':
+          description: 角色、scope、CSRF拒绝
+        '409':
+          description: 版本冲突
+        '429':
+          description: 登录限速
+        '503':
+          description: 空间、容量或根密钥不可用
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: X-CSRF-Token
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tenantId:
+                  type: string
+                projectId:
+                  type: string
+  /control/quotas:
+    post:
+      summary: 调整项目/Key累计token上限，不重置已用和在途占额，原因必填
+      tags:
+      - control
+      security:
+      - controlSession: []
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: 输入无效
+        '401':
+          description: 无效会话/凭据
+        '403':
+          description: 角色、scope、CSRF拒绝
+        '409':
+          description: 版本冲突
+        '429':
+          description: 登录限速
+        '503':
+          description: 空间、容量或根密钥不可用
+      parameters:
+      - name: X-CSRF-Token
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tenantId:
+                  type: string
+                projectId:
+                  type: string
+                keyId:
+                  type: string
+                quotaTokens:
+                  type: integer
+                reason:
+                  type: string
+  /control/catalog:
+    get:
+      summary: 指定项目资源目录，无内部来源凭据
+      tags:
+      - control
+      security:
+      - controlSession: []
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: 输入无效
+        '401':
+          description: 无效会话/凭据
+        '403':
+          description: 角色、scope、CSRF拒绝
+        '409':
+          description: 版本冲突
+        '429':
+          description: 登录限速
+        '503':
+          description: 空间、容量或根密钥不可用
+      parameters:
+      - name: tenantId
+        in: query
+        description: 省略使用账号scope；平台管理员须选择项目
+        schema:
+          type: string
+      - name: projectId
+        in: query
+        description: 省略使用账号scope；平台管理员须选择项目
+        schema:
+          type: string
+    post:
+      summary: 手工登记目录，不创建供应商资源
+      tags:
+      - control
+      security:
+      - controlSession: []
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: 输入无效
+        '401':
+          description: 无效会话/凭据
+        '403':
+          description: 角色、scope、CSRF拒绝
+        '409':
+          description: 版本冲突
+        '429':
+          description: 登录限速
+        '503':
+          description: 空间、容量或根密钥不可用
+      parameters:
+      - name: X-CSRF-Token
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tenantId:
+                  type: string
+                projectId:
+                  type: string
+                gatewayId:
+                  type: string
+                type:
+                  type: string
+                upstreamId:
+                  type: string
+                sourceRoute:
+                  type: string
+                provider:
+                  type: string
+                configVersion:
+                  type: string
+  /control/usage:
+    get:
+      summary: 指定项目累计Key用量
+      tags:
+      - control
+      security:
+      - controlSession: []
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: 输入无效
+        '401':
+          description: 无效会话/凭据
+        '403':
+          description: 角色、scope、CSRF拒绝
+        '409':
+          description: 版本冲突
+        '429':
+          description: 登录限速
+        '503':
+          description: 空间、容量或根密钥不可用
+      parameters:
+      - name: tenantId
+        in: query
+        description: 省略使用账号scope；平台管理员须选择项目
+        schema:
+          type: string
+      - name: projectId
+        in: query
+        description: 省略使用账号scope；平台管理员须选择项目
+        schema:
+          type: string
+  /control/audit:
+    get:
+      summary: 指定项目最近50条管理审计，含操作者
+      tags:
+      - control
+      security:
+      - controlSession: []
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: 输入无效
+        '401':
+          description: 无效会话/凭据
+        '403':
+          description: 角色、scope、CSRF拒绝
+        '409':
+          description: 版本冲突
+        '429':
+          description: 登录限速
+        '503':
+          description: 空间、容量或根密钥不可用
+      parameters:
+      - name: tenantId
+        in: query
+        description: 省略使用账号scope；平台管理员须选择项目
+        schema:
+          type: string
+      - name: projectId
+        in: query
+        description: 省略使用账号scope；平台管理员须选择项目
+        schema:
+          type: string
+  /control/secrets:
+    get:
+      summary: 平台管理员查询指定项目脱敏供应商凭据
+      tags:
+      - control
+      security:
+      - controlSession: []
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: 输入无效
+        '401':
+          description: 无效会话/凭据
+        '403':
+          description: 角色、scope、CSRF拒绝
+        '409':
+          description: 版本冲突
+        '429':
+          description: 登录限速
+        '503':
+          description: 空间、容量或根密钥不可用
+      parameters:
+      - name: tenantId
+        in: query
+        description: 省略使用账号scope；平台管理员须选择项目
+        schema:
+          type: string
+      - name: projectId
+        in: query
+        description: 省略使用账号scope；平台管理员须选择项目
+        schema:
+          type: string
+    post:
+      summary: 平台管理员加密保存供应商凭据，无根密钥503
+      tags:
+      - control
+      security:
+      - controlSession: []
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: 输入无效
+        '401':
+          description: 无效会话/凭据
+        '403':
+          description: 角色、scope、CSRF拒绝
+        '409':
+          description: 版本冲突
+        '429':
+          description: 登录限速
+        '503':
+          description: 空间、容量或根密钥不可用
+      parameters:
+      - name: X-CSRF-Token
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tenantId:
+                  type: string
+                projectId:
+                  type: string
+                name:
+                  type: string
+                secret:
+                  type: string
+  /control/secrets/{id}/rotate:
+    post:
+      summary: 平台管理员轮换指定项目凭据
+      tags:
+      - control
+      security:
+      - controlSession: []
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: 输入无效
+        '401':
+          description: 无效会话/凭据
+        '403':
+          description: 角色、scope、CSRF拒绝
+        '409':
+          description: 版本冲突
+        '429':
+          description: 登录限速
+        '503':
+          description: 空间、容量或根密钥不可用
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: X-CSRF-Token
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tenantId:
+                  type: string
+                projectId:
+                  type: string
+                secret:
+                  type: string
+  /control/routes:
+    get:
+      summary: 全局激活路由版本
+      tags:
+      - control
+      security: []
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: 输入无效
+        '401':
+          description: 无效会话/凭据
+        '403':
+          description: 角色、scope、CSRF拒绝
+        '409':
+          description: 版本冲突
+        '429':
+          description: 登录限速
+        '503':
+          description: 空间、容量或根密钥不可用
+  /control/routes/publish:
+    post:
+      summary: 仅平台管理员原子发布并激活全局JSON路由，版本冲突409
+      tags:
+      - control
+      security:
+      - controlSession: []
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: 输入无效
+        '401':
+          description: 无效会话/凭据
+        '403':
+          description: 角色、scope、CSRF拒绝
+        '409':
+          description: 版本冲突
+        '429':
+          description: 登录限速
+        '503':
+          description: 空间、容量或根密钥不可用
+      parameters:
+      - name: X-CSRF-Token
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                expectedVersion:
+                  type: integer
+                config:
+                  type: string
+  /control/routes/rollback:
+    post:
+      summary: 仅平台管理员回滚，新建不可变版本并激活
+      tags:
+      - control
+      security:
+      - controlSession: []
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: 输入无效
+        '401':
+          description: 无效会话/凭据
+        '403':
+          description: 角色、scope、CSRF拒绝
+        '409':
+          description: 版本冲突
+        '429':
+          description: 登录限速
+        '503':
+          description: 空间、容量或根密钥不可用
+      parameters:
+      - name: X-CSRF-Token
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                expectedVersion:
+                  type: integer
+                targetVersion:
+                  type: integer
   /v1/chat/completions:
     post:
       operationId: createChatCompletion
@@ -591,7 +1567,8 @@ paths:
           description: The configured implementation does not support this operation.
   /admin/snapshot/load:
     post:
-      summary: "Restore token usage snapshot"
+      summary: "Legacy snapshot restore (SQLite authority rejects replacement)"
+      description: Current SQLite usage is authoritative; returns 409 rather than replacing cumulative usage or reservations.
       tags: [admin]
       security: [{ adminToken: [] }]
       responses:
@@ -600,6 +1577,8 @@ paths:
           content:
             application/json:
               schema: {}
+        '409':
+          description: SQLite cumulative usage cannot be replaced by a JSON snapshot.
         '401':
           description: Missing or invalid administrative token.
         '400':
@@ -629,9 +1608,10 @@ paths:
           description: The configured implementation does not support this operation.
   /admin/routes/reload:
     post:
-      summary: "Atomically replace routing configuration"
+      summary: "Legacy route replacement (use control-plane publication)"
       description: >-
-        Each route object accepts an optional upstreamProtocol: "" (default)
+        Current SQLite route authority returns 409; publish through /control/routes/publish instead.
+        For independent writable sources, each route object accepts an optional upstreamProtocol: "" (default)
         keeps byte-for-byte passthrough; "chat" converts the request to the
         DeepSeek Chat upstream. Any other value is rejected with 400.
       tags: [admin]
@@ -647,6 +1627,8 @@ paths:
           content:
             application/json:
               schema: {}
+        '409':
+          description: Read-only SQLite authority; use versioned control-plane publication.
         '401':
           description: Missing or invalid administrative token.
         '400':
@@ -875,8 +1857,44 @@ paths:
             text/html:
               schema: { type: string }
 
+  /control/quotas/pending:
+    get:
+      summary: List conservative in-flight or unknown token reservations for an authorized project
+      parameters:
+        - {name: tenantId, in: query, required: true, schema: {type: string}}
+        - {name: projectId, in: query, required: true, schema: {type: string}}
+      responses:
+        '200': {description: At most 200 scoped pending reservations}
+        '403': {description: Scope denied}
+  /control/quotas/reconcile:
+    post:
+      summary: Tenant administrator settles independently verified unknown usage with an audit reason
+      parameters:
+        - {name: X-CSRF-Token, in: header, required: true, schema: {type: string}}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [tenantId, projectId, reservationId, promptTokens, completionTokens, reason]
+              properties:
+                tenantId: {type: string}
+                projectId: {type: string}
+                reservationId: {type: string}
+                promptTokens: {type: integer, minimum: 0}
+                completionTokens: {type: integer, minimum: 0}
+                reason: {type: string, minLength: 1}
+      responses:
+        '200': {description: Verified usage settled once and audited}
+        '400': {description: Unknown, already settled, or invalid reservation}
+        '403': {description: Tenant administration permission or CSRF denied}
 components:
   securitySchemes:
+    controlSession:
+      type: apiKey
+      in: cookie
+      name: llmgw_sid
     adminToken:
       type: apiKey
       in: header

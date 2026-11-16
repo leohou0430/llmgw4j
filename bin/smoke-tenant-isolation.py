@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Exercise tenant boundaries against both real data planes and the local mock."""
 import json
+import base64
+import secrets
 import os
 import threading
 from concurrent.futures import ThreadPoolExecutor
@@ -13,7 +15,7 @@ import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-JAR = Path(os.environ.get('LLMGW_TEST_JAR', str(ROOT / 'llmgw-app/target/llmgw-app-0.3.1.jar'))).resolve()
+JAR = Path(os.environ.get('LLMGW_TEST_JAR', str(ROOT / 'llmgw-app/target/llmgw-app-0.4.0.jar'))).resolve()
 BINARY = os.environ.get('BINARY')
 
 
@@ -34,13 +36,13 @@ def verify(engine):
                    f'--gateway.routes[0].target-url=http://127.0.0.1:{mock}/mock/v1',
                    f'--gateway.cache.semantic-url=http://127.0.0.1:{mock}/mock/v1/embeddings',
                    '--gateway.cache.semantic-threshold=0.85',
-                   '--gateway.max-concurrent-requests=1', '--gateway.mock.chunk-interval-ms=100']
+                   '--gateway.admin-token-mode=migration', '--gateway.max-concurrent-requests=1', '--gateway.mock.chunk-interval-ms=100']
         for index in range(2):
             command += [f'--gateway.api-keys[{index}].id=tenant-{index}',
                         f'--gateway.api-keys[{index}].token=test-{index}',
                         f'--gateway.api-keys[{index}].quota-tokens=1000000']
         with open(Path(folder) / 'gateway.log', 'w+') as log:
-            process = subprocess.Popen(command, cwd=folder, stdout=log, stderr=subprocess.STDOUT)
+            process = subprocess.Popen(command, cwd=folder, env={**os.environ, "LLMGW_ROOT_KEY": base64.b64encode(secrets.token_bytes(32)).decode()}, stdout=log, stderr=subprocess.STDOUT)
 
             def request(path, method='GET', body=None, tenant=None, headers=None, response_headers=None):
                 req_headers = {'Content-Type': 'application/json', **(headers or {})}
@@ -97,8 +99,14 @@ def verify(engine):
                     assert request(f'/v1/batches/{task}/cancel', 'POST', tenant=0)[0] == 200
                 assert request('/v1/batches/unknown', tenant=0)[0] == 404
                 assert request('/v1/batches/unknown')[0] == 401
-                assert request('/v1/files', tenant=0)[0] == 501
-                assert request('/v1/batches', tenant=0)[0] == 501
+                for collection in ('files', 'batches'):
+                    own_status, own_body = request('/v1/' + collection, tenant=0)
+                    foreign_status, foreign_body = request('/v1/' + collection, tenant=1)
+                    assert own_status == foreign_status == 200
+                    own_rows = json.loads(own_body)['data']
+                    foreign_rows = json.loads(foreign_body)['data']
+                    assert all(row['id'] not in {item['id'] for item in foreign_rows} for row in own_rows)
+                assert resource in {row['id'] for row in json.loads(request('/v1/files', tenant=0)[1])['data']}
                 assert request(f'/v1/files/{resource}', tenant=0)[0] == 200
                 assert request(f'/v1/files/{resource}', tenant=1)[0] == 404
                 assert request(f'/v1/files/{resource}', 'DELETE', tenant=1)[0] == 404

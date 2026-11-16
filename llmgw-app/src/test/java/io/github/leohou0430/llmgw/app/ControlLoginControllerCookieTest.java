@@ -70,6 +70,20 @@ class ControlLoginControllerCookieTest {
         assertEquals("csrf-1", response.getBody().get("csrfToken"));
     }
 
+    @Test
+    void realHttpLoginMappingEnforcesLimitBeforePasswordWork() {
+        var client = org.springframework.test.web.reactive.server.WebTestClient
+                .bindToController(controller(new GatewayProperties())).build();
+        for (int i=0;i<10;i++) client.post().uri("/control/login")
+                .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
+                .bodyValue(Map.of("username","admin","password","pw"))
+                .exchange().expectStatus().isOk();
+        client.post().uri("/control/login").contentType(org.springframework.http.MediaType.APPLICATION_JSON)
+                .bodyValue(Map.of("username","admin","password","pw"))
+                .exchange().expectStatus().isEqualTo(429);
+        client.get().uri("/control/session").exchange().expectStatus().isUnauthorized();
+    }
+
     private static String loginCookie(GatewayProperties properties) {
         ResponseEntity<Map<String, Object>> response = controller(properties)
                 .login(new ControlLoginController.LoginBody("admin", "pw"));

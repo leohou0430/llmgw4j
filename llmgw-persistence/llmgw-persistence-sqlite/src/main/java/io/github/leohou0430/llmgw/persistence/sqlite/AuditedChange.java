@@ -25,14 +25,10 @@ public final class AuditedChange {
     public static void applyAndAudit(DatabaseContext database, String projectId, String action,
                                      String detail, ChangeBody change) {
         try {
-            Connection connection = database.connection();
-            boolean previousAutoCommit = connection.getAutoCommit();
-            connection.setAutoCommit(false);
-            try {
+            database.transaction(connection -> {
                 change.apply(connection);
                 try (PreparedStatement statement = connection.prepareStatement(
-                        "INSERT INTO audit_event (id, project_id, action, created_at, detail)"
-                                + " VALUES (?,?,?,?,?)")) {
+                        "INSERT INTO audit_event (id, project_id, action, created_at, detail) VALUES (?,?,?,?,?)")) {
                     statement.setString(1, UUID.randomUUID().toString());
                     statement.setString(2, projectId);
                     statement.setString(3, action);
@@ -40,13 +36,8 @@ public final class AuditedChange {
                     statement.setString(5, detail);
                     statement.executeUpdate();
                 }
-                connection.commit();
-            } catch (SQLException failure) {
-                connection.rollback();
-                throw failure;
-            } finally {
-                connection.setAutoCommit(previousAutoCommit);
-            }
+                return null;
+            });
         } catch (SQLException failure) {
             throw new IllegalStateException("change rejected: change/audit failed", failure);
         }

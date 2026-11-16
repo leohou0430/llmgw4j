@@ -1,0 +1,135 @@
+{
+  "date": "2026-11-16",
+  "engine": "webflux",
+  "image": "llmgw4j:v13-test",
+  "image_id": "sha256:6cd85752316838368af231dcc6268981757771213d5b7efe8c5afe59325697d6",
+  "jar_sha256": "e0b34013f367825dd08c009a81a60998eb02582c345a5546f92de61769c1c116",
+  "container_limits": {
+    "cpus": 2,
+    "memory": "2g",
+    "swap": "2g"
+  },
+  "file_bytes": 67108864,
+  "parallel_uploads": 4,
+  "phases": {
+    "A": {
+      "upload_statuses": {
+        "1": 200,
+        "3": 200,
+        "2": 200,
+        "0": 200
+      },
+      "fifth_status": 503,
+      "admin_200": 125,
+      "admin_total": 125,
+      "spool_during": 4,
+      "spool_after": 0,
+      "duration_s": 52.82
+    },
+    "B": {
+      "cancel_status": null,
+      "spool_after_cancel": 0,
+      "recovery_status": 200
+    },
+    "C": {
+      "upload_status": 200,
+      "admin_status": 200,
+      "spool_final": 0
+    }
+  },
+  "assertions": [
+    {
+      "name": "health_up",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "warmup_upload_200",
+      "pass": true,
+      "detail": "status=200 body=b'HTTP/1.1 200 OK\\r\\nX-Request-Id: gw-8e8740bdc6df231c\\r\\nX-LLMGW-Overhead-Ms: 415.5\\r\\nContent-Type: application/json\\r\\ncontent-length: 69\\r\\nconnection: close\\r\\n\\r\\n{\"id\":\"file-1\",\"object\":\"file\",\"bytes\":1048820,'"
+    },
+    {
+      "name": "four_64MiB_uploads_200",
+      "pass": true,
+      "detail": "statuses={1: 200, 3: 200, 2: 200, 0: 200}"
+    },
+    {
+      "name": "fifth_saturated_503",
+      "pass": true,
+      "detail": "status=503"
+    },
+    {
+      "name": "admin_concurrent_responsive",
+      "pass": true,
+      "detail": "admin_200=125/125"
+    },
+    {
+      "name": "spool_present_during_stress",
+      "pass": true,
+      "detail": "files_during=4"
+    },
+    {
+      "name": "spool_cleaned_after_uploads",
+      "pass": true,
+      "detail": "files_after=0"
+    },
+    {
+      "name": "cancel_aborted",
+      "pass": true,
+      "detail": "status=None"
+    },
+    {
+      "name": "cancel_spool_cleaned",
+      "pass": true,
+      "detail": "files=0"
+    },
+    {
+      "name": "permit_zero_after_cancel_recovery_200",
+      "pass": true,
+      "detail": "status=200"
+    },
+    {
+      "name": "recovery_64MiB_200",
+      "pass": true,
+      "detail": "status=200"
+    },
+    {
+      "name": "recovery_admin_200",
+      "pass": true,
+      "detail": "status=200"
+    },
+    {
+      "name": "final_spool_empty",
+      "pass": true,
+      "detail": "files=0"
+    },
+    {
+      "name": "rss_under_2GiB",
+      "pass": true,
+      "detail": "peak=803.9MiB samples=10"
+    },
+    {
+      "name": "no_oom_kill",
+      "pass": true,
+      "detail": "OOMKilled=false status=running"
+    },
+    {
+      "name": "container_running",
+      "pass": true,
+      "detail": "status=running"
+    }
+  ],
+  "resources": {
+    "samples": 10,
+    "peak_rss_bytes": 842950246,
+    "peak_rss_mib": 803.9,
+    "peak_cpu_percent": 211.8,
+    "memory_limit_bytes": 2147483648,
+    "rss_under_limit": true
+  },
+  "container_state": {
+    "oom_killed": "false",
+    "status": "running",
+    "exit_code": "0"
+  }
+}

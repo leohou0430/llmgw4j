@@ -1,0 +1,34 @@
+{
+  "platform": "macOS-15.8.3-x86_64-i386-64bit-Mach-O",
+  "nativeModes": {
+    "native-webflux": "default optimized native build",
+    "native-vt-quick": "GraalVM -Ob quick build, behavior validation only"
+  },
+  "artifacts": {
+    "default.jar": {
+      "sha256": "e0b34013f367825dd08c009a81a60998eb02582c345a5546f92de61769c1c116",
+      "bytes": 145958617,
+      "localArtifact": "/tmp/llmgw-remediation-final/default.jar"
+    },
+    "redis.jar": {
+      "sha256": "ad3b784d10d2a12b618e950481b54ab9a83fbdd2f4bfa0c47c6156050ed4e7e4",
+      "bytes": 147604219,
+      "localArtifact": "/tmp/llmgw-remediation-final/redis.jar"
+    },
+    "optional.jar": {
+      "sha256": "7a00725ebb3a4bfd04b686d99685b7583d243732ad811e59b5dfd0f44b5a4656",
+      "bytes": 151572956,
+      "localArtifact": "/tmp/llmgw-remediation-final/optional.jar"
+    },
+    "native-webflux": {
+      "sha256": "791d6b2d1053898ed451aad8c4257b946b337bba50f93e971573b508f776f3ce",
+      "bytes": 293419936,
+      "localArtifact": "/tmp/llmgw-remediation-final/native-webflux"
+    },
+    "native-vt-quick": {
+      "sha256": "74b57d029414f3a601f3580d7f6b520b9dc0ae37114481372ecab01ba52072ff",
+      "bytes": 191309944,
+      "localArtifact": "/tmp/llmgw-remediation-final/native-vt-quick"
+    }
+  }
+}

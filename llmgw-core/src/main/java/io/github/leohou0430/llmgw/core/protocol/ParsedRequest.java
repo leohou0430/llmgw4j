@@ -27,7 +27,18 @@ public record ParsedRequest(
         String promptText,
         int estimatedTokens,
         int units,
-        String cacheFingerprint) {
+        String cacheFingerprint,
+        String cacheNamespace) {
+
+    public ParsedRequest(String rawJson, ProtocolKind kind, String model, boolean stream,
+                         String promptText, int estimatedTokens, int units, String cacheFingerprint) {
+        this(rawJson, kind, model, stream, promptText, estimatedTokens, units, cacheFingerprint, "");
+    }
+
+    public ParsedRequest withCacheNamespace(String namespace) {
+        return new ParsedRequest(rawJson, kind, model, stream, promptText, estimatedTokens, units, cacheFingerprint, namespace);
+    }
+
 
     /** Requests without a body (video task polling / content download). */
     public static ParsedRequest bodyless(ProtocolKind kind) {

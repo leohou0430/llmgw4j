@@ -472,7 +472,7 @@ class VirtualThreadConversionTest {
         volatile Optional<String> cacheHit = Optional.empty();
 
         public GatewayDecision enter(String token, ParsedRequest request, Route target) {
-            return GatewayDecision.allow("tenant", request, target);
+            return GatewayDecision.allow("tenant", request, target).withScope("tenant", "tenant");
         }
 
         public Optional<String> lookupCache(String key, ParsedRequest request) {

@@ -79,14 +79,41 @@ public final class SqliteKeyStore implements KeyStore {
         mutate(connection -> markRotated(connection, oldAtRest, newAtRest, overlapEnd));
     }
 
+    public java.util.Optional<StoredKey> findToken(String token) {
+        return findAtRest(storeKey(token));
+    }
+
+    public java.util.Optional<StoredKey> findAtRest(String atRest) {
+        try {
+            return database.read(connection -> {
+                try (var statement = connection.prepareStatement("SELECT * FROM key_store WHERE at_rest=?")) {
+                    statement.setString(1, atRest);
+                    try (var rs = statement.executeQuery()) {
+                        if (!rs.next()) return java.util.Optional.empty();
+                        var key = new ApiKeyRegistry.ApiKey(rs.getString("id"), rs.getString("name"),
+                                rs.getLong("quota_tokens"), models(connection, atRest), rs.getLong("expires_at_epoch_ms"),
+                                rs.getString("group_name"), rs.getLong("budget_micro_usd"), metadata(connection, atRest));
+                        return java.util.Optional.of(new StoredKey(key, rs.getString("rotated_to"), rs.getLong("legacy_until")));
+                    }
+                }
+            });
+        } catch (SQLException e) { throw new IllegalStateException("failed to read credential", e); }
+    }
+
+    public void importAtRest(String atRest, StoredKey stored) {
+        mutate(connection -> {
+            write(connection, atRest, stored.key());
+            if (stored.rotatedTo() != null) markRotated(connection, atRest, stored.rotatedTo(), stored.legacyUntil());
+        });
+    }
+
     @Override
     public Map<String, StoredKey> load() {
-        Connection connection;
-        try {
-            connection = database.connection();
-        } catch (SQLException failure) {
-            throw new IllegalStateException("failed to access the database", failure);
-        }
+        try { return database.read(this::load); }
+        catch (SQLException failure) { throw new IllegalStateException("failed to load API key state", failure); }
+    }
+
+    private Map<String, StoredKey> load(Connection connection) {
         List<Object[]> rows = new ArrayList<>();
         try (Statement statement = connection.createStatement();
              ResultSet result = statement.executeQuery(
@@ -230,35 +257,11 @@ public final class SqliteKeyStore implements KeyStore {
     }
 
     private void mutate(SqlBody body) {
-        Connection connection;
         try {
-            connection = database.connection();
+            database.transaction(connection -> { body.run(connection); return null; });
         } catch (SQLException failure) {
-            throw new IllegalStateException("failed to access the database", failure);
-        }
-        boolean previousAutoCommit;
-        try {
-            previousAutoCommit = connection.getAutoCommit();
-            connection.setAutoCommit(false);
-        } catch (SQLException failure) {
-            throw new IllegalStateException("failed to begin API key transaction", failure);
-        }
-        try {
-            body.run(connection);
-            connection.commit();
-        } catch (SQLException failure) {
-            try {
-                connection.rollback();
-            } catch (SQLException ignored) {
-                failure.addSuppressed(ignored);
-            }
+            if (SqliteErrors.isStorageFull(failure)) throw new StorageLimitException("database or disk is full");
             throw new IllegalStateException("failed to persist API key state", failure);
-        } finally {
-            try {
-                connection.setAutoCommit(previousAutoCommit);
-            } catch (SQLException ignored) {
-                // connection state is restored best-effort; the transaction already finished
-            }
         }
     }
 

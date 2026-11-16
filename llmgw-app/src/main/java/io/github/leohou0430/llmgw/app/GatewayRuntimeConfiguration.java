@@ -32,8 +32,11 @@ public class GatewayRuntimeConfiguration {
             if (properties.getRedis().isEnabled()) context.loadModule("redis");
             context.loadModule("jdk-http");
             context.loadModule("conversion");
+            context.loadModule("control-sqlite");
             for (String module : properties.getExtensionModules()) context.loadModule(module);
             context.seal();
+            context.get(io.github.leohou0430.llmgw.control.local.RouteVersionService.class);
+            context.get(ApiKeyRegistry.class);
             if (properties.getGovernance().isSnapshotAutoRestore()) context.get(SnapshotStore.class).load();
             return context;
         } catch (RuntimeException | Error failure) {
@@ -59,9 +62,11 @@ public class GatewayRuntimeConfiguration {
         }
     }
     @Bean(destroyMethod = "") public io.github.leohou0430.llmgw.provider.UpstreamProvider upstreamProvider(ExtensionContext c) { return c.get(io.github.leohou0430.llmgw.provider.UpstreamProvider.class); }
-    @Bean(destroyMethod = "") public ApiKeyRegistry apiKeyRegistry(ExtensionContext c) { return c.get(ApiKeyRegistry.class); }
+    @Bean(name = {"apiKeyRegistry", "keyAdminService"}, destroyMethod = "")
+    public SqliteApiKeyRegistry apiKeyRegistry(ExtensionContext c) {
+        return (SqliteApiKeyRegistry)c.get(ApiKeyRegistry.class);
+    }
     @Bean(destroyMethod = "") public TokenLimiter tokenLimiter(ExtensionContext c) { return c.get(TokenLimiter.class); }
-    @Bean(destroyMethod = "") public UsageLedger usageLedger(ExtensionContext c) { return c.get(UsageLedger.class); }
     @Bean(destroyMethod = "") public BudgetLedger budgetLedger(ExtensionContext c) { return c.get(BudgetLedger.class); }
     @Bean(destroyMethod = "") public RequestLogSink requestLogSink(ExtensionContext c) { return c.get(RequestLogSink.class); }
     @Bean(destroyMethod = "") public Guardrail guardrail(ExtensionContext c) { return c.get(Guardrail.class); }

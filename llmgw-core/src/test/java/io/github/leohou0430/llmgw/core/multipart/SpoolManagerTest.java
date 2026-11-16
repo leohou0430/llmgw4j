@@ -85,6 +85,49 @@ class SpoolManagerTest {
         return r;
     }
 
+    public static void main(String[] args) throws Exception {
+        var manager = new SpoolManager(new SpoolManager.Config(Path.of(args[0]), 1000, 1000, 0));
+        var upload = manager.create();
+        upload.write(new byte[100], 0, 100);
+        Files.writeString(Path.of(args[0]).resolve("ready"), upload.path().toString());
+        new CountDownLatch(1).await();
+    }
+
+    @Test
+    void forcedProcessDeathReleasesOwnershipAndRestartReclaimsRawUpload() throws Exception {
+        Path directory = temp.resolve("killed");
+        var child = new ProcessBuilder(Path.of(System.getProperty("java.home"), "bin", "java").toString(),
+                "-cp", System.getProperty("java.class.path"), SpoolManagerTest.class.getName(), directory.toString())
+                .redirectErrorStream(true).redirectOutput(temp.resolve("child.log").toFile()).start();
+        try {
+            long deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(10);
+            while (!Files.exists(directory.resolve("ready")) && child.isAlive() && System.nanoTime() < deadline) {
+                Thread.sleep(20);
+            }
+            assertTrue(Files.exists(directory.resolve("ready")), "child must create upload before kill");
+            Path raw = Path.of(Files.readString(directory.resolve("ready")));
+            assertEquals(100, Files.size(raw));
+            child.destroyForcibly(); assertTrue(child.waitFor(5, TimeUnit.SECONDS));
+            assertTrue(Files.exists(raw));
+            try (var restarted = new SpoolManager(config(directory))) { assertFalse(Files.exists(raw)); }
+        } finally { child.destroyForcibly(); child.waitFor(5, TimeUnit.SECONDS); }
+    }
+
+    @Test
+    void simultaneousOwnersCannotDeleteLiveUploads() throws Exception {
+        Path directory = temp.resolve("owned");
+        try (var first = new SpoolManager(config(directory))) {
+            var upload = first.create();
+            upload.write(pattern(20), 0, 20);
+            assertThrows(IOException.class, () -> new SpoolManager(config(directory)));
+            assertTrue(Files.exists(upload.path()));
+        }
+        Files.writeString(directory.resolve("orphan.tmp"), "crashed upload");
+        try (var restarted = new SpoolManager(config(directory))) {
+            assertFalse(Files.exists(directory.resolve("orphan.tmp")));
+        }
+    }
+
     @Test
     void defaultsHavePlanLimits() {
         SpoolManager.Config c = SpoolManager.Config.defaults(temp);

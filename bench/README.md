@@ -6,7 +6,7 @@
 
 当前未发布工作区的最新结果见 [2C2G 单副本容量审查](../docs/verification/capacity/2026-11-11/README.md)；包含受控正常矩阵、保留的连接关闭失败批次和独立尾延迟复核，不与下文历史 4 CPU 批次混算。
 
-> v0.3.1 当前结果与限制见 [性能说明](../docs/PERFORMANCE.md)和[最新 A/B](../docs/verification/perf/2026-11-10/perf-review/README.md)。下文 v1–v13 数字是历史记录，不能当作当前发布性能。
+> v0.4.0的功能及有界上传验证见[当前证据](../docs/reviews/2026-11-16-remediation/README.md)，不作为通用吞吐A/B。历史结果与限制见 [性能说明](../docs/PERFORMANCE.md)和[最新 A/B](../docs/verification/perf/2026-11-10/perf-review/README.md)。下文 v1–v13 数字是历史记录，不能当作当前发布性能。
 
 目标：**单变量对照实验**，不是跑个好看的数字。
 

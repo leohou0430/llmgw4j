@@ -157,6 +157,20 @@ public final class SecretStore {
         }
     }
 
+    public String resolve(String tenantId, String projectId, String id) {
+        try {
+            return database.read(connection -> {
+                try (var s = connection.prepareStatement("SELECT cipher_text FROM upstream_secret WHERE id=? AND tenant_id=? AND project_id=?")) {
+                    s.setString(1, id); s.setString(2, tenantId); s.setString(3, projectId);
+                    try (var rows = s.executeQuery()) {
+                        if (!rows.next()) throw new IllegalArgumentException("unknown provider secret");
+                        return cipher.decrypt(rows.getString(1));
+                    }
+                }
+            });
+        } catch (SQLException e) { throw new IllegalStateException("failed to resolve provider secret", e); }
+    }
+
     private static String mask(String plaintext) {
         if (plaintext == null || plaintext.length() <= 4) {
             return "****";
@@ -168,48 +182,16 @@ public final class SecretStore {
     }
 
     private void mutate(SqlBody body) {
-        Connection connection;
         try {
-            connection = database.connection();
+            database.transaction(connection -> { body.run(connection); return null; });
         } catch (SQLException failure) {
-            throw new IllegalStateException("failed to open secret-store connection", failure);
-        }
-        synchronized (connection) {
-            boolean previousAutoCommit;
-            try {
-                previousAutoCommit = connection.getAutoCommit();
-                connection.setAutoCommit(false);
-            } catch (SQLException failure) {
-                throw new IllegalStateException("failed to begin secret transaction", failure);
-            }
-            try {
-                body.run(connection);
-                connection.commit();
-            } catch (SQLException failure) {
-                try {
-                    connection.rollback();
-                } catch (SQLException ignored) {
-                    failure.addSuppressed(ignored);
-                }
-                if (SqliteErrors.isStorageFull(failure)) {
-                    throw new StorageLimitException("database or disk is full");
-                }
-                throw new IllegalStateException("failed to persist provider secret", failure);
-            } finally {
-                try {
-                    connection.setAutoCommit(previousAutoCommit);
-                } catch (SQLException ignored) {
-                    // transaction already finished
-                }
-            }
+            if (SqliteErrors.isStorageFull(failure)) throw new StorageLimitException("database or disk is full");
+            throw new IllegalStateException("failed to persist provider secret", failure);
         }
     }
 
     private <T> T read(SqlRead<T> body) throws SQLException {
-        Connection connection = database.connection();
-        synchronized (connection) {
-            return body.read(connection);
-        }
+        return database.read(body::read);
     }
 
     @FunctionalInterface

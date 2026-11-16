@@ -144,7 +144,10 @@ public class AdminController {
     public Map<String, Object> load(
             @RequestHeader(value = "X-Admin-Token", required = false) String token) {
         requireAdmin(token);
-        snapshots.load();
+        try { snapshots.load(); }
+        catch (UnsupportedOperationException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "SQLite usage is authoritative; reconcile unknown reservations through /control/quotas instead");
+        }
         return Map.of("loaded", true);
     }
 

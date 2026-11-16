@@ -22,16 +22,26 @@ public final class StorageGuard {
         this.databaseFile = Objects.requireNonNull(databaseFile, "databaseFile");
     }
 
-    public void requireWritable() {
+    public void requireWritable() { requireWritable(0); }
+
+    public void requireWritable(long additionalBytes) {
+        if (additionalBytes < 0) throw new IllegalArgumentException("negative storage reservation");
         try {
-            long size = Files.exists(databaseFile) ? Files.size(databaseFile) : 0L;
+            long size = 0;
+            try {
+                for (String suffix : new String[]{"", "-wal", "-shm"}) {
+                    Path part = Path.of(databaseFile.toString() + suffix);
+                    size = Math.addExact(size, Files.exists(part) ? Files.size(part) : 0);
+                }
+                size = Math.addExact(size, additionalBytes);
+            } catch (ArithmeticException overflow) { throw new StorageLimitException("database size overflow"); }
             if (size > maxDatabaseBytes) {
                 throw new StorageLimitException(
                         "database size " + size + " exceeds cap " + maxDatabaseBytes);
             }
             Path directory = databaseFile.toAbsolutePath().getParent();
             long free = Files.getFileStore(directory).getUsableSpace();
-            if (free < minFreeDiskBytes) {
+            if (free < minFreeDiskBytes || additionalBytes > free - minFreeDiskBytes) {
                 throw new StorageLimitException(
                         "free disk " + free + " is below margin " + minFreeDiskBytes);
             }

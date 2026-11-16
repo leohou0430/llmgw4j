@@ -41,8 +41,9 @@ public class ControlOrgController {
     @GetMapping("/tenants")
     public ResponseEntity<Map<String, Object>> tenants(
             @CookieValue(name = "llmgw_sid", required = false) String sessionId) {
-        authorize(sessionId, null, false, Action.CATALOG_READ, new Target("t1", "p1"));
-        return ResponseEntity.ok(Map.of("tenants", orgs.tenants()));
+        var target = ControlAccess.target(authorizer, sessionId, null, null);
+        authorize(sessionId, null, false, Action.CATALOG_READ, target);
+        return ResponseEntity.ok(Map.of("tenants", orgs.tenants(target.tenantId())));
     }
 
     @PostMapping("/tenants")
@@ -55,16 +56,17 @@ public class ControlOrgController {
         }
         authorize(sessionId, csrfToken, true, Action.TENANT_MANAGE, new Target(body.id(), ""));
         WriteGate.check(storage);
-        orgs.createTenant(body.id(), body.name());
-        audit.record(body.id(), "tenant.create", "name=" + body.name());
+        audit.change(ControlAccess.account(authorizer, sessionId).id(), body.id(), "", "tenant.create", "name=" + body.name(),
+                () -> { orgs.createTenant(body.id(), body.name()); return null; });
         return ResponseEntity.ok(Map.of("id", body.id()));
     }
 
     @GetMapping("/projects")
     public ResponseEntity<Map<String, Object>> projects(
             @CookieValue(name = "llmgw_sid", required = false) String sessionId) {
-        authorize(sessionId, null, false, Action.CATALOG_READ, new Target("t1", "p1"));
-        return ResponseEntity.ok(Map.of("projects", orgs.projects()));
+        var target = ControlAccess.target(authorizer, sessionId, null, null);
+        authorize(sessionId, null, false, Action.CATALOG_READ, target);
+        return ResponseEntity.ok(Map.of("projects", orgs.projects(target.tenantId(), target.projectId())));
     }
 
     @PostMapping("/projects")
@@ -78,8 +80,8 @@ public class ControlOrgController {
         }
         authorize(sessionId, csrfToken, true, Action.TENANT_MANAGE, new Target(body.tenantId(), ""));
         WriteGate.check(storage);
-        orgs.createProject(body.id(), body.tenantId(), body.name());
-        audit.record(body.tenantId(), "project.create", "id=" + body.id());
+        audit.change(ControlAccess.account(authorizer, sessionId).id(), body.tenantId(), body.id(), "project.create", "id=" + body.id(),
+                () -> { orgs.createProject(body.id(), body.tenantId(), body.name()); return null; });
         return ResponseEntity.ok(Map.of("id", body.id()));
     }
 

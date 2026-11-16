@@ -29,13 +29,15 @@ import java.util.Map;
 @RequestMapping("/control")
 public class ControlCatalogController {
     private final RequestAuthorizer authorizer;
+    private final OrgStore orgs;
     private final ResourceCatalog catalog;
     private final AuditLog audit;
     private final io.github.leohou0430.llmgw.persistence.sqlite.StorageGuard storage;
 
-    public ControlCatalogController(RequestAuthorizer authorizer, ResourceCatalog catalog, AuditLog audit,
+    public ControlCatalogController(RequestAuthorizer authorizer, OrgStore orgs, ResourceCatalog catalog, AuditLog audit,
                                     io.github.leohou0430.llmgw.persistence.sqlite.StorageGuard storage) {
         this.authorizer = authorizer;
+        this.orgs = orgs;
         this.catalog = catalog;
         this.audit = audit;
         this.storage = storage;
@@ -43,9 +45,18 @@ public class ControlCatalogController {
 
     @GetMapping("/catalog")
     public ResponseEntity<Map<String, Object>> list(
-            @CookieValue(name = "llmgw_sid", required = false) String sessionId) {
-        authorize(sessionId, null, false, Action.CATALOG_READ);
-        return ResponseEntity.ok(Map.of("entries", catalog.list("p1")));
+            @CookieValue(name = "llmgw_sid", required = false) String sessionId,
+            @org.springframework.web.bind.annotation.RequestParam(required = false) String tenantId,
+            @org.springframework.web.bind.annotation.RequestParam(required = false) String projectId) {
+        var target = ControlAccess.resolve(authorizer, orgs, sessionId, tenantId, projectId);
+        ControlAccess.require(authorizer, sessionId, null, false, Action.CATALOG_READ, target);
+        if (target.projectId().isBlank()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "projectId required");
+        return ResponseEntity.ok(Map.of("entries", catalog.list(target.projectId()).stream().map(entry -> new ResourceEntry(
+                entry.gatewayId(), entry.projectId(), entry.type(), entry.upstreamId(), entry.sourceRoute(),
+                entry.provider(), entry.configVersion(), entry.createdAt(), entry.observableStatus(),
+                entry.metadata().entrySet().stream().filter(field -> !field.getKey().startsWith("llmgw."))
+                        .collect(java.util.stream.Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)),
+                entry.lastSyncedAt(), entry.deleted())).toList()));
     }
 
     @PostMapping("/catalog")
@@ -56,30 +67,23 @@ public class ControlCatalogController {
         if (body.gatewayId() == null || body.gatewayId().isBlank() || body.type() == null || body.type().isBlank()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "gatewayId and type required");
         }
-        authorize(sessionId, csrfToken, true, Action.CATALOG_WRITE);
+        var target = ControlAccess.resolve(authorizer, orgs, sessionId, body.tenantId(), body.projectId());
+        ControlAccess.require(authorizer, sessionId, csrfToken, true, Action.CATALOG_WRITE, target);
+        if (target.projectId().isBlank()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "projectId required");
         WriteGate.check(storage);
-        ResourceEntry entry = new ResourceEntry(body.gatewayId(), "p1",
+        ResourceEntry entry = new ResourceEntry(body.gatewayId(), target.projectId(),
                 body.type(),
                 body.upstreamId() == null ? "" : body.upstreamId(),
                 body.sourceRoute() == null ? "" : body.sourceRoute(),
                 body.provider() == null ? "" : body.provider(),
                 body.configVersion() == null ? "" : body.configVersion(),
                 System.currentTimeMillis(), "pending", Map.of(), 0L, false);
-        catalog.create(entry);
-        audit.record("p1", "catalog.create", "id=" + body.gatewayId());
+        audit.change(ControlAccess.account(authorizer, sessionId).id(), target.tenantId(), target.projectId(),
+                "catalog.create", "id=" + body.gatewayId(), () -> { catalog.create(entry); return null; });
         return ResponseEntity.ok(Map.of("id", body.gatewayId()));
     }
 
-    private void authorize(String sessionId, String csrfToken, boolean mutating, Action action) {
-        AuthOutcome outcome = authorizer.authorize(
-                new AuthenticatedRequest(sessionId, csrfToken, mutating, action, new Target("t1", "p1")));
-        if (outcome != AuthOutcome.ALLOW) {
-            HttpStatus status = outcome == AuthOutcome.UNAUTHENTICATED ? HttpStatus.UNAUTHORIZED : HttpStatus.FORBIDDEN;
-            throw new ResponseStatusException(status, outcome.name());
-        }
-    }
-
     public record EntryBody(String gatewayId, String type, String upstreamId, String sourceRoute,
-                            String provider, String configVersion) {
+                            String provider, String configVersion, String tenantId, String projectId) {
     }
 }

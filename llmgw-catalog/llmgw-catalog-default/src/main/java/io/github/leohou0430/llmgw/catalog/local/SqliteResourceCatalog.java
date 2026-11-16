@@ -28,7 +28,7 @@ import java.util.StringJoiner;
  * key is {@code projectId + '\u0001' + gatewayId} so the same gateway id can exist in
  * two projects without colliding (cross-project isolation is still enforced by the
  * project-scoped queries and the authorization precheck). Ordering uses SQLite's
- * implicit {@code rowid}; a re-create deletes and re-inserts so the entry moves to
+ * durable monotonic sequence; a re-create deletes and re-inserts so the entry moves to
  * the end, matching the in-memory implementation. Pagination reuses {@link CursorCodec}
  * so pages are signed, scope-bound and high-water-marked exactly like the local store.
  */
@@ -54,6 +54,14 @@ public final class SqliteResourceCatalog implements ResourceCatalog {
         Objects.requireNonNull(entry, "entry");
         authorizer.requireAuthorized(entry.projectId());
         mutate(connection -> {
+            long sequence;
+            try (var statement = connection.createStatement()) {
+                statement.executeUpdate("UPDATE catalog_sequence SET value=value+1 WHERE id=1");
+                try (var row = statement.executeQuery("SELECT value FROM catalog_sequence WHERE id=1")) {
+                    if (!row.next()) throw new SQLException("catalog sequence missing");
+                    sequence = row.getLong(1);
+                }
+            }
             try (PreparedStatement delete = connection.prepareStatement(
                     "DELETE FROM resource_catalog WHERE id = ?")) {
                 delete.setString(1, storedId(entry.projectId(), entry.gatewayId()));
@@ -61,8 +69,8 @@ public final class SqliteResourceCatalog implements ResourceCatalog {
             }
             try (PreparedStatement insert = connection.prepareStatement(
                     "INSERT INTO resource_catalog (id, project_id, type, upstream_id, source_route, provider,"
-                            + " config_version, created_at, observable_status, metadata, last_synced_at, deleted)"
-                            + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
+                            + " config_version, created_at, observable_status, metadata, last_synced_at, deleted, creation_seq)"
+                            + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
                 insert.setString(1, storedId(entry.projectId(), entry.gatewayId()));
                 insert.setString(2, entry.projectId());
                 insert.setString(3, entry.type());
@@ -75,6 +83,7 @@ public final class SqliteResourceCatalog implements ResourceCatalog {
                 insert.setString(10, encodeMetadata(entry.metadata()));
                 insert.setLong(11, entry.lastSyncedAt());
                 insert.setInt(12, entry.deleted() ? 1 : 0);
+                insert.setLong(13, sequence);
                 insert.executeUpdate();
             }
         });
@@ -87,7 +96,7 @@ public final class SqliteResourceCatalog implements ResourceCatalog {
         try {
             return read(connection -> {
                 try (PreparedStatement select = connection.prepareStatement(
-                        "SELECT rowid AS seq, * FROM resource_catalog WHERE id = ? AND project_id = ?")) {
+                        "SELECT creation_seq AS seq, * FROM resource_catalog WHERE id = ? AND project_id = ?")) {
                     select.setString(1, storedId(projectId, gatewayId));
                     select.setString(2, projectId);
                     try (ResultSet rows = select.executeQuery()) {
@@ -121,8 +130,8 @@ public final class SqliteResourceCatalog implements ResourceCatalog {
         try {
             return read(connection -> {
                 try (PreparedStatement select = connection.prepareStatement(
-                        "SELECT rowid AS seq, * FROM resource_catalog WHERE project_id = ? AND deleted = 0"
-                                + " ORDER BY rowid")) {
+                        "SELECT creation_seq AS seq, * FROM resource_catalog WHERE project_id = ? AND deleted = 0"
+                                + " ORDER BY creation_seq")) {
                     select.setString(1, projectId);
                     try (ResultSet rows = select.executeQuery()) {
                         List<ResourceEntry> out = new ArrayList<>();
@@ -148,7 +157,7 @@ public final class SqliteResourceCatalog implements ResourceCatalog {
             try {
                 highWaterMark = read(connection -> {
                     try (PreparedStatement max = connection.prepareStatement(
-                            "SELECT COALESCE(MAX(rowid), 0) FROM resource_catalog WHERE project_id = ?")) {
+                            "SELECT COALESCE(MAX(creation_seq), 0) FROM resource_catalog WHERE project_id = ?")) {
                         max.setString(1, projectId);
                         try (ResultSet row = max.executeQuery()) {
                             return row.next() ? row.getLong(1) : 0L;
@@ -170,10 +179,10 @@ public final class SqliteResourceCatalog implements ResourceCatalog {
             afterSequence = token.lastSequence();
         }
 
-        String sql = "SELECT rowid AS seq, * FROM resource_catalog"
-                + " WHERE project_id = ? AND deleted = 0 AND rowid > ? AND rowid <= ?"
+        String sql = "SELECT creation_seq AS seq, * FROM resource_catalog"
+                + " WHERE project_id = ? AND deleted = 0 AND creation_seq > ? AND creation_seq <= ?"
                 + (request.typeFilter() == null ? "" : " AND type = ?")
-                + " ORDER BY rowid LIMIT ?";
+                + " ORDER BY creation_seq LIMIT ?";
         List<ResourceEntry> items;
         List<Long> sequences = new ArrayList<>();
         try {
@@ -265,45 +274,15 @@ public final class SqliteResourceCatalog implements ResourceCatalog {
     }
 
     private void mutate(SqlBody body) {
-        Connection connection;
         try {
-            connection = database.connection();
+            database.transaction(connection -> { body.run(connection); return null; });
         } catch (SQLException failure) {
-            throw new IllegalStateException("failed to open catalog connection", failure);
-        }
-        synchronized (connection) {
-            boolean previousAutoCommit;
-            try {
-                previousAutoCommit = connection.getAutoCommit();
-                connection.setAutoCommit(false);
-            } catch (SQLException failure) {
-                throw new IllegalStateException("failed to begin catalog transaction", failure);
-            }
-            try {
-                body.run(connection);
-                connection.commit();
-            } catch (SQLException failure) {
-                try {
-                    connection.rollback();
-                } catch (SQLException ignored) {
-                    failure.addSuppressed(ignored);
-                }
-                throw new IllegalStateException("failed to persist catalog state", failure);
-            } finally {
-                try {
-                    connection.setAutoCommit(previousAutoCommit);
-                } catch (SQLException ignored) {
-                    // transaction already finished; restore is best-effort
-                }
-            }
+            throw new IllegalStateException("failed to persist catalog state", failure);
         }
     }
 
     private <T> T read(SqlRead<T> body) throws SQLException {
-        Connection connection = database.connection();
-        synchronized (connection) {
-            return body.read(connection);
-        }
+        return database.read(body::read);
     }
 
     @FunctionalInterface

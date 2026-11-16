@@ -35,7 +35,8 @@ public final class SqliteSessionStore implements SessionStore {
         String id = Base64.getUrlEncoder().withoutPadding().encodeToString(raw);
         long expiresAt = nowEpochMs + ttlMillis;
         try {
-            PreparedStatement statement = database.connection().prepareStatement(
+            database.transaction(connection -> {
+            PreparedStatement statement = connection.prepareStatement(
                     "INSERT INTO session (id, account_id, expires_at_epoch_ms, token_version, created_at)"
                             + " VALUES (?,?,?,?,?)");
             try {
@@ -48,6 +49,9 @@ public final class SqliteSessionStore implements SessionStore {
             } finally {
                 statement.close();
             }
+
+            return null;
+            });
         } catch (SQLException failure) {
             if (SqliteErrors.isStorageFull(failure)) {
                 throw new StorageLimitException("database or disk is full");
@@ -63,7 +67,8 @@ public final class SqliteSessionStore implements SessionStore {
             return Optional.empty();
         }
         try {
-            PreparedStatement statement = database.connection().prepareStatement(
+            return database.read(connection -> {
+            PreparedStatement statement = connection.prepareStatement(
                     "SELECT id, account_id, expires_at_epoch_ms, token_version FROM session WHERE id = ?");
             try {
                 statement.setString(1, sessionId);
@@ -81,6 +86,7 @@ public final class SqliteSessionStore implements SessionStore {
             } finally {
                 statement.close();
             }
+                    });
         } catch (SQLException failure) {
             throw new IllegalStateException("failed to read session", failure);
         }
@@ -98,13 +104,17 @@ public final class SqliteSessionStore implements SessionStore {
 
     private void run(String sql, String parameter) {
         try {
-            PreparedStatement statement = database.connection().prepareStatement(sql);
+            database.transaction(connection -> {
+            PreparedStatement statement = connection.prepareStatement(sql);
             try {
                 statement.setString(1, parameter);
                 statement.executeUpdate();
             } finally {
                 statement.close();
             }
+
+            return null;
+            });
         } catch (SQLException failure) {
             throw new IllegalStateException("failed to modify session", failure);
         }

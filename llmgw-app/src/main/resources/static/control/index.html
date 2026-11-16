@@ -1,99 +1,47 @@
 <!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>llmgw control plane</title>
-  <style>
-    body { font-family: ui-monospace, monospace; margin: 2rem; background: #0f1115; color: #e6e6e6; }
-    h1 { font-size: 1.1rem; } h2 { font-size: .95rem; margin-top: 1rem; }
-    fieldset { border: 1px solid #2a2f3a; border-radius: 6px; margin-bottom: 1rem; }
-    input, button { font: inherit; padding: .3rem .5rem; margin: .2rem 0; background: #171a21; color: #e6e6e6; border: 1px solid #2a2f3a; border-radius: 4px; }
-    pre { background: #171a21; padding: .6rem; border-radius: 6px; overflow: auto; white-space: pre-wrap; }
-  </style>
-</head>
-<body>
-  <h1>llmgw control plane</h1>
-  <p>Same-process static console (no Node). Session cookie + CSRF; RBAC enforced server-side.</p>
-
-  <fieldset><legend>Login</legend>
-    <input id="user" placeholder="username"><input id="pass" type="password" placeholder="password">
-    <button onclick="login()">Login</button> <button onclick="logout()">Logout</button> <span id="authstate"></span>
-  </fieldset>
-
-  <fieldset><legend>Status / Usage</legend>
-    <button onclick="status()">Refresh status</button><pre id="status">not loaded</pre>
-  </fieldset>
-
-  <fieldset><legend>Tenants</legend>
-    <input id="tid" placeholder="tenant id"><input id="tname" placeholder="name">
-    <button onclick="createTenant()">Create</button><button onclick="listTenants()">List</button>
-    <pre id="tenants"></pre>
-  </fieldset>
-
-  <fieldset><legend>Projects</legend>
-    <input id="pid" placeholder="project id"><input id="ptenant" placeholder="tenant id"><input id="pname" placeholder="name">
-    <button onclick="createProject()">Create</button><button onclick="listProjects()">List</button>
-    <pre id="projects"></pre>
-  </fieldset>
-
-  <fieldset><legend>Catalog</legend>
-    <input id="cgid" placeholder="gateway id"><input id="ctype" placeholder="type">
-    <button onclick="createCatalog()">Create</button><button onclick="listCatalog()">List</button>
-    <pre id="catalog"></pre>
-  </fieldset>
-
-  <fieldset><legend>API Keys (one-time plaintext, masked on read)</legend>
-    <input id="kid" placeholder="key id"><input id="kname" placeholder="name">
-    <button onclick="createKey()">Create</button><button onclick="listKeys()">List</button>
-    <pre id="keys"></pre>
-  </fieldset>
-
-  <fieldset><legend>Route version</legend>
-    <input id="config" placeholder="routes JSON" value="routes-A"><input id="expected" placeholder="expectedVersion" value="0">
-    <button onclick="publish()">Publish</button><button onclick="routeStatus()">Status</button><pre id="route"></pre>
-  </fieldset>
-
-  <fieldset><legend>Usage</legend>
-    <button onclick="usage()">Refresh usage</button><pre id="usage"></pre>
-  </fieldset>
-
-  <fieldset><legend>Audit (masked)</legend>
-    <button onclick="audit()">Refresh audit</button><pre id="audit"></pre>
-  </fieldset>
-
-  <script>
-    var csrf = null;
-    function out(id, v) { document.getElementById(id).textContent = typeof v === 'string' ? v : JSON.stringify(v, null, 2); }
-    function api(method, path, body) {
-      var headers = { 'Content-Type': 'application/json', 'X-CSRF-Token': csrf || '' };
-      return fetch(path, { method: method, headers: headers, body: body ? JSON.stringify(body) : undefined })
-        .then(function (r) { return r.text().then(function (t) { return r.status + ' ' + t; }); });
-    }
-    function login() {
-      fetch('/control/login', { method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: document.getElementById('user').value, password: document.getElementById('pass').value }) })
-        .then(function (r) { if (!r.ok) throw new Error('login ' + r.status); return r.json(); })
-        .then(function (j) { csrf = j.csrfToken; document.getElementById('authstate').textContent = 'logged in'; status(); })
-        .catch(function (e) { document.getElementById('authstate').textContent = 'error: ' + e.message; });
-    }
-    function logout() {
-      return fetch('/control/logout', { method: 'POST', headers: { 'X-CSRF-Token': csrf || '' } })
-        .then(function (r) { csrf = null; document.getElementById('authstate').textContent = 'logged out (' + r.status + ')'; });
-    }
-    function status() { return api('GET','/control/status').then(function (t) { out('status', t); return t; }); }
-    function createTenant() { return api('POST','/control/tenants',{id:document.getElementById('tid').value,name:document.getElementById('tname').value}).then(function(t){out('tenants',t);return t;}); }
-    function listTenants() { return api('GET','/control/tenants').then(function(t){out('tenants',t);return t;}); }
-    function createProject() { return api('POST','/control/projects',{id:document.getElementById('pid').value,tenantId:document.getElementById('ptenant').value,name:document.getElementById('pname').value}).then(function(t){out('projects',t);return t;}); }
-    function listProjects() { return api('GET','/control/projects').then(function(t){out('projects',t);return t;}); }
-    function createCatalog() { return api('POST','/control/catalog',{gatewayId:document.getElementById('cgid').value,type:document.getElementById('ctype').value}).then(function(t){out('catalog',t);return t;}); }
-    function listCatalog() { return api('GET','/control/catalog').then(function(t){out('catalog',t);return t;}); }
-    function createKey() { return api('POST','/control/keys',{tenantId:'t1',projectId:'p1',keyId:document.getElementById('kid').value,name:document.getElementById('kname').value,quotaTokens:1000}).then(function(t){out('keys',t);return t;}); }
-    function listKeys() { return api('GET','/control/keys').then(function(t){out('keys',t);return t;}); }
-    function publish() { return api('POST','/control/routes/publish',{tenantId:'t1',projectId:'p1',expectedVersion:Number(document.getElementById('expected').value),config:document.getElementById('config').value}).then(function(t){out('route',t);return t;}); }
-    function routeStatus() { return api('GET','/control/routes').then(function(t){out('route',t);return t;}); }
-    function audit() { return api('GET','/control/audit').then(function(t){out('audit',t);return t;}); }
-    function usage() { return api('GET','/control/usage').then(function(t){out('usage',t);return t;}); }
-  </script>
-</body>
-</html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>llmgw 控制台</title>
+<style>body{font-family:system-ui,sans-serif;margin:2rem auto;padding:0 1rem;max-width:1000px;background:#0f1115;color:#e6e6e6}fieldset{border:1px solid #424958;border-radius:6px;margin:1rem 0;padding:1rem}input,select,button,textarea{font:inherit;padding:.5rem;margin:.2rem;background:#171a21;color:inherit;border:1px solid #606a7c;border-radius:4px}textarea{width:95%;min-height:8rem}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#171a21;padding:1rem}button{cursor:pointer}label{display:inline-block}h1{font-size:1.4rem}[hidden]{display:none}</style></head><body>
+<h1>llmgw 控制台</h1><button onclick="run(()=>api('GET','/control/status'))">运行状态</button><p>所有操作由服务端校验角色与项目权限。一次性凭据请立即保存。</p>
+<fieldset><legend>会话</legend><label>账号<input id="user" autocomplete="username"></label><label>密码<input id="pass" type="password" autocomplete="current-password"></label><button onclick="run(login)">登录</button><button onclick="run(logout)">退出</button><p id="authstate" role="status">未登录</p></fieldset>
+<label>当前项目<select id="selected" onchange="scopeChanged()"><option value="">请选择项目</option></select></label><button onclick="run(refreshProjects)">刷新项目</button>
+<fieldset data-roles="PLATFORM_ADMIN"><legend>组织</legend><label>租户 ID<input id="tid"></label><label>租户名称<input id="tname"></label><button onclick="run(createTenant)">创建租户</button><br><label>项目 ID<input id="pid"></label><label>所属租户<input id="ptenant"></label><label>项目名称<input id="pname"></label><button onclick="run(createProject)">创建项目</button><button onclick="run(listTenants)">查询租户</button></fieldset>
+<fieldset data-roles="PLATFORM_ADMIN TENANT_ADMIN PROJECT_ADMIN"><legend>账号与角色</legend><label>新账号<input id="auser" autocomplete="off"></label><label>初始密码（至少12位）<input id="apass" type="password" autocomplete="new-password"></label><label>角色<select id="arole"><option>PROJECT_VIEWER</option><option>PROJECT_ADMIN</option><option>TENANT_ADMIN</option><option>PLATFORM_ADMIN</option></select></label><button onclick="run(createAccount)">在当前项目创建账号</button><button onclick="run(listAccounts)">查询账号</button></fieldset>
+<fieldset data-roles="PLATFORM_ADMIN TENANT_ADMIN PROJECT_ADMIN"><legend>项目和 Key 额度</legend><label>累计 token 上限<input id="quota" type="number" min="0" value="100000"></label><label>调整原因<input id="reason" value="管理员调整"></label><button data-roles="PLATFORM_ADMIN TENANT_ADMIN" onclick="run(()=>setQuota(false))">设置项目总额度</button><button onclick="run(()=>setQuota(true))">设置指定 Key 额度</button><p>新项目总额度默认 0；设置额度后才可调用。调整累计上限保留已有用量和在途预留。</p></fieldset>
+<fieldset data-roles="PLATFORM_ADMIN TENANT_ADMIN PROJECT_ADMIN"><legend>API Key</legend><label>Key ID<input id="kid"></label><label>名称<input id="kname"></label><button onclick="run(createKey)">创建</button><button onclick="run(listKeys)">查询</button><button onclick="run(rotateKey)">轮换指定 Key</button><button onclick="run(revokeKey)">吊销指定 Key</button></fieldset>
+<fieldset data-roles="PLATFORM_ADMIN TENANT_ADMIN"><legend>未知用量核对</legend><button onclick="run(()=>read('/quotas/pending'))">查看保守占额</button><label>预留 ID<input id="reservation"></label><label>核实输入 token<input id="verifiedPrompt" type="number" min="0" value="0"></label><label>核实输出 token<input id="verifiedCompletion" type="number" min="0" value="0"></label><button onclick="run(reconcile)">按核实用量结算并审计</button><p>仅核实上游结果后操作；不要因超时自动退款。核对原因使用上方调整原因。</p></fieldset>
+<fieldset><legend>项目数据</legend><button onclick="run(()=>read('/usage'))">用量</button><button onclick="run(()=>read('/catalog'))">资源目录</button><button onclick="run(()=>read('/audit'))">审计</button></fieldset>
+<fieldset data-roles="PLATFORM_ADMIN"><legend>全局路由</legend><label>结构化路由 JSON<textarea id="config" placeholder="粘贴完整 RouteConfig JSON"></textarea></label><label>预期版本<input id="expected" type="number" min="0" value="0"></label><button onclick="run(publish)">发布</button><label>回滚目标版本<input id="rollbackVersion" type="number" min="1" value="1"></label><button onclick="run(rollback)">回滚</button><button onclick="run(routeStatus)">当前版本</button></fieldset>
+<fieldset data-roles="PLATFORM_ADMIN"><legend>供应商凭据</legend><label>名称<input id="sname"></label><label>新凭据<input id="secret" type="password" autocomplete="off"></label><label>轮换 ID<input id="secretId"></label><button onclick="run(createSecret)">创建</button><button onclick="run(rotateSecret)">轮换</button><button onclick="run(()=>read('/secrets'))">查询脱敏列表</button></fieldset>
+<pre id="result" role="status" aria-live="polite"></pre>
+<script>
+let csrf=null,account=null,projects=[];
+const val=id=>document.getElementById(id).value;
+const show=value=>document.getElementById('result').textContent=typeof value==='string'?value:JSON.stringify(value,null,2);
+async function run(action){try{const result=await action();if(result!==undefined)show(result)}catch(e){show(e.message)}}
+async function api(method,path,body){const response=await fetch(path.startsWith('/control/')?path:'/control'+path,{method,credentials:'same-origin',headers:{'Content-Type':'application/json','X-CSRF-Token':csrf||''},body:body===undefined?undefined:JSON.stringify(body)});const text=await response.text();let value;try{value=JSON.parse(text)}catch{value=text}if(!response.ok)throw Error(response.status+' '+JSON.stringify(value));return value}
+function scope(){const project=projects.find(p=>p.id===val('selected'));if(!project)throw Error('请先选择项目');return{tenantId:project.tenantId,projectId:project.id}}
+function query(){return'?'+new URLSearchParams(scope())}
+function scopeChanged(){document.getElementById('result').textContent=''}
+async function restore(){try{const result=await api('GET','/session');csrf=result.csrfToken;account=result.account;document.getElementById('authstate').textContent=account.username+' · '+account.role;document.querySelectorAll('[data-roles]').forEach(el=>el.hidden=!el.dataset.roles.split(' ').includes(account.role));const allowedRoles=account.role==='PLATFORM_ADMIN'?['PLATFORM_ADMIN','TENANT_ADMIN','PROJECT_ADMIN','PROJECT_VIEWER']:account.role==='TENANT_ADMIN'?['PROJECT_ADMIN','PROJECT_VIEWER']:['PROJECT_VIEWER'];document.querySelectorAll('#arole option').forEach(option=>{option.disabled=!allowedRoles.includes(option.value);option.hidden=option.disabled});await refreshProjects()}catch(e){csrf=null;account=null;document.getElementById('authstate').textContent='请登录';document.querySelectorAll('[data-roles]').forEach(el=>el.hidden=true)}}
+async function login(){await api('POST','/control/login',{username:val('user'),password:val('pass')});document.getElementById('pass').value='';await restore()}
+async function logout(){await api('POST','/logout',{});csrf=null;account=null;projects=[];document.getElementById('selected').replaceChildren();await restore();show('已退出')}
+async function refreshProjects(){const result=await api('GET','/projects');projects=result.projects;const selected=document.getElementById('selected'),old=selected.value;selected.replaceChildren();projects.forEach(p=>{const option=document.createElement('option');option.value=p.id;option.textContent=p.tenantId+' / '+p.name+' ('+p.id+')';selected.appendChild(option)});if(projects.some(p=>p.id===old))selected.value=old}
+const read=path=>api('GET',path+query());
+const listTenants=()=>api('GET','/tenants');
+async function createTenant(){return api('POST','/tenants',{id:val('tid'),name:val('tname')})}
+async function createProject(){const result=await api('POST','/projects',{id:val('pid'),tenantId:val('ptenant'),name:val('pname')});await refreshProjects();document.getElementById('selected').value=val('pid');return result}
+async function createAccount(){const result=await api('POST','/accounts',{...scope(),username:val('auser'),password:val('apass'),role:val('arole')});document.getElementById('apass').value='';return result}
+const listAccounts=()=>api('GET','/accounts');
+const createKey=()=>api('POST','/keys',{...scope(),keyId:val('kid'),name:val('kname'),quotaTokens:Number(val('quota'))});
+const listKeys=()=>read('/keys');
+const rotateKey=()=>api('POST','/keys/'+encodeURIComponent(val('kid'))+'/rotate',scope());
+const revokeKey=()=>api('POST','/keys/'+encodeURIComponent(val('kid'))+'/revoke',scope());
+const setQuota=key=>api('POST','/quotas',{...scope(),keyId:key?val('kid'):null,quotaTokens:Number(val('quota')),reason:val('reason')});
+const reconcile=()=>api('POST','/quotas/reconcile',{...scope(),reservationId:val('reservation'),promptTokens:Number(val('verifiedPrompt')),completionTokens:Number(val('verifiedCompletion')),reason:val('reason')});
+async function routeStatus(){const result=await api('GET','/routes');document.getElementById('expected').value=result.activeVersion;return result}
+async function publish(){JSON.parse(val('config'));const result=await api('POST','/control/routes/publish',{expectedVersion:Number(val('expected')),config:val('config')});await routeStatus();return result}
+async function rollback(){const result=await api('POST','/routes/rollback',{expectedVersion:Number(val('expected')),targetVersion:Number(val('rollbackVersion'))});await routeStatus();return result}
+async function createSecret(){const result=await api('POST','/secrets',{...scope(),name:val('sname'),secret:val('secret')});document.getElementById('secret').value='';return result}
+async function rotateSecret(){const result=await api('POST','/secrets/'+encodeURIComponent(val('secretId'))+'/rotate',{...scope(),secret:val('secret')});document.getElementById('secret').value='';return result}
+restore();
+</script></body></html>

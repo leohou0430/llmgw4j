@@ -23,6 +23,7 @@ import threading
 import time
 import urllib.error
 import urllib.request
+import uuid
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 IMAGE = "llmgw4j:v13-test"
@@ -137,7 +138,7 @@ def parse_mem(s):
 
 
 def spool_file_count(engine):
-    cmd = f"ls -1 /tmp/llmgw-{engine}-spool-*/ 2>/dev/null | wc -l"
+    cmd = f"find /tmp/llmgw-spool/8080/{engine} -type f ! -name .owner.lock 2>/dev/null | wc -l"
     r = run(["docker", "exec", NAME, "sh", "-c", cmd])
     try:
         return int(r.stdout.strip())
@@ -158,10 +159,16 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--engine", default="webflux", choices=["webflux", "vt"])
     ap.add_argument("--keep", action="store_true")
+    ap.add_argument("--jar", default=os.environ.get("LLMGW_TEST_JAR", os.path.join(ROOT,"llmgw-app","target","llmgw-app-0.4.0.jar")))
+    ap.add_argument("--out")
     args = ap.parse_args()
+    global NAME, HOST_PORT
+    NAME = "llmgw-remediation-" + uuid.uuid4().hex[:12]
+    with socket.socket() as listener:
+        listener.bind(("127.0.0.1", 0)); HOST_PORT = listener.getsockname()[1]
     engine = args.engine
 
-    jar = os.path.join(ROOT, "llmgw-app", "target", "llmgw-app-0.3.1.jar")
+    jar = os.path.abspath(args.jar)
     if not os.path.isfile(jar):
         print("FATAL: app jar missing; build first", file=sys.stderr)
         return 2
@@ -172,6 +179,7 @@ def main():
         "max-request-bytes": 80 * 1024 * 1024,
         "max-concurrent-requests": 4,
         "governance-enabled": True,
+        "admin-token-mode": "migration",
         "governance": {"default-quota-tokens": 2000000000,
                        "rate-limit-tokens-per-second": 2000000000,
                        "rate-limit-burst": 2000000000},
@@ -180,7 +188,6 @@ def main():
         "mock": {"enabled": True, "port": 9090, "delay-ms": 0},
     }})
 
-    run(["docker", "rm", "-f", NAME])
     r = run([
         "docker", "run", "-d", "--name", NAME,
         "--cpus=2", "--memory=2g", "--memory-swap=2g",
@@ -337,7 +344,7 @@ def main():
 
     outdir = os.path.join(ROOT, "docs", "verification", evidence["date"], "stage2-files")
     os.makedirs(outdir, exist_ok=True)
-    outpath = os.path.join(outdir, f"t2.10-container-stress-{engine}.json")
+    outpath = args.out or os.path.join(outdir, f"t2.10-container-stress-{engine}.json")
     with open(outpath, "w") as f:
         json.dump(evidence, f, indent=2)
     failed = [a for a in evidence["assertions"] if not a["pass"]]

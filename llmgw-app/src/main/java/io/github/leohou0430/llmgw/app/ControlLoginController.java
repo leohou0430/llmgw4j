@@ -39,6 +39,8 @@ import java.util.Optional;
 public class ControlLoginController {
     private static final long SESSION_TTL_MILLIS = 3_600_000L;
 
+    private final io.github.leohou0430.llmgw.identity.LoginRateLimiter limiter =
+            new io.github.leohou0430.llmgw.identity.local.FixedWindowRateLimiter(10, 60_000L);
     private final AccountStore accounts;
     private final SessionService sessions;
     private final CsrfTokenService csrf;
@@ -59,6 +61,13 @@ public class ControlLoginController {
 
     @PostMapping("/login")
     public ResponseEntity<Map<String, Object>> login(@RequestBody LoginBody body) {
+        if (body.username() == null || body.password() == null || body.username().length() > 256
+                || body.password().length() > 4096) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "invalid login input");
+        }
+        if (!limiter.allow(body.username(), System.currentTimeMillis())) {
+            throw new ResponseStatusException(HttpStatus.TOO_MANY_REQUESTS, "login rate limit exceeded");
+        }
         Optional<Session> session = accounts.findByUsername(body.username())
                 .flatMap(account -> sessions.login(account, body.password(), System.currentTimeMillis()));
         if (session.isEmpty()) {
@@ -80,11 +89,11 @@ public class ControlLoginController {
     public ResponseEntity<Map<String, Object>> logout(
             @CookieValue(name = "llmgw_sid", required = false) String sessionId,
             @RequestHeader(name = "X-CSRF-Token", required = false) String csrfToken) {
-        AuthOutcome outcome = authorizer.authorize(new AuthenticatedRequest(
-                sessionId, csrfToken, true, Action.CATALOG_READ, new Target("t1", "p1")));
-        if (outcome != AuthOutcome.ALLOW || sessionId == null) {
-            HttpStatus status = outcome == AuthOutcome.UNAUTHENTICATED ? HttpStatus.UNAUTHORIZED : HttpStatus.FORBIDDEN;
-            throw new ResponseStatusException(status, outcome.name());
+        if (authorizer.account(sessionId).isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "invalid session");
+        }
+        if (!authorizer.verifySessionMutation(sessionId, csrfToken)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "CSRF_FAILED");
         }
         sessionStore.revoke(sessionId);
         ResponseCookie cleared = ResponseCookie.from("llmgw_sid", "")
@@ -97,6 +106,17 @@ public class ControlLoginController {
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, cleared.toString())
                 .body(Map.of("loggedOut", true));
+    }
+
+    @org.springframework.web.bind.annotation.GetMapping("/session")
+    public ResponseEntity<Map<String, Object>> restore(
+            @CookieValue(name = "llmgw_sid", required = false) String sessionId) {
+        var account = authorizer.account(sessionId).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.UNAUTHORIZED, "invalid session"));
+        return ResponseEntity.ok().header(HttpHeaders.CACHE_CONTROL, "no-store")
+                .body(Map.of("csrfToken", csrf.issue(sessionId), "account", Map.of(
+                        "id", account.id(), "username", account.username(), "role", account.role().name(),
+                        "tenantId", account.scope().tenantId(), "projectId", account.scope().projectId())));
     }
 
     public record LoginBody(String username, String password) {

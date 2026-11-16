@@ -1,0 +1,20 @@
+PASS webflux: JWT JSON/SSE claims, audience, expiry and static-key compatibility
+
+PASS webflux chat-s1-text-multiturn
+PASS webflux chat-s2-stream-usage
+PASS webflux chat-s3-tool-continuation
+PASS webflux chat-s4-thinking-continuation
+PASS webflux chat-s5-image
+PASS webflux chat-s6-cancel-recover
+PASS webflux responses-s1-text
+PASS webflux responses-s2-stream
+PASS webflux responses-s3-tool-continuation
+PASS webflux responses-s4-thinking
+PASS webflux responses-s5-image
+PASS webflux responses-s6-cancel-recover
+PASS webflux messages-s1-text
+PASS webflux messages-s2-stream-usage
+PASS webflux messages-s3-tool-continuation
+PASS webflux messages-s4-thinking
+PASS webflux messages-s5-image
+PASS webflux messages-s6-cancel-recover

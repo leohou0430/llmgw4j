@@ -357,7 +357,10 @@ public class DefaultGovernanceChain implements GovernanceChain {
         }
         // Atomic reservation includes in-flight requests. A plain
         // used()+estimate>quota check lets N concurrent callers all pass.
-        if (!ledger.tryReserve(key.id(), reserved, key.quotaTokens())) {
+        String reservationId = java.util.UUID.randomUUID().toString();
+        if (!ledger.tryReserve(new UsageLedger.Reservation(reservationId, key.id(),
+                key.metadata() == null ? "" : key.metadata().getOrDefault("llmgw.tenantId", ""),
+                key.metadata() == null ? "" : key.metadata().getOrDefault("llmgw.projectId", ""), reserved, key.quotaTokens()))) {
             limiter.refund(key.id(), reserved);
             if (modelLimit != null && modelLimit.getTokensPerSecond() > 0) {
                 limiter.refund("model:" + request.model(), reserved);
@@ -375,7 +378,9 @@ public class DefaultGovernanceChain implements GovernanceChain {
         metrics.count("llmgw.requests", "engine", engineLabel(),
                 "route", route == null ? "none" : route.id(),
                 "protocol", request.kind().wireName());
-        GatewayDecision decision = GatewayDecision.allow(key.id(), request, route);
+        GatewayDecision decision = GatewayDecision.allow(key.id(), request.withCacheNamespace(route == null ? "" : ProtocolCodec.fingerprint(ProtocolCodec.toJson(route))), route).withReservation(reservationId)
+                .withScope(key.metadata() == null ? key.id() : key.metadata().getOrDefault("llmgw.tenantId", key.id()),
+                        key.metadata() == null ? key.id() : key.metadata().getOrDefault("llmgw.projectId", key.id()));
         if (budgetReserved > 0) {
             decision = decision.withBudgetReserved(budgetReserved);
         }
@@ -489,9 +494,10 @@ public class DefaultGovernanceChain implements GovernanceChain {
                     }
                 }
             }
-            ledger.record(new UsageLedger.UsageRecord(context.keyId(), context.model(),
+            ledger.settle(context.reservationId(), new UsageLedger.UsageRecord(context.keyId(), context.model(),
                     prompt, completion,
-                    context.latencyMs(), success, Instant.now(), reserved));
+                    context.latencyMs(), success, Instant.now(), reserved),
+                    success || context.cached() || context.upstreamNanos() < 0);
             // v13 $ settlement: failures and cache hits book nothing; a served
             // request books its real token cost at catalog prices.
             // A submitted request may have cost money even when delivery failed.
@@ -618,7 +624,7 @@ public class DefaultGovernanceChain implements GovernanceChain {
         if (fingerprint == null || fingerprint.isBlank()) {
             fingerprint = ProtocolCodec.fingerprint(request.rawJson());
         }
-        return ProtocolCodec.fingerprint(keyId) + ":" + request.kind().wireName() + ":" + fingerprint;
+        return ProtocolCodec.fingerprint(keyId) + ":" + request.cacheNamespace() + ":" + request.kind().wireName() + ":" + fingerprint;
     }
 
     /** Only a single plain user input may vary; preserve every other request field. */
@@ -641,7 +647,7 @@ public class DefaultGovernanceChain implements GovernanceChain {
             } else {
                 return cacheKey(keyId, request);
             }
-            return ProtocolCodec.fingerprint(keyId) + ":" + request.kind().wireName()
+            return ProtocolCodec.fingerprint(keyId) + ":" + request.cacheNamespace() + ":" + request.kind().wireName()
                     + ":" + ProtocolCodec.fingerprint(ProtocolCodec.toJson(object));
         }
         return cacheKey(keyId, request);

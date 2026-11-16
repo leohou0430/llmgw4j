@@ -1,0 +1,6 @@
+{
+  "engine": "webflux",
+  "spooled_bytes_before_crash": 223232,
+  "old_spool_exists_after_restart": true,
+  "old_spool_bytes_after_restart": 223232
+}

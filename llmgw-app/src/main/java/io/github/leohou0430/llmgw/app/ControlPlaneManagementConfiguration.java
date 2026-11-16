@@ -1,162 +1,59 @@
 package io.github.leohou0430.llmgw.app;
 
-import io.github.leohou0430.llmgw.control.local.DefaultConfigValidator;
-import io.github.leohou0430.llmgw.control.local.RouteVersionService;
-import io.github.leohou0430.llmgw.persistence.sqlite.Migrations;
-import io.github.leohou0430.llmgw.persistence.sqlite.SchemaMigrator;
-import io.github.leohou0430.llmgw.persistence.sqlite.SqliteContext;
-import io.github.leohou0430.llmgw.identity.AccountStore;
-import io.github.leohou0430.llmgw.identity.AuthorizationService;
-import io.github.leohou0430.llmgw.identity.CsrfTokenService;
-import io.github.leohou0430.llmgw.identity.PasswordHasher;
-import io.github.leohou0430.llmgw.identity.SessionStore;
-import io.github.leohou0430.llmgw.identity.local.AdministratorBootstrap;
-import io.github.leohou0430.llmgw.identity.local.CredentialIssuer;
-import io.github.leohou0430.llmgw.identity.local.HmacCsrfTokenService;
-import io.github.leohou0430.llmgw.identity.local.InMemoryAccountStore;
-import io.github.leohou0430.llmgw.identity.local.InMemorySessionStore;
-import io.github.leohou0430.llmgw.identity.local.ManagedKeyService;
-import io.github.leohou0430.llmgw.identity.local.Pbkdf2PasswordHasher;
-import io.github.leohou0430.llmgw.identity.local.RbacAuthorizationService;
-import io.github.leohou0430.llmgw.identity.local.RequestAuthorizer;
-import io.github.leohou0430.llmgw.identity.local.SessionService;
+import io.github.leohou0430.llmgw.core.extension.ExtensionContext;
+import io.github.leohou0430.llmgw.identity.*;
+import io.github.leohou0430.llmgw.identity.local.*;
+import io.github.leohou0430.llmgw.persistence.sqlite.*;
+import io.github.leohou0430.llmgw.control.*;
+import io.github.leohou0430.llmgw.control.local.*;
+import io.github.leohou0430.llmgw.catalog.ResourceCatalog;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-/**
- * Wires the control-plane foundation into the running app: identity (accounts, sessions,
- * CSRF, RBAC, key lifecycle) and route versioning. The first platform admin is created
- * ONLY from explicitly provided environment credentials (no default credential, no public
- * self-registration). In-memory stores here; durable SQLite backing is a follow-up.
- */
-@Configuration
+/** HTTP bridge exporting only the already composed native control/data graph. */
+@Configuration(proxyBeanMethods=false)
 public class ControlPlaneManagementConfiguration {
-
-    private static final long SESSION_TTL_MILLIS = 3_600_000L;
-
-    @Bean
-    AccountStore accountStore(SqliteContext controlDatabase) {
-        return new SqliteAccountStore(controlDatabase);
-    }
-
-    @Bean
-    PasswordHasher passwordHasher() {
-        return Pbkdf2PasswordHasher.withIterations(120_000);
-    }
-
-    @Bean
-    SessionStore sessionStore(SqliteContext controlDatabase) {
-        return new SqliteSessionStore(controlDatabase);
-    }
-
-    @Bean
-    CsrfTokenService csrfTokenService() {
-        return HmacCsrfTokenService.randomKey();
-    }
-
-    @Bean
-    AuthorizationService authorizationService() {
-        return new RbacAuthorizationService();
-    }
-
-    @Bean
-    SessionService sessionService(SessionStore sessions, PasswordHasher hasher) {
-        return new SessionService(sessions, hasher, SESSION_TTL_MILLIS);
-    }
-
-    @Bean
-    ManagedKeyService managedKeyService(AuthorizationService authorization, SqliteContext controlDatabase) {
-        return new ManagedKeyService(new io.github.leohou0430.llmgw.persistence.sqlite.SqliteKeyStore(controlDatabase, true),
-                authorization, new CredentialIssuer());
-    }
-
-    @Bean
-    RequestAuthorizer requestAuthorizer(SessionStore sessions, CsrfTokenService csrf,
-                                        AccountStore accounts, AuthorizationService authorization) {
-        return new RequestAuthorizer(sessions, csrf, accounts, authorization, System::currentTimeMillis);
-    }
-
-    @Bean(destroyMethod = "close")
-    SqliteContext controlDatabase() throws java.io.IOException, java.sql.SQLException {
-        String configured = System.getenv("LLMGW_CONTROL_DB");
-        java.nio.file.Path file = java.nio.file.Path.of(
-                configured == null || configured.isBlank() ? "./data/llmgw-control.db" : configured);
-        java.nio.file.Path parent = file.toAbsolutePath().getParent();
-        if (parent != null) {
-            java.nio.file.Files.createDirectories(parent);
-        }
-        SqliteContext database = new SqliteContext(file, 2000L);
-        new SchemaMigrator(database).migrate(Migrations.all());
-        return database;
-    }
-
-    @Bean
-    RouteVersionService routeVersionService(SqliteContext controlDatabase) {
-        return new RouteVersionService(new SqliteRouteVersionStore(controlDatabase));
-    }
-
-    @Bean
-    DefaultConfigValidator configValidator() {
-        return new DefaultConfigValidator();
-    }
-
-    @Bean
-    io.github.leohou0430.llmgw.control.PlatformPolicy platformPolicy() {
-        return io.github.leohou0430.llmgw.control.PlatformPolicy.strict();
-    }
-
-    @Bean
-    io.github.leohou0430.llmgw.control.local.RouteCandidateValidator routeCandidateValidator(
-            io.github.leohou0430.llmgw.control.ConfigValidator configValidator) {
-        return new io.github.leohou0430.llmgw.control.local.RouteCandidateValidator(configValidator);
-    }
-
-    @Bean
-    io.github.leohou0430.llmgw.control.SecretCipher secretCipher() {
-        String encoded = System.getenv("LLMGW_ROOT_KEY");
-        io.github.leohou0430.llmgw.control.RootKeyProvider rootKey =
-                encoded == null || encoded.isBlank()
-                        ? io.github.leohou0430.llmgw.control.local.StaticRootKey.missing()
-                        : new io.github.leohou0430.llmgw.control.local.StaticRootKey(
-                                java.util.Base64.getDecoder().decode(encoded));
-        return new io.github.leohou0430.llmgw.control.local.AesGcmSecretCipher(rootKey);
-    }
-
-    @Bean
-    io.github.leohou0430.llmgw.persistence.sqlite.StorageGuard storageGuard() {
-        String configured = System.getenv("LLMGW_CONTROL_DB");
-        java.nio.file.Path file = java.nio.file.Path.of(
-                configured == null || configured.isBlank() ? "./data/llmgw-control.db" : configured);
-        String cap = System.getenv("LLMGW_CONTROL_DB_MAX_BYTES");
-        long maxBytes = cap == null || cap.isBlank() ? 512L * 1024 * 1024 : Long.parseLong(cap);
-        String margin = System.getenv("LLMGW_CONTROL_DB_MIN_FREE_BYTES");
-        long minFreeBytes = margin == null || margin.isBlank()
-                ? 256L * 1024 * 1024 : Long.parseLong(margin);
-        return new io.github.leohou0430.llmgw.persistence.sqlite.StorageGuard(
-                maxBytes, minFreeBytes, file);
-    }
-
-    @Bean
-    SecretStore secretStore(SqliteContext controlDatabase, io.github.leohou0430.llmgw.control.SecretCipher secretCipher,
-                            io.github.leohou0430.llmgw.persistence.sqlite.StorageGuard storageGuard) {
-        return new SecretStore(controlDatabase, secretCipher, storageGuard::requireWritable);
-    }
-
-    @Bean
-    AuditLog auditLog(SqliteContext controlDatabase) {
-        return new AuditLog(controlDatabase);
-    }
-
-    @Bean
-    OrgStore orgStore(SqliteContext controlDatabase) {
-        return new OrgStore(controlDatabase);
-    }
-
-    @Bean
-    io.github.leohou0430.llmgw.catalog.ResourceCatalog resourceCatalog(SqliteContext controlDatabase) {
-        return new io.github.leohou0430.llmgw.catalog.local.SqliteResourceCatalog(controlDatabase, projectId -> true);
-    }
+    @Bean(destroyMethod="")
+    AccountStore accountStore(ExtensionContext context) { return context.get(AccountStore.class); }
+    @Bean(destroyMethod="")
+    PasswordHasher passwordHasher(ExtensionContext context) { return context.get(PasswordHasher.class); }
+    @Bean(destroyMethod="")
+    SessionStore sessionStore(ExtensionContext context) { return context.get(SessionStore.class); }
+    @Bean(destroyMethod="")
+    CsrfTokenService csrfTokenService(ExtensionContext context) { return context.get(CsrfTokenService.class); }
+    @Bean(destroyMethod="")
+    AuthorizationService authorizationService(ExtensionContext context) { return context.get(AuthorizationService.class); }
+    @Bean(destroyMethod="")
+    SessionService sessionService(ExtensionContext context) { return context.get(SessionService.class); }
+    @Bean(destroyMethod="")
+    ManagedKeyService managedKeyService(ExtensionContext context) { return context.get(ManagedKeyService.class); }
+    @Bean(destroyMethod="")
+    RequestAuthorizer requestAuthorizer(ExtensionContext context) { return context.get(RequestAuthorizer.class); }
+    @Bean(destroyMethod="")
+    SqliteContext sqliteContext(ExtensionContext context) { return context.get(SqliteContext.class); }
+    @Bean(destroyMethod="")
+    RouteVersionService routeVersionService(ExtensionContext context) { return context.get(RouteVersionService.class); }
+    @Bean(destroyMethod="")
+    DefaultConfigValidator defaultConfigValidator(ExtensionContext context) { return context.get(DefaultConfigValidator.class); }
+    @Bean(destroyMethod="")
+    PlatformPolicy platformPolicy(ExtensionContext context) { return context.get(PlatformPolicy.class); }
+    @Bean(destroyMethod="")
+    RouteCandidateValidator routeCandidateValidator(ExtensionContext context) { return context.get(RouteCandidateValidator.class); }
+    @Bean(destroyMethod="")
+    SecretCipher secretCipher(ExtensionContext context) { return context.get(SecretCipher.class); }
+    @Bean(destroyMethod="")
+    StorageGuard storageGuard(ExtensionContext context) { return context.get(StorageGuard.class); }
+    @Bean(destroyMethod="")
+    SecretStore secretStore(ExtensionContext context) { return context.get(SecretStore.class); }
+    @Bean(destroyMethod="")
+    AuditLog auditLog(ExtensionContext context) { return context.get(AuditLog.class); }
+    @Bean(destroyMethod="")
+    OrgStore orgStore(ExtensionContext context) { return context.get(OrgStore.class); }
+    @Bean(destroyMethod="")
+    ResourceCatalog resourceCatalog(ExtensionContext context) { return context.get(ResourceCatalog.class); }
+    @Bean(destroyMethod="")
+    SqliteUsageLedger sqliteUsageLedger(ExtensionContext context) { return context.get(SqliteUsageLedger.class); }
 
     @Bean
     ApplicationRunner bootstrapFirstAdministrator(AccountStore accounts, PasswordHasher hasher) {

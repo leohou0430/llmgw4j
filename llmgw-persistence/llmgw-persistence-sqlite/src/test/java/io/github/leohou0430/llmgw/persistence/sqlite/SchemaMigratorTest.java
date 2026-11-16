@@ -78,8 +78,8 @@ class SchemaMigratorTest {
                         + " VALUES ('r-old', 'p1', 'file', 'up-1', 'route-a', 'deepseek', 'v1', 1, 'ready', 0)");
             }
 
-            assertEquals(6, migrator.migrate(Migrations.all()), "upgrade reaches the latest schema version");
-            assertEquals(6, migrator.currentVersion());
+            assertEquals(9, migrator.migrate(Migrations.all()), "upgrade reaches the latest schema version");
+            assertEquals(9, migrator.currentVersion());
 
             for (String table : List.of("key_store", "route_version", "account", "session", "upstream_secret")) {
                 assertTrue(tableExists(connection, table), "missing post-upgrade table: " + table);

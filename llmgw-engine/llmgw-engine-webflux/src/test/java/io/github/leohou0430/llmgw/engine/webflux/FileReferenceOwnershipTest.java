@@ -35,6 +35,36 @@ class FileReferenceOwnershipTest {
             "{\"model\":\"m\",\"messages\":[{\"role\":\"user\",\"content\":[{\"type\":\"file\",\"file\":{\"file_id\":\"f\"}}]}]}";
     static final String OK = "{\"choices\":[{\"message\":{\"content\":\"ok\"}}],\"usage\":{\"completion_tokens\":1}}";
 
+    static io.github.leohou0430.llmgw.catalog.ResourceCatalog snapshotCatalog() {
+        var source = new Route("test", "*", "*", "*", "http://original", "old-secret", "openai", 1, List.of());
+        var file = new io.github.leohou0430.llmgw.catalog.ResourceEntry("f", "project", "files", "f", "test", "openai", "v1", 1,
+                "ready", Map.of("llmgw.tenantId", "organization", "llmgw.sourceRoute", ProtocolCodec.toJson(source)), 1, false);
+        return new io.github.leohou0430.llmgw.catalog.ResourceCatalog() {
+            public io.github.leohou0430.llmgw.catalog.ResourceEntry create(io.github.leohou0430.llmgw.catalog.ResourceEntry entry) { return entry; }
+            public Optional<io.github.leohou0430.llmgw.catalog.ResourceEntry> get(String project, String id) {
+                return project.equals("project") && id.equals("f") ? Optional.of(file) : Optional.empty();
+            }
+            public boolean delete(String project, String id) { return false; }
+            public List<io.github.leohou0430.llmgw.catalog.ResourceEntry> list(String project) { return List.of(file); }
+        };
+    }
+    static ApiKeyRegistry projectRegistry() {
+        var key = new ApiKeyRegistry.ApiKey("tenant", "second project key", 0, Set.of(), 0, "", 0,
+                Map.of("llmgw.tenantId", "organization", "llmgw.projectId", "project"));
+        return new ApiKeyRegistry() {
+            public Optional<ApiKey> find(String token) { return Optional.of(key); }
+            public Collection<ApiKey> all() { return List.of(key); }
+        };
+    }
+    @Test void sharedProjectReferenceUsesPersistedSourceInsteadOfCurrentRoute() {
+        try (var fixture = new Fixture()) {
+            fixture.context.getBean(WebfluxGatewayController.class).resourceCatalog(snapshotCatalog(), projectRegistry());
+            var response = fixture.request("/v1/chat/completions", FILE_BODY);
+            assertEquals(HttpStatus.OK, response.getStatusCode());
+            assertEquals("http://original", fixture.provider.last.targetUrl());
+            assertEquals("old-secret", fixture.provider.last.apiKey());
+        }
+    }
     @Test
     void crossTenantFileReferenceIsUnified404BeforeUpstream() {
         try (var fixture = new Fixture()) {
@@ -61,10 +91,11 @@ class FileReferenceOwnershipTest {
 
     static class OkProvider implements UpstreamProvider {
         final AtomicInteger calls = new AtomicInteger();
+        volatile UpstreamRequest last;
         public String id() { return "ok"; }
         public Flow.Publisher<String> streamRaw(UpstreamRequest request, HeaderListener listener) { throw new UnsupportedOperationException(); }
         public void streamRawBlocking(UpstreamRequest request, ChunkSink sink) { throw new UnsupportedOperationException(); }
-        public String completeRaw(UpstreamRequest request, HeaderListener listener) { calls.incrementAndGet(); return OK; }
+        public String completeRaw(UpstreamRequest request, HeaderListener listener) { last = request; calls.incrementAndGet(); return OK; }
     }
 
     @Configuration(proxyBeanMethods = false)

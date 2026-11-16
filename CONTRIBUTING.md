@@ -26,7 +26,7 @@ mvn -B -Predis clean verify                # Redis profile 同样执行 JUnit
 mvn -B -Predis,jtokkit,otel clean verify   # 组合 profile（CI 同样执行）
 ```
 
-默认产物：`llmgw-app/target/llmgw-app-0.3.1.jar`。
+默认产物：`llmgw-app/target/llmgw-app-0.4.0.jar`。
 `-Predis` 只在显式启用时才把 `llmgw-governance/llmgw-governance-redis` 链入 fat jar；
 默认 jar 不含任何 Redis 依赖，这是刻意保持的边界。
 
@@ -89,8 +89,8 @@ HTTP 回归可用 `LLMGW_TEST_JAR=/absolute/path/verified.jar` 固定被测产�
 ## 3. 两个数据面
 
 ```bash
-java -jar llmgw-app/target/llmgw-app-0.3.1.jar --spring.profiles.active=webflux
-java -jar llmgw-app/target/llmgw-app-0.3.1.jar --spring.profiles.active=vt
+java -jar llmgw-app/target/llmgw-app-0.4.0.jar --spring.profiles.active=webflux
+java -jar llmgw-app/target/llmgw-app-0.4.0.jar --spring.profiles.active=vt
 ```
 
 同一套 `llmgw-governance/llmgw-governance-default` 治理层驱动两条数据面。

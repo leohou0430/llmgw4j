@@ -1,0 +1,6 @@
+{
+  "layout": "--- llmgw-catalog ---\n--- llmgw-control ---\n--- llmgw-conversion ---\n--- llmgw-engine ---\n--- llmgw-governance ---\n--- llmgw-identity ---\n--- llmgw-persistence ---\n--- llmgw-provider ---\n--- llmgw-tokenizer ---\nPASS=142 FAIL=0\n",
+  "boundaries": "PASS native boundaries: 446 module Java files, 39 modules, 16 descriptors, 28 named extensions\n",
+  "native-python": "......\n----------------------------------------------------------------------\nRan 6 tests in 0.021s\n\nOK\n",
+  "openapi": "PASS docs/openapi.yaml\n"
+}

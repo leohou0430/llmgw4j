@@ -1,0 +1,13 @@
+[1/8] Initializing...                                                                                   (27.2s @ 0.71GB)
+ Graal compiler: optimization level: b, target machine: x86-64-v3, PGO: off
+[2/8] Performing analysis...  [*****]                                                                  (146.9s @ 5.09GB)
+[3/8] Building universe...                                                                              (17.6s @ 5.86GB)
+[4/8] Parsing methods...      [***]                                                                      (8.7s @ 6.39GB)
+[5/8] Inlining methods...     [***]                                                                      (6.3s @ 4.82GB)
+[6/8] Compiling methods...    [*******]                                                                 (48.1s @ 5.55GB)
+[7/8] Laying out methods...   [*****]                                                                   (22.3s @ 7.02GB)
+[8/8] Creating image...       [****]                                                                    (16.0s @ 7.90GB)
+Finished generating 'llmgw-vt' in 5m 0s.
+[INFO] BUILD SUCCESS
+[INFO] Total time:  06:07 min
+[INFO] Finished at: 2026-11-16T21:30:26+08:00

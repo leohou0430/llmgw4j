@@ -1,78 +1,51 @@
 package io.github.leohou0430.llmgw.control.local;
 
-import io.github.leohou0430.llmgw.control.RouteVersion;
-import io.github.leohou0430.llmgw.control.RouteVersionStore;
-import io.github.leohou0430.llmgw.control.VersionConflictException;
-
+import io.github.leohou0430.llmgw.control.*;
 import java.util.Objects;
+import java.util.function.Consumer;
 
-/**
- * Route-version publisher: a draft is validated then published as an immutable version and
- * activated in this process. Publishing/rolling back requires the caller's expected version
- * (optimistic concurrency); a rollback creates a NEW version referencing the target config
- * rather than rewriting history. On construction the service recovers the committed version
- * from the store (startup recovery). Single-process activation only; cross-replica
- * confirmation is not claimed.
- */
+/** Immutable, optimistic route publication. Activation follows durable commit. */
 public final class RouteVersionService {
     private final RouteVersionStore store;
-    private String draft;
-    private long activeVersion;
-    private String activeConfig;
+    private final java.util.function.Function<String, Consumer<RouteVersion>> preparer;
+    private final ThreadLocal<String> legacyDraft = new ThreadLocal<>();
+    private volatile RouteVersion active;
 
-    public RouteVersionService(RouteVersionStore store) {
-        this.store = Objects.requireNonNull(store, "store");
-        store.latest().ifPresent(version -> {
-            activeVersion = version.version();
-            activeConfig = version.config();
-        });
+    public RouteVersionService(RouteVersionStore store) { this(store, config -> {}, version -> {}); }
+    public RouteVersionService(RouteVersionStore store, Consumer<String> validator, Consumer<RouteVersion> activator) {
+        this(store, config -> { validator.accept(config); return activator; });
     }
-
-    public synchronized void saveDraft(String config) {
-        if (config == null || config.isBlank()) {
-            throw new IllegalArgumentException("draft config is required");
-        }
-        this.draft = config;
+    public RouteVersionService(RouteVersionStore store, java.util.function.Function<String,Consumer<RouteVersion>> preparer) {
+        this.store=Objects.requireNonNull(store);this.preparer=Objects.requireNonNull(preparer);
+        store.latest().ifPresent(version -> activate(version,preparer.apply(version.config())));
     }
-
-    public synchronized RouteVersion publish(long expectedVersion) {
-        if (draft == null) {
-            throw new IllegalStateException("no draft to publish");
-        }
-        if (expectedVersion != activeVersion) {
-            throw new VersionConflictException(
-                    "expected version " + expectedVersion + " but latest is " + activeVersion);
-        }
-        RouteVersion version = new RouteVersion(activeVersion + 1, draft, 0L);
+    /** Compatibility only. HTTP callers must publish the candidate in one call. */
+    @Deprecated public void saveDraft(String config) {
+        requireConfig(config);legacyDraft.set(config);
+    }
+    @Deprecated public RouteVersion publish(long expectedVersion) {
+        String candidate=legacyDraft.get();legacyDraft.remove();
+        if(candidate==null)throw new IllegalStateException("no draft to publish");
+        return publish(candidate,expectedVersion);
+    }
+    public RouteVersion publish(String config,long expectedVersion) {
+        requireConfig(config);
+        return append(config,0,expectedVersion,preparer.apply(config));
+    }
+    public RouteVersion rollback(long targetVersion,long expectedVersion) {
+        RouteVersion target=store.find(targetVersion).orElseThrow(()->new IllegalArgumentException("unknown version "+targetVersion));
+        return append(target.config(),targetVersion,expectedVersion,preparer.apply(target.config()));
+    }
+    private RouteVersion append(String config,long base,long expected,Consumer<RouteVersion> activation) {
+        long latest=store.latest().map(RouteVersion::version).orElse(0L);
+        if(expected!=latest)throw new VersionConflictException("expected version "+expected+" but latest is "+latest);
+        RouteVersion version=new RouteVersion(Math.addExact(latest,1),config,base);
         store.append(version);
-        activate(version);
-        draft = null;
+        store.afterCommit(()->activate(version,activation));
         return version;
     }
-
-    public synchronized RouteVersion rollback(long targetVersion, long expectedVersion) {
-        if (expectedVersion != activeVersion) {
-            throw new VersionConflictException(
-                    "expected version " + expectedVersion + " but latest is " + activeVersion);
-        }
-        RouteVersion target = store.find(targetVersion)
-                .orElseThrow(() -> new IllegalArgumentException("unknown version " + targetVersion));
-        RouteVersion version = new RouteVersion(activeVersion + 1, target.config(), targetVersion);
-        store.append(version);
-        activate(version);
-        return version;
-    }
-
-    private void activate(RouteVersion version) {
-        activeVersion = version.version();
-        activeConfig = version.config();
-    }
-
-    public long activeVersion() {
-        return activeVersion;
-    }
-
-    public String activeConfig() {
-        return activeConfig;
-    }
+    private synchronized void activate(RouteVersion version,Consumer<RouteVersion> activation) { if(active!=null && active.version()>=version.version())return;activation.accept(version);active=version; }
+    private static void requireConfig(String config) {if(config==null || config.isBlank())throw new IllegalArgumentException("route config is required");}
+    public long activeVersion() {RouteVersion value=active;return value==null?0:value.version();}
+    public String activeConfig() {RouteVersion value=active;return value==null?null:value.config();}
 }

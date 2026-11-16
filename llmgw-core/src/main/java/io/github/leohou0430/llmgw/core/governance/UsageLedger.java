@@ -35,5 +35,17 @@ public interface UsageLedger {
      */
     boolean tryReserve(String keyId, long tokens, long quota);
 
+    record Reservation(String id, String keyId, String tenantId, String projectId,
+                       long tokens, long keyQuota) {}
+
+    default boolean tryReserve(Reservation reservation) {
+        return tryReserve(reservation.keyId(), reservation.tokens(), reservation.keyQuota());
+    }
+
+    /** Unknown submitted outcomes retain their reservation until explicitly reconciled. */
+    default void settle(String reservationId, UsageRecord record, boolean outcomeKnown) {
+        record(record);
+    }
+
     void load(Map<String, UsageSummary> data);
 }

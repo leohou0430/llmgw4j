@@ -2,6 +2,7 @@
 """Verify administrative credential boundaries over HTTP on both engines."""
 import argparse
 import json
+import os
 from pathlib import Path
 import socket
 import subprocess
@@ -90,7 +91,7 @@ def verify(jar, engine, mode):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--jar', type=Path, default=ROOT/'llmgw-app/target/llmgw-app-0.3.1.jar')
+    parser.add_argument('--jar', type=Path, default=Path(os.environ.get('LLMGW_TEST_JAR', ROOT/'llmgw-app/target/llmgw-app-0.4.0.jar')))
     parser.add_argument('--engine', choices=['webflux', 'vt'])
     args = parser.parse_args()
     failures = []

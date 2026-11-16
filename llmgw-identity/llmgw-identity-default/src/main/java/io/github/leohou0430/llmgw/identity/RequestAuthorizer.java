@@ -33,6 +33,27 @@ public final class RequestAuthorizer {
         this.clock = Objects.requireNonNull(clock, "clock");
     }
 
+    public Optional<Account> account(String sessionId) {
+        return sessions.find(sessionId, clock.getAsLong()).flatMap(session -> accounts.findById(session.accountId()))
+                .filter(Account::enabled);
+    }
+
+    public io.github.leohou0430.llmgw.identity.Target target(String sessionId, String tenantId, String projectId) {
+        Account account = account(sessionId).orElseThrow(() -> new SecurityException("unauthenticated"));
+        return new io.github.leohou0430.llmgw.identity.Target(
+                tenantId == null ? account.scope().tenantId() : tenantId,
+                projectId == null ? account.scope().projectId() : projectId);
+    }
+
+    public Subject subject(String sessionId) {
+        Account account = account(sessionId).orElseThrow(() -> new SecurityException("unauthenticated"));
+        return new Subject(account.role(), account.scope());
+    }
+
+    public boolean verifySessionMutation(String sessionId, String token) {
+        return account(sessionId).isPresent() && csrf.verify(sessionId, token);
+    }
+
     public AuthOutcome authorize(AuthenticatedRequest request) {
         Objects.requireNonNull(request, "request");
         Optional<Session> session = sessions.find(request.sessionId(), clock.getAsLong());

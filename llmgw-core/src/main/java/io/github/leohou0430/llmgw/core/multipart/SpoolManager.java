@@ -1,6 +1,10 @@
 package io.github.leohou0430.llmgw.core.multipart;
 
 import java.io.IOException;
+import java.nio.channels.FileChannel;
+import java.nio.channels.FileLock;
+import java.nio.channels.OverlappingFileLockException;
+import java.nio.file.StandardOpenOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.PosixFilePermission;
@@ -32,6 +36,8 @@ public final class SpoolManager implements AutoCloseable {
     }
 
     private final Config config;
+    private final FileChannel ownershipChannel;
+    private final FileLock ownership;
     private final AtomicLong total = new AtomicLong();
     private final AtomicBoolean closed = new AtomicBoolean();
 
@@ -39,7 +45,25 @@ public final class SpoolManager implements AutoCloseable {
         this.config = config;
         Files.createDirectories(config.directory());
         restrictToOwner(config.directory());
-        cleanLeftovers(config.directory());
+        ownershipChannel = FileChannel.open(config.directory().resolve(".owner.lock"),
+                StandardOpenOption.CREATE, StandardOpenOption.WRITE);
+        FileLock acquired;
+        try {
+            acquired = ownershipChannel.tryLock();
+        } catch (OverlappingFileLockException failure) {
+            ownershipChannel.close();
+            throw new IOException("spool directory is owned by another running instance", failure);
+        }
+        if (acquired == null) {
+            ownershipChannel.close();
+            throw new IOException("spool directory is owned by another running instance");
+        }
+        ownership = acquired;
+        try {
+            cleanLeftovers(config.directory());
+        } catch (IOException failure) {
+            ownership.release(); ownershipChannel.close(); throw failure;
+        }
     }
 
     private static void restrictToOwner(Path dir) throws IOException {
@@ -54,7 +78,7 @@ public final class SpoolManager implements AutoCloseable {
     private static void cleanLeftovers(Path dir) throws IOException {
         try (Stream<Path> entries = Files.list(dir)) {
             for (Path p : entries.toList()) {
-                Files.deleteIfExists(p);
+                if (!p.getFileName().toString().equals(".owner.lock")) Files.deleteIfExists(p);
             }
         }
     }
@@ -104,10 +128,13 @@ public final class SpoolManager implements AutoCloseable {
         if (closed.compareAndSet(false, true)) {
             try (Stream<Path> entries = Files.list(config.directory())) {
                 for (Path p : entries.toList()) {
-                    Files.deleteIfExists(p);
+                    if (!p.getFileName().toString().equals(".owner.lock")) Files.deleteIfExists(p);
                 }
             } catch (IOException ignored) {
                 // Best-effort directory cleanup on shutdown.
+            } finally {
+                try { ownership.release(); } catch (IOException ignored) { }
+                try { ownershipChannel.close(); } catch (IOException ignored) { }
             }
         }
     }

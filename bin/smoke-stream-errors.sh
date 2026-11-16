@@ -4,7 +4,7 @@
 set -uo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-JAR="${LLMGW_TEST_JAR:-$ROOT/llmgw-app/target/llmgw-app-0.3.1.jar}"
+JAR="${LLMGW_TEST_JAR:-$ROOT/llmgw-app/target/llmgw-app-0.4.0.jar}"
 PORT="${PORT:-8080}"
 MOCK_PORT="${MOCK_PORT:-9090}"
 GOOD_URL="http://127.0.0.1:$MOCK_PORT/mock/v1"
@@ -67,8 +67,11 @@ start() {
   else
     cmd=(java -jar "$JAR")
   fi
-  "${cmd[@]}" --spring.profiles.active="$engine" \
+  local state_dir
+  state_dir="$(mktemp -d "$TMP/state.XXXXXX")"
+  LLMGW_CONTROL_DB="$state_dir/control.db" "${cmd[@]}" --spring.profiles.active="$engine" \
     --gateway.governance-enabled=true --server.port="$PORT" \
+    --gateway.admin-token-mode=migration \
     --gateway.governance.default-quota-tokens=2000000000 \
     --gateway.governance.rate-limit-tokens-per-second=2000000000 \
     --gateway.governance.rate-limit-burst=2000000000 \
@@ -318,7 +321,6 @@ for ENGINE in $ENGINES; do
 
   echo "-- v5: admin surface (token gate + no upstream key leak) --"
   start "$ENGINE" '--gateway.admin-token=secret' \
-    '--gateway.admin-token-mode=migration' \
     "--gateway.governance.snapshot-path=$TMP/snap-admin-$ENGINE.json"
   NO_TOKEN=$(curl --noproxy '*' -s -o "$TMP/routes-no" -w '%{http_code}' \
     "http://127.0.0.1:$PORT/admin/routes")
@@ -342,13 +344,13 @@ for ENGINE in $ENGINES; do
   call "$BODY_JSON" >/dev/null
   sleep 0.4
   curl --noproxy '*' -s -X POST "http://127.0.0.1:$PORT/admin/snapshot/save" >/dev/null
-  curl --noproxy '*' -s -X POST "http://127.0.0.1:$PORT/admin/snapshot/load" >/dev/null
+  RESTORE_CODE=$(curl --noproxy '*' -s -o /dev/null -w '%{http_code}' -X POST "http://127.0.0.1:$PORT/admin/snapshot/load")
   curl --noproxy '*' -s -X POST "http://127.0.0.1:$PORT/admin/snapshot/load" >/dev/null
   sleep 0.3
   LOADED=$(curl --noproxy '*' -s "http://127.0.0.1:$PORT/admin/snapshot" \
     | jq -r '.usage.demo.requests // -1' 2>/dev/null)
-  [[ "$LOADED" == "1" ]]
-  check "repeated snapshot/load replaces instead of doubling" "$?" "requests=$LOADED (expect 1)"
+  [[ "$RESTORE_CODE" == "409" && "$LOADED" == "1" ]]
+  check "SQLite rejects snapshot replacement without changing cumulative usage" "$?" "requests=$LOADED (expect 1)"
 
   echo "-- v5: client disconnect still settles the ledger --"
   start "$ENGINE" "--gateway.governance.snapshot-path=$TMP/snap-cancel-$ENGINE.json"

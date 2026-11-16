@@ -6,7 +6,7 @@
 set -uo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-JAR="${LLMGW_TEST_JAR:-$ROOT/llmgw-app/target/llmgw-app-0.3.1.jar}"
+JAR="${LLMGW_TEST_JAR:-$ROOT/llmgw-app/target/llmgw-app-0.4.0.jar}"
 PORT="${PORT:-8080}"
 MOCK_PORT="${MOCK_PORT:-9090}"
 MOCK_PORT_2=9091
@@ -70,8 +70,11 @@ start() {
   else
     cmd=(java -jar "$JAR")
   fi
-  "${cmd[@]}" --spring.profiles.active="$engine" \
+  local state_dir
+  state_dir="$(mktemp -d "$TMP/state.XXXXXX")"
+  LLMGW_CONTROL_DB="$state_dir/control.db" "${cmd[@]}" --spring.profiles.active="$engine" \
     --gateway.governance-enabled=true --server.port="$PORT" \
+    --gateway.admin-token-mode=migration \
     --gateway.governance.default-quota-tokens=2000000000 \
     --gateway.governance.rate-limit-tokens-per-second=2000000000 \
     --gateway.governance.rate-limit-burst=2000000000 \

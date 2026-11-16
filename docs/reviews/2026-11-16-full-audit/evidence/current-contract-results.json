@@ -1,0 +1,14 @@
+[
+  {
+    "suite": "admin-auth",
+    "exit": 0
+  },
+  {
+    "suite": "tenant-isolation",
+    "exit": 1
+  },
+  {
+    "suite": "jwt-auth",
+    "exit": 0
+  }
+]

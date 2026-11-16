@@ -13,4 +13,7 @@ public interface RouteVersionStore {
     List<RouteVersion> all();
 
     void append(RouteVersion version);
+
+    /** Persistent implementations defer activation until the surrounding transaction commits. */
+    default void afterCommit(Runnable action) { action.run(); }
 }

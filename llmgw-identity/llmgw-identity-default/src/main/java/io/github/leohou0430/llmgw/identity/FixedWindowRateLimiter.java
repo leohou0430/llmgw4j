@@ -23,12 +23,16 @@ public final class FixedWindowRateLimiter implements LoginRateLimiter {
     }
 
     @Override
-    public boolean allow(String key, long nowEpochMs) {
+    public synchronized boolean allow(String key, long nowEpochMs) {
+        windows.entrySet().removeIf(entry -> nowEpochMs - entry.getValue().start() >= windowMillis);
+        if (!windows.containsKey(key) && windows.size() >= 4096) {
+            return false;
+        }
         Window window = windows.compute(key, (ignored, current) -> {
             if (current == null || nowEpochMs - current.start() >= windowMillis) {
                 return new Window(nowEpochMs, 1);
             }
-            return new Window(current.start(), current.count() + 1);
+            return new Window(current.start(), Math.min(maxAttempts + 1, current.count() + 1));
         });
         return window.count() <= maxAttempts;
     }

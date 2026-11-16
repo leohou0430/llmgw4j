@@ -1,0 +1,34 @@
+[
+  {
+    "suite": "stream-errors",
+    "exit": 1
+  },
+  {
+    "suite": "extensions",
+    "exit": 0
+  },
+  {
+    "suite": "multi-protocol",
+    "exit": 0
+  },
+  {
+    "suite": "hardening",
+    "exit": 0
+  },
+  {
+    "suite": "tenant-isolation",
+    "exit": 1
+  },
+  {
+    "suite": "jwt-auth",
+    "exit": 0
+  },
+  {
+    "suite": "conversion-sdk",
+    "exit": 0
+  },
+  {
+    "suite": "admin-auth",
+    "exit": 1
+  }
+]

@@ -2,7 +2,7 @@
 """Official Python SDK clients against both engines and a controlled local upstream.
 Install the pinned test dependencies from bin/requirements-sdk.txt.
 """
-import argparse, asyncio, hashlib, json, socket, subprocess, tempfile, threading, time, urllib.request
+import argparse, asyncio, base64, hashlib, json, os, socket, subprocess, tempfile, threading, time, urllib.request
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 import openai
@@ -124,7 +124,7 @@ def main():
                 cmd+=['--gateway.api-keys[1].id=foreign','--gateway.api-keys[1].token=sdk-foreign','--gateway.api-keys[1].quota-tokens=1000000']
                 for i,protocol,provider in [(0,'*','openai'),(1,'messages','anthropic')]:
                     for name,value in {'id':'sdk-'+provider,'protocol':protocol,'model':'*','target-model':'upstream-model','target-url':f'http://127.0.0.1:{server.server_port}/v1','api-key':'sdk-upstream','provider':provider}.items():cmd.append(f'--gateway.routes[{i}].{name}={value}')
-                report.setdefault('commands',{})[engine]=cmd;save();process=subprocess.Popen(cmd,cwd=temp,stdout=log,stderr=subprocess.STDOUT)
+                report.setdefault('commands',{})[engine]=cmd;save();process=subprocess.Popen(cmd,cwd=temp,env={**os.environ,"LLMGW_ROOT_KEY":base64.b64encode(os.urandom(32)).decode()},stdout=log,stderr=subprocess.STDOUT)
                 try:
                     opener=urllib.request.build_opener(urllib.request.ProxyHandler({}))
                     for _ in range(160):
@@ -202,11 +202,12 @@ def main():
                         check(engine,'openai-transcription-upload',transcription)
                         check(engine,'openai-speech-binary',lambda:equal(oa.audio.speech.create(model='audit-model',input='say ok',voice='alloy').read(),b'\x00\xffaudio-bytes'))
                         check(engine,'openai-embeddings',lambda:equal(oa.embeddings.create(model='audit-model',input='embed this',encoding_format='float').data[0].embedding,[1.0,0.0]))
-                        check(engine,'file-list-explicit-501',lambda:status_error(lambda:oa.files.list(),501))
+                        check(engine,'file-list-project-catalog',lambda:equal([item.id for item in oa.files.list()],['file_1']))
                         def foreign_file():
                             before=len(observed)
                             with openai.OpenAI(api_key='sdk-foreign',base_url=f'http://127.0.0.1:{port}/v1',max_retries=0,timeout=5) as foreign:
                                 status_error(lambda:foreign.files.content('file_1'),404)
+                                equal(list(foreign.files.list()),[])
                             equal(len(observed),before)
                         check(engine,'foreign-file-sdk-404-without-upstream',foreign_file)
                         mode='truncated'

@@ -1,104 +1,36 @@
 package io.github.leohou0430.llmgw.app;
 
-import io.github.leohou0430.llmgw.control.RouteVersion;
-import io.github.leohou0430.llmgw.control.RouteVersionStore;
+import io.github.leohou0430.llmgw.control.*;
 import io.github.leohou0430.llmgw.persistence.DatabaseContext;
-import io.github.leohou0430.llmgw.persistence.sqlite.SqliteErrors;
-import io.github.leohou0430.llmgw.persistence.sqlite.StorageLimitException;
+import java.sql.*;
+import java.util.*;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-
-/**
- * Durable, append-only route-version store backed by SQLite (the {@code route_version}
- * table from migration V3). Publishing survives process restart; {@code RouteVersionService}
- * recovers the committed version on construction (startup recovery). The shared
- * {@link DatabaseContext} connection is owned by the context and must NOT be closed here.
- */
+/** Durable immutable global route history; all access shares the database transaction owner. */
 public final class SqliteRouteVersionStore implements RouteVersionStore {
     private final DatabaseContext database;
-
-    public SqliteRouteVersionStore(DatabaseContext database) {
-        this.database = Objects.requireNonNull(database, "database");
+    public SqliteRouteVersionStore(DatabaseContext database){this.database=Objects.requireNonNull(database);}
+    @Override public Optional<RouteVersion> latest(){return query("SELECT version,config,base_version FROM route_version ORDER BY version DESC LIMIT 1",null);}
+    @Override public Optional<RouteVersion> find(long version){return query("SELECT version,config,base_version FROM route_version WHERE version=?",version);}
+    @Override public List<RouteVersion> all(){
+        try{return database.read(c->{var result=new ArrayList<RouteVersion>();try(var s=c.prepareStatement("SELECT version,config,base_version FROM route_version ORDER BY version");var rs=s.executeQuery()){while(rs.next())result.add(read(rs));}return List.copyOf(result);});}
+        catch(SQLException e){throw new IllegalStateException("failed to read route versions",e);}
     }
-
-    @Override
-    public Optional<RouteVersion> latest() {
-        return queryOne("SELECT version, config, base_version FROM route_version ORDER BY version DESC LIMIT 1", null);
-    }
-
-    @Override
-    public Optional<RouteVersion> find(long version) {
-        return queryOne("SELECT version, config, base_version FROM route_version WHERE version = ?", version);
-    }
-
-    @Override
-    public List<RouteVersion> all() {
-        List<RouteVersion> versions = new ArrayList<>();
-        try {
-            PreparedStatement statement = database.connection().prepareStatement(
-                    "SELECT version, config, base_version FROM route_version ORDER BY version");
-            try (ResultSet rows = statement.executeQuery()) {
-                while (rows.next()) {
-                    versions.add(read(rows));
-                }
-            } finally {
-                statement.close();
-            }
-        } catch (SQLException failure) {
-            throw new IllegalStateException("failed to read route versions", failure);
-        }
-        return versions;
-    }
-
-    @Override
-    public void append(RouteVersion version) {
-        try {
-            PreparedStatement statement = database.connection().prepareStatement(
-                    "INSERT OR REPLACE INTO route_version (version, config, base_version, created_at)"
-                            + " VALUES (?,?,?,?)");
-            try {
-                statement.setLong(1, version.version());
-                statement.setString(2, version.config());
-                statement.setLong(3, version.baseVersion());
-                statement.setLong(4, System.currentTimeMillis());
-                statement.executeUpdate();
-            } finally {
-                statement.close();
-            }
-        } catch (SQLException failure) {
-            if (SqliteErrors.isStorageFull(failure)) {
-                throw new StorageLimitException("database or disk is full");
-            }
-            throw new IllegalStateException("failed to persist route version", failure);
+    @Override public void append(RouteVersion version){
+        try{database.transaction(c->{
+            try(var s=c.prepareStatement("INSERT INTO route_version(version,config,base_version,created_at) SELECT ?,?,?,? WHERE ?=(SELECT COALESCE(MAX(version),0)+1 FROM route_version)")){
+                s.setLong(1,version.version());s.setString(2,version.config());s.setLong(3,version.baseVersion());s.setLong(4,System.currentTimeMillis());s.setLong(5,version.version());
+                if(s.executeUpdate()!=1)throw new VersionConflictException("route version is stale");
+            }return null;
+        });}catch(SQLException e){
+            if(io.github.leohou0430.llmgw.persistence.sqlite.SqliteErrors.isStorageFull(e))
+                throw new io.github.leohou0430.llmgw.persistence.sqlite.StorageLimitException("database or disk is full");
+            throw new IllegalStateException("failed to persist route version",e);
         }
     }
-
-    private Optional<RouteVersion> queryOne(String sql, Long parameter) {
-        try {
-            PreparedStatement statement = database.connection().prepareStatement(sql);
-            try {
-                if (parameter != null) {
-                    statement.setLong(1, parameter);
-                }
-                try (ResultSet rows = statement.executeQuery()) {
-                    return rows.next() ? Optional.of(read(rows)) : Optional.empty();
-                }
-            } finally {
-                statement.close();
-            }
-        } catch (SQLException failure) {
-            throw new IllegalStateException("failed to read route version", failure);
-        }
+    @Override public void afterCommit(Runnable action){database.afterCommit(action);}
+    private Optional<RouteVersion> query(String sql,Long parameter){
+        try{return database.read(c->{try(var s=c.prepareStatement(sql)){if(parameter!=null)s.setLong(1,parameter);try(var rs=s.executeQuery()){return rs.next()?Optional.of(read(rs)):Optional.empty();}}});}
+        catch(SQLException e){throw new IllegalStateException("failed to read route version",e);}
     }
-
-    private static RouteVersion read(ResultSet rows) throws SQLException {
-        return new RouteVersion(rows.getLong("version"), rows.getString("config"), rows.getLong("base_version"));
-    }
+    private static RouteVersion read(ResultSet rs)throws SQLException{return new RouteVersion(rs.getLong(1),rs.getString(2),rs.getLong(3));}
 }

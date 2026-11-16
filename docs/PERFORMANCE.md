@@ -1,5 +1,7 @@
 # llmgw4j 性能说明
 
+v0.4.0当前证据为[全盘修复验证](reviews/2026-11-16-remediation/README.md)中的单进程2CPU/2GiB四路64MiB上传、管理并发、取消与恢复；峰值容器内存约804/667MiB。此批没有通用吞吐A/B、远端OTLP或新真实供应商性能测量。下列历史数据保留各自原始产物归属。
+
 第1步冻结产物的[生命周期与大帧容量补审](verification/lifecycle/2026-11-11/capacity-results.md)已完成211项三profile、固定JAR契约与2C2G/单实例复验；64慢读×45秒及常规/过载/长流通过。SSE每成功响应CPU有下降，JSON/吞吐/尾延迟有混合变化，不宣称全面稳定提速。当时的WebFlux native构建与功能契约通过，未测native吞吐；不覆盖其后的多副本和SDK改动。
 
 第2步的[独立性能对照](verification/multi-replica/2026-11-11/capacity-results.md)记录34样本及13个延长预热复查样本。延长预热的WebFlux JSON吞吐中位数-0.25%、p99 +3.81%、CPU/成功 +4.34%；同步修复有成本，不宣称全面提速。这些数字只属于第2步冻结产物；第3步的上传头、批任务和版本头修复完成[功能验收](verification/compatibility/2026-11-11/README.md)，之后也完成[本机WebFlux native功能补验](verification/native-compatibility/2026-11-11/README.md)及[两次DeepSeek实测](verification/live-provider/2026-11-11/README.md)。仍没有新native吞吐测量；真实调用的单次耗时也不构成SLO。

@@ -54,6 +54,12 @@ public class GatewayRuntimeHints {
             hints.reflection().registerType(ControlRouteController.PublishBody.class, all);
             hints.reflection().registerType(ControlRouteController.RollbackBody.class, all);
             hints.reflection().registerType(ControlSecretController.SecretBody.class, all);
+            hints.reflection().registerType(ControlAccountController.Body.class, all);
+            hints.reflection().registerType(ControlKeyController.ScopeBody.class, all);
+            hints.reflection().registerType(ControlQuotaController.QuotaBody.class, all);
+            hints.reflection().registerType(ControlQuotaController.ReconcileBody.class, all);
+            hints.reflection().registerType(io.github.leohou0430.llmgw.identity.Scope.class, all);
+            hints.reflection().registerType(io.github.leohou0430.llmgw.identity.Account.class, all);
             hints.resources().registerPattern("application*.yml");
             hints.resources().registerPattern("application*.yaml");
         }

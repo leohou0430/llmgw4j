@@ -23,23 +23,27 @@ import java.util.Map;
 @RequestMapping("/control")
 public class ControlAuditController {
     private final RequestAuthorizer authorizer;
+    private final OrgStore orgs;
     private final AuditLog audit;
 
-    public ControlAuditController(RequestAuthorizer authorizer, AuditLog audit) {
+    public ControlAuditController(RequestAuthorizer authorizer, OrgStore orgs, AuditLog audit) {
         this.authorizer = authorizer;
+        this.orgs = orgs;
         this.audit = audit;
     }
 
     @GetMapping("/audit")
     public ResponseEntity<Map<String, Object>> recent(
-            @CookieValue(name = "llmgw_sid", required = false) String sessionId) {
-        Target target = new Target("t1", "p1");
+            @CookieValue(name = "llmgw_sid", required = false) String sessionId,
+            @org.springframework.web.bind.annotation.RequestParam(required = false) String tenantId,
+            @org.springframework.web.bind.annotation.RequestParam(required = false) String projectId) {
+        Target target = ControlAccess.resolve(authorizer, orgs, sessionId, tenantId, projectId);
         AuthOutcome outcome = authorizer.authorize(
                 new AuthenticatedRequest(sessionId, null, false, Action.AUDIT_READ, target));
         if (outcome != AuthOutcome.ALLOW) {
             HttpStatus status = outcome == AuthOutcome.UNAUTHENTICATED ? HttpStatus.UNAUTHORIZED : HttpStatus.FORBIDDEN;
             throw new ResponseStatusException(status, outcome.name());
         }
-        return ResponseEntity.ok(Map.of("events", audit.recent("p1", 50)));
+        return ResponseEntity.ok(Map.of("events", audit.recent(target.tenantId(), target.projectId(), 50)));
     }
 }

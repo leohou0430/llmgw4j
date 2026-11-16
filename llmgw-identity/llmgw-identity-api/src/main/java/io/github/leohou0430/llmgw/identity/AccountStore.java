@@ -16,6 +16,8 @@ public interface AccountStore {
     /** Replaces the password hash for an existing account (invalidating sessions is T4.2). */
     void updatePassword(String username, String newPasswordHash);
 
+    default java.util.List<Account> list() { return java.util.List.of(); }
+
     /** True once any account exists (guards one-time bootstrap). */
     boolean existsAny();
 }

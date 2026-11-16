@@ -107,6 +107,17 @@ public class VirtualThreadGatewayController implements AutoCloseable {
     private final GatewayProperties properties;
     /** W3.6: sticky store is an injectable SPI (in-memory default, Redis pack). */
     private final TaskRouteSticky taskRoutes;
+    private io.github.leohou0430.llmgw.catalog.ResourceLifecycle resources;
+
+    @org.springframework.beans.factory.annotation.Autowired(required = false)
+    public void resourceCatalog(io.github.leohou0430.llmgw.catalog.ResourceCatalog catalog,
+                                io.github.leohou0430.llmgw.core.governance.ApiKeyRegistry keys) {
+        this.resources = new io.github.leohou0430.llmgw.catalog.ResourceLifecycle(catalog, keys);
+    }
+
+    @org.springframework.beans.factory.annotation.Value("${llmgw.spool-directory:${java.io.tmpdir}/llmgw-spool/${server.port:8080}}")
+    private String spoolDirectory;
+
     private final java.util.concurrent.Semaphore requestSlots;
     private final HeaderPolicy headerPolicy;
     private final ForwardingPolicy.RetryConfig retryConfig;
@@ -386,9 +397,13 @@ public class VirtualThreadGatewayController implements AutoCloseable {
             writeError(response, decision);
             return;
         }
+        var requestResources = resources == null ? null : resources.scoped(decision);
+        decision = requestResources == null ? decision : decision.withRoute(
+                requestResources.referencedRoute(decision.parsed(), decision.keyId(), decision.route()));
         ParsedRequest parsed = decision.parsed();
         GatewayContext context = GatewayPipeline.context(decision, requestId, arrived);
-        if (!EngineRoutes.ownsReferencedFiles(parsed, decision.keyId(), decision.route(), taskRoutes)) {
+        if (!(requestResources == null ? EngineRoutes.ownsReferencedFiles(parsed, decision.keyId(), decision.route(), taskRoutes)
+                : requestResources.ownsFiles(parsed, decision.keyId(), decision.route()))) {
             GatewayPipeline.finish(chain, context, false);
             writeError(response, GatewayDecision.deny(404, "referenced file not found on this route"));
             return;
@@ -406,7 +421,9 @@ public class VirtualThreadGatewayController implements AutoCloseable {
                 // Stage-1 degenerate mapping: tenantId = projectId = decision.keyId().
                 // TODO(stage 3): replace with the real tenant/project split from the decision.
                 DegradationGrant grant = DegradationGrant.parse(degradationGrantValue(clientHeaders));
-                prepared = conversion.prepare(parsed, route, decision.keyId(), decision.keyId(), grant);
+                prepared = conversion.prepare(parsed, route,
+                        decision.tenantId().isBlank() ? decision.keyId() : decision.tenantId(),
+                        decision.projectId().isBlank() ? decision.keyId() : decision.projectId(), grant);
             } catch (CapabilityException | UpstreamException error) {
                 GatewayPipeline.finish(chain, context, false);
                 writeConversionError(response, kind, error);
@@ -448,6 +465,12 @@ public class VirtualThreadGatewayController implements AutoCloseable {
                 // Single parse: token count AND cacheability come from the
                 // same tree (the body previously went through readTree twice).
                 JsonNode root = ProtocolCodec.tryParse(body);
+                JsonNode authoritativeUsage = root.path("usage");
+                if (authoritativeUsage.isMissingNode()) authoritativeUsage = root.path("response").path("usage");
+                if (authoritativeUsage.has("prompt_tokens") || authoritativeUsage.has("input_tokens")) {
+                    context.setPromptTokens(authoritativeUsage.has("prompt_tokens")
+                            ? authoritativeUsage.path("prompt_tokens").asInt() : authoritativeUsage.path("input_tokens").asInt());
+                }
                 context.setCompletionTokensIfAbsent(
                         ProtocolCodec.completionTokensFromResponse(kind, root));
                 if (cached.isEmpty() && !cacheBypass) {
@@ -460,6 +483,7 @@ public class VirtualThreadGatewayController implements AutoCloseable {
                 String taskId = cached.isEmpty() ? Protocols.of(kind).taskId(root) : "";
                 if (!taskId.isEmpty()) {
                     taskRoutes.bind(decision.keyId(), kind.wireName(), taskId, winning.id());
+                    if (requestResources != null) requestResources.created(decision.keyId(), kind, winning, body);
                 }
                 String upstream = EngineTimings.upstreamOrNull(context);
                 if (upstream != null) {
@@ -567,6 +591,7 @@ public class VirtualThreadGatewayController implements AutoCloseable {
                 writeError(response, decision);
                 return;
             }
+            var requestResources = resources == null ? null : resources.scoped(decision);
             context = GatewayPipeline.context(decision, requestId, arrived);
             Map<String, String> pass = headerPolicy.toUpstream(kind, clientHeaders);
             try {
@@ -584,6 +609,7 @@ public class VirtualThreadGatewayController implements AutoCloseable {
                             .path("id").asText("");
                     if (!resourceId.isBlank()) {
                         taskRoutes.bind(decision.keyId(), kind.wireName(), resourceId, decision.route().id());
+                        if (requestResources != null) requestResources.created(decision.keyId(), kind, decision.route(), new String(upstreamBody, StandardCharsets.UTF_8));
                     }
                 }
                 response.setHeader(EngineHeaders.OVERHEAD_MS, EngineTimings.total(context));
@@ -607,10 +633,15 @@ public class VirtualThreadGatewayController implements AutoCloseable {
         }
     }
 
+    @jakarta.annotation.PostConstruct
+    public void recoverUploads() throws IOException {
+        if (spoolDirectory != null) spools();
+    }
+
     /** Lazily create the per-engine spool manager owning one restricted temp dir. */
     private synchronized SpoolManager spools() throws IOException {
         if (spools == null) {
-            spoolDir = Files.createTempDirectory("llmgw-vt-spool-");
+            spoolDir = spoolDirectory == null ? Files.createTempDirectory("llmgw-vt-spool-") : Path.of(spoolDirectory, "vt");
             spools = new SpoolManager(SpoolManager.Config.defaults(spoolDir));
         }
         return spools;
@@ -685,8 +716,26 @@ public class VirtualThreadGatewayController implements AutoCloseable {
             writeError(response, decision);
             return;
         }
+        var requestResources = resources == null ? null : resources.scoped(decision);
+        if (requestResources != null && taskId == null && (kind == ProtocolKind.FILES || kind == ProtocolKind.BATCHES)) {
+            boolean listed = false;
+            try {
+                String body = requestResources.list(decision.keyId(), kind, request.getParameter("limit"),
+                        request.getParameter("after"));
+                response.setStatus(200); response.setContentType(EngineHeaders.APPLICATION_JSON);
+                response.getOutputStream().write(body.getBytes(StandardCharsets.UTF_8));
+                listed = true;
+            } catch (IllegalArgumentException failure) {
+                writeError(response, GatewayDecision.deny(400, failure.getMessage()));
+            } finally {
+                GatewayPipeline.finish(chain, GatewayPipeline.context(decision, requestId, arrived), listed);
+            }
+            return;
+        }
         Route pinned = taskId == null ? null
-                : router.byId(taskRoutes.resolve(decision.keyId(), kind.wireName(), taskId));
+                : requestResources != null && (kind == ProtocolKind.FILES || kind == ProtocolKind.BATCHES)
+                    ? requestResources.route(decision.keyId(), kind, taskId)
+                    : router.byId(taskRoutes.resolve(decision.keyId(), kind.wireName(), taskId));
         if ((taskId != null && pinned == null)
                 || (taskId == null && (kind == ProtocolKind.FILES || kind == ProtocolKind.BATCHES))) {
             GatewayPipeline.finish(chain, GatewayPipeline.context(decision, requestId, arrived), false);
@@ -735,6 +784,8 @@ public class VirtualThreadGatewayController implements AutoCloseable {
                 if (!isPinned) {
                     breaker.recordSuccess(route);
                 }
+                if (requestResources != null && taskId != null) requestResources.observed(decision.keyId(), kind, taskId, route,
+                        new String(body, StandardCharsets.UTF_8), method == UpstreamMethod.DELETE);
                 fetched = true;
                 context.markUpstreamEnd();
                 String upstream = EngineTimings.upstreamOrNull(context);

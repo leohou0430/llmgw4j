@@ -39,20 +39,12 @@ public final class GatewayPipeline {
 
     /** Reuses the request parsed during enter(); no second JSON traversal. */
     public static GatewayContext context(GatewayDecision decision) {
-        ParsedRequest request = decision.parsed();
-        return new GatewayContext(decision.keyId(), request.kind(), request.model(),
-                decision.route() == null ? "" : decision.route().id(),
-                request.stream(), request.estimatedTokens(), request.units(),
-                "", System.nanoTime());
+        return context(decision, "", System.nanoTime());
     }
 
     /** Same as {@link #context(GatewayDecision)} plus the correlation id. */
     public static GatewayContext context(GatewayDecision decision, String requestId) {
-        ParsedRequest request = decision.parsed();
-        return new GatewayContext(decision.keyId(), request.kind(), request.model(),
-                decision.route() == null ? "" : decision.route().id(),
-                request.stream(), request.estimatedTokens(), request.units(),
-                requestId, System.nanoTime());
+        return context(decision, requestId, System.nanoTime());
     }
 
     /**
@@ -66,6 +58,7 @@ public final class GatewayPipeline {
                 decision.route() == null ? "" : decision.route().id(),
                 request.stream(), request.estimatedTokens(), request.units(),
                 requestId, arrivedNanos);
+        context.setReservationId(decision.reservationId());
         context.setBudgetReservedMicroUsd(decision.budgetReservedMicroUsd());
         context.setGroup(decision.keyGroup());
         context.setGroupBudgetReservedMicroUsd(decision.groupBudgetReservedMicroUsd());

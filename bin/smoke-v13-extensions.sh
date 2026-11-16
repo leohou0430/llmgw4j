@@ -5,7 +5,7 @@
 set -uo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-JAR="${LLMGW_TEST_JAR:-$ROOT/llmgw-app/target/llmgw-app-0.3.1.jar}"
+JAR="${LLMGW_TEST_JAR:-$ROOT/llmgw-app/target/llmgw-app-0.4.0.jar}"
 PORT="${PORT:-8080}"
 MOCK_PORT="${MOCK_PORT:-9090}"
 ENGINES="${1:-webflux vt}"
@@ -66,7 +66,10 @@ start() {
     [[ "$arg" == '--gateway.routes[0].target-url='* ]] && target=""
   done
   [[ -z "$target" ]] || defaults+=("--gateway.routes[0].target-url=$target")
-  java -jar "$JAR" --spring.profiles.active="$engine" --server.port="$PORT" "${defaults[@]}" \
+  local state_dir
+  state_dir="$(mktemp -d "$TMP/state.XXXXXX")"
+  LLMGW_CONTROL_DB="$state_dir/control.db" java -jar "$JAR" --spring.profiles.active="$engine" --server.port="$PORT" "${defaults[@]}" \
+    --gateway.admin-token-mode=migration \
     --gateway.governance.default-quota-tokens=2000000000 \
     --gateway.governance.rate-limit-tokens-per-second=2000000000 \
     --gateway.governance.rate-limit-burst=2000000000 \

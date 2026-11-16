@@ -115,7 +115,7 @@ class MultipartUploadTest {
 
     private static long fileCount(Path dir) throws Exception {
         try (var s = Files.list(dir)) {
-            return s.count();
+            return s.filter(path -> !path.getFileName().toString().equals(".owner.lock")).count();
         }
     }
 
