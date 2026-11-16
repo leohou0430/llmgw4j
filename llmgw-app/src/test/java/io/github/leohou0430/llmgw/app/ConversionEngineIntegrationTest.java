@@ -43,6 +43,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.Flow;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -205,10 +207,13 @@ class ConversionEngineIntegrationTest {
     }
 
     private static final class RecordingChain implements GovernanceChain {
+        private final CountDownLatch settlement = new CountDownLatch(1);
+        private volatile boolean admitted;
         final List<Boolean> finished = new CopyOnWriteArrayList<>();
         final List<String> cached = new CopyOnWriteArrayList<>();
 
         public GatewayDecision enter(String token, ParsedRequest request, Route target) {
+            admitted = true;
             return GatewayDecision.allow("tenant", request, target);
         }
 
@@ -222,6 +227,20 @@ class ConversionEngineIntegrationTest {
 
         public void finish(GatewayContext context, boolean success) {
             finished.add(success);
+            settlement.countDown();
+        }
+
+        List<Boolean> finishedSnapshot() {
+            if (admitted) {
+                try {
+                    assertTrue(settlement.await(5, TimeUnit.SECONDS),
+                            "admitted request must settle before capturing accounting results");
+                } catch (InterruptedException error) {
+                    Thread.currentThread().interrupt();
+                    throw new AssertionError(error);
+                }
+            }
+            return List.copyOf(finished);
         }
 
         public Map<String, Object> snapshot() {
@@ -374,7 +393,7 @@ class ConversionEngineIntegrationTest {
             case MESSAGES -> controller.handleMessages(request, response);
             default -> throw new IllegalArgumentException("unsupported entry kind " + kind);
         }
-        return new Result(status[0], out.toString(StandardCharsets.UTF_8), List.copyOf(chain.finished));
+        return new Result(status[0], out.toString(StandardCharsets.UTF_8), chain.finishedSnapshot());
     }
 
     private static Result runWebflux(ProtocolKind kind, String body, ConversionService conversion,
@@ -395,7 +414,7 @@ class ConversionEngineIntegrationTest {
             default -> throw new IllegalArgumentException("unsupported entry kind " + kind);
         }
         String responseBody = response.getBodyAsString().block(Duration.ofSeconds(5));
-        return new Result(response.getStatusCode().value(), responseBody, List.copyOf(chain.finished));
+        return new Result(response.getStatusCode().value(), responseBody, chain.finishedSnapshot());
     }
 
     private static Object defaultValue(Class<?> type) {

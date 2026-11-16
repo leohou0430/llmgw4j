@@ -216,10 +216,13 @@ class ConversionContractTest {
      * acquires, finish() releases -- exactly once per request, success or failure.
      */
     private static final class PermitChain implements GovernanceChain {
+        private final CountDownLatch settlement = new CountDownLatch(1);
+        private volatile boolean admitted;
         final AtomicInteger active = new AtomicInteger();
         final List<Boolean> finished = new CopyOnWriteArrayList<>();
 
         public GatewayDecision enter(String token, ParsedRequest request, Route target) {
+            admitted = true;
             active.incrementAndGet();
             return GatewayDecision.allow("fixture-tenant", request, target);
         }
@@ -234,6 +237,20 @@ class ConversionContractTest {
         public void finish(GatewayContext context, boolean success) {
             active.decrementAndGet();
             finished.add(success);
+            settlement.countDown();
+        }
+
+        List<Boolean> finishedSnapshot() {
+            if (admitted) {
+                try {
+                    assertTrue(settlement.await(5, TimeUnit.SECONDS),
+                            "admitted request must settle before capturing accounting results");
+                } catch (InterruptedException error) {
+                    Thread.currentThread().interrupt();
+                    throw new AssertionError(error);
+                }
+            }
+            return List.copyOf(finished);
         }
 
         public Map<String, Object> snapshot() {
@@ -2710,7 +2727,7 @@ class ConversionContractTest {
         }
         String responseBody = response.getBodyAsString().block(Duration.ofSeconds(20));
         return new Result(response.getStatusCode().value(), responseBody,
-                List.copyOf(chain.finished), chain.active.get(), upstream.lastBodyOrNull(), upstream.cancels(),
+                chain.finishedSnapshot(), chain.active.get(), upstream.lastBodyOrNull(), upstream.cancels(),
                 upstream.lastPassHeaders(), upstream.requestCount());
     }
 
@@ -2750,7 +2767,7 @@ class ConversionContractTest {
             default -> throw new AssertionError("unknown entry '" + entry + "'");
         }
         return new Result(status[0], out.toString(StandardCharsets.UTF_8),
-                List.copyOf(chain.finished), chain.active.get(), upstream.lastBodyOrNull(), upstream.cancels(),
+                chain.finishedSnapshot(), chain.active.get(), upstream.lastBodyOrNull(), upstream.cancels(),
                 upstream.lastPassHeaders(), upstream.requestCount());
     }
 
@@ -2894,7 +2911,7 @@ class ConversionContractTest {
         }
         String capturedBody = out.toString(StandardCharsets.UTF_8);
         return new CancelResult(status[0], capturedBody,
-                List.copyOf(chain.finished), chain.active.get(), upstream.lastBody(),
+                chain.finishedSnapshot(), chain.active.get(), upstream.lastBody(),
                 firstContentFrameSeen(capturedBody, entry), upstream.cancels(), upstream.blockingExited(),
                 upstream.requestCount());
     }
@@ -3019,7 +3036,7 @@ class ConversionContractTest {
         assertNull(failure.get(), "the cancelled stream must not surface an error to the client");
         String capturedBody = captured.toString();
         return new CancelResult(delegate.getStatusCode().value(), capturedBody,
-                List.copyOf(chain.finished), chain.active.get(), upstream.lastBody(),
+                chain.finishedSnapshot(), chain.active.get(), upstream.lastBody(),
                 firstContentFrameSeen(capturedBody, entry), upstream.cancels(), upstream.blockingExited(),
                 upstream.requestCount());
     }
