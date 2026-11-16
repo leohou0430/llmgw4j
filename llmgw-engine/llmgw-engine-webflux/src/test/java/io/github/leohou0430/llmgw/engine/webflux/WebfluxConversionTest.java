@@ -39,11 +39,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.Flow;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * T1.12 WebFlux seam against a CONTROLLED upstream (no network): the conversion handle is a fake
@@ -89,6 +94,24 @@ class WebfluxConversionTest {
             // The cache stores the ENTRY body keyed by the entry request.
             assertEquals(1, fixture.chain.cached.size());
             assertEquals(ENTRY_BODY, fixture.chain.cached.get(0).body());
+        }
+    }
+
+    @org.junit.jupiter.api.Test
+    void postWaitsForConversionCleanupAfterResponseCompletion() throws Exception {
+        var fake = new FakeConversion(true);
+        fake.prepared.closeRelease = new CountDownLatch(1);
+        try (var fixture = new Fixture(fake); var pool = Executors.newVirtualThreadPerTaskExecutor()) {
+            var response = pool.submit(() -> fixture.post("/v1/chat/completions", CHAT_BODY, Map.of()));
+            try {
+                assertTrue(fake.prepared.closeEntered.await(5, TimeUnit.SECONDS));
+                assertThrows(TimeoutException.class, () -> response.get(200, TimeUnit.MILLISECONDS),
+                        "the fixture must await cleanup before exposing lifecycle assertions");
+            } finally {
+                fake.prepared.closeRelease.countDown();
+            }
+            assertEquals(HttpStatus.OK, response.get(5, TimeUnit.SECONDS).getStatusCode());
+            assertEquals(1, fake.prepared.closeCalls.get());
         }
     }
 
@@ -463,6 +486,9 @@ class WebfluxConversionTest {
     static final class FakePrepared implements PreparedConversion {
         final AtomicInteger transcodeCalls = new AtomicInteger();
         final AtomicInteger closeCalls = new AtomicInteger();
+        final CountDownLatch closeEntered = new CountDownLatch(1);
+        final CountDownLatch closed = new CountDownLatch(1);
+        volatile CountDownLatch closeRelease;
         final AtomicInteger transcoderCalls = new AtomicInteger();
         volatile String transcodedFrom;
         volatile String entryBody = ENTRY_BODY;
@@ -497,7 +523,17 @@ class WebfluxConversionTest {
         }
 
         public void close() {
+            closeEntered.countDown();
+            if (closeRelease != null) {
+                try {
+                    assertTrue(closeRelease.await(5, TimeUnit.SECONDS), "cleanup probe released");
+                } catch (InterruptedException error) {
+                    Thread.currentThread().interrupt();
+                    throw new AssertionError(error);
+                }
+            }
             closeCalls.incrementAndGet();
+            closed.countDown();
         }
     }
 
@@ -544,6 +580,7 @@ class WebfluxConversionTest {
     // ---------- harness ----------
 
     static final class RecordingChain implements GovernanceChain {
+        final CountDownLatch finalized = new CountDownLatch(1);
         record Cached(String keyId, String body) {
         }
 
@@ -565,6 +602,7 @@ class WebfluxConversionTest {
 
         public void finish(GatewayContext context, boolean success) {
             finished.add(success);
+            finalized.countDown();
         }
 
         public Map<String, Object> snapshot() {
@@ -641,7 +679,23 @@ class WebfluxConversionTest {
             headers.forEach(request::header);
             var response = new MockServerHttpResponse();
             handler.handle(request.body(body), response).block(Duration.ofSeconds(5));
+            // Reactor propagates completion before doFinally. Await observable cleanup,
+            // rather than racing the worker from lifecycle assertions on this thread.
+            await(chain.finalized, "request settlement");
+            if (conversion instanceof FakeConversion fake && fake.prepareCalls.get() > 0
+                    && fake.prepareFailure == null && fake.prepareUpstreamFailure == null) {
+                await(fake.prepared.closed, "conversion handle cleanup");
+            }
             return response;
+        }
+
+        private static void await(CountDownLatch event, String description) {
+            try {
+                assertTrue(event.await(5, TimeUnit.SECONDS), description + " must complete");
+            } catch (InterruptedException error) {
+                Thread.currentThread().interrupt();
+                throw new AssertionError(error);
+            }
         }
 
         public void close() {
