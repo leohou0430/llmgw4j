@@ -50,7 +50,10 @@ class CapacityAdmissionTest {
         try(var fixture=new Fixture()) {
             var first=fixture.start();assertTrue(fixture.provider.started.await(2,TimeUnit.SECONDS));
             first.cancel(true);
-            assertTrue(fixture.provider.pending.isCancelled());
+            // started fires inside the provider, before its future is returned to the
+            // reactive bridge. Cancellation may reach that future after cancel() returns.
+            assertThrows(CancellationException.class,
+                    () -> fixture.provider.pending.get(2, TimeUnit.SECONDS));
             assertEquals(HttpStatus.OK,fixture.request("/v1/chat/completions",BODY).getStatusCode());
         }
     }
