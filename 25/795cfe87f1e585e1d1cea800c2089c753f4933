@@ -1,0 +1,23 @@
+docs/releases/v0.4.0-verification.md
+  s_5f251bc0a17928::t_06e5b79183bae6 27-28
+llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/ConversionContractTest.java
+  s_5f251bc0a17928::t_2fdae52e1e8224 219-220,225,240-253,2730,2770,2914,3039
+llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/ConversionEngineIntegrationTest.java
+  s_5f251bc0a17928::t_ec1969d700cca5 46-47,210-211,216,230-243,396,417
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "25795cfe87f1e585e1d1cea800c2089c753f4933",
+  "prompts": {},
+  "sessions": {
+    "s_5f251bc0a17928": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1e304-332e-7000-9e0e-b3015846561c",
+        "model": "gpt-6.1-sol"
+      },
+      "human_author": "leohou0430 <leohou0430@users.noreply.github.com>"
+    }
+  }
+}
