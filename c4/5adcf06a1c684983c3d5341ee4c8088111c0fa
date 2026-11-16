@@ -1,0 +1,21 @@
+docs/releases/v0.4.0-verification.md
+  s_5f251bc0a17928::t_bf971026facd61 19-24
+llmgw-engine/llmgw-engine-webflux/src/test/java/io/github/leohou0430/llmgw/engine/webflux/WebfluxConversionTest.java
+  s_5f251bc0a17928::t_648f0b9c992464 42-45,51,100-117,489-491,526-534,536,583,605,682-688,692-700
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "c45adcf06a1c684983c3d5341ee4c8088111c0fa",
+  "prompts": {},
+  "sessions": {
+    "s_5f251bc0a17928": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1e304-332e-7000-9e0e-b3015846561c",
+        "model": "gpt-6.1-sol"
+      },
+      "human_author": "leohou0430 <leohou0430@users.noreply.github.com>"
+    }
+  }
+}
