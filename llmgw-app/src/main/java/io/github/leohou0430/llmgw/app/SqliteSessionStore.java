@@ -3,6 +3,8 @@ package io.github.leohou0430.llmgw.app;
 import io.github.leohou0430.llmgw.identity.Session;
 import io.github.leohou0430.llmgw.identity.SessionStore;
 import io.github.leohou0430.llmgw.persistence.DatabaseContext;
+import io.github.leohou0430.llmgw.persistence.sqlite.SqliteErrors;
+import io.github.leohou0430.llmgw.persistence.sqlite.StorageLimitException;
 
 import java.security.SecureRandom;
 import java.sql.PreparedStatement;
@@ -47,6 +49,9 @@ public final class SqliteSessionStore implements SessionStore {
                 statement.close();
             }
         } catch (SQLException failure) {
+            if (SqliteErrors.isStorageFull(failure)) {
+                throw new StorageLimitException("database or disk is full");
+            }
             throw new IllegalStateException("failed to create session", failure);
         }
         return new Session(id, accountId, expiresAt, 0L);

@@ -318,6 +318,7 @@ for ENGINE in $ENGINES; do
 
   echo "-- v5: admin surface (token gate + no upstream key leak) --"
   start "$ENGINE" '--gateway.admin-token=secret' \
+    '--gateway.admin-token-mode=migration' \
     "--gateway.governance.snapshot-path=$TMP/snap-admin-$ENGINE.json"
   NO_TOKEN=$(curl --noproxy '*' -s -o "$TMP/routes-no" -w '%{http_code}' \
     "http://127.0.0.1:$PORT/admin/routes")

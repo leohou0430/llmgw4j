@@ -5,6 +5,8 @@ import io.github.leohou0430.llmgw.identity.AccountStore;
 import io.github.leohou0430.llmgw.identity.Role;
 import io.github.leohou0430.llmgw.identity.Scope;
 import io.github.leohou0430.llmgw.persistence.DatabaseContext;
+import io.github.leohou0430.llmgw.persistence.sqlite.SqliteErrors;
+import io.github.leohou0430.llmgw.persistence.sqlite.StorageLimitException;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -44,6 +46,9 @@ public final class SqliteAccountStore implements AccountStore {
                 statement.close();
             }
         } catch (SQLException failure) {
+            if (SqliteErrors.isStorageFull(failure)) {
+                throw new StorageLimitException("database or disk is full");
+            }
             throw new IllegalArgumentException("duplicate or invalid account: " + account.username(), failure);
         }
         return account;
@@ -72,6 +77,9 @@ public final class SqliteAccountStore implements AccountStore {
                 statement.close();
             }
         } catch (SQLException failure) {
+            if (SqliteErrors.isStorageFull(failure)) {
+                throw new StorageLimitException("database or disk is full");
+            }
             throw new IllegalStateException("failed to update password", failure);
         }
     }

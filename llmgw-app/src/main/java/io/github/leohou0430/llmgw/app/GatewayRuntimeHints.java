@@ -41,6 +41,11 @@ public class GatewayRuntimeHints {
             // (a missing hint is an HTTP 500 in native, found on /control/secrets in vt).
             hints.reflection().registerType(io.github.leohou0430.llmgw.catalog.ResourceEntry.class, all);
             hints.reflection().registerType(SecretStore.SecretSummary.class, all);
+            // Found on the Linux AOT binary: /control/audit and /control/tenants returned 500
+            // because these response rows are serialized as records too.
+            hints.reflection().registerType(AuditLog.Entry.class, all);
+            hints.reflection().registerType(OrgStore.Tenant.class, all);
+            hints.reflection().registerType(OrgStore.Project.class, all);
             hints.reflection().registerType(ControlCatalogController.EntryBody.class, all);
             hints.reflection().registerType(ControlKeyController.CreateBody.class, all);
             hints.reflection().registerType(ControlLoginController.LoginBody.class, all);

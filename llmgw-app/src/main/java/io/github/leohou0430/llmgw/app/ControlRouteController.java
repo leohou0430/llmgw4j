@@ -102,6 +102,8 @@ public class ControlRouteController {
             return action.call();
         } catch (VersionConflictException conflict) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, conflict.getMessage());
+        } catch (io.github.leohou0430.llmgw.persistence.sqlite.StorageLimitException full) {
+            throw full;
         } catch (Exception failure) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     failure.getClass().getSimpleName() + ": " + failure.getMessage());

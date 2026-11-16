@@ -3,6 +3,7 @@ package io.github.leohou0430.llmgw.core.config;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class GatewayProperties {
@@ -113,6 +114,12 @@ public class GatewayProperties {
     private String adminToken = "";
     /** Read-only token accepted by audit export; other admin calls require the full token. */
     private String adminReadToken = "";
+    /** T4.8: legacy X-Admin-Token policy; disabled by default, migration is explicit. */
+    private String adminTokenMode = "disabled";
+    /** Comma-separated IPv4 CIDRs / exact addresses allowed in migration mode. */
+    private String adminRestrictedNetworks = "";
+    /** T4.2: mark control-plane session cookies Secure; enable behind TLS termination. */
+    private boolean controlCookieSecure;
     private final Auth auth = new Auth();
     /**
      * v13 persistence for runtime-created API keys (POST /admin/keys). Blank
@@ -176,6 +183,20 @@ public class GatewayProperties {
     public void setAdminToken(String v) { this.adminToken = v; }
     public String getAdminReadToken() { return adminReadToken; }
     public void setAdminReadToken(String v) { this.adminReadToken = v; }
+    public String getAdminTokenMode() { return adminTokenMode; }
+    public void setAdminTokenMode(String v) {
+        String normalized = v == null || v.isBlank() ? "disabled" : v.trim().toLowerCase(Locale.ROOT);
+        if (!normalized.equals("disabled") && !normalized.equals("migration")) {
+            throw new IllegalArgumentException("admin-token-mode must be disabled or migration");
+        }
+        this.adminTokenMode = normalized;
+    }
+    public String getAdminRestrictedNetworks() { return adminRestrictedNetworks; }
+    public void setAdminRestrictedNetworks(String v) {
+        this.adminRestrictedNetworks = v == null ? "" : v.trim();
+    }
+    public boolean isControlCookieSecure() { return controlCookieSecure; }
+    public void setControlCookieSecure(boolean v) { this.controlCookieSecure = v; }
     public String getKeysStorePath() { return keysStorePath; }
     public void setKeysStorePath(String v) { this.keysStorePath = v; }
     public Auth getAuth() { return auth; }

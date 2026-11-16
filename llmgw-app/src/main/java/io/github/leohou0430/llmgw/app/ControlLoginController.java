@@ -10,6 +10,7 @@ import io.github.leohou0430.llmgw.identity.local.AuthOutcome;
 import io.github.leohou0430.llmgw.identity.local.AuthenticatedRequest;
 import io.github.leohou0430.llmgw.identity.local.RequestAuthorizer;
 import io.github.leohou0430.llmgw.identity.local.SessionService;
+import io.github.leohou0430.llmgw.core.config.GatewayProperties;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
@@ -29,8 +30,9 @@ import java.util.Optional;
 /**
  * Login endpoint: verifies the account password, creates a random server-side session, sets
  * an HttpOnly/SameSite session cookie, and returns a session-bound CSRF token. No default
- * credentials; accounts exist only via explicit bootstrap. Cookies are marked Secure in TLS
- * deployments (this local default is not Secure so plain-http local runs work).
+ * credentials; accounts exist only via explicit bootstrap. The Secure attribute follows
+ * {@code gateway.control-cookie-secure} so plain-http local runs work while TLS deployments
+ * set it to true.
  */
 @RestController
 @RequestMapping("/control")
@@ -42,14 +44,17 @@ public class ControlLoginController {
     private final CsrfTokenService csrf;
     private final SessionStore sessionStore;
     private final RequestAuthorizer authorizer;
+    private final boolean cookieSecure;
 
     public ControlLoginController(AccountStore accounts, SessionService sessions, CsrfTokenService csrf,
-                                  SessionStore sessionStore, RequestAuthorizer authorizer) {
+                                  SessionStore sessionStore, RequestAuthorizer authorizer,
+                                  GatewayProperties properties) {
         this.accounts = accounts;
         this.sessions = sessions;
         this.csrf = csrf;
         this.sessionStore = sessionStore;
         this.authorizer = authorizer;
+        this.cookieSecure = properties.isControlCookieSecure();
     }
 
     @PostMapping("/login")
@@ -61,7 +66,7 @@ public class ControlLoginController {
         }
         ResponseCookie cookie = ResponseCookie.from("llmgw_sid", session.get().id())
                 .httpOnly(true)
-                .secure(false)
+                .secure(cookieSecure)
                 .sameSite("Lax")
                 .path("/control")
                 .maxAge(Duration.ofMillis(SESSION_TTL_MILLIS))
@@ -84,7 +89,7 @@ public class ControlLoginController {
         sessionStore.revoke(sessionId);
         ResponseCookie cleared = ResponseCookie.from("llmgw_sid", "")
                 .httpOnly(true)
-                .secure(false)
+                .secure(cookieSecure)
                 .sameSite("Lax")
                 .path("/control")
                 .maxAge(Duration.ZERO)

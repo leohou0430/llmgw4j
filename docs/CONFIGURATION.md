@@ -84,6 +84,7 @@
 | --- | --- | --- | --- | --- |
 | `gateway.governance-enabled` | boolean | `true` | `true` | `false` = 关闭整套治理（鉴权/配额/限流/缓存/熔断/计量/审计），纯透传对照用 |
 | `gateway.admin-token` | String | `""` | `${LLMGW_ADMIN_TOKEN:}` | 两种管理 token 都为空才不鉴权；写接口及非审计数据接口需完整 `X-Admin-Token` |
+| `gateway.control-cookie-secure` | boolean | `false` | `${LLMGW_CONTROL_COOKIE_SECURE:false}` | 控制面会话 cookie 的 `Secure` 属性；TLS 部署（含 TLS 终止代理）应设为 `true`，纯 HTTP 本地运行保持 `false` |
 | `gateway.max-request-bytes` | long | `4194304`（4MB） | `4194304` | 请求体硬上限，两个数据面共用；超限返回 413 `request body too large` |
 | `gateway.routes` | List\<RouteDef\> | 空列表 | 1 条 `mock-primary` | 为空时自动生成一条默认路由 |
 | `gateway.api-keys` | List\<ApiKeyDef\> | 空列表 | 1 条 `sk-demo` | 为空时自动注册字面量 `sk-demo` |
@@ -361,11 +362,14 @@ POST `{model,prompt}` → `{action,reason}`，不可达或无效响应时返回 
 
 ## 6. 应用读取的环境变量
 
-应用本身只显式读 **2 个**环境变量：
+应用显式读取的控制面相关环境变量（非穷尽）：
 
 | 变量 | 引用位置 | 用途 | 未设置时 |
 | --- | --- | --- | --- |
 | `LLMGW_ADMIN_TOKEN` | `application.yml:16` → `gateway.admin-token: ${LLMGW_ADMIN_TOKEN:}` | 管理面令牌 | 完整及只读管理 token 都为空 → 管理数据接口开放 |
+| `LLMGW_CONTROL_COOKIE_SECURE` | `application.yml` → `gateway.control-cookie-secure: ${LLMGW_CONTROL_COOKIE_SECURE:false}` | 控制面会话 cookie `Secure` 属性 | `false`：纯 HTTP 本地运行可登录；TLS 部署应设 `true` |
+| `LLMGW_CONTROL_DB_MAX_BYTES` | `ControlPlaneManagementConfiguration.storageGuard()` | 控制库大小上限 | 512 MiB；超过后管理写入 503 |
+| `LLMGW_CONTROL_DB_MIN_FREE_BYTES` | `ControlPlaneManagementConfiguration.storageGuard()` | 控制库所在卷最小剩余空间 | 256 MiB；低于该值管理写入 503 |
 | `DASHSCOPE_API_KEY` | `application.yml:21`、`application-real.yml:9`、`GatewayProperties.java:40` | 阿里百炼 / OpenAI 兼容上游密钥 | 空 → 不发 `Authorization` 头 |
 
 `CONTRIBUTING.md` 明确要求：密钥通过 `DASHSCOPE_API_KEY` 注入，**永远不要写进文件**。仓库内无真实凭据。

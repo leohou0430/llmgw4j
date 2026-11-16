@@ -224,9 +224,12 @@ JEOF
   assert_contains "$logs" '"success":true' "$engine request log carries served requests"
   assert_contains "$logs" '"success":false' "$engine request log carries denied requests"
 
-  # 6. Console page loads.
-  page=$(curl -s --noproxy '*' "http://127.0.0.1:$PORT/admin/console")
-  assert_contains "$page" 'llmgw4j console' "$engine admin console serves"
+  # 6. Console entry: the legacy token console now redirects to the session/RBAC page.
+  location=$(curl -s --noproxy '*' -o /dev/null -w '%{redirect_url}' "http://127.0.0.1:$PORT/admin/console")
+  [[ "$location" == *"/control/index.html" ]] && ok "$engine admin console redirects" \
+    || bad "$engine admin console expected redirect to /control/index.html, got $location"
+  page=$(curl -s --noproxy '*' "http://127.0.0.1:$PORT/control/index.html")
+  assert_contains "$page" 'llmgw control plane' "$engine control console serves"
   stop
 
   # 7. W4.1 guardrails: local pattern deny + external engine deny, clean passes.

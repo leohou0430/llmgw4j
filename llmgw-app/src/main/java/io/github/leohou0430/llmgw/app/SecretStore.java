@@ -1,7 +1,11 @@
 package io.github.leohou0430.llmgw.app;
 
+import io.github.leohou0430.llmgw.control.RootKeyMismatchException;
+import io.github.leohou0430.llmgw.control.RootKeyMissingException;
 import io.github.leohou0430.llmgw.control.SecretCipher;
 import io.github.leohou0430.llmgw.persistence.DatabaseContext;
+import io.github.leohou0430.llmgw.persistence.sqlite.SqliteErrors;
+import io.github.leohou0430.llmgw.persistence.sqlite.StorageLimitException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,6 +23,9 @@ import java.util.UUID;
  * cipher, so nothing can be stored as plaintext by accident.
  */
 public final class SecretStore {
+    private static final String MISMATCH_MESSAGE =
+            "configured root key cannot decrypt stored provider secrets";
+
     private final DatabaseContext database;
     private final SecretCipher cipher;
     private final Runnable writeGuard;
@@ -39,6 +46,7 @@ public final class SecretStore {
 
     public String create(String tenantId, String projectId, String name, String plaintext) {
         writeGuard.run();
+        requireUsableRootKey();
         String id = UUID.randomUUID().toString();
         String cipherText = cipher.encrypt(plaintext);
         long now = System.currentTimeMillis();
@@ -61,6 +69,7 @@ public final class SecretStore {
 
     public void rotate(String tenantId, String projectId, String id, String plaintext) {
         writeGuard.run();
+        requireUsableRootKey();
         String cipherText = cipher.encrypt(plaintext);
         long now = System.currentTimeMillis();
         mutate(connection -> {
@@ -104,10 +113,48 @@ public final class SecretStore {
         }
         List<SecretSummary> summaries = new ArrayList<>(rows.size());
         for (RawSecret row : rows) {
+            String plaintext;
+            try {
+                plaintext = cipher.decrypt(row.cipherText());
+            } catch (RootKeyMissingException missing) {
+                throw missing;
+            } catch (RuntimeException mismatch) {
+                throw new RootKeyMismatchException(MISMATCH_MESSAGE, mismatch);
+            }
             summaries.add(new SecretSummary(row.id(), row.tenantId(), row.projectId(), row.name(),
-                    mask(cipher.decrypt(row.cipherText()))));
+                    mask(plaintext)));
         }
         return summaries;
+    }
+
+    /**
+     * A root key can encrypt regardless of the stored data, so a wrong key would silently
+     * write secrets the correct key can never read. Probe one existing ciphertext first and
+     * fail closed on mismatch.
+     */
+    private void requireUsableRootKey() {
+        String existing;
+        try {
+            existing = read(connection -> {
+                try (PreparedStatement select = connection.prepareStatement(
+                        "SELECT cipher_text FROM upstream_secret LIMIT 1");
+                     ResultSet result = select.executeQuery()) {
+                    return result.next() ? result.getString(1) : null;
+                }
+            });
+        } catch (SQLException failure) {
+            throw new IllegalStateException("failed to verify the provider-secret root key", failure);
+        }
+        if (existing == null) {
+            return;
+        }
+        try {
+            cipher.decrypt(existing);
+        } catch (RootKeyMissingException missing) {
+            throw missing;
+        } catch (RuntimeException mismatch) {
+            throw new RootKeyMismatchException(MISMATCH_MESSAGE, mismatch);
+        }
     }
 
     private static String mask(String plaintext) {
@@ -143,6 +190,9 @@ public final class SecretStore {
                     connection.rollback();
                 } catch (SQLException ignored) {
                     failure.addSuppressed(ignored);
+                }
+                if (SqliteErrors.isStorageFull(failure)) {
+                    throw new StorageLimitException("database or disk is full");
                 }
                 throw new IllegalStateException("failed to persist provider secret", failure);
             } finally {

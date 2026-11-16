@@ -23,6 +23,14 @@ gateway:
   admin-token: ${LLMGW_ADMIN_TOKEN:}
   # B5: read-only admin token (observability GETs; no mutations).
   admin-read-token: ${LLMGW_ADMIN_READ_TOKEN:}
+  # T4.8: legacy X-Admin-Token policy. disabled (default) denies management through the
+  # old token; migration allows loopback or the restricted networks below only, and each
+  # accepted call is recorded as an emergency platform audit event.
+  admin-token-mode: ${LLMGW_ADMIN_TOKEN_MODE:disabled}
+  admin-restricted-networks: ${LLMGW_ADMIN_RESTRICTED_NETWORKS:}
+  # T4.2: Secure attribute on the control session cookie. Keep false for plain-http
+  # local runs; set true whenever the control plane is served through TLS.
+  control-cookie-secure: ${LLMGW_CONTROL_COOKIE_SECURE:false}
   max-request-bytes: 4194304
   max-response-bytes: 4194304
   max-concurrent-requests: 64

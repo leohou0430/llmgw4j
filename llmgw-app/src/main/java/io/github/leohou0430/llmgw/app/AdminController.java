@@ -384,16 +384,13 @@ public class AdminController {
     }
 
     /**
-     * v13 minimal read-only console (single static page over the /admin JSON).
-     * The page itself re-prompts for the admin token in the browser; this
-     * endpoint stays ungated so the HTML can load, every DATA call is gated.
+     * The v13 read-only console used the legacy token. It now redirects to the session/RBAC
+     * control page so no unscoped token-authenticated read surface remains.
      */
-    @GetMapping(value = "/console", produces = "text/html")
-    public String console() throws java.io.IOException {
-        try (var in = getClass().getResourceAsStream("/console/index.html")) {
-            return in == null ? "<html><body>console asset missing</body></html>"
-                    : new String(in.readAllBytes(), StandardCharsets.UTF_8);
-        }
+    @GetMapping("/console")
+    public ResponseEntity<Void> console() {
+        return ResponseEntity.status(HttpStatus.FOUND)
+                .location(java.net.URI.create("/control/index.html")).build();
     }
 
     /** B5: full audit-ring export (JSON). Read-token authorized. */

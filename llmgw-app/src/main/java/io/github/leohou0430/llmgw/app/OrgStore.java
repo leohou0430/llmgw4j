@@ -1,6 +1,8 @@
 package io.github.leohou0430.llmgw.app;
 
 import io.github.leohou0430.llmgw.persistence.DatabaseContext;
+import io.github.leohou0430.llmgw.persistence.sqlite.SqliteErrors;
+import io.github.leohou0430.llmgw.persistence.sqlite.StorageLimitException;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -39,6 +41,9 @@ public final class OrgStore {
                 statement.close();
             }
         } catch (SQLException failure) {
+            if (SqliteErrors.isStorageFull(failure)) {
+                throw new StorageLimitException("database or disk is full");
+            }
             throw new IllegalArgumentException("duplicate or invalid tenant: " + id, failure);
         }
     }
@@ -75,6 +80,9 @@ public final class OrgStore {
                 statement.close();
             }
         } catch (SQLException failure) {
+            if (SqliteErrors.isStorageFull(failure)) {
+                throw new StorageLimitException("database or disk is full");
+            }
             throw new IllegalArgumentException("duplicate or invalid project: " + id, failure);
         }
     }

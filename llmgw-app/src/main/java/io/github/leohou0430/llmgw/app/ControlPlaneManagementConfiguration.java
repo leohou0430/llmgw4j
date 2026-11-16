@@ -130,8 +130,11 @@ public class ControlPlaneManagementConfiguration {
                 configured == null || configured.isBlank() ? "./data/llmgw-control.db" : configured);
         String cap = System.getenv("LLMGW_CONTROL_DB_MAX_BYTES");
         long maxBytes = cap == null || cap.isBlank() ? 512L * 1024 * 1024 : Long.parseLong(cap);
+        String margin = System.getenv("LLMGW_CONTROL_DB_MIN_FREE_BYTES");
+        long minFreeBytes = margin == null || margin.isBlank()
+                ? 256L * 1024 * 1024 : Long.parseLong(margin);
         return new io.github.leohou0430.llmgw.persistence.sqlite.StorageGuard(
-                maxBytes, 256L * 1024 * 1024, file);
+                maxBytes, minFreeBytes, file);
     }
 
     @Bean

@@ -48,6 +48,7 @@ start() {
   java -jar "$JAR" --spring.profiles.active="$ENGINE" \
     --gateway.governance-enabled=true --server.port="$PORT" \
     --gateway.admin-token="$ADMIN_TOKEN" \
+    --gateway.admin-token-mode=migration \
     --gateway.mock.delay-ms=30 --gateway.mock.chunks=12 \
     --gateway.mock.chunk-interval-ms=60 \
     --gateway.governance.default-quota-tokens=2000000000 \

@@ -26,6 +26,7 @@ def verify(jar, engine, mode):
                 f'--spring.profiles.active={engine}', f'--server.port={port}',
                 '--server.address=127.0.0.1', '--gateway.production=false',
                 '--gateway.mock.enabled=false', f'--gateway.admin-token={full}',
+                '--gateway.admin-token-mode=migration',
                 f'--gateway.admin-read-token={read}'], cwd=folder, stdout=log, stderr=subprocess.STDOUT)
         opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
 

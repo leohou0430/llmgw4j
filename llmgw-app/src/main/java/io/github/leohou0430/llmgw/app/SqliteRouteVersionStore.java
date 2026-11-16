@@ -3,6 +3,8 @@ package io.github.leohou0430.llmgw.app;
 import io.github.leohou0430.llmgw.control.RouteVersion;
 import io.github.leohou0430.llmgw.control.RouteVersionStore;
 import io.github.leohou0430.llmgw.persistence.DatabaseContext;
+import io.github.leohou0430.llmgw.persistence.sqlite.SqliteErrors;
+import io.github.leohou0430.llmgw.persistence.sqlite.StorageLimitException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -71,6 +73,9 @@ public final class SqliteRouteVersionStore implements RouteVersionStore {
                 statement.close();
             }
         } catch (SQLException failure) {
+            if (SqliteErrors.isStorageFull(failure)) {
+                throw new StorageLimitException("database or disk is full");
+            }
             throw new IllegalStateException("failed to persist route version", failure);
         }
     }
