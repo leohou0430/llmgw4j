@@ -1,0 +1,92 @@
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/SecretStore.java
+  s_5f251bc0a17928::t_7422b1577a75d8 3-4
+  s_ab7928797d4d52::t_715f01a816ee61 7-8,26-28,49,72,116-123,125,130-159,194-196
+bin/smoke-admin-auth.py
+  s_19f4e0f3888b95::t_2804cea1e9fe50 29
+bin/smoke-hot-reload.sh
+  s_19f4e0f3888b95::t_2f892f94353994 51
+bin/smoke-stream-errors.sh
+  s_19f4e0f3888b95::t_0609c87ff28a52 321
+docs/CONFIGURATION.md
+  s_ab7928797d4d52::t_99394b7e2445a5 87,365,370-372
+docs/verification/2026-11-15/stage4-control-plane/t4.11-diskfull-rootkey.md
+  s_ab7928797d4d52::t_bfe9b957f969ad 1-52
+docs/verification/2026-11-15/stage4-control-plane/t4.2-secure-cookie.md
+  s_19f4e0f3888b95::t_c684deae09eeba 1-43
+docs/verification/2026-11-15/stage4-control-plane/t4.8-token-migration-wiring.md
+  s_ab7928797d4d52::t_60bab2d9c0c18d 1-47
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/AdminController.java
+  s_19f4e0f3888b95::t_62d9ec0b4ea406 387-388,390-393
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/AdminTokenGuard.java
+  s_19f4e0f3888b95::t_2c4775ff838bfc 1-40
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/AdminTokenMigrationConfiguration.java
+  s_19f4e0f3888b95::t_910f8706210cfe 1-165
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/ControlLoginController.java
+  s_ab7928797d4d52::t_67c4338d64a93d 13,33-35,47,50-51,57,69,92
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/ControlPlaneManagementConfiguration.java
+  s_19f4e0f3888b95::t_6ff5319dee3453 133-135,137
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/ControlRouteController.java
+  s_ab7928797d4d52::t_4f07d0afd31468 105-106
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/OrgStore.java
+  s_ab7928797d4d52::t_8416b30ce779b2 4-5,44-46,83-85
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/SqliteAccountStore.java
+  s_ab7928797d4d52::t_3c6c4cbd68661f 8-9,49-51,80-82
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/SqliteRouteVersionStore.java
+  s_ab7928797d4d52::t_c702f30261835f 6-7,76-78
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/StorageLimitAdvice.java
+  s_ab7928797d4d52::t_6808b0fce4601e 1-20
+llmgw-app/src/main/resources/application.yml
+  s_ab7928797d4d52::t_d5e93f476da686 26-33
+llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/AdminTokenGuardTest.java
+  s_19f4e0f3888b95::t_602be1379eb31a 1-50
+llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/AdminTokenMigrationFilterTest.java
+  s_19f4e0f3888b95::t_2002a05f587a41 1-160
+llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/ControlLoginControllerCookieTest.java
+  s_ab7928797d4d52::t_4fae999110b875 1-171
+llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/SecretStoreBackupRecoveryTest.java
+  s_ab7928797d4d52::t_814faf48932dbf 1-98
+llmgw-control/llmgw-control-api/src/main/java/io/github/leohou0430/llmgw/control/RootKeyMismatchException.java
+  s_ab7928797d4d52::t_51825f0b64d37e 1-14
+llmgw-control/llmgw-control-default/src/main/java/io/github/leohou0430/llmgw/control/local/RestrictedNetworks.java
+  s_19f4e0f3888b95::t_55bf261d50912a 1-160
+llmgw-control/llmgw-control-default/src/test/java/io/github/leohou0430/llmgw/control/RestrictedNetworksTest.java
+  s_19f4e0f3888b95::t_44d58393608f38 1-45
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/config/GatewayProperties.java
+  s_ab7928797d4d52::t_3a0c125853f3aa 6,117-122,186-199
+llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/config/GatewayPropertiesAdminTokenTest.java
+  s_19f4e0f3888b95::t_d6fdf09effa103 1-30
+llmgw-persistence/llmgw-persistence-sqlite/src/main/java/io/github/leohou0430/llmgw/persistence/sqlite/SqliteErrors.java
+  s_ab7928797d4d52::t_000f96c06ce4f3 1-31
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "9dbbf1b8ec59152b4a80fcdee54b5a6c11fab9ef",
+  "prompts": {},
+  "sessions": {
+    "s_19f4e0f3888b95": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1e303-29fe-7292-985a-fb7388a19a60",
+        "model": "gpt-6.1-sol"
+      },
+      "human_author": "leohou0430 <leohou0430@users.noreply.github.com>"
+    },
+    "s_5f251bc0a17928": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1e304-332e-7000-9e0e-b3015846561c",
+        "model": "gpt-6.1-sol"
+      },
+      "human_author": "leohou0430 <leohou0430@users.noreply.github.com>"
+    },
+    "s_ab7928797d4d52": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a19866-baee-7770-8858-025229bb9f61",
+        "model": "gpt-6.1-sol"
+      },
+      "human_author": "leohou0430 <leohou0430@users.noreply.github.com>"
+    }
+  }
+}
