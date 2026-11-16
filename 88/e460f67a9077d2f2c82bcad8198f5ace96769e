@@ -1,0 +1,1123 @@
+docs/verification/live-provider/2026-11-11/README.md
+  s_6d30f4d467a543::t_43acb5d54de6ca 1-16
+llmgw-provider/llmgw-provider-http-jdk/src/test/java/io/github/leohou0430/llmgw/provider/http/jdk/TransportCapacityTest.java
+  s_6d30f4d467a543::t_7f1ba4fe71746a 145
+  s_6d30f4d467a543::t_e8e1bdd438a57d 45-52,54-56,59-61
+  s_6d30f4d467a543::t_60e9217cabe5ab 22,44,94,131-144,146-152,155
+  s_6d30f4d467a543::t_541cab34a1e70d 113,116-130
+  s_6d30f4d467a543::t_5c036b5b667b84 53,57-58,95-112,114
+  s_6d30f4d467a543::t_2512e72932f063 1-21,23-43,62-93,115,153-154,156
+bin/smoke-jwt-auth.py
+  s_6d30f4d467a543::t_1ee35234b1828c 3,8,33,35-36,39,100-104
+llmgw-governance/llmgw-governance-redis/src/main/java/io/github/leohou0430/llmgw/governance/redis/RedisApiKeyRegistry.java
+  s_6d30f4d467a543::t_8b8a18259eb6b1 78,80-82,127-129,142,157-158,167
+  s_6d30f4d467a543::t_8363bbf071623a 79,159-161
+  s_6d30f4d467a543::t_65cb42bf2a72c9 49,51-63,66,71,77,83-88,91-96,102,117,126,130
+  s_6d30f4d467a543::t_558a28dc91f11f 31-32,42-45,50,64,89-90,98,100-101,103,105-114,138
+  s_6d30f4d467a543::t_a15e21ef33c1a9 18-21
+  s_6d30f4d467a543::t_f5caae0b435d3d 104
+docs/verification/multi-replica/2026-11-11/phase-2-core-gates.json
+  s_6d30f4d467a543::t_6cf97c05cbe7e3 1-25
+docs/verification/backpressure/2026-11-11/checks.json
+  s_6d30f4d467a543::t_70a61a6a63d009 1-10
+docs/verification/capacity/2026-11-11/README.md
+  s_6d30f4d467a543::t_34b4c7e516e40c 25-38,42-47
+  s_6d30f4d467a543::t_24ca712991301e 49-63,66-67,75-76
+  s_6d30f4d467a543::t_6c97b49b1d7750 64-65
+  s_6d30f4d467a543::t_61885aec0947bc 24,39-41
+  s_6d30f4d467a543::t_85865df696349d 22
+  s_6d30f4d467a543::t_bb96a2b0da3a9e 4
+  s_6d30f4d467a543::t_3c78540ef666b2 1-2,5-21,23,48,68-74
+  s_6d30f4d467a543::t_18fbdd0c8bf004 3
+llmgw-governance/llmgw-governance-api/src/main/java/io/github/leohou0430/llmgw/governance/QuotaMath.java
+  s_6d30f4d467a543::t_8b8a18259eb6b1 44,60-61,68-73
+  s_6d30f4d467a543::t_a15e21ef33c1a9 50-51
+docs/plans/2026-11-11-gateway-next.md
+  s_6d30f4d467a543::t_34b4c7e516e40c 11-12
+  s_6d30f4d467a543::t_7b2246c31b0719 15,37
+  s_6d30f4d467a543::t_1fa4834f31eef6 1-2,7-10,13-14,16,21-36
+  s_6d30f4d467a543::t_f2c04353f048c2 19-20
+  s_6d30f4d467a543::t_f6d085bbf7e05d 3-4
+  s_6d30f4d467a543::t_215defbb78e45f 17-18
+  s_6d30f4d467a543::t_bb96a2b0da3a9e 5-6
+docs/verification/backpressure/2026-11-11/artifacts.json
+  s_6d30f4d467a543::t_71d035fbdb7f07 1-172
+bin/smoke-sdk-compatibility.py
+  s_6d30f4d467a543::t_8e4679349774cf 37-39,77-84,93-96,149-169,191-193,222-232
+  s_6d30f4d467a543::t_b8bfa1ef70951a 3
+  s_6d30f4d467a543::t_61f336443b8c54 25-27,29,119,123
+  s_6d30f4d467a543::t_5d9b1b6d126335 63,70-75,195,203-204
+  s_6d30f4d467a543::t_06c8906c0130b8 28,85-89,97-98,212-221
+  s_6d30f4d467a543::t_59b20777daef79 64-65,176-177
+  s_6d30f4d467a543::t_91a39a5afd8743 124,181,196-202,206-211
+  s_6d30f4d467a543::t_95dbf724dd04b4 20-23
+  s_6d30f4d467a543::t_82fcf693bb890a 5,53-62,121,171-174,187-190
+  s_6d30f4d467a543::t_65b01d740bc12c 1-2,4,6-19,24,30-36,40-52,66-69,76,90-92,99-118,120,122,125-148,170,175,178-180,182-186,194,205,233-242
+docs/verification/native-g1/2026-11-12/summarize.py
+  s_6d30f4d467a543::t_6877708706fa75 22
+  s_6d30f4d467a543::t_269c82b74a99ae 1-21,23-26
+docs/superpowers/specs/2026-11-12-gateway-four-stage-design.md
+  s_6d30f4d467a543::t_21bf6fb4fd81ac 3,169-172
+  s_6d30f4d467a543::t_a0269c3a07f933 1-2,4-60,62-66,68-164
+  s_6d30f4d467a543::t_59e5cc04433d9e 165-168
+  s_6d30f4d467a543::t_7ad01a6dbba896 61,67
+docs/verification/capacity/2026-11-11/connection-close-probe/matrix.md
+  s_6d30f4d467a543::t_2828451680b241 1-14
+docs/verification/perf/2026-11-11/overload/artifacts.json
+  s_6d30f4d467a543::t_57891ef69148da 1-235
+bench/capacity/load.js
+  s_6d30f4d467a543::t_4e3b540145860e 2,6-8,26-34
+  s_6d30f4d467a543::t_24ef2a3f416508 9-10,25,43
+  s_6d30f4d467a543::t_7a6cf4efb88672 1,3-5,11-16,22-24,35-42,44-50
+  s_6d30f4d467a543::t_32d599ce62a24f 17-21
+docs/verification/sse/2026-11-11/README.md
+  s_6d30f4d467a543::t_2e6d551035297d 27-28
+  s_6d30f4d467a543::t_b2a338de0648c0 29
+  s_6d30f4d467a543::t_e41caa18dbe297 1-26,30-33
+bench/capacity/rejection_micro.py
+  s_6d30f4d467a543::t_c1c437608b6b81 1-39
+llmgw-governance/llmgw-governance-redis/src/test/java/io/github/leohou0430/llmgw/governance/redis/RedisTokenLimiterTest.java
+  s_6d30f4d467a543::t_558a28dc91f11f 64,90
+bench/capacity/CapacityMock.java
+  s_6d30f4d467a543::t_15d5285f81dd11 24
+  s_6d30f4d467a543::t_7a6cf4efb88672 1-23,25-57
+docs/EXTENSIONS.md
+  s_6d30f4d467a543::t_d7bfabbfb164b2 92
+docs/verification/lifecycle/2026-11-11/capacity-results.md
+  s_6d30f4d467a543::t_65b832b5e486f2 41-42
+  s_6d30f4d467a543::t_239c0648a2daf4 1-40,43-45
+docs/verification/lifecycle/2026-11-11/idle-contracts/final-verification.json
+  s_6d30f4d467a543::t_667e6a58d1ef40 5,7-8,10,12,14-15,17-18,20,22,24-25,27,30,32,34-35,37,40,42,44-45,47,50,52,54-55,57,60,62,64-65,67-68,70-107
+  s_6d30f4d467a543::t_8ac435bf4c0dce 1-4,6,9,11,13,16,19,21,23,26,28-29,31,33,36,38-39,41,43,46,48-49,51,53,56,58-59,61,63,66,69,108
+llmgw-provider/llmgw-provider-http-jdk/src/test/java/io/github/leohou0430/llmgw/provider/http/jdk/BlockingSseBodySubscriberTest.java
+  s_6d30f4d467a543::t_5803e3a4908877 1-20,22-33,35-54,73-74,77-91
+  s_6d30f4d467a543::t_09d085f02ea575 21,34,62,75-76
+  s_6d30f4d467a543::t_35a753f14f6e1e 55-61,63-72
+llmgw-governance/llmgw-governance-api/src/main/java/io/github/leohou0430/llmgw/governance/UsageSummaries.java
+  s_6d30f4d467a543::t_8363bbf071623a 23
+  s_6d30f4d467a543::t_8b8a18259eb6b1 8-10,31-35,50
+  s_6d30f4d467a543::t_3e1cbc5f8bbdfc 24-30,36-39
+docs/verification/multi-replica/2026-11-11/run-metadata-range.py
+  s_6d30f4d467a543::t_0d3d33c5f3e966 1-23
+docs/verification/lifecycle/2026-11-11/slow-profile-summary.txt
+  s_6d30f4d467a543::t_c342d69235c81b 1,28,40,67
+  s_6d30f4d467a543::t_0064dc32dfb100 2-27,29-39,41-66,68-93
+docs/adr/0004-single-process-sqlite-deployment.md
+  s_6d30f4d467a543::t_bbe2b539be798a 1-9
+bench/micro/OverloadAdmissionBench.java
+  s_6d30f4d467a543::t_f01af23b445c48 1-36
+docs/verification/lifecycle/2026-11-11/summarize-capacity.py
+  s_6d30f4d467a543::t_05aad007bff780 1-51
+docs/verification/lifecycle/2026-11-11/verify-current.py
+  s_6d30f4d467a543::t_65b832b5e486f2 49
+  s_6d30f4d467a543::t_04d8a77f1e993e 1-48,50-77
+docs/verification/multi-replica/2026-11-11/intermediate-run.json
+  s_6d30f4d467a543::t_1200364c8069d8 1-17
+docs/verification/perf/2026-11-11/overload/arrival-6000-invalid/matrix.md
+  s_6d30f4d467a543::t_fa39a83e15a51f 1-4
+docs/verification/capacity/2026-11-11/initial-probe/matrix.md
+  s_6d30f4d467a543::t_2828451680b241 1-13
+docs/verification/native-compatibility/2026-11-11/README.md
+  s_6d30f4d467a543::t_3a8329ce636e79 1-39
+docs/verification/perf/2026-11-11/overload/cooperative/matrix.md
+  s_6d30f4d467a543::t_fa39a83e15a51f 1-4
+docs/verification/multi-replica/2026-11-11/run-typeguard.py
+  s_6d30f4d467a543::t_72ce5415209116 1-23
+llmgw-engine/llmgw-engine-vt/src/test/java/io/github/leohou0430/llmgw/engine/vt/StreamDisconnectTest.java
+  s_6d30f4d467a543::t_ca93825442dd3f 1-31,33-55
+  s_6d30f4d467a543::t_7c75754e36297a 32
+docs/verification/capacity/2026-11-11/contracts.json
+  s_6d30f4d467a543::t_4445915a23e653 8
+  s_6d30f4d467a543::t_7d528f10b064ed 1-7,9-11
+docs/verification/lifecycle/2026-11-11/README.md
+  s_6d30f4d467a543::t_622bba92e3a94d 1,3-4,70,72,74-76
+  s_6d30f4d467a543::t_3d3853357d0f3f 52,59-65,67-68
+  s_6d30f4d467a543::t_504134cf496828 53,55-58,69
+  s_6d30f4d467a543::t_869898cf1a76e1 66
+  s_6d30f4d467a543::t_2b0a8b82fd598c 2,5-17,19-29,31,71,73
+  s_6d30f4d467a543::t_f2065de04e6fc0 44-51
+  s_6d30f4d467a543::t_dd60c3126e288a 18,30,32-43
+  s_6d30f4d467a543::t_d0633211d8dedf 54
+docs/verification/sse/2026-11-11/checks.json
+  s_6d30f4d467a543::t_bec16e4dd9f83b 1,3,5-10
+  s_6d30f4d467a543::t_b2a338de0648c0 2,4
+docs/verification/native-sse/2026-11-12/metrics.json
+  s_6d30f4d467a543::t_a2a6cb32d79187 76,110,113,122,214,248,251,260,352,386,389,398,490,524,527,536,628,662,665,674,758,792,795,804,864,868,884,896,930,933,942,1002,1006,1022,1034,1068,1071,1080,1140,1144,1160,1172,1206,1209,1218,1278,1282,1298,1310,1344,1347,1356,1416,1420,1436,1448,1482,1485,1494,1511-1648,1692,1696,1712,1724,1758,1761,1770,1830,1834,1850,1862,1896,1899,1908,1968,1972,1988,2000,2034,2037,2046,2106,2110,2172,2175,2184,2310,2313,2322,2448,2451,2460
+  s_6d30f4d467a543::t_90e6baf6895a18 2,4-43,45-47,49-51,53-63,65-75,77-86,88-94,96-109,111-112,114-121,123-132,134-140,142-181,183-185,187-189,191-201,203-213,215-224,226-232,234-247,249-250,252-259,261-270,272-278,280-319,321-323,325-327,329-339,341-351,353-362,364-370,372-385,387-388,390-397,399-408,410-416,418-457,459-461,463-465,467-477,479-489,491-500,502-508,510-523,525-526,528-535,537-546,548-554,556-595,597-599,601-603,605-615,617-627,629-638,640-646,648-661,663-664,666-673,675-684,686-692,694-696,698-725,727-729,731-745,747-757,759-768,770-776,778-791,793-794,796-803,805-814,816-822,824-863,865-867,869-883,885-895,897-906,908-914,916-929,931-932,934-941,943-952,954-960,962-1001,1003-1005,1007-1021,1023-1033,1035-1044,1046-1052,1054-1067,1069-1070,1072-1079,1081-1090,1092-1098,1100-1139,1141-1143,1145-1159,1161-1171,1173-1182,1184-1190,1192-1205,1207-1208,1210-1217,1219-1228,1230-1236,1238-1277,1279-1281,1283-1297,1299-1309,1311-1320,1322-1328,1330-1343,1345-1346,1348-1355,1357-1366,1368-1374,1376-1415,1417-1419,1421-1435,1437-1447,1449-1458,1460-1466,1468-1481,1483-1484,1486-1493,1495-1504,1506-1510,1650,1652-1691,1693-1695,1697-1711,1713-1723,1725-1734,1736-1742,1744-1757,1759-1760,1762-1769,1771-1780,1782-1788,1790-1829,1831-1833,1835-1849,1851-1861,1863-1872,1874-1880,1882-1895,1897-1898,1900-1907,1909-1918,1920-1926,1928-1967,1969-1971,1973-1987,1989-1999,2001-2010,2012-2018,2020-2033,2035-2036,2038-2045,2047-2056,2058-2064,2066-2105,2107-2109,2111-2125,2127-2148,2150-2156,2158-2171,2173-2174,2176-2183,2185-2194,2196-2202,2204-2243,2245-2247,2249-2263,2265-2286,2288-2294,2296-2309,2311-2312,2314-2321,2323-2332,2334-2340,2342-2381,2383-2385,2387-2401,2403-2424,2426-2432,2434-2447,2449-2450,2452-2459,2461-2470,2472-2589
+  s_6d30f4d467a543::t_65e8bb5b8fa9a6 1,3,44,48,52,64,87,95,133,141,182,186,190,202,225,233,271,279,320,324,328,340,363,371,409,417,458,462,466,478,501,509,547,555,596,600,604,616,639,647,685,693,697,726,730,746,769,777,815,823,907,915,953,961,1045,1053,1091,1099,1183,1191,1229,1237,1321,1329,1367,1375,1459,1467,1505,1649,1651,1735,1743,1781,1789,1873,1881,1919,1927,2011,2019,2057,2065,2126,2149,2157,2195,2203,2244,2248,2264,2287,2295,2333,2341,2382,2386,2402,2425,2433,2471,2590-2591
+docs/CONFIGURATION.md
+  s_6d30f4d467a543::t_3dd1b41c3b602d 6,221,230
+  s_6d30f4d467a543::t_83762ea50b8c65 229
+  s_6d30f4d467a543::t_c8c7a907589037 197
+  s_6d30f4d467a543::t_d71bb8aaf1a038 148,242
+  s_6d30f4d467a543::t_d7bfabbfb164b2 98,643
+  s_6d30f4d467a543::t_1822c446e8bc4c 235
+  s_6d30f4d467a543::t_7b2246c31b0719 12
+  s_6d30f4d467a543::t_ef522f6e20f317 312
+  s_6d30f4d467a543::t_215defbb78e45f 231
+  s_6d30f4d467a543::t_020a4e1206bd48 202-217,566
+  s_6d30f4d467a543::t_9bd29c30f135cb 201
+  s_6d30f4d467a543::t_bb96a2b0da3a9e 7
+  s_6d30f4d467a543::t_11f3b1dcdc3300 236
+docs/verification/multi-replica/2026-11-11/README.md
+  s_6d30f4d467a543::t_35f04ccecb83aa 1,3,28
+  s_6d30f4d467a543::t_5d7174fe5d31f6 38
+  s_6d30f4d467a543::t_8b20c92ce187f3 2,4-27,29-30,33-37,39-42
+  s_6d30f4d467a543::t_c8c7a907589037 32
+  s_6d30f4d467a543::t_849ce654db4649 31
+docs/verification/perf/2026-11-11/overload/closed-loop/matrix.json
+  s_6d30f4d467a543::t_afa73e4cf698ca 1-1609
+docs/verification/native-sse/2026-11-12/summarize.py
+  s_6d30f4d467a543::t_ca96f7efae3420 1-30
+docs/verification/capacity/2026-11-11/connection-close-probe/matrix.json
+  s_6d30f4d467a543::t_2828451680b241 1-2871
+docs/verification/perf/2026-11-11/overload/closed-loop/matrix.md
+  s_6d30f4d467a543::t_afa73e4cf698ca 1-6
+docs/verification/native-capacity/2026-11-12/slow-summary.json
+  s_6d30f4d467a543::t_b7075f3ecb80c0 1-61
+docs/verification/native-g1/2026-11-12/README.md
+  s_6d30f4d467a543::t_801075e59244c4 1-17,19-37,39-64
+  s_6d30f4d467a543::t_2bfbee7060e18f 18,38
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/ApiKeyRegistry.java
+  s_6d30f4d467a543::t_8b8a18259eb6b1 21-26
+docs/verification/perf/2026-11-11/overload/README.md
+  s_6d30f4d467a543::t_a75a08d349295c 75
+  s_6d30f4d467a543::t_f759a14e3b0fdb 21,34,36-70,76-77
+  s_6d30f4d467a543::t_1767780343305c 71-74
+  s_6d30f4d467a543::t_de34e6f1159e58 1-20,22-33,35
+docs/verification/native-capacity/2026-11-12/live/live-results.json
+  s_6d30f4d467a543::t_535d2be52b506f 1-119
+docs/verification/native-compatibility/2026-11-11/native-results.json
+  s_6d30f4d467a543::t_1bf70582675865 6,8,11-12,15,17-18,20-21,23-24,26-111
+  s_6d30f4d467a543::t_3856aae0e2aa21 1-5,7,9-10,13-14,16,19,22,25,112
+docs/verification/multi-replica/2026-11-11/run-hash-counter.py
+  s_6d30f4d467a543::t_921e5ab705f8ce 1-23
+docs/adr/0005-local-control-identity-and-rbac.md
+  s_6d30f4d467a543::t_1f93255d1cca20 1-9
+docs/verification/lifecycle/2026-11-11/linear-line-scaling.summary.json
+  s_6d30f4d467a543::t_dd60c3126e288a 1-9
+docs/verification/compatibility/2026-11-11/resume-contracts.py
+  s_6d30f4d467a543::t_7c521562b52bfb 1-85
+llmgw-provider/llmgw-provider-http-jdk/src/main/java/io/github/leohou0430/llmgw/provider/http/jdk/SseLineLimitSubscriber.java
+  s_6d30f4d467a543::t_09d085f02ea575 16,35,60-62
+  s_6d30f4d467a543::t_22a2d954c16cc9 1-9,11-15,17-34,37-59,63-65
+  s_6d30f4d467a543::t_11e4ccee5cb3de 10,36
+llmgw-engine/llmgw-engine-webflux/src/test/java/io/github/leohou0430/llmgw/engine/webflux/SseResponseBuffersTest.java
+  s_6d30f4d467a543::t_70b3f56573d71c 23-24
+  s_6d30f4d467a543::t_bef9d0bdab7f1d 1-22,25-44
+docs/verification/multi-replica/2026-11-11/status.json
+  s_6d30f4d467a543::t_35f04ccecb83aa 2,4,13,20-22
+  s_6d30f4d467a543::t_51f525c3edeaa5 1,3,7,12,14-19,23
+  s_6d30f4d467a543::t_5d7174fe5d31f6 5-6,8-11
+docs/verification/native-capacity/2026-11-12/README.md
+  s_6d30f4d467a543::t_de8eeb2adc64f8 1-2,5-41
+  s_6d30f4d467a543::t_adb71c69ca8784 48-53
+  s_6d30f4d467a543::t_e0034584a15720 3-4
+  s_6d30f4d467a543::t_c5df3322d4459d 42-47
+docs/verification/compatibility/2026-11-11/source-manifest.json
+  s_6d30f4d467a543::t_674a6a2caf0045 1-210
+docs/verification/multi-replica/2026-11-11/warm-json-summary.json
+  s_6d30f4d467a543::t_284c8162bbdfcf 1-65
+docs/verification/multi-replica/2026-11-11/run-metadata-green.py
+  s_6d30f4d467a543::t_8b8a18259eb6b1 1-23
+docs/verification/lifecycle/2026-11-11/jdk-line-scaling.summary.json
+  s_6d30f4d467a543::t_12bb1a9e2b902a 1-108
+docs/verification/linux-native/2026-11-11/public-cache-seed.json
+  s_6d30f4d467a543::t_6316767f949ebc 1-1489
+docs/verification/linux-native/2026-11-11/completion.json
+  s_6d30f4d467a543::t_bde130b8cd18e8 1-48
+docs/verification/perf/2026-11-11/overload/arrival-4500-invalid/matrix.md
+  s_6d30f4d467a543::t_fa39a83e15a51f 1-4
+docs/verification/native-sse/2026-11-12/initial-findings.md
+  s_6d30f4d467a543::t_f8189ea0bcc392 1-32
+docs/verification/lifecycle/2026-11-11/work-status.json
+  s_6d30f4d467a543::t_e0034584a15720 158
+  s_6d30f4d467a543::t_0e395d6951ba24 19-20
+  s_6d30f4d467a543::t_090219aadb62dc 157
+  s_6d30f4d467a543::t_2b0a8b82fd598c 33,36-143
+  s_6d30f4d467a543::t_504134cf496828 18
+  s_6d30f4d467a543::t_51f525c3edeaa5 4,147
+  s_6d30f4d467a543::t_801075e59244c4 2,34-35,161-162
+  s_6d30f4d467a543::t_419dab8aa87443 156
+  s_6d30f4d467a543::t_f6d085bbf7e05d 1,7,12,14-17,21-32,163
+  s_6d30f4d467a543::t_35f04ccecb83aa 3,148-149
+  s_6d30f4d467a543::t_dd60c3126e288a 144
+  s_6d30f4d467a543::t_ce9a6c3f81a1e7 5-6,8-11,13,146,150-153
+  s_6d30f4d467a543::t_9a750fe837105d 145
+  s_6d30f4d467a543::t_f2d1bc88eb52ef 159-160
+  s_6d30f4d467a543::t_a53c3e20beeec3 154-155
+llmgw-governance/llmgw-governance-redis/src/main/java/io/github/leohou0430/llmgw/governance/redis/RedisUsageLedger.java
+  s_6d30f4d467a543::t_8b8a18259eb6b1 82
+  s_6d30f4d467a543::t_8363bbf071623a 35-38,40,89-104
+docs/verification/native-compatibility/2026-11-11/cli-guard.json
+  s_6d30f4d467a543::t_bb249d3650b6c2 1-4
+docs/verification/native-sse-steady/2026-11-12/summarize.py
+  s_6d30f4d467a543::t_ba852aaa6935d1 15,22
+  s_6d30f4d467a543::t_45cae86833a716 1-14,16-21,23-26
+docs/verification/lifecycle/2026-11-11/idle-slow-summary.json
+  s_6d30f4d467a543::t_0e395d6951ba24 1-70
+docs/verification/multi-replica/2026-11-11/source-manifest.json
+  s_6d30f4d467a543::t_bc7ca9c6c5fc90 1-57
+docs/verification/linux-native/2026-11-11/inputs.json
+  s_6d30f4d467a543::t_4dce0c0d9cf2a1 1-263
+docs/verification/native-sse/2026-11-12/README.md
+  s_6d30f4d467a543::t_f8189ea0bcc392 1,3,5,7,9,11-16,18,20,22,24,26-34,36-42,44
+  s_6d30f4d467a543::t_801075e59244c4 45-48
+  s_6d30f4d467a543::t_e0034584a15720 2,4,6,8,10,17,19,21,23,25,35,43
+llmgw-provider/llmgw-provider-http-jdk/src/main/java/io/github/leohou0430/llmgw/provider/http/jdk/ReadActivitySubscriber.java
+  s_6d30f4d467a543::t_ad446a65b5a0ca 1-30
+README.en.md
+  s_6d30f4d467a543::t_215defbb78e45f 205
+  s_6d30f4d467a543::t_419dab8aa87443 29-30
+  s_6d30f4d467a543::t_239c0648a2daf4 204
+  s_6d30f4d467a543::t_a53c3e20beeec3 27-28
+  s_6d30f4d467a543::t_d71bb8aaf1a038 25-26,56,203
+  s_6d30f4d467a543::t_801075e59244c4 31-32
+docs/verification/lifecycle/2026-11-11/phase-1-completion.json
+  s_6d30f4d467a543::t_59a5eaf4974a6b 1-19
+docs/verification/native-compatibility/2026-11-11/idle/native-idle-progress.json
+  s_6d30f4d467a543::t_1bf70582675865 1-41
+docs/verification/native-capacity/2026-11-12/summarize-capacity.py
+  s_6d30f4d467a543::t_b5ede417d35bdd 1-51
+docs/verification/multi-replica/2026-11-11/summarize-capacity.py
+  s_6d30f4d467a543::t_677fc7b90d9f4c 1-51
+docs/verification/compatibility/2026-11-11/final-static-checks.json
+  s_6d30f4d467a543::t_d1994e8fce2dba 1-33
+docs/verification/lifecycle/2026-11-11/final-capacity-summary.json
+  s_6d30f4d467a543::t_bc1a718a7c4dc3 1-283
+llmgw-governance/llmgw-governance-api/src/test/java/io/github/leohou0430/llmgw/governance/QuotaMathTest.java
+  s_6d30f4d467a543::t_039d0f38ef6a75 80-89
+docs/adr/0003-project-owned-resources.md
+  s_6d30f4d467a543::t_82723715ed85f7 12-13
+  s_6d30f4d467a543::t_d077468c606745 10-11
+  s_6d30f4d467a543::t_431918c6bb53e4 1-9
+docs/plans/2026-11-11-three-stage-review.md
+  s_6d30f4d467a543::t_2791bef48742ee 1-2,4,6-8,18-20,22,25,28,30-35
+  s_6d30f4d467a543::t_622bba92e3a94d 5,9-11,15,17
+  s_6d30f4d467a543::t_ce9a6c3f81a1e7 3,12,16,23-24,26-27
+  s_6d30f4d467a543::t_c5747b4ea1e839 13
+  s_6d30f4d467a543::t_a53c3e20beeec3 29,36-39
+  s_6d30f4d467a543::t_35f04ccecb83aa 21
+  s_6d30f4d467a543::t_f8189ea0bcc392 46-47
+  s_6d30f4d467a543::t_869898cf1a76e1 14
+  s_6d30f4d467a543::t_419dab8aa87443 40-41
+  s_6d30f4d467a543::t_801075e59244c4 48-49
+  s_6d30f4d467a543::t_090219aadb62dc 42-43
+  s_6d30f4d467a543::t_e0034584a15720 44-45
+bin/smoke-sse-line-limit.py
+  s_6d30f4d467a543::t_123ad895ca2147 39,46,130-132,139
+  s_6d30f4d467a543::t_cf5e4e67f5426c 1-38,40-45,47-129,133-138,140-165
+docs/verification/2026-11-11-three-stage-completion.json
+  s_6d30f4d467a543::t_801075e59244c4 38-40
+  s_6d30f4d467a543::t_ce9a6c3f81a1e7 1-31,42
+  s_6d30f4d467a543::t_a53c3e20beeec3 32-35,41
+  s_6d30f4d467a543::t_090219aadb62dc 36-37
+docs/verification/multi-replica/2026-11-11/metadata-range-run.json
+  s_6d30f4d467a543::t_0d3d33c5f3e966 1-17
+docs/verification/lifecycle/2026-11-11/verify-final.py
+  s_6d30f4d467a543::t_13a37ccf8e2959 1-2,4-6,8,16-60,67,70-81
+  s_6d30f4d467a543::t_048cf8bb0d156e 3,61-64
+  s_6d30f4d467a543::t_40e9e6fabab5e7 7,9-15,65-66,68-69
+bench/jfr/AnalyzeRecording.java
+  s_6d30f4d467a543::t_88b7724b399a46 17-19,24-25,45
+docs/verification/perf/2026-11-11/overload/arrival-4500-invalid/matrix.json
+  s_6d30f4d467a543::t_fa39a83e15a51f 1-1102
+docs/verification/linux-native/2026-11-11/README.md
+  s_6d30f4d467a543::t_52e71955823332 2-22
+  s_6d30f4d467a543::t_bde130b8cd18e8 1,23-28
+  s_6d30f4d467a543::t_090219aadb62dc 29-32
+docs/verification/capacity/2026-11-11/webflux-sse-followup/matrix.json
+  s_6d30f4d467a543::t_2828451680b241 1-943
+docs/verification/backpressure/2026-11-11/contract-summary.json
+  s_6d30f4d467a543::t_70a61a6a63d009 1-47
+docs/verification/native-capacity/2026-11-12/completion.json
+  s_6d30f4d467a543::t_adb71c69ca8784 1-62
+docs/verification/lifecycle/2026-11-11/after-artifacts.json
+  s_6d30f4d467a543::t_dd60c3126e288a 1-9
+docs/plans/2026-11-12-roadmap-interview.md
+  s_6d30f4d467a543::t_2543f07dee7f27 121,125-126,128-130,132
+  s_6d30f4d467a543::t_558a09d17158b8 73,77,79-80,82,84
+  s_6d30f4d467a543::t_1f93255d1cca20 205,207,211-212,214,216-217
+  s_6d30f4d467a543::t_dcfa7a8ad17158 113,117,120,122-124
+  s_6d30f4d467a543::t_21bf6fb4fd81ac 3,233-236
+  s_6d30f4d467a543::t_a251992ba0971e 31,35,39,50-52,54-55,72
+  s_6d30f4d467a543::t_5c41f85a4b4b3a 91,95,98,100-102
+  s_6d30f4d467a543::t_e1f652728805a1 105,109,111-112,114-116,118-119
+  s_6d30f4d467a543::t_16abcef4910704 141,143,147-148,150-152,154-155
+  s_6d30f4d467a543::t_7dbf16602e9ce9 99,103-104,106-108,110
+  s_6d30f4d467a543::t_7ad01a6dbba896 232
+  s_6d30f4d467a543::t_bbe2b539be798a 191,193,197-198,200,202
+  s_6d30f4d467a543::t_431918c6bb53e4 149,153,156,158,160
+  s_6d30f4d467a543::t_4b1d2831128984 65,69,71,74-76,78,86
+  s_6d30f4d467a543::t_f443ce03ed3307 183,187,189-190,192,194-196
+  s_6d30f4d467a543::t_c99003e3eb3b2b 163,165,167,170,172,174
+  s_6d30f4d467a543::t_82723715ed85f7 171,173,175-176,178,180
+  s_6d30f4d467a543::t_752d1ca02f6693 89,218
+  s_6d30f4d467a543::t_fe095910fa0d95 49,53,56,58,60
+  s_6d30f4d467a543::t_e2ac9bcd002d9c 57,59,61-64,66-68,70
+  s_6d30f4d467a543::t_b261ad9478b4e4 81,83,85,87-88,90,92-94,96-97
+  s_6d30f4d467a543::t_87f3c3dd604588 127,131,133-134,136,138
+  s_6d30f4d467a543::t_922c4350c60d39 40-46,48
+  s_6d30f4d467a543::t_d077468c606745 157,159,161-162,164,166,168-169
+  s_6d30f4d467a543::t_7156107d085a18 177,179,181-182,184-186,188
+  s_6d30f4d467a543::t_ae32fa54b24ef5 1-2,4-8,10-28,30,32-34,36-38,220,222-229,231
+  s_6d30f4d467a543::t_974575144bccbb 29,199,201,203-204,206,208-210
+  s_6d30f4d467a543::t_d041198ac25ac2 9
+  s_6d30f4d467a543::t_3b0bb48b24d350 47,213,215,219,221,230
+  s_6d30f4d467a543::t_5217a37048d21d 135,137,139-140,142,144-146
+docs/verification/native-g1/2026-11-12/slow-summary.json
+  s_6d30f4d467a543::t_4bf4dee943f504 1-35
+docs/verification/multi-replica/2026-11-11/checkpoint-to-final.json
+  s_6d30f4d467a543::t_3ef8a6fc967d86 1-14
+docs/verification/multi-replica/2026-11-11/run-intermediate.py
+  s_6d30f4d467a543::t_1200364c8069d8 1-23
+llmgw-governance/llmgw-governance-redis/src/main/java/io/github/leohou0430/llmgw/governance/redis/RedisScripts.java
+  s_6d30f4d467a543::t_5f1ede73e908c0 118,124-127,139,141-142
+  s_6d30f4d467a543::t_558a28dc91f11f 61-69,75-76,88
+  s_6d30f4d467a543::t_65cb42bf2a72c9 22-24,31
+  s_6d30f4d467a543::t_8363bbf071623a 53-60,70-72,83,102-117
+  s_6d30f4d467a543::t_45b6174ecf0b67 119-121
+docs/verification/multi-replica/2026-11-11/complete-phase2.py
+  s_6d30f4d467a543::t_5ef8fe272fb62c 1-14,16-20
+  s_6d30f4d467a543::t_6cf97c05cbe7e3 15
+docs/verification/lifecycle/2026-11-11/jdk-line-scaling.jsonl
+  s_6d30f4d467a543::t_f6d085bbf7e05d 1-12
+llmgw-provider/llmgw-provider-http-jdk/src/main/java/io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream.java
+  s_6d30f4d467a543::t_c4cd34a9c698f3 62-64,90-95,100-103,183-191,217-218,222-223,251,257,339,342,345,349,355,367,370,379,391,404-468,484,492,496,518,521,533,551,571
+  s_6d30f4d467a543::t_f1b8a028838694 130-131,179-182,224,246
+  s_6d30f4d467a543::t_22a2d954c16cc9 233,235,300
+  s_6d30f4d467a543::t_3cab52f0b52f2f 299
+  s_6d30f4d467a543::t_60e0171be9693e 228,293-295,297-298,302
+  s_6d30f4d467a543::t_12a0c376d7fb4f 55-56,356,368,376,392,478,486,494,512,519,545-547,553,649
+  s_6d30f4d467a543::t_23d03ff1bc8592 160-162
+  s_6d30f4d467a543::t_5803e3a4908877 60,328-329
+  s_6d30f4d467a543::t_f7401afed03cc8 234
+  s_6d30f4d467a543::t_ad446a65b5a0ca 226,231,236,296,301
+  s_6d30f4d467a543::t_f221d9f7c3cb27 336-338
+  s_6d30f4d467a543::t_1d762295faf8f3 340-341
+  s_6d30f4d467a543::t_e6d48739d1cd16 343-344
+  s_6d30f4d467a543::t_2fa43078e5ee9b 346-348
+  s_6d30f4d467a543::t_5eb4f711fa9038 350-354
+  s_6d30f4d467a543::t_d06d2648871b19 357-358
+  s_6d30f4d467a543::t_0eb4c9fc23b3a5 364-366
+  s_6d30f4d467a543::t_ea9b218109c045 369
+  s_6d30f4d467a543::t_79a52c227e1221 377-378
+  s_6d30f4d467a543::t_1b73882115eb84 401-403
+  s_6d30f4d467a543::t_1d5ffd11b20965 469-471,475-477
+  s_6d30f4d467a543::t_42453dbf946e7c 479-483
+  s_6d30f4d467a543::t_10ea33385d4bd4 485
+  s_6d30f4d467a543::t_e71ed7d2cb1e6c 487-491
+  s_6d30f4d467a543::t_3f406aa258d99d 493
+  s_6d30f4d467a543::t_b2402e4c80b247 495
+  s_6d30f4d467a543::t_378e86d2bb91fb 497-499,509-511
+  s_6d30f4d467a543::t_652942665094e3 513-517
+  s_6d30f4d467a543::t_c8aa127445ddc6 520
+  s_6d30f4d467a543::t_ed2b1946db6991 522-524
+  s_6d30f4d467a543::t_321f18ca74e1a8 548-550
+  s_6d30f4d467a543::t_d58b0fadce275e 552
+  s_6d30f4d467a543::t_f3ac598d4e943d 554-556,568-570
+  s_6d30f4d467a543::t_e9591bcec59665 572-574
+  s_6d30f4d467a543::t_9201869f298aea 650-652
+docs/verification/lifecycle/2026-11-11/bounded-artifacts.json
+  s_6d30f4d467a543::t_9a750fe837105d 1-14
+docs/verification/native-sse/2026-11-12/results-summary.json
+  s_6d30f4d467a543::t_8f9e8e1822af0d 1-193
+docs/verification/capacity/2026-11-11/evidence-notes.md
+  s_6d30f4d467a543::t_c84667b861517e 6-7
+  s_6d30f4d467a543::t_9e548f0bb03c71 1-5,8-9
+  s_6d30f4d467a543::t_61885aec0947bc 13-15
+  s_6d30f4d467a543::t_4445915a23e653 10-12
+CONTEXT.md
+  s_6d30f4d467a543::t_82723715ed85f7 58-61
+  s_6d30f4d467a543::t_d077468c606745 48,54-57
+  s_6d30f4d467a543::t_1f93255d1cca20 62,67-75
+  s_6d30f4d467a543::t_4b1d2831128984 1,3,18-31
+  s_6d30f4d467a543::t_a251992ba0971e 2,4-17
+  s_6d30f4d467a543::t_b261ad9478b4e4 32-35
+  s_6d30f4d467a543::t_3b0bb48b24d350 63-66
+  s_6d30f4d467a543::t_431918c6bb53e4 44-47,49-53
+  s_6d30f4d467a543::t_5c41f85a4b4b3a 36-43
+llmgw-provider/llmgw-provider-http-jdk/src/test/java/io/github/leohou0430/llmgw/provider/http/jdk/TransportLifecycleTest.java
+  s_6d30f4d467a543::t_00d66b8ca63ea3 1-11,49-64,145-196,205-210,212,216-235
+  s_6d30f4d467a543::t_5f729a14278339 12-48,197-204
+  s_6d30f4d467a543::t_3e57d8d0d53b09 65-95,106,108-111,128-144,211,213-215
+  s_6d30f4d467a543::t_f6e766d4c013c9 104-105
+  s_6d30f4d467a543::t_18391452cda8bc 96-103,107,112-127
+CHANGELOG.md
+  s_6d30f4d467a543::t_215defbb78e45f 19-22
+  s_6d30f4d467a543::t_24ca712991301e 31
+  s_6d30f4d467a543::t_6813cfdad09440 13-16,29
+  s_6d30f4d467a543::t_d71bb8aaf1a038 9-12
+  s_6d30f4d467a543::t_d7bfabbfb164b2 7-8,27-28,30,32-33
+  s_6d30f4d467a543::t_9d6b5c5571fba7 34
+  s_6d30f4d467a543::t_82115ee9d394a6 35
+  s_6d30f4d467a543::t_f2c04353f048c2 17-18
+  s_6d30f4d467a543::t_bb96a2b0da3a9e 23-26
+docs/verification/native-capacity/2026-11-12/verify-native-deepseek.py
+  s_6d30f4d467a543::t_b5ede417d35bdd 1-61
+docs/verification/native-sse-steady/2026-11-12/README.md
+  s_6d30f4d467a543::t_c386c6aef1daac 1-22
+  s_6d30f4d467a543::t_801075e59244c4 23-26
+docs/verification/lifecycle/2026-11-11/jvm-idle-fixture-check/native-idle-progress.json
+  s_6d30f4d467a543::t_7826a0c9c5e342 1-41
+docs/PRODUCTION_BEST_PRACTICES.md
+  s_6d30f4d467a543::t_bb96a2b0da3a9e 78
+  s_6d30f4d467a543::t_d7bfabbfb164b2 80
+docs/verification/multi-replica/2026-11-11/phase-2-completion.json
+  s_6d30f4d467a543::t_1388ab9362c228 1,3-10,12,14-24,26
+  s_6d30f4d467a543::t_284c8162bbdfcf 2,11,13,25
+docs/verification/native-sse/2026-11-12/check-regression.py
+  s_6d30f4d467a543::t_96416f1604eef2 1-4,6-11
+  s_6d30f4d467a543::t_56643d4b0485f7 5
+docs/verification/multi-replica/2026-11-11/verify-stage2.py
+  s_6d30f4d467a543::t_9bd29c30f135cb 26-66
+  s_6d30f4d467a543::t_a2a3a39670af0c 1-25,67-78
+docs/verification/eof/2026-11-11/checks.json
+  s_6d30f4d467a543::t_f32d7f3fb0046c 1-9
+llmgw-provider/llmgw-provider-http-jdk/src/test/java/io/github/leohou0430/llmgw/provider/http/jdk/SseLineLimitTest.java
+  s_6d30f4d467a543::t_b4a0a585dd7d19 1-55
+docs/verification/capacity/2026-11-11/initial-probe/matrix.json
+  s_6d30f4d467a543::t_2828451680b241 1-2295
+llmgw-governance/llmgw-governance-redis/src/main/java/io/github/leohou0430/llmgw/governance/redis/RedisCircuitBreaker.java
+  s_6d30f4d467a543::t_5f1ede73e908c0 56,64,70,79
+llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/JsonSnapshotStore.java
+  s_6d30f4d467a543::t_3e1cbc5f8bbdfc 56-60,62-70,73-76,78,81-82,84-95,99-104
+docs/verification/multi-replica/2026-11-11/summarize-warm-json.py
+  s_6d30f4d467a543::t_1a4879540c6343 1-51
+docs/verification/multi-replica/2026-11-11/hash-counter-green-run.json
+  s_6d30f4d467a543::t_558a28dc91f11f 1,4-17
+  s_6d30f4d467a543::t_72f310fc05eb30 2-3
+docs/verification/native-g1/2026-11-12/verify-completion.py
+  s_6d30f4d467a543::t_7b818c9f278202 1-31
+bench/capacity/slow_clients.py
+  s_6d30f4d467a543::t_2e223eabad3460 12,14,44,46,60,68,80-86,101-104,106-107
+  s_6d30f4d467a543::t_4a46b8d3e8209a 29,110-112
+  s_6d30f4d467a543::t_a33ddf8a110f8c 51-55,61,64-66
+  s_6d30f4d467a543::t_15d5285f81dd11 9,11,13,17-19,40-42,50,56-58,62-63,67,74-79,87-100,105,108-109,113-116
+  s_6d30f4d467a543::t_f8499ad9e1244b 1-8,16,20-22,28,35-39,43,45,47-49,59,69-73,117-126
+  s_6d30f4d467a543::t_6e1a5e1b4df89b 10,15,23-27,30-34
+docs/verification/capacity/2026-11-11/webflux-sse-followup/matrix.md
+  s_6d30f4d467a543::t_2828451680b241 1-4
+docs/verification/native-capacity/2026-11-12/capacity-summary.json
+  s_6d30f4d467a543::t_b5ede417d35bdd 1-297
+docs/PERFORMANCE.md
+  s_6d30f4d467a543::t_f8189ea0bcc392 52
+  s_6d30f4d467a543::t_a53c3e20beeec3 5
+  s_6d30f4d467a543::t_bb96a2b0da3a9e 8
+  s_6d30f4d467a543::t_7f1ba4fe71746a 9-10
+  s_6d30f4d467a543::t_d7bfabbfb164b2 35
+  s_6d30f4d467a543::t_e0034584a15720 50
+  s_6d30f4d467a543::t_d71bb8aaf1a038 3,6-7
+  s_6d30f4d467a543::t_239c0648a2daf4 33
+  s_6d30f4d467a543::t_7aa748908a07c4 11-13,23
+  s_6d30f4d467a543::t_801075e59244c4 47,49,51,53-63
+  s_6d30f4d467a543::t_090219aadb62dc 46,48
+docs/verification/eof/2026-11-11/contract-summary.json
+  s_6d30f4d467a543::t_f32d7f3fb0046c 1-47
+README.md
+  s_6d30f4d467a543::t_1b22feecc0f237 350-351
+  s_6d30f4d467a543::t_d71bb8aaf1a038 25-26,54,352
+  s_6d30f4d467a543::t_215defbb78e45f 348-349
+  s_6d30f4d467a543::t_801075e59244c4 31-32
+  s_6d30f4d467a543::t_a53c3e20beeec3 27-28
+  s_6d30f4d467a543::t_239c0648a2daf4 353
+  s_6d30f4d467a543::t_82115ee9d394a6 354
+  s_6d30f4d467a543::t_7f1ba4fe71746a 355,408
+  s_6d30f4d467a543::t_090219aadb62dc 413
+  s_6d30f4d467a543::t_9540606fca68ec 306
+  s_6d30f4d467a543::t_419dab8aa87443 29-30
+  s_6d30f4d467a543::t_bb96a2b0da3a9e 346-347
+llmgw-provider/llmgw-provider-http-jdk/src/main/java/io/github/leohou0430/llmgw/provider/http/jdk/BlockingSseBodySubscriber.java
+  s_6d30f4d467a543::t_09d085f02ea575 77,79
+  s_6d30f4d467a543::t_f7401afed03cc8 30
+  s_6d30f4d467a543::t_3cab52f0b52f2f 1-29,31-76,78,80
+docs/verification/multi-replica/2026-11-11/typeguard-run.json
+  s_6d30f4d467a543::t_72ce5415209116 1-17
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/config/GatewayProperties.java
+  s_6d30f4d467a543::t_22a2d954c16cc9 204-205,225-229
+docs/verification/lifecycle/2026-11-11/jvm-vt-idle-fixture-check/native-idle-progress.json
+  s_6d30f4d467a543::t_667e6a58d1ef40 1-41
+bench/capacity/README.md
+  s_6d30f4d467a543::t_e52ea4fa5adf7e 14,25-26
+  s_6d30f4d467a543::t_bb96a2b0da3a9e 29-33
+  s_6d30f4d467a543::t_82115ee9d394a6 27-28
+  s_6d30f4d467a543::t_3c78540ef666b2 1-13,15-19,21-24
+  s_6d30f4d467a543::t_85865df696349d 20
+docs/verification/multi-replica/2026-11-11/metadata-green-run.json
+  s_6d30f4d467a543::t_8b8a18259eb6b1 1-17
+docs/verification/native-sse/2026-11-12/wait-and-retest.py
+  s_6d30f4d467a543::t_cb370dbd92fa34 9-14
+  s_6d30f4d467a543::t_2adddd8163e7d9 7
+  s_6d30f4d467a543::t_b4520bf95b5bd0 1-6,8,15-23
+docs/verification/native-sse/2026-11-12/wait-status-compilers-only.json
+  s_6d30f4d467a543::t_cb370dbd92fa34 1-1345
+docs/verification/capacity/2026-11-11/slow-clients.json
+  s_6d30f4d467a543::t_34b4c7e516e40c 1-35
+docs/verification/lifecycle/2026-11-11/native-source-check.json
+  s_6d30f4d467a543::t_a9be9475026afd 1-5
+docs/verification/compatibility/2026-11-11/complete-phase3.py
+  s_6d30f4d467a543::t_9ec12d0ca57c26 1-29
+docs/verification/lifecycle/2026-11-11/native-idle-progress.py
+  s_6d30f4d467a543::t_667e6a58d1ef40 4,30
+  s_6d30f4d467a543::t_7826a0c9c5e342 20,36,41
+  s_6d30f4d467a543::t_0c3d16002b978b 1-3,5-19,21-29,31-35,37-40,42-56
+bench/capacity/summarize.py
+  s_6d30f4d467a543::t_fa39a83e15a51f 31
+  s_6d30f4d467a543::t_f88293118f40a1 1-24,27-29,32-49
+  s_6d30f4d467a543::t_a8531a750a776b 25
+  s_6d30f4d467a543::t_c4c1b2bf201b77 26,30
+llmgw-app/src/main/resources/application.yml
+  s_6d30f4d467a543::t_22a2d954c16cc9 56-57
+docs/verification/sse/2026-11-11/contract-summary.json
+  s_6d30f4d467a543::t_b2a338de0648c0 1-47
+bin/requirements-sdk.txt
+  s_6d30f4d467a543::t_258811e4d7df17 1-17
+docs/adr/0002-explicit-consent-for-semantic-degradation.md
+  s_6d30f4d467a543::t_5c41f85a4b4b3a 1-9
+llmgw-provider/llmgw-provider-http-jdk/src/test/java/io/github/leohou0430/llmgw/provider/http/jdk/SseLineLimitSubscriberTest.java
+  s_6d30f4d467a543::t_0169d6b09ee431 15-39,142-143
+  s_6d30f4d467a543::t_bdcc5210cc8420 1-14,58-141,144-151
+  s_6d30f4d467a543::t_db5ccef80c38e0 40-57
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/upstream/UpstreamRequest.java
+  s_6d30f4d467a543::t_0f5af3aab0781b 95-96,99
+docs/verification/native-sse-steady/2026-11-12/results-summary.json
+  s_6d30f4d467a543::t_df68ec15e69fba 1-93
+docs/verification/lifecycle/2026-11-11/idle-artifacts.json
+  s_6d30f4d467a543::t_3d3853357d0f3f 1-15
+docs/plans/2026-11-12-protocol-convergence-source-notes.md
+  s_6d30f4d467a543::t_752d1ca02f6693 1-2,4-25
+  s_6d30f4d467a543::t_d077468c606745 36-39
+  s_6d30f4d467a543::t_b261ad9478b4e4 26-35
+  s_6d30f4d467a543::t_3b0bb48b24d350 3
+docs/verification/perf/2026-11-11/overload/cooperative/matrix.json
+  s_6d30f4d467a543::t_fa39a83e15a51f 1-1079
+docs/verification/multi-replica/2026-11-11/contracts/final-verification.json
+  s_6d30f4d467a543::t_ef522f6e20f317 5,7,10,12,14-15,17,20,22,24-25,27-28,30,32,34-35,37-38,40,42,44-45,47-48,50-60,62,64-65,67,70,72,74-75,77,82,84,86-87,89,94
+  s_6d30f4d467a543::t_56b9c895ee6951 1-4,6,8-9,11,13,16,18-19,21,23,26,29,31,33,36,39,41,43,46,49,61,63,66,68-69,71,73,76,78-81,83,85,88,90-93,95-110
+docs/verification/multi-replica/2026-11-11/run-hash-counter-green.py
+  s_6d30f4d467a543::t_558a28dc91f11f 1-25
+llmgw-engine/llmgw-engine-webflux/src/test/java/io/github/leohou0430/llmgw/engine/webflux/HeartbeatBackpressureTest.java
+  s_6d30f4d467a543::t_e3d0780126f850 53-82
+  s_6d30f4d467a543::t_62287c18e5b417 1-52,83
+docs/verification/sse/2026-11-11/artifacts.json
+  s_6d30f4d467a543::t_d08dad58322d3a 113-115
+  s_6d30f4d467a543::t_2e6d551035297d 1-112,116-117
+docs/verification/perf/2026-11-11/overload/contracts.json
+  s_6d30f4d467a543::t_d19a06d4c1ed2e 1,11
+  s_6d30f4d467a543::t_5fdc9dab8be5b8 2-10
+docs/verification/live-provider/2026-11-11/live-results.json
+  s_6d30f4d467a543::t_afb83c227dfcc9 41-42,44-61,93-118
+  s_6d30f4d467a543::t_86bbe613858a1f 1-40,43,62-92,119
+docs/verification/perf/2026-11-11/overload/profile-tests.json
+  s_6d30f4d467a543::t_57891ef69148da 1-20
+llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/AllowListHeaderPolicy.java
+  s_6d30f4d467a543::t_d0b0fae38be3cf 22-27,82,84,90,94
+  s_6d30f4d467a543::t_54cc93ff3bb172 91-93
+  s_6d30f4d467a543::t_4c14dc938687f9 95-96
+docs/verification/lifecycle/2026-11-11/final-verification.json
+  s_6d30f4d467a543::t_5776e5097c0c9c 4,6,9,11,14-15,17-18,20-22,25-39,42-50,53-54,56,60,62,79-80,82,87,89,105-106,108,113,115,131-132,134-135,137,139,141-142,144-145,147,149,151-152,154,157,159,161-162,164,167,169,171-172,174,177,179,181-182,184,187,189,191-192,194-195,197,199,201-202,204-205,209,211,213-214,216-217,221,223
+  s_6d30f4d467a543::t_fe7471c6bad561 1-3,5,7-8,10,12-13,16,19,23-24,40-41,51-52,55,57-59,61,63-78,81,83-86,88,90-104,107,109-112,114,116-130,133,136,138,140,143,146,148,150,153,155-156,158,160,163,165-166,168,170,173,175-176,178,180,183,185-186,188,190,193,196,198,200,203,206-208,210,212,215,218-220,222,224-242
+docs/verification/multi-replica/2026-11-11/run-breaker-red.py
+  s_6d30f4d467a543::t_c84f0ef098043b 1-25
+docs/verification/eof/2026-11-11/README.md
+  s_6d30f4d467a543::t_f2c04353f048c2 1-25,27-30
+  s_6d30f4d467a543::t_f32d7f3fb0046c 26
+docs/verification/native-g1/2026-11-12/build-completion.json
+  s_6d30f4d467a543::t_293cb93db80ca7 1-24
+docs/verification/native-g1/2026-11-12/completion.json
+  s_6d30f4d467a543::t_4bf4dee943f504 1-20,25-36,51
+  s_6d30f4d467a543::t_801075e59244c4 21-24,37-38
+  s_6d30f4d467a543::t_2bfbee7060e18f 39-50
+docs/verification/lifecycle/2026-11-11/verify-native.py
+  s_6d30f4d467a543::t_e688d9db44e6fb 1-28,30-32
+  s_6d30f4d467a543::t_0c3d16002b978b 29
+llmgw-governance/llmgw-governance-default/src/test/java/io/github/leohou0430/llmgw/governance/inmemory/SnapshotSafetyTest.java
+  s_6d30f4d467a543::t_0c19ae632cdf81 1-11,44-86
+  s_6d30f4d467a543::t_921e5ab705f8ce 12-37
+  s_6d30f4d467a543::t_0d3d33c5f3e966 38-43
+docs/verification/multi-replica/2026-11-11/consistency-green-run.json
+  s_6d30f4d467a543::t_8363bbf071623a 1-17
+bench/micro/SseLineDecodeBench.java
+  s_6d30f4d467a543::t_863c0d9fddfc87 1-51
+docs/USER_GUIDE.md
+  s_6d30f4d467a543::t_d71bb8aaf1a038 48-69,77,81,94,98,114
+  s_6d30f4d467a543::t_d7bfabbfb164b2 165
+docs/verification/perf/2026-11-11/overload/micro.json
+  s_6d30f4d467a543::t_f759a14e3b0fdb 1-177
+llmgw-governance/llmgw-governance-redis/src/test/java/io/github/leohou0430/llmgw/governance/redis/RedisConsistencyTest.java
+  s_6d30f4d467a543::t_0d3d33c5f3e966 30,59-62,65-76
+  s_6d30f4d467a543::t_0c19ae632cdf81 44
+  s_6d30f4d467a543::t_649d7bfe8e1b2d 49,103-130
+  s_6d30f4d467a543::t_72ce5415209116 53-58
+  s_6d30f4d467a543::t_8b8a18259eb6b1 64
+  s_6d30f4d467a543::t_921e5ab705f8ce 77-102,131
+  s_6d30f4d467a543::t_d526747bbfbfaa 22,28,33,40,46,52,151-163,167
+  s_6d30f4d467a543::t_558a28dc91f11f 63,165
+  s_6d30f4d467a543::t_ef49fe23fdfa44 132-150
+  s_6d30f4d467a543::t_3fb37b45f2612a 1-21,23-27,29,31-32,34-39,41-43,45,47-48,50-51,164,166,168
+bin/smoke-redis-recovery.py
+  s_6d30f4d467a543::t_855701267901ce 16-20,25-27,88-99
+  s_6d30f4d467a543::t_468784c6ea3657 1-15,21-24,28-40,44-47,49-56,65-67,69-70,72-85,87,100-108
+  s_6d30f4d467a543::t_7aa748908a07c4 48
+  s_6d30f4d467a543::t_9e548f0bb03c71 57-64,68,71,86
+  s_6d30f4d467a543::t_fbeb399cc8c1f5 41-43
+docs/verification/compatibility/2026-11-11/README.md
+  s_6d30f4d467a543::t_ce9a6c3f81a1e7 1,52
+  s_6d30f4d467a543::t_67cb5598ec12e3 54
+  s_6d30f4d467a543::t_d71bb8aaf1a038 2-4,7-51,53,55-63
+  s_6d30f4d467a543::t_a53c3e20beeec3 5-6
+docs/verification/native-compatibility/2026-11-11/verify-native.py
+  s_6d30f4d467a543::t_43acb5d54de6ca 1-42
+llmgw-provider/llmgw-provider-http-jdk/src/test/java/io/github/leohou0430/llmgw/provider/http/jdk/SseIdleProgressTest.java
+  s_6d30f4d467a543::t_83762ea50b8c65 13-14,16-39,44,47,70-79
+  s_6d30f4d467a543::t_d1ac13b7a01d07 1-12,15,40-43,45-46,48-69,80-83
+docs/verification/native-capacity/2026-11-12/run-live.py
+  s_6d30f4d467a543::t_dc64e698d9ff64 1-11,13-17
+  s_6d30f4d467a543::t_8693cbeb008c8d 12
+docs/verification/lifecycle/2026-11-11/bounded-slow-summary.json
+  s_6d30f4d467a543::t_504134cf496828 1-70
+docs/verification/perf/2026-11-11/overload/native-input-classes.json
+  s_6d30f4d467a543::t_5bca9280a66e15 1-6
+llmgw-governance/llmgw-governance-redis/src/main/java/io/github/leohou0430/llmgw/governance/redis/RedisTokenLimiter.java
+  s_6d30f4d467a543::t_65cb42bf2a72c9 58
+bin/smoke-heartbeat-deadline.py
+  s_6d30f4d467a543::t_f8efaca1429e51 1-120
+docs/verification/multi-replica/2026-11-11/profiles/final-verification.json
+  s_6d30f4d467a543::t_c84f0ef098043b 12,22,38,48,60,62,65-77,89,91,94-106,117-153
+  s_6d30f4d467a543::t_457ac6de1b7494 1-11,13-21,23-37,39-47,49-59,61,63-64,78-88,90,92-93,107-116,154
+llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/upstream/UpstreamRequestTest.java
+  s_6d30f4d467a543::t_6ea0d488c3bf56 22-30
+  s_6d30f4d467a543::t_77ab919b6cfbef 21
+docs/verification/native-sse/2026-11-12/status.json
+  s_6d30f4d467a543::t_f8189ea0bcc392 2-4,8-15,20-24
+  s_6d30f4d467a543::t_e0034584a15720 1,5-7,16-19,25
+docs/verification/perf/2026-11-11/overload/arrival-6000-invalid/matrix.json
+  s_6d30f4d467a543::t_fa39a83e15a51f 1-1102
+docs/verification/native-compatibility/2026-11-11/completion.json
+  s_6d30f4d467a543::t_3a8329ce636e79 1-34
+docs/verification/multi-replica/2026-11-11/run-green.py
+  s_6d30f4d467a543::t_8363bbf071623a 1-23
+docs/verification/multi-replica/2026-11-11/capacity-summary.json
+  s_6d30f4d467a543::t_1388ab9362c228 1-158
+bin/smoke-stream-errors.sh
+  s_6d30f4d467a543::t_36c9af4a4c6470 78-82
+llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/InMemoryUsageLedger.java
+  s_6d30f4d467a543::t_3e1cbc5f8bbdfc 7,9,13,16-17,19-32,35-43,46-52,55,57-62,65,68,71,73-74,76-84
+  s_6d30f4d467a543::t_8363bbf071623a 69-70,72
+docs/verification/multi-replica/2026-11-11/run-breaker-green.py
+  s_6d30f4d467a543::t_5e9b6046213843 1-25
+docs/verification/perf/2026-11-11/overload/contract-summary.json
+  s_6d30f4d467a543::t_a75a08d349295c 1-67
+docs/verification/capacity/2026-11-11/validation.json
+  s_6d30f4d467a543::t_61885aec0947bc 74-88
+  s_6d30f4d467a543::t_651c8ca5cdf551 65-67,69-73
+  s_6d30f4d467a543::t_799c3fc0164d1f 1-64,89-90
+  s_6d30f4d467a543::t_53296d0b3250cb 68
+docs/verification/native-sse/2026-11-12/wait-status-initial.json
+  s_6d30f4d467a543::t_2adddd8163e7d9 1-125
+docs/verification/perf/2026-11-11/overload/final-checks.json
+  s_6d30f4d467a543::t_a75a08d349295c 35-39
+  s_6d30f4d467a543::t_d254dd6083e313 1-34,40
+docs/gap-analysis.md
+  s_6d30f4d467a543::t_d7bfabbfb164b2 91
+llmgw-provider/llmgw-provider-http-jdk/src/test/java/io/github/leohou0430/llmgw/provider/http/jdk/JdkFlowTransportTest.java
+  s_6d30f4d467a543::t_db5ccef80c38e0 16-38
+bench/capacity/run.py
+  s_6d30f4d467a543::t_510ab81ca141c4 16,18-22,25,46-47,60-62,64
+  s_6d30f4d467a543::t_e52ea4fa5adf7e 75
+  s_6d30f4d467a543::t_4e3b540145860e 50
+  s_6d30f4d467a543::t_5cd67ee681ed05 7-11,17
+  s_6d30f4d467a543::t_87a5e864357c99 1-2,4-6,12-14,23,26-31,34-45,49,51-58,63,66-70,72-74,76-80,82,90,92-93,95-96,99-103,105-109,115-116,120-123
+  s_6d30f4d467a543::t_eff0b1eda7872b 3,48,71
+  s_6d30f4d467a543::t_ad0159fd138121 15,24,32-33,59,65,81,83-89,91,94,97-98,104,110-114,117-119
+docs/verification/perf/2026-11-11/overload/arrival-options.json
+  s_6d30f4d467a543::t_2212b8ffb26781 1-93
+docs/verification/lifecycle/2026-11-11/bounded-output-test-hang.txt
+  s_6d30f4d467a543::t_7527ea9ea2a602 1-255
+docs/verification/multi-replica/2026-11-11/hash-counter-run.json
+  s_6d30f4d467a543::t_921e5ab705f8ce 1-17
+docs/verification/multi-replica/2026-11-11/breaker-green-run.json
+  s_6d30f4d467a543::t_5e9b6046213843 2-3
+  s_6d30f4d467a543::t_2a7120709e99cf 1,4-17
+docs/verification/native-sse/2026-11-12/check-host-load.py
+  s_6d30f4d467a543::t_eddf2d19efd0ab 1-17
+bin/smoke-tenant-isolation.py
+  s_6d30f4d467a543::t_0c726e2258dfd7 16-17,28,30,45,54,57,118-120,138-140
+docs/verification/multi-replica/2026-11-11/distributed-first.json
+  s_6d30f4d467a543::t_2d16f642e86b95 1-22
+bench/README.md
+  s_6d30f4d467a543::t_090219aadb62dc 381-382
+  s_6d30f4d467a543::t_bb96a2b0da3a9e 5-6
+  s_6d30f4d467a543::t_82115ee9d394a6 7-8
+  s_6d30f4d467a543::t_e0034584a15720 383-384
+  s_6d30f4d467a543::t_801075e59244c4 385-386
+  s_6d30f4d467a543::t_65b832b5e486f2 3
+  s_6d30f4d467a543::t_0df5f67a25a60a 4
+docs/adr/0001-gateway-owned-protocol-convergence.md
+  s_6d30f4d467a543::t_558a09d17158b8 10-13
+  s_6d30f4d467a543::t_7dbf16602e9ce9 16-17
+  s_6d30f4d467a543::t_e1f652728805a1 18-19
+  s_6d30f4d467a543::t_4b1d2831128984 1-9
+  s_6d30f4d467a543::t_f8b0a057aaf979 14-15
+  s_6d30f4d467a543::t_87f3c3dd604588 20-21
+docs/verification/eof/2026-11-11/artifacts.json
+  s_6d30f4d467a543::t_f771595f5bf553 1-141
+docs/verification/multi-replica/2026-11-11/redis-version.txt
+  s_6d30f4d467a543::t_bef65d5fd2a739 1
+docs/verification/compatibility/2026-11-11/contracts-final/final-verification.json
+  s_6d30f4d467a543::t_7c521562b52bfb 1-30,32,34-35,37-38,40,42,44-45,47-48,50,52,54-55,57-58,60,62,64-65,67-68,70,72,74-75,77-78,82,84,86-87,89-90,94,96,98-111,114
+  s_6d30f4d467a543::t_bbe47509d97cce 31,33,36,39,41,43,46,49,51,53,56,59,61,63,66,69,71,73,76,79-81,83,85,88,91-93,95,97,112-113
+llmgw-engine/llmgw-engine-vt/pom.xml
+  s_6d30f4d467a543::t_ca93825442dd3f 22
+docs/verification/perf/2026-11-11/overload/final-source-sha256.json
+  s_6d30f4d467a543::t_d19a06d4c1ed2e 1-25
+.github/workflows/ci.yml
+  s_6d30f4d467a543::t_b8bfa1ef70951a 58-59,69-75
+llmgw-provider/llmgw-provider-http-jdk/src/main/java/io/github/leohou0430/llmgw/provider/http/jdk/SseLineDecoder.java
+  s_6d30f4d467a543::t_f7401afed03cc8 1-76,83-130,133-134,137-176
+  s_6d30f4d467a543::t_a6bf8d119c4443 77-82,131-132,135-136
+llmgw-provider/llmgw-provider-http-jdk/src/test/java/io/github/leohou0430/llmgw/provider/http/jdk/BlockingHeartbeatTest.java
+  s_6d30f4d467a543::t_35a753f14f6e1e 98-126
+  s_6d30f4d467a543::t_da3a8045e42699 81,83
+  s_6d30f4d467a543::t_cc769310c3a93a 1-80,82,84-97,127-131
+docs/DEPLOYMENT.md
+  s_6d30f4d467a543::t_82115ee9d394a6 5-6
+  s_6d30f4d467a543::t_020a4e1206bd48 85-86
+  s_6d30f4d467a543::t_801075e59244c4 156-159
+bin/smoke-redis-cluster.sh
+  s_6d30f4d467a543::t_ee3bb6caf40ed1 145,149-150,153,156
+  s_6d30f4d467a543::t_892d1dceebcd9b 82
+  s_6d30f4d467a543::t_679cc3da3d499a 83-85
+docs/verification/backpressure/2026-11-11/README.md
+  s_6d30f4d467a543::t_70a61a6a63d009 27,29
+  s_6d30f4d467a543::t_71d035fbdb7f07 1-26,28,30-33
+docs/verification/compatibility/2026-11-11/phase-3-completion.json
+  s_6d30f4d467a543::t_d1994e8fce2dba 1-37
+docs/verification/native-capacity/2026-11-12/tls-check.py
+  s_6d30f4d467a543::t_86f31a8fadfe0b 1-57
+docs/verification/multi-replica/2026-11-11/capacity-results.md
+  s_6d30f4d467a543::t_6cf97c05cbe7e3 1-15,17,19-20
+  s_6d30f4d467a543::t_35f04ccecb83aa 16,18
+bin/acceptance-stage1.py
+  s_ab7928797d4d52::t_8bfd768be6dff7 1-622
+docs/plans/2026-11-15-stage4-control-plane.md
+  s_ab7928797d4d52::t_9120f9aa8a980e 1-39
+docs/verification/2026-11-15/stage3-catalog/gate-full-reactor.json
+  s_ab7928797d4d52::t_3009eefca59d53 1-47
+docs/verification/2026-11-15/stage3-catalog/t3.10-retention-disk.md
+  s_ab7928797d4d52::t_b99084687c7f0f 1-45
+docs/verification/2026-11-15/stage3-catalog/t3.2-schema-migrations.md
+  s_ab7928797d4d52::t_9103f2d461659a 1-46
+docs/verification/2026-11-15/stage3-catalog/t3.7-task-catalog.md
+  s_ab7928797d4d52::t_cb62fdc9eaea45 1-43
+docs/verification/2026-11-15/stage3-catalog/t3.8-deletion-state-machine.md
+  s_ab7928797d4d52::t_3fe647e03d505e 1-44
+docs/verification/2026-11-15/stage3-catalog/t3.9-legacy-migration.md
+  s_ab7928797d4d52::t_770f59c76293f7 1-45
+docs/verification/2026-11-15/stage4-control-plane/t4.1-accounts-roles.md
+  s_ab7928797d4d52::t_8644d9a44e20b6 1-46
+docs/verification/2026-11-15/stage4-control-plane/t4.2-sessions-csrf.md
+  s_ab7928797d4d52::t_0085e1a68a458c 1-45
+docs/verification/2026-11-15/stage4-control-plane/t4.3-rbac.md
+  s_ab7928797d4d52::t_5915c231aada0a 1-48
+docs/verification/2026-11-15/stage4-control-plane/t4.4-app-wiring.md
+  s_ab7928797d4d52::t_fa898c51af0e67 1-37
+docs/verification/2026-11-15/stage4-control-plane/t4.4-key-masking.md
+  s_ab7928797d4d52::t_75ceca6e9dc014 1-39
+docs/verification/2026-11-15/stage4-control-plane/t4.5-route-versions.md
+  s_ab7928797d4d52::t_c0ec34d86e05d4 1-41
+docs/verification/backpressure/2026-11-11/contracts.json
+  s_6d30f4d467a543::t_e8ff4f276c1f10 1-11
+docs/verification/backpressure/2026-11-11/profiles.json
+  s_6d30f4d467a543::t_bdf6946eed4a4c 1-23
+docs/verification/backpressure/2026-11-11/redis-instance.json
+  s_6d30f4d467a543::t_41577159341e57 1-7
+docs/verification/capacity/2026-11-11/artifacts.json
+  s_6d30f4d467a543::t_6f649a8cf4f300 1-41
+docs/verification/capacity/2026-11-11/matrix.json
+  s_6d30f4d467a543::t_8b85141d95595b 1-9131
+docs/verification/capacity/2026-11-11/matrix.md
+  s_6d30f4d467a543::t_bdb74e17b13eaf 1-34
+docs/verification/capacity/2026-11-11/native-contracts.json
+  s_6d30f4d467a543::t_958685c98192fd 1-4
+docs/verification/capacity/2026-11-11/native-corrected-contracts.json
+  s_6d30f4d467a543::t_ced76b2d2ab8a4 1-4
+docs/verification/capacity/2026-11-11/profiles.json
+  s_6d30f4d467a543::t_3c39e9fa60f101 1-5
+docs/verification/compatibility/2026-11-11/additional-contracts.json
+  s_6d30f4d467a543::t_d6d6906866615b 1-26
+docs/verification/compatibility/2026-11-11/contracts/final-verification.json
+  s_6d30f4d467a543::t_6fab66a53ac79e 1-46
+docs/verification/compatibility/2026-11-11/final-profiles/final-verification.json
+  s_6d30f4d467a543::t_603d2882ac44e7 1-157
+docs/verification/compatibility/2026-11-11/sdk-ci/harness.py
+  s_6d30f4d467a543::t_3835665280b8eb 1-237
+docs/verification/compatibility/2026-11-11/sdk-ci/sdk-results.json
+  s_6d30f4d467a543::t_2d6393e27b084a 1-349
+docs/verification/compatibility/2026-11-11/sdk-final-all/harness.py
+  s_6d30f4d467a543::t_0d24c8ebcf5464 1-237
+docs/verification/compatibility/2026-11-11/sdk-final-all/sdk-results.json
+  s_6d30f4d467a543::t_3de0f88ffa5322 1-349
+docs/verification/compatibility/2026-11-11/sdk-final/sdk-results.json
+  s_6d30f4d467a543::t_bab69f6454ed67 1-319
+docs/verification/compatibility/2026-11-11/sdk-first/sdk-results.json
+  s_6d30f4d467a543::t_1f33e34114d34e 1-206
+docs/verification/compatibility/2026-11-11/vt-413-recheck.json
+  s_6d30f4d467a543::t_060bbd12a243b7 1-65
+docs/verification/eof/2026-11-11/contracts.json
+  s_6d30f4d467a543::t_f1703b85364051 1-11
+docs/verification/eof/2026-11-11/profiles.json
+  s_6d30f4d467a543::t_c7eefc3e914b52 1-23
+docs/verification/eof/2026-11-11/redis-instance.json
+  s_6d30f4d467a543::t_c0cd0e99ed9a45 1-7
+docs/verification/lifecycle/2026-11-11/final-native.json
+  s_6d30f4d467a543::t_e25901b9076343 1-165
+docs/verification/lifecycle/2026-11-11/final-verification-first.json
+  s_6d30f4d467a543::t_e0c2faeb7a51c2 1-90
+docs/verification/lifecycle/2026-11-11/idle-line-scaling.jsonl
+  s_6d30f4d467a543::t_9431931e34e0a4 1-12
+docs/verification/lifecycle/2026-11-11/idle-profiles/final-verification.json
+  s_6d30f4d467a543::t_05d51c4347f20e 1-143
+docs/verification/lifecycle/2026-11-11/linear-line-scaling.jsonl
+  s_6d30f4d467a543::t_80608824065273 1-12
+docs/verification/lifecycle/2026-11-11/native-idle-progress.json
+  s_6d30f4d467a543::t_485c67d33cba6f 1-41
+docs/verification/lifecycle/2026-11-11/slow-profile-default-window.txt
+  s_6d30f4d467a543::t_e4e24b599932be 1-18
+docs/verification/linux-native/2026-11-11/linux-audit.py
+  s_6d30f4d467a543::t_f25468b11fe50d 1-64
+docs/verification/linux-native/2026-11-11/run-first.json
+  s_6d30f4d467a543::t_e0d4ac13fab910 1-60
+docs/verification/linux-native/2026-11-11/run-linux.py
+  s_6d30f4d467a543::t_2bf3541c91f2e8 1-32
+docs/verification/linux-native/2026-11-11/run.json
+  s_6d30f4d467a543::t_0c6c1a4c49dbf9 1-25
+docs/verification/live-provider/2026-11-11/verify-deepseek.py
+  s_6d30f4d467a543::t_0225868fbfa2b1 1-61
+docs/verification/multi-replica/2026-11-11/breaker-red-run.json
+  s_6d30f4d467a543::t_ac4fadd0b0443a 1-17
+docs/verification/multi-replica/2026-11-11/capacity-command.json
+  s_6d30f4d467a543::t_f2cde54831c881 1-20
+docs/verification/multi-replica/2026-11-11/capacity-exit.json
+  s_6d30f4d467a543::t_092370dddd1be3 1
+docs/verification/multi-replica/2026-11-11/distributed-final.json
+  s_6d30f4d467a543::t_24c7c29106e62c 1-32
+docs/verification/multi-replica/2026-11-11/final-profiles/final-verification.json
+  s_6d30f4d467a543::t_1d274641fbe747 1-157
+docs/verification/multi-replica/2026-11-11/red-run.json
+  s_6d30f4d467a543::t_f556ddd4a85397 1-17
+docs/verification/multi-replica/2026-11-11/run-red.py
+  s_6d30f4d467a543::t_fba748ef933d91 1-23
+docs/verification/native-capacity/2026-11-12/post-capacity.py
+  s_6d30f4d467a543::t_2583fb8858b989 1-34
+docs/verification/native-capacity/2026-11-12/post-results.json
+  s_6d30f4d467a543::t_565d0e921611fc 1-131
+docs/verification/native-compatibility/2026-11-11/build-source.json
+  s_6d30f4d467a543::t_eec4aa5dcf1d8a 1-128
+docs/verification/native-compatibility/2026-11-11/jvm-sdk-fixed/harness.py
+  s_6d30f4d467a543::t_7c0b4587d9af39 1-242
+docs/verification/native-compatibility/2026-11-11/jvm-sdk-fixed/sdk-results.json
+  s_6d30f4d467a543::t_8f09ace009127f 1-349
+docs/verification/native-compatibility/2026-11-11/jvm-sdk/harness.py
+  s_6d30f4d467a543::t_49d9b12aa810a9 1-242
+docs/verification/native-compatibility/2026-11-11/jvm-sdk/sdk-results.json
+  s_6d30f4d467a543::t_f37c994b2a7340 1-182
+docs/verification/native-compatibility/2026-11-11/native-sdk/harness.py
+  s_6d30f4d467a543::t_3696855592d5fc 1-242
+docs/verification/native-compatibility/2026-11-11/native-sdk/sdk-results.json
+  s_6d30f4d467a543::t_c859070cbd96b8 1-180
+docs/verification/native-g1/2026-11-12/after-build.py
+  s_6d30f4d467a543::t_6ae3c26b8a5be1 1-25
+docs/verification/native-g1/2026-11-12/comparison-status.json
+  s_6d30f4d467a543::t_981e41223121d8 1-157
+docs/verification/native-g1/2026-11-12/g1-audit.py
+  s_6d30f4d467a543::t_3d77e9f4ec5f05 1-48
+docs/verification/native-g1/2026-11-12/post-comparison.py
+  s_6d30f4d467a543::t_9750a2ee825169 1-32
+docs/verification/native-g1/2026-11-12/post-results.json
+  s_6d30f4d467a543::t_f451e607b29bad 1-83
+docs/verification/native-g1/2026-11-12/results-summary.json
+  s_6d30f4d467a543::t_7c289ff1f66e2f 1-150
+docs/verification/native-g1/2026-11-12/run-g1.py
+  s_6d30f4d467a543::t_38e39191bca606 1-19
+docs/verification/native-g1/2026-11-12/run-threeway.py
+  s_6d30f4d467a543::t_f114eff73e8c64 1-123
+docs/verification/native-g1/2026-11-12/run.json
+  s_6d30f4d467a543::t_265de65dfe6af8 1-19
+docs/verification/native-g1/2026-11-12/tls-g1.py
+  s_6d30f4d467a543::t_4733176deae9eb 1-58
+docs/verification/native-sse-steady/2026-11-12/wait-stable-window.py
+  s_6d30f4d467a543::t_76cf9fe8e0a416 1-23
+docs/verification/native-sse-steady/2026-11-12/wait-status-retry.json
+  s_6d30f4d467a543::t_04f64ae5203db4 1-124
+docs/verification/native-sse-steady/2026-11-12/wait-status.json
+  s_6d30f4d467a543::t_888f0f6b4189e0 1-245
+docs/verification/native-sse-steady/2026-11-12/wait-steady.py
+  s_6d30f4d467a543::t_0622bcfd854eef 1-23
+docs/verification/native-sse/2026-11-12/observe.py
+  s_6d30f4d467a543::t_b05ec1f4ec4b05 1-20
+docs/verification/native-sse/2026-11-12/probe-gc.py
+  s_6d30f4d467a543::t_2852087cb940c0 1-123
+docs/verification/native-sse/2026-11-12/probe-young.py
+  s_6d30f4d467a543::t_5cec15e14bfd91 1-123
+docs/verification/native-sse/2026-11-12/wait-status.json
+  s_6d30f4d467a543::t_ecf9d8a4d51ff3 1-408
+docs/verification/perf/2026-11-11/overload/jfr-vu64.txt
+  s_6d30f4d467a543::t_64f7a4027917a6 1-108
+docs/verification/perf/2026-11-11/overload/jfr-vu96.txt
+  s_6d30f4d467a543::t_7a429dcf4df8be 1-108
+docs/verification/perf/2026-11-11/overload/native-contracts.json
+  s_6d30f4d467a543::t_e86e016f6422cd 1-5
+docs/verification/perf/2026-11-11/overload/native-sha256.txt
+  s_6d30f4d467a543::t_a3b97aee85c2b6 1
+docs/verification/perf/2026-11-11/overload/profiles.json
+  s_6d30f4d467a543::t_95cbce00c17ca7 1-5
+docs/verification/sse/2026-11-11/contracts.json
+  s_6d30f4d467a543::t_9232292ba132c4 1-11
+docs/verification/sse/2026-11-11/profile-artifacts.json
+  s_6d30f4d467a543::t_481fb48ff16724 1-14
+docs/verification/sse/2026-11-11/profiles.json
+  s_6d30f4d467a543::t_d3f1340a9663e8 1-23
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/ControlPlaneController.java
+  s_ab7928797d4d52::t_51aa8bba1be35e 1-52
+llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/ControlPlaneControllerTest.java
+  s_ab7928797d4d52::t_1b6ee3f9471559 1-27
+llmgw-catalog/llmgw-catalog-api/src/main/java/io/github/leohou0430/llmgw/catalog/DeletionRecord.java
+  s_ab7928797d4d52::t_9b4e19d2667f47 1-10
+llmgw-catalog/llmgw-catalog-api/src/main/java/io/github/leohou0430/llmgw/catalog/DeletionState.java
+  s_ab7928797d4d52::t_97a830280f0569 1-11
+llmgw-catalog/llmgw-catalog-api/src/main/java/io/github/leohou0430/llmgw/catalog/LegacyResource.java
+  s_ab7928797d4d52::t_b3083062da045d 1-23
+llmgw-catalog/llmgw-catalog-api/src/main/java/io/github/leohou0430/llmgw/catalog/MigrationApproval.java
+  s_ab7928797d4d52::t_87ab07348fa583 1-14
+llmgw-catalog/llmgw-catalog-api/src/main/java/io/github/leohou0430/llmgw/catalog/MigrationAuditSink.java
+  s_ab7928797d4d52::t_c8796432c5a748 1-8
+llmgw-catalog/llmgw-catalog-api/src/main/java/io/github/leohou0430/llmgw/catalog/MigrationPreview.java
+  s_ab7928797d4d52::t_8527361ec48a6e 1-17
+llmgw-catalog/llmgw-catalog-api/src/main/java/io/github/leohou0430/llmgw/catalog/RawContentUnavailableException.java
+  s_ab7928797d4d52::t_3cff111ada298d 1-9
+llmgw-catalog/llmgw-catalog-api/src/main/java/io/github/leohou0430/llmgw/catalog/UpstreamDeleteChecker.java
+  s_ab7928797d4d52::t_4da52e507d8e6f 1-8
+llmgw-catalog/llmgw-catalog-api/src/main/java/io/github/leohou0430/llmgw/catalog/UpstreamDeleter.java
+  s_ab7928797d4d52::t_daf68b5617dc7b 1-8
+llmgw-catalog/llmgw-catalog-default/src/main/java/io/github/leohou0430/llmgw/catalog/local/DeletionService.java
+  s_ab7928797d4d52::t_6cc7794e8606c2 1-82
+llmgw-catalog/llmgw-catalog-default/src/main/java/io/github/leohou0430/llmgw/catalog/local/LegacyMigrationService.java
+  s_ab7928797d4d52::t_f240751d1c599d 1-92
+llmgw-catalog/llmgw-catalog-default/src/main/java/io/github/leohou0430/llmgw/catalog/local/LocalTaskCatalog.java
+  s_ab7928797d4d52::t_425fe7938f9920 1-68
+llmgw-catalog/llmgw-catalog-default/src/test/java/io/github/leohou0430/llmgw/catalog/local/DeletionServiceTest.java
+  s_ab7928797d4d52::t_8b91245a8a59d3 1-114
+llmgw-catalog/llmgw-catalog-default/src/test/java/io/github/leohou0430/llmgw/catalog/local/LegacyMigrationServiceTest.java
+  s_ab7928797d4d52::t_7077aa9e920f0f 1-110
+llmgw-control/llmgw-control-api/src/main/java/io/github/leohou0430/llmgw/control/RouteVersionStore.java
+  s_ab7928797d4d52::t_f7fb598b4bbfc4 1-16
+llmgw-control/llmgw-control-api/src/main/java/io/github/leohou0430/llmgw/control/VersionConflictException.java
+  s_ab7928797d4d52::t_22a23b5d60d61f 1-9
+llmgw-conversion/llmgw-conversion-chat/src/main/resources/META-INF/llmgw/extensions/io.github.leohou0430.llmgw.conversion.EntryCodec
+  s_ab7928797d4d52::t_db4fc888ca9eff 1
+llmgw-conversion/llmgw-conversion-deepseek/src/test/resources/deepseek/decode-tool-calls-no-content.json
+  s_ab7928797d4d52::t_9f4f0f19033d1a 1-11
+llmgw-conversion/llmgw-conversion-deepseek/src/test/resources/deepseek/decode-unknown-finish.json
+  s_ab7928797d4d52::t_e15a84c05713c2 1-9
+llmgw-conversion/llmgw-conversion-deepseek/src/test/resources/deepseek/stream-escaped.json
+  s_ab7928797d4d52::t_c26296e193b871 1-19
+llmgw-conversion/llmgw-conversion-responses/src/test/java/io/github/leohou0430/llmgw/conversion/responses/ResponsesEntryCodecTest.java
+  s_ab7928797d4d52::t_7dadfb00af60d2 1-1944
+llmgw-engine/llmgw-engine-api/src/main/java/io/github/leohou0430/llmgw/engine/EngineHeaders.java
+  s_6d30f4d467a543::t_f9116f5fc38a2a 6
+llmgw-engine/llmgw-engine-api/src/main/java/io/github/leohou0430/llmgw/engine/EngineReasons.java
+  s_6d30f4d467a543::t_74f7971ece5249 13
+llmgw-engine/llmgw-engine-webflux/src/main/java/io/github/leohou0430/llmgw/engine/webflux/SseResponseBuffers.java
+  s_6d30f4d467a543::t_9992a89976512e 1-32
+llmgw-engine/llmgw-engine-webflux/src/main/java/io/github/leohou0430/llmgw/engine/webflux/WebfluxCapacityAdmission.java
+  s_6d30f4d467a543::t_17fbccb42c0460 1-62
+llmgw-engine/llmgw-engine-webflux/src/main/java/io/github/leohou0430/llmgw/engine/webflux/WebfluxEngineConfiguration.java
+  s_6d30f4d467a543::t_3ac840f7a216b3 7-9,16-21
+llmgw-engine/llmgw-engine-webflux/src/test/java/io/github/leohou0430/llmgw/engine/webflux/CapacityAdmissionTest.java
+  s_6d30f4d467a543::t_7b862d9520ab42 1-171
+llmgw-identity/llmgw-identity-api/pom.xml
+  s_ab7928797d4d52::t_38eda9d92d7be3 1-21
+llmgw-identity/llmgw-identity-api/src/main/java/io/github/leohou0430/llmgw/identity/Account.java
+  s_ab7928797d4d52::t_46ed5e537c0804 1-29
+llmgw-identity/llmgw-identity-api/src/main/java/io/github/leohou0430/llmgw/identity/AuthorizationService.java
+  s_ab7928797d4d52::t_db5fc44fcea3fb 1-14
+llmgw-identity/llmgw-identity-api/src/main/java/io/github/leohou0430/llmgw/identity/CsrfTokenService.java
+  s_ab7928797d4d52::t_118368c78ed1ab 1-9
+llmgw-identity/llmgw-identity-api/src/main/java/io/github/leohou0430/llmgw/identity/Decision.java
+  s_ab7928797d4d52::t_7be6f3973120db 1-11
+llmgw-identity/llmgw-identity-api/src/main/java/io/github/leohou0430/llmgw/identity/LoginRateLimiter.java
+  s_ab7928797d4d52::t_ad41396bc0ff66 1-8
+llmgw-identity/llmgw-identity-api/src/main/java/io/github/leohou0430/llmgw/identity/PasswordHasher.java
+  s_ab7928797d4d52::t_f88876f3e95390 1-11
+llmgw-identity/llmgw-identity-api/src/main/java/io/github/leohou0430/llmgw/identity/Role.java
+  s_ab7928797d4d52::t_0e57cb2694282e 1-9
+llmgw-identity/llmgw-identity-api/src/main/java/io/github/leohou0430/llmgw/identity/Scope.java
+  s_ab7928797d4d52::t_9c08073d48f75f 1-33
+llmgw-identity/llmgw-identity-api/src/main/java/io/github/leohou0430/llmgw/identity/Session.java
+  s_ab7928797d4d52::t_cdd5ff3c559043 1-20
+llmgw-identity/llmgw-identity-api/src/main/java/io/github/leohou0430/llmgw/identity/SessionStore.java
+  s_ab7928797d4d52::t_404c136718afc8 1-17
+llmgw-identity/llmgw-identity-api/src/main/java/io/github/leohou0430/llmgw/identity/Subject.java
+  s_ab7928797d4d52::t_60802fe41ba463 1-12
+llmgw-identity/llmgw-identity-api/src/main/java/io/github/leohou0430/llmgw/identity/Target.java
+  s_ab7928797d4d52::t_c4af4e6e012636 1-12
+llmgw-identity/llmgw-identity-default/pom.xml
+  s_ab7928797d4d52::t_a062acc4d5aaf3 1-23
+llmgw-identity/llmgw-identity-default/src/main/java/io/github/leohou0430/llmgw/identity/AdministratorBootstrap.java
+  s_ab7928797d4d52::t_5f22b86a83d734 1-40
+llmgw-identity/llmgw-identity-default/src/main/java/io/github/leohou0430/llmgw/identity/FixedWindowRateLimiter.java
+  s_ab7928797d4d52::t_99215d74a1eff5 1-35
+llmgw-identity/llmgw-identity-default/src/main/java/io/github/leohou0430/llmgw/identity/HmacCsrfTokenService.java
+  s_ab7928797d4d52::t_aa7814b9e09659 1-62
+llmgw-identity/llmgw-identity-default/src/main/java/io/github/leohou0430/llmgw/identity/InMemorySessionStore.java
+  s_ab7928797d4d52::t_49b64a9dd6de3a 1-47
+llmgw-identity/llmgw-identity-default/src/main/java/io/github/leohou0430/llmgw/identity/Pbkdf2PasswordHasher.java
+  s_ab7928797d4d52::t_97dc121741e879 1-77
+llmgw-identity/llmgw-identity-default/src/main/java/io/github/leohou0430/llmgw/identity/RbacAuthorizationService.java
+  s_ab7928797d4d52::t_ace57d55334612 1-65
+llmgw-identity/llmgw-identity-default/src/main/java/io/github/leohou0430/llmgw/identity/SessionService.java
+  s_ab7928797d4d52::t_e1995e359342e0 1-44
+llmgw-identity/llmgw-identity-default/src/test/java/io/github/leohou0430/llmgw/identity/IdentityTest.java
+  s_ab7928797d4d52::t_efc0de33dfb7ce 1-81
+llmgw-identity/llmgw-identity-default/src/test/java/io/github/leohou0430/llmgw/identity/SessionTest.java
+  s_ab7928797d4d52::t_c31570408e3004 1-95
+llmgw-identity/pom.xml
+  s_ab7928797d4d52::t_9facfc8a0db18a 1-25
+llmgw-persistence/llmgw-persistence-sqlite/src/main/java/io/github/leohou0430/llmgw/persistence/sqlite/RetentionPolicy.java
+  s_ab7928797d4d52::t_55415a08fbcace 1-60
+llmgw-persistence/llmgw-persistence-sqlite/src/main/java/io/github/leohou0430/llmgw/persistence/sqlite/StorageGuard.java
+  s_ab7928797d4d52::t_3677c769527ba5 1-42
+llmgw-persistence/llmgw-persistence-sqlite/src/main/java/io/github/leohou0430/llmgw/persistence/sqlite/StorageLimitException.java
+  s_ab7928797d4d52::t_99bd80312952f8 1-9
+llmgw-persistence/llmgw-persistence-sqlite/src/test/java/io/github/leohou0430/llmgw/persistence/sqlite/RetentionAndStorageTest.java
+  s_ab7928797d4d52::t_0a13520bf70535 1-152
+llmgw-persistence/llmgw-persistence-sqlite/src/test/java/io/github/leohou0430/llmgw/persistence/sqlite/SqliteKeyStoreTest.java
+  s_ab7928797d4d52::t_e058cd1d6dac3c 1-150
+llmgw-provider/llmgw-provider-http-jdk/src/test/java/io/github/leohou0430/llmgw/provider/http/jdk/SseLineDecoderTest.java
+  s_6d30f4d467a543::t_0d268fb9440d04 1-120
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "88e460f67a9077d2f2c82bcad8198f5ace96769e",
+  "prompts": {},
+  "sessions": {
+    "s_6d30f4d467a543": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1c09a-e2db-7762-a873-2372a7cb9970",
+        "model": "gpt-6.1-sol"
+      },
+      "human_author": "leohou0430 <leohou0430@users.noreply.github.com>"
+    },
+    "s_ab7928797d4d52": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a19866-baee-7770-8858-025229bb9f61",
+        "model": "gpt-6.1-sol"
+      },
+      "human_author": "leohou0430 <leohou0430@users.noreply.github.com>"
+    }
+  }
+}
