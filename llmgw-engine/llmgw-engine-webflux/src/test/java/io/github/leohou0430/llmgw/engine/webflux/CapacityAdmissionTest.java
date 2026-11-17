@@ -40,7 +40,7 @@ class CapacityAdmissionTest {
             assertEquals(ProtocolCodec.errorJson("gateway request capacity exceeded"),denied.getBodyAsString().block());
             assertEquals(1,fixture.adapter().calls.get(),"capacity rejection must precede Spring argument resolution");
             assertEquals(1,fixture.provider.calls.get());
-            fixture.provider.pending.complete(OK);first.get(2,TimeUnit.SECONDS);
+            fixture.provider.pending.complete(OK);first.get(2,TimeUnit.SECONDS);fixture.awaitCapacity();
             assertEquals(HttpStatus.OK,fixture.request("/v1/chat/completions",BODY).getStatusCode());
             assertEquals(2,fixture.provider.calls.get());
         }
@@ -54,6 +54,7 @@ class CapacityAdmissionTest {
             // reactive bridge. Cancellation may reach that future after cancel() returns.
             assertThrows(CancellationException.class,
                     () -> fixture.provider.pending.get(2, TimeUnit.SECONDS));
+            fixture.awaitCapacity();
             assertEquals(HttpStatus.OK,fixture.request("/v1/chat/completions",BODY).getStatusCode());
         }
     }
@@ -69,6 +70,7 @@ class CapacityAdmissionTest {
                 assertEquals(HttpStatus.METHOD_NOT_ALLOWED,fixture.request("/v1/models",BODY).getStatusCode());
             }catch(InterruptedException error){Thread.currentThread().interrupt();fail(error);}
             finally{first.cancel(true);}
+            fixture.awaitCapacity();
             assertEquals(HttpStatus.OK,fixture.request("/v1/chat/completions",BODY).getStatusCode());
         }
     }
@@ -134,6 +136,7 @@ class CapacityAdmissionTest {
         final PendingProvider provider=new PendingProvider();
         final AnnotationConfigApplicationContext context=new AnnotationConfigApplicationContext();
         final HttpHandler handler;
+        final Semaphore slots;
         Fixture(){
             var properties=new GatewayProperties();properties.setMaxConcurrentRequests(1);
             var route=new Route("test","*","","http://unused","",1,List.of());
@@ -163,12 +166,25 @@ class CapacityAdmissionTest {
             context.registerBean(WebfluxGatewayController.class,()->new WebfluxGatewayController(chain,router,provider,CircuitBreaker.noop(),properties,headers,tasks));
             context.getEnvironment().getPropertySources().addFirst(new org.springframework.core.env.MapPropertySource("spool-instance", java.util.Map.of("llmgw.spool-directory", java.nio.file.Path.of(System.getProperty("java.io.tmpdir"), "llmgw-capacity-" + java.util.UUID.randomUUID()).toString())));
             context.refresh();handler=WebHttpHandlerBuilder.applicationContext(context).build();
+            slots=(Semaphore)org.springframework.test.util.ReflectionTestUtils.getField(
+                    context.getBean(WebfluxCapacityAdmission.class),"requests");
         }
         CountingAdapter adapter(){return (CountingAdapter)context.getBean(RequestMappingHandlerAdapter.class);}
         CompletableFuture<Void> start(){return handler.handle(MockServerHttpRequest.post("/v1/chat/completions").contentType(MediaType.APPLICATION_JSON).body(BODY),new MockServerHttpResponse()).toFuture();}
         MockServerHttpResponse request(String path,String body){return request(HttpMethod.POST,path,body);}
         MockServerHttpResponse request(HttpMethod method,String path,String body){
-            var response=new MockServerHttpResponse();handler.handle(MockServerHttpRequest.method(method,path).contentType(MediaType.APPLICATION_JSON).body(body),response).block(Duration.ofSeconds(2));return response;
+            var response=new MockServerHttpResponse();handler.handle(MockServerHttpRequest.method(method,path).contentType(MediaType.APPLICATION_JSON).body(body),response).block(Duration.ofSeconds(2));
+            if(method==HttpMethod.POST && path.equals("/v1/chat/completions")
+                    && response.getHeaders().getFirst("Retry-After")==null) awaitCapacity();
+            return response;
+        }
+        void awaitCapacity(){
+            // This white-box capacity fixture waits for the actual permit, not a
+            // response-complete signal that precedes doFinally. A leak still fails.
+            try {
+                assertTrue(slots.tryAcquire(2,TimeUnit.SECONDS),"request capacity must be released");
+                slots.release();
+            } catch(InterruptedException error){Thread.currentThread().interrupt();throw new AssertionError(error);}
         }
         public void close(){provider.pending.cancel(true);context.close();}
     }
