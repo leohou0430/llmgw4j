@@ -1,0 +1,27 @@
+CHANGELOG.md
+  s_5f251bc0a17928::t_73cebe1a54b709 9
+docs/control-plane-operations.md
+  s_5f251bc0a17928::t_63bf4ea2fd7076 15
+docs/releases/v0.4.0-verification.md
+  s_5f251bc0a17928::t_887a77bee72655 29-30
+docs/releases/v0.4.0.md
+  s_5f251bc0a17928::t_2166317954a8b0 3-4
+llmgw-engine/llmgw-engine-webflux/src/test/java/io/github/leohou0430/llmgw/engine/webflux/CapacityAdmissionTest.java
+  s_5f251bc0a17928::t_757fbbe1a8d264 43,57,73,139,169-170,176-187
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "53a27d81801ca1addcae16ba0d862bbbae6c2866",
+  "prompts": {},
+  "sessions": {
+    "s_5f251bc0a17928": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1e304-332e-7000-9e0e-b3015846561c",
+        "model": "gpt-6.1-sol"
+      },
+      "human_author": "leohou0430 <leohou0430@users.noreply.github.com>"
+    }
+  }
+}
