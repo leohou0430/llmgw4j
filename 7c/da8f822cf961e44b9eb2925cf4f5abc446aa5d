@@ -1,0 +1,1348 @@
+.github/workflows/ci.yml
+  h_f2cf00af6c798e 75
+.github/workflows/release.yml
+  h_f2cf00af6c798e 58,62-63,112,119
+.gitignore
+  h_f2cf00af6c798e 32-35
+CHANGELOG.md
+  h_f2cf00af6c798e 7-30
+CONTEXT.md
+  h_f2cf00af6c798e 76-177
+CONTRIBUTING.md
+  h_f2cf00af6c798e 29,92-93,133-138
+Dockerfile
+  h_f2cf00af6c798e 13
+README.en.md
+  h_f2cf00af6c798e 21
+README.md
+  h_f2cf00af6c798e 19,21,35,59-60,248
+SECURITY.md
+  h_f2cf00af6c798e 11-12,27
+bench/capacity/rejection_micro.py
+  h_f2cf00af6c798e 21
+bench/cross-gateway/README.md
+  h_f2cf00af6c798e 7
+bench/cross-gateway/compare.py
+  h_f2cf00af6c798e 53
+bench/cross-gateway/cross-gateway-benchmark.sh
+  h_f2cf00af6c798e 58
+bin/backup-control.py
+  h_f2cf00af6c798e 1-70
+bin/bench-matrix.sh
+  h_f2cf00af6c798e 5
+bin/bench-paired-ab.sh
+  h_f2cf00af6c798e 27
+bin/build.sh
+  h_f2cf00af6c798e 5
+bin/check-module-layout.sh
+  h_f2cf00af6c798e 67-70
+bin/restore-control.py
+  h_f2cf00af6c798e 1-87
+bin/run-vt.sh
+  h_f2cf00af6c798e 4
+bin/run-webflux.sh
+  h_f2cf00af6c798e 4
+bin/smoke-admin-auth.py
+  h_f2cf00af6c798e 94
+bin/smoke-billing-recovery.py
+  h_f2cf00af6c798e 1-221
+bin/smoke-billing.py
+  h_f2cf00af6c798e 1-317
+bin/smoke-control-plane.py
+  h_f2cf00af6c798e 87-97,283
+bin/smoke-conversion-sdk.py
+  h_f2cf00af6c798e 20,184
+bin/smoke-gemini.py
+  h_f2cf00af6c798e 1-216
+bin/smoke-heartbeat-deadline.py
+  h_f2cf00af6c798e 116
+bin/smoke-hot-reload.sh
+  h_f2cf00af6c798e 9,48-51,55-57,150,152,156,203,209,231
+bin/smoke-jwt-auth.py
+  h_f2cf00af6c798e 132
+bin/smoke-multi-protocol.sh
+  h_f2cf00af6c798e 9,73-87,92
+bin/smoke-observability.sh
+  h_f2cf00af6c798e 10,56-59,61-63
+bin/smoke-redis-cluster.sh
+  h_f2cf00af6c798e 9,96-99,105,197-198,200-212,214-215,224,228-229,232-233
+bin/smoke-redis-recovery.py
+  h_f2cf00af6c798e 3,11-13,15-17,54,101-108
+bin/smoke-sse-line-limit.py
+  h_f2cf00af6c798e 162
+bin/smoke-stream-errors.sh
+  h_f2cf00af6c798e 7,70-84,89
+bin/smoke-tenant-isolation.py
+  h_f2cf00af6c798e 18
+bin/smoke-v13-extensions.sh
+  h_f2cf00af6c798e 8,61,63,65-66,69,72,75
+bin/smoke-v13-hardening.sh
+  h_f2cf00af6c798e 9
+bin/smoke-v13-platform.sh
+  h_f2cf00af6c798e 8
+bin/smoke-v13-provider.sh
+  h_f2cf00af6c798e 9
+bin/stress-files-container.py
+  h_f2cf00af6c798e 162
+docs/CONFIGURATION.md
+  h_f2cf00af6c798e 3,187-188,216-260,271,281-282,538
+docs/DEPLOYMENT.md
+  h_f2cf00af6c798e 1,3,136,141-142,146
+docs/EXTENSIONS.md
+  h_f2cf00af6c798e 1
+docs/PRODUCTION_BEST_PRACTICES.md
+  h_f2cf00af6c798e 3,5,11,54
+docs/USER_GUIDE.md
+  h_f2cf00af6c798e 1,13,36,105
+docs/adr/0006-single-node-feature-delivery-before-clustering.md
+  h_f2cf00af6c798e 1-9
+docs/adr/0007-tenant-prepaid-billing-with-estimated-reservations.md
+  h_f2cf00af6c798e 1-35
+docs/adr/0008-gemini-http-and-bounded-chat-conversion.md
+  h_f2cf00af6c798e 1-11
+docs/adr/0009-strict-budget-mode-with-provable-reservations.md
+  h_f2cf00af6c798e 1-13
+docs/adr/0010-mcp-gateway-semantics-first-version.md
+  h_f2cf00af6c798e 1-13
+docs/adr/0011-approval-workflow-suspended-readmission.md
+  h_f2cf00af6c798e 1-13
+docs/control-plane-operations.md
+  h_f2cf00af6c798e 27-63
+docs/gap-analysis.md
+  h_f2cf00af6c798e 1-2
+docs/openapi.yaml
+  h_f2cf00af6c798e 4,26-45,1029-1152,2036-2177
+docs/releases/v0.5.0.md
+  h_f2cf00af6c798e 1-46
+docs/reviews/2026-11-17-current-state-and-peers.md
+  h_f2cf00af6c798e 1-136
+docs/reviews/2026-11-20-chapter9-governance-review/README.md
+  h_f2cf00af6c798e 1-80
+docs/reviews/2026-11-20-chapter9-governance-review/report.md
+  h_f2cf00af6c798e 1-181
+docs/superpowers/plans/2026-11-17-single-node-commercial-gateway.md
+  h_f2cf00af6c798e 1-235
+docs/superpowers/specs/2026-11-17-single-node-commercial-gateway.md
+  h_f2cf00af6c798e 1-182
+docs/verification/spring-javaformat-introduction/2026-11-20/README.md
+  h_f2cf00af6c798e 1-91
+llmgw-app/pom.xml
+  h_f2cf00af6c798e 9,30-34,48
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/AdminController.java
+  h_f2cf00af6c798e 40-47,54-488
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/AdminTokenGuard.java
+  h_f2cf00af6c798e 12-14,18-44
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/AdminTokenMigrationConfiguration.java
+  h_f2cf00af6c798e 30-32,37-163
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/AuditLog.java
+  h_f2cf00af6c798e 14-17,21-22,24,26-28,30-42,44-46,48-68,70-121
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/ControlAccess.java
+  h_f2cf00af6c798e 10-46
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/ControlAccountController.java
+  h_f2cf00af6c798e 14-87
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/ControlApprovalController.java
+  h_f2cf00af6c798e 1-150
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/ControlAuditController.java
+  h_f2cf00af6c798e 19-20,25-52
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/ControlBillingController.java
+  h_f2cf00af6c798e 1-181
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/ControlBlockingConfiguration.java
+  h_f2cf00af6c798e 10-13,17-41
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/ControlCatalogController.java
+  h_f2cf00af6c798e 32,34,36-101
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/ControlExceptionHandler.java
+  h_f2cf00af6c798e 9-12,14-32
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/ControlKeyController.java
+  h_f2cf00af6c798e 39-128
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/ControlLoginController.java
+  h_f2cf00af6c798e 31-35,40-129
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/ControlOrgController.java
+  h_f2cf00af6c798e 22-23,28-110
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/ControlPlaneController.java
+  h_f2cf00af6c798e 7,15,17-18,20,23-25,27,29,42-170
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/ControlPlaneManagementConfiguration.java
+  h_f2cf00af6c798e 15,17-144
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/ControlPriceController.java
+  h_f2cf00af6c798e 1-123
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/ControlQuotaController.java
+  h_f2cf00af6c798e 15-101
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/ControlRecordingController.java
+  h_f2cf00af6c798e 1-139
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/ControlRouteController.java
+  h_f2cf00af6c798e 35-132
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/ControlRuntimeModule.java
+  h_f2cf00af6c798e 18-21,23-157
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/ControlSecretController.java
+  h_f2cf00af6c798e 33,35,37,39,41-121
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/ControlUsageController.java
+  h_f2cf00af6c798e 21-23,29-74
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/EncryptedResourceCatalog.java
+  h_f2cf00af6c798e 8-11,13-73
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/EngineKindEnvironmentPostProcessor.java
+  h_f2cf00af6c798e 13-20,22-25,27-29,33-54
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/GatewayConfiguration.java
+  h_f2cf00af6c798e 11-17
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/GatewayRuntimeConfiguration.java
+  h_f2cf00af6c798e 18,21-24,27-292
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/GatewayRuntimeHints.java
+  h_f2cf00af6c798e 20,22-67,69-118
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/GenAiSpanBridge.java
+  h_f2cf00af6c798e 1-48
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/InMemoryKeyStore.java
+  h_f2cf00af6c798e 9-12,14-44
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/LlmGatewayApplication.java
+  h_f2cf00af6c798e 7-10,12-13,16-19
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/McpGatewayController.java
+  h_f2cf00af6c798e 1-122
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/MockUpstreamServer.java
+  h_f2cf00af6c798e 31-33,35-37,39-43,46-48,50-64,67-71,76-955
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/OrgStore.java
+  h_f2cf00af6c798e 16-17,20-148
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/ProviderConfiguration.java
+  h_f2cf00af6c798e 11-16
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/RecoveryGate.java
+  h_f2cf00af6c798e 1-51
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/SecretStore.java
+  h_f2cf00af6c798e 20-23,26-230
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/SqliteAccountStore.java
+  h_f2cf00af6c798e 18-19,23-164
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/SqliteApiKeyRegistry.java
+  h_f2cf00af6c798e 11-14,16-184
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/SqliteRouteVersionStore.java
+  h_f2cf00af6c798e 8-11,13-99
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/SqliteSessionStore.java
+  h_f2cf00af6c798e 20-21,25,27,29-31,33-54,56-66,68-99,101-129
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/StorageLimitAdvice.java
+  h_f2cf00af6c798e 15-19
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/VersionedRouteConfigSource.java
+  h_f2cf00af6c798e 15-199
+llmgw-app/src/main/java/io/github/leohou0430/llmgw/app/WriteGate.java
+  h_f2cf00af6c798e 8-11,14-24
+llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/AcceptanceFixtureWireFormatTest.java
+  h_f2cf00af6c798e 45-48,52-372
+llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/AdminAuthorizationTest.java
+  h_f2cf00af6c798e 19-118
+llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/AdminRouteUpstreamProtocolTest.java
+  h_f2cf00af6c798e 19-22,26-31,33-39,41-45,47-49,51-56,58-77
+llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/AdminTokenGuardTest.java
+  h_f2cf00af6c798e 14-49
+llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/AdminTokenMigrationFilterTest.java
+  h_f2cf00af6c798e 34-158
+llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/BillingBindTest.java
+  h_f2cf00af6c798e 1-23
+llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/ControlBillingAccessTest.java
+  h_f2cf00af6c798e 1-227
+llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/ControlLoginControllerCookieTest.java
+  h_f2cf00af6c798e 30-194
+llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/ControlPageResourceTest.java
+  h_f2cf00af6c798e 17-29
+llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/ControlPlaneControllerTest.java
+  h_f2cf00af6c798e 10-12,16-41
+llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/ControlScopeIsolationTest.java
+  h_f2cf00af6c798e 13-67
+llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/ConversionContractTest.java
+  h_f2cf00af6c798e 93-96,98-104,109-4735
+llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/ConversionEngineIntegrationTest.java
+  h_f2cf00af6c798e 56-62,66-811
+llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/ConversionErrorShapeTest.java
+  h_f2cf00af6c798e 21-24,28,30-33,35-40,42-45,47-57,59-69,71-79,81-106,108-116,118-137
+llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/ConversionModuleTest.java
+  h_f2cf00af6c798e 31-34,38-235
+llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/ConversionServiceTest.java
+  h_f2cf00af6c798e 28-30,34-564
+llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/EncryptedResourceCatalogTest.java
+  h_f2cf00af6c798e 15-33
+llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/ExtensionRuntimeHintsTest.java
+  h_f2cf00af6c798e 13-26
+llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/MockUpstreamDeepSeekTest.java
+  h_f2cf00af6c798e 44-49,53-747
+llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/NativeRuntimeBridgeTest.java
+  h_f2cf00af6c798e 2,14,16-64
+llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/ProductionConfigurationTest.java
+  h_f2cf00af6c798e 14-73
+llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/ProviderDiscoveryTest.java
+  h_f2cf00af6c798e 9-20
+llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/RecoveryGateTest.java
+  h_f2cf00af6c798e 1-38
+llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/RouteUpstreamProtocolBindingTest.java
+  h_f2cf00af6c798e 29-58
+llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/SecretStoreBackupRecoveryTest.java
+  h_f2cf00af6c798e 26-94
+llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/SecretStoreTest.java
+  h_f2cf00af6c798e 24-107
+llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/SqliteApiKeyRegistryTest.java
+  h_f2cf00af6c798e 15-96
+llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/TestPolicyModule.java
+  h_f2cf00af6c798e 2,5,7-26
+llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/TokenizerSelectionTest.java
+  h_f2cf00af6c798e 17-47
+llmgw-app/src/test/java/io/github/leohou0430/llmgw/app/VersionedRouteConfigSourceTest.java
+  h_f2cf00af6c798e 14-84
+llmgw-approval/llmgw-approval-api/pom.xml
+  h_f2cf00af6c798e 1-23
+llmgw-approval/llmgw-approval-api/src/main/java/io/github/leohou0430/llmgw/approval/ApprovalService.java
+  h_f2cf00af6c798e 1-106
+llmgw-approval/llmgw-approval-sqlite/pom.xml
+  h_f2cf00af6c798e 1-29
+llmgw-approval/llmgw-approval-sqlite/src/main/java/io/github/leohou0430/llmgw/approval/sqlite/ApprovalMigrations.java
+  h_f2cf00af6c798e 1-49
+llmgw-approval/llmgw-approval-sqlite/src/main/java/io/github/leohou0430/llmgw/approval/sqlite/SqliteApprovalModule.java
+  h_f2cf00af6c798e 1-26
+llmgw-approval/llmgw-approval-sqlite/src/main/java/io/github/leohou0430/llmgw/approval/sqlite/SqliteApprovalService.java
+  h_f2cf00af6c798e 1-216
+llmgw-approval/llmgw-approval-sqlite/src/main/resources/META-INF/llmgw/extensions/io.github.leohou0430.llmgw.core.extension.ExtensionModule
+  h_f2cf00af6c798e 1
+llmgw-approval/llmgw-approval-sqlite/src/test/java/io/github/leohou0430/llmgw/approval/sqlite/SqliteApprovalServiceTest.java
+  h_f2cf00af6c798e 1-143
+llmgw-approval/pom.xml
+  h_f2cf00af6c798e 1-29
+llmgw-billing/llmgw-billing-api/pom.xml
+  h_f2cf00af6c798e 1-22
+llmgw-billing/llmgw-billing-api/src/main/java/io/github/leohou0430/llmgw/billing/BillingAccount.java
+  h_f2cf00af6c798e 1-28
+llmgw-billing/llmgw-billing-api/src/main/java/io/github/leohou0430/llmgw/billing/BillingInput.java
+  h_f2cf00af6c798e 1-42
+llmgw-billing/llmgw-billing-api/src/main/java/io/github/leohou0430/llmgw/billing/BillingLedger.java
+  h_f2cf00af6c798e 1-81
+llmgw-billing/llmgw-billing-api/src/main/java/io/github/leohou0430/llmgw/billing/BillingMeter.java
+  h_f2cf00af6c798e 1-30
+llmgw-billing/llmgw-billing-api/src/main/java/io/github/leohou0430/llmgw/billing/BillingReservation.java
+  h_f2cf00af6c798e 1-18
+llmgw-billing/llmgw-billing-api/src/main/java/io/github/leohou0430/llmgw/billing/BillingSettlement.java
+  h_f2cf00af6c798e 1-22
+llmgw-billing/llmgw-billing-api/src/main/java/io/github/leohou0430/llmgw/billing/MeteredQuantity.java
+  h_f2cf00af6c798e 1-37
+llmgw-billing/llmgw-billing-api/src/main/java/io/github/leohou0430/llmgw/billing/MissingPriceException.java
+  h_f2cf00af6c798e 1-13
+llmgw-billing/llmgw-billing-api/src/main/java/io/github/leohou0430/llmgw/billing/Money.java
+  h_f2cf00af6c798e 1-87
+llmgw-billing/llmgw-billing-api/src/main/java/io/github/leohou0430/llmgw/billing/Price.java
+  h_f2cf00af6c798e 1-32
+llmgw-billing/llmgw-billing-api/src/main/java/io/github/leohou0430/llmgw/billing/PriceBook.java
+  h_f2cf00af6c798e 1-21
+llmgw-billing/llmgw-billing-api/src/main/java/io/github/leohou0430/llmgw/billing/PriceVersion.java
+  h_f2cf00af6c798e 1-30
+llmgw-billing/llmgw-billing-api/src/main/java/io/github/leohou0430/llmgw/billing/RechargeCommand.java
+  h_f2cf00af6c798e 1-18
+llmgw-billing/llmgw-billing-api/src/main/java/io/github/leohou0430/llmgw/billing/ReconciliationAction.java
+  h_f2cf00af6c798e 1-8
+llmgw-billing/llmgw-billing-api/src/main/java/io/github/leohou0430/llmgw/billing/ReconciliationCommand.java
+  h_f2cf00af6c798e 1-17
+llmgw-billing/llmgw-billing-api/src/main/java/io/github/leohou0430/llmgw/billing/ReversalCommand.java
+  h_f2cf00af6c798e 1-17
+llmgw-billing/llmgw-billing-api/src/main/java/io/github/leohou0430/llmgw/billing/StrictBoundRequiredException.java
+  h_f2cf00af6c798e 1-15
+llmgw-billing/llmgw-billing-api/src/main/java/io/github/leohou0430/llmgw/billing/Unit.java
+  h_f2cf00af6c798e 1-21
+llmgw-billing/llmgw-billing-api/src/main/java/io/github/leohou0430/llmgw/billing/UsageEvidence.java
+  h_f2cf00af6c798e 1-21
+llmgw-billing/llmgw-billing-sqlite/pom.xml
+  h_f2cf00af6c798e 1-29
+llmgw-billing/llmgw-billing-sqlite/src/main/java/io/github/leohou0430/llmgw/billing/sqlite/BillingArchiveService.java
+  h_f2cf00af6c798e 1-158
+llmgw-billing/llmgw-billing-sqlite/src/main/java/io/github/leohou0430/llmgw/billing/sqlite/BillingMigrations.java
+  h_f2cf00af6c798e 1-80
+llmgw-billing/llmgw-billing-sqlite/src/main/java/io/github/leohou0430/llmgw/billing/sqlite/BillingSqliteModule.java
+  h_f2cf00af6c798e 1-36
+llmgw-billing/llmgw-billing-sqlite/src/main/java/io/github/leohou0430/llmgw/billing/sqlite/DefaultBillingMeter.java
+  h_f2cf00af6c798e 1-130
+llmgw-billing/llmgw-billing-sqlite/src/main/java/io/github/leohou0430/llmgw/billing/sqlite/SqliteBillingLedger.java
+  h_f2cf00af6c798e 1-570
+llmgw-billing/llmgw-billing-sqlite/src/main/java/io/github/leohou0430/llmgw/billing/sqlite/SqlitePriceBook.java
+  h_f2cf00af6c798e 1-175
+llmgw-billing/llmgw-billing-sqlite/src/main/java/io/github/leohou0430/llmgw/billing/sqlite/SqliteTaskBillingLink.java
+  h_f2cf00af6c798e 1-123
+llmgw-billing/llmgw-billing-sqlite/src/main/resources/META-INF/llmgw/extensions/io.github.leohou0430.llmgw.core.extension.ExtensionModule
+  h_f2cf00af6c798e 1
+llmgw-billing/llmgw-billing-sqlite/src/test/java/io/github/leohou0430/llmgw/billing/sqlite/BillingArchiveServiceTest.java
+  h_f2cf00af6c798e 1-138
+llmgw-billing/llmgw-billing-sqlite/src/test/java/io/github/leohou0430/llmgw/billing/sqlite/BillingMeterTest.java
+  h_f2cf00af6c798e 1-120
+llmgw-billing/llmgw-billing-sqlite/src/test/java/io/github/leohou0430/llmgw/billing/sqlite/SqliteBillingLedgerTest.java
+  h_f2cf00af6c798e 1-202
+llmgw-billing/llmgw-billing-sqlite/src/test/java/io/github/leohou0430/llmgw/billing/sqlite/SqliteTaskBillingLinkTest.java
+  h_f2cf00af6c798e 1-87
+llmgw-billing/pom.xml
+  h_f2cf00af6c798e 1-27
+llmgw-catalog/llmgw-catalog-api/pom.xml
+  h_f2cf00af6c798e 9
+llmgw-catalog/llmgw-catalog-api/src/main/java/io/github/leohou0430/llmgw/catalog/CatalogAccessException.java
+  h_f2cf00af6c798e 6-9
+llmgw-catalog/llmgw-catalog-api/src/main/java/io/github/leohou0430/llmgw/catalog/CatalogCursorException.java
+  h_f2cf00af6c798e 6-9
+llmgw-catalog/llmgw-catalog-api/src/main/java/io/github/leohou0430/llmgw/catalog/CatalogPage.java
+  h_f2cf00af6c798e 5-8,11-13,15-17
+llmgw-catalog/llmgw-catalog-api/src/main/java/io/github/leohou0430/llmgw/catalog/CreationOutcome.java
+  h_f2cf00af6c798e 5-8,11,13-14,16-20
+llmgw-catalog/llmgw-catalog-api/src/main/java/io/github/leohou0430/llmgw/catalog/CreationRequest.java
+  h_f2cf00af6c798e 11-12,14-16
+llmgw-catalog/llmgw-catalog-api/src/main/java/io/github/leohou0430/llmgw/catalog/DeletionRecord.java
+  h_f2cf00af6c798e 4
+llmgw-catalog/llmgw-catalog-api/src/main/java/io/github/leohou0430/llmgw/catalog/DeletionState.java
+  h_f2cf00af6c798e 3-5,7-14
+llmgw-catalog/llmgw-catalog-api/src/main/java/io/github/leohou0430/llmgw/catalog/LegacyResource.java
+  h_f2cf00af6c798e 10-11,13-15
+llmgw-catalog/llmgw-catalog-api/src/main/java/io/github/leohou0430/llmgw/catalog/MigrationApproval.java
+  h_f2cf00af6c798e 8-9
+llmgw-catalog/llmgw-catalog-api/src/main/java/io/github/leohou0430/llmgw/catalog/MigrationAuditSink.java
+  h_f2cf00af6c798e 7-8
+llmgw-catalog/llmgw-catalog-api/src/main/java/io/github/leohou0430/llmgw/catalog/MigrationPreview.java
+  h_f2cf00af6c798e 6-8,12-16
+llmgw-catalog/llmgw-catalog-api/src/main/java/io/github/leohou0430/llmgw/catalog/PageRequest.java
+  h_f2cf00af6c798e 4-6,9,11-15,17-19,21-23
+llmgw-catalog/llmgw-catalog-api/src/main/java/io/github/leohou0430/llmgw/catalog/ProjectAuthorizer.java
+  h_f2cf00af6c798e 4-6,11-17
+llmgw-catalog/llmgw-catalog-api/src/main/java/io/github/leohou0430/llmgw/catalog/RawContentUnavailableException.java
+  h_f2cf00af6c798e 3-5,8-11
+llmgw-catalog/llmgw-catalog-api/src/main/java/io/github/leohou0430/llmgw/catalog/ReconciliationEvent.java
+  h_f2cf00af6c798e 4-7,9-10
+llmgw-catalog/llmgw-catalog-api/src/main/java/io/github/leohou0430/llmgw/catalog/ReconciliationEventSink.java
+  h_f2cf00af6c798e 7-8
+llmgw-catalog/llmgw-catalog-api/src/main/java/io/github/leohou0430/llmgw/catalog/ResourceCatalog.java
+  h_f2cf00af6c798e 7-10,14-15,17,19,21-31
+llmgw-catalog/llmgw-catalog-api/src/main/java/io/github/leohou0430/llmgw/catalog/ResourceEntry.java
+  h_f2cf00af6c798e 7-11,13-15,17-23,25-28,30-33
+llmgw-catalog/llmgw-catalog-api/src/main/java/io/github/leohou0430/llmgw/catalog/ResourceLifecycle.java
+  h_f2cf00af6c798e 11-206
+llmgw-catalog/llmgw-catalog-api/src/main/java/io/github/leohou0430/llmgw/catalog/TaskCanceller.java
+  h_f2cf00af6c798e 11-12
+llmgw-catalog/llmgw-catalog-api/src/main/java/io/github/leohou0430/llmgw/catalog/TaskCatalog.java
+  h_f2cf00af6c798e 6-7,13-14,16,18-24
+llmgw-catalog/llmgw-catalog-api/src/main/java/io/github/leohou0430/llmgw/catalog/UpstreamCreator.java
+  h_f2cf00af6c798e 5-6,11-19
+llmgw-catalog/llmgw-catalog-api/src/main/java/io/github/leohou0430/llmgw/catalog/UpstreamDeleteChecker.java
+  h_f2cf00af6c798e 3-6,10-11
+llmgw-catalog/llmgw-catalog-api/src/main/java/io/github/leohou0430/llmgw/catalog/UpstreamDeleter.java
+  h_f2cf00af6c798e 3-6,10-11
+llmgw-catalog/llmgw-catalog-default/pom.xml
+  h_f2cf00af6c798e 9
+llmgw-catalog/llmgw-catalog-default/src/main/java/io/github/leohou0430/llmgw/catalog/local/CreationService.java
+  h_f2cf00af6c798e 15-20,23-64
+llmgw-catalog/llmgw-catalog-default/src/main/java/io/github/leohou0430/llmgw/catalog/local/CursorCodec.java
+  h_f2cf00af6c798e 15-17,21,23-24,26,28-30,32-36,38-88
+llmgw-catalog/llmgw-catalog-default/src/main/java/io/github/leohou0430/llmgw/catalog/local/DeletionService.java
+  h_f2cf00af6c798e 17-21,25,27,29,31-34,36-38,40-83
+llmgw-catalog/llmgw-catalog-default/src/main/java/io/github/leohou0430/llmgw/catalog/local/LegacyMigrationService.java
+  h_f2cf00af6c798e 28,30,32,34,36-42,44-94
+llmgw-catalog/llmgw-catalog-default/src/main/java/io/github/leohou0430/llmgw/catalog/local/LocalResourceCatalog.java
+  h_f2cf00af6c798e 23-28,31-157
+llmgw-catalog/llmgw-catalog-default/src/main/java/io/github/leohou0430/llmgw/catalog/local/LocalTaskCatalog.java
+  h_f2cf00af6c798e 16-19,23,25,27,29-31,33-36,38-68
+llmgw-catalog/llmgw-catalog-default/src/main/java/io/github/leohou0430/llmgw/catalog/local/SqliteResourceCatalog.java
+  h_f2cf00af6c798e 27-33,37,39,41,43,45-47,49-53,55-94,96-114,116-129,131-153,155-186,188-225,227-229,231-240,242-249,251-264,266-268,270-302
+llmgw-catalog/llmgw-catalog-default/src/test/java/io/github/leohou0430/llmgw/catalog/local/CatalogPaginationTest.java
+  h_f2cf00af6c798e 19-22,26-99
+llmgw-catalog/llmgw-catalog-default/src/test/java/io/github/leohou0430/llmgw/catalog/local/CreationServiceTest.java
+  h_f2cf00af6c798e 24-26,30-120
+llmgw-catalog/llmgw-catalog-default/src/test/java/io/github/leohou0430/llmgw/catalog/local/DeletionServiceTest.java
+  h_f2cf00af6c798e 18-21,25-114
+llmgw-catalog/llmgw-catalog-default/src/test/java/io/github/leohou0430/llmgw/catalog/local/LegacyMigrationServiceTest.java
+  h_f2cf00af6c798e 17-20,24-115
+llmgw-catalog/llmgw-catalog-default/src/test/java/io/github/leohou0430/llmgw/catalog/local/LocalResourceCatalogTest.java
+  h_f2cf00af6c798e 16-17,21-24,26-29,31-40,42-48,50-53,55-60,62-70
+llmgw-catalog/llmgw-catalog-default/src/test/java/io/github/leohou0430/llmgw/catalog/local/ResourceLifecycleTest.java
+  h_f2cf00af6c798e 12-114
+llmgw-catalog/llmgw-catalog-default/src/test/java/io/github/leohou0430/llmgw/catalog/local/SqliteResourceCatalogTest.java
+  h_f2cf00af6c798e 25-150
+llmgw-catalog/llmgw-catalog-default/src/test/java/io/github/leohou0430/llmgw/catalog/local/TaskCatalogTest.java
+  h_f2cf00af6c798e 18-21,25-89
+llmgw-catalog/pom.xml
+  h_f2cf00af6c798e 9
+llmgw-control/llmgw-control-api/pom.xml
+  h_f2cf00af6c798e 9
+llmgw-control/llmgw-control-api/src/main/java/io/github/leohou0430/llmgw/control/AdminTokenDecision.java
+  h_f2cf00af6c798e 4-6,10-12,14-16
+llmgw-control/llmgw-control-api/src/main/java/io/github/leohou0430/llmgw/control/AdminTokenMode.java
+  h_f2cf00af6c798e 5-13
+llmgw-control/llmgw-control-api/src/main/java/io/github/leohou0430/llmgw/control/AdminTokenPolicy.java
+  h_f2cf00af6c798e 11-17
+llmgw-control/llmgw-control-api/src/main/java/io/github/leohou0430/llmgw/control/ConfigValidator.java
+  h_f2cf00af6c798e 12-13
+llmgw-control/llmgw-control-api/src/main/java/io/github/leohou0430/llmgw/control/PlatformPolicy.java
+  h_f2cf00af6c798e 13-15,17-19,21-23,25-27
+llmgw-control/llmgw-control-api/src/main/java/io/github/leohou0430/llmgw/control/RootKeyMismatchException.java
+  h_f2cf00af6c798e 4-6,10-14
+llmgw-control/llmgw-control-api/src/main/java/io/github/leohou0430/llmgw/control/RootKeyMissingException.java
+  h_f2cf00af6c798e 6-9
+llmgw-control/llmgw-control-api/src/main/java/io/github/leohou0430/llmgw/control/RootKeyProvider.java
+  h_f2cf00af6c798e 11-12
+llmgw-control/llmgw-control-api/src/main/java/io/github/leohou0430/llmgw/control/RouteVersion.java
+  h_f2cf00af6c798e 11-16
+llmgw-control/llmgw-control-api/src/main/java/io/github/leohou0430/llmgw/control/RouteVersionStore.java
+  h_f2cf00af6c798e 9,11,13,15-23
+llmgw-control/llmgw-control-api/src/main/java/io/github/leohou0430/llmgw/control/SecretCipher.java
+  h_f2cf00af6c798e 6-10
+llmgw-control/llmgw-control-api/src/main/java/io/github/leohou0430/llmgw/control/UpstreamCandidate.java
+  h_f2cf00af6c798e 7-8,10-11,13-15,17-20
+llmgw-control/llmgw-control-api/src/main/java/io/github/leohou0430/llmgw/control/VersionConflictException.java
+  h_f2cf00af6c798e 3-6,9-12
+llmgw-control/llmgw-control-default/pom.xml
+  h_f2cf00af6c798e 9
+llmgw-control/llmgw-control-default/src/main/java/io/github/leohou0430/llmgw/control/AesGcmSecretCipher.java
+  h_f2cf00af6c798e 23,25,27-68
+llmgw-control/llmgw-control-default/src/main/java/io/github/leohou0430/llmgw/control/DefaultAdminTokenPolicy.java
+  h_f2cf00af6c798e 9-11,15-30
+llmgw-control/llmgw-control-default/src/main/java/io/github/leohou0430/llmgw/control/DefaultConfigValidator.java
+  h_f2cf00af6c798e 15-18,22,24-82
+llmgw-control/llmgw-control-default/src/main/java/io/github/leohou0430/llmgw/control/InMemoryRouteVersionStore.java
+  h_f2cf00af6c798e 13-36
+llmgw-control/llmgw-control-default/src/main/java/io/github/leohou0430/llmgw/control/RouteVersionService.java
+  h_f2cf00af6c798e 9-96
+llmgw-control/llmgw-control-default/src/main/java/io/github/leohou0430/llmgw/control/StaticRootKey.java
+  h_f2cf00af6c798e 5-7,9-36
+llmgw-control/llmgw-control-default/src/main/java/io/github/leohou0430/llmgw/control/local/RestrictedNetworks.java
+  h_f2cf00af6c798e 18,20,22-39,41-57,59-76,78-93,95-110,112-164
+llmgw-control/llmgw-control-default/src/main/java/io/github/leohou0430/llmgw/control/local/RouteCandidateValidator.java
+  h_f2cf00af6c798e 15-18,22,24,26,28-30,32-42,44-48,50-92
+llmgw-control/llmgw-control-default/src/test/java/io/github/leohou0430/llmgw/control/AdminTokenPolicyTest.java
+  h_f2cf00af6c798e 12-14,18-45
+llmgw-control/llmgw-control-default/src/test/java/io/github/leohou0430/llmgw/control/AtomicRoutePublicationTest.java
+  h_f2cf00af6c798e 10-59
+llmgw-control/llmgw-control-default/src/test/java/io/github/leohou0430/llmgw/control/ConfigValidatorTest.java
+  h_f2cf00af6c798e 20,22-25,27-32,34-39,41-48,50-52,54-63,65-84
+llmgw-control/llmgw-control-default/src/test/java/io/github/leohou0430/llmgw/control/RestrictedNetworksTest.java
+  h_f2cf00af6c798e 12-45
+llmgw-control/llmgw-control-default/src/test/java/io/github/leohou0430/llmgw/control/RouteCandidateValidatorTest.java
+  h_f2cf00af6c798e 15-52
+llmgw-control/llmgw-control-default/src/test/java/io/github/leohou0430/llmgw/control/RouteVersionTest.java
+  h_f2cf00af6c798e 17-25,27-34,36-43,45,47-52,54-58,60,62-70
+llmgw-control/llmgw-control-default/src/test/java/io/github/leohou0430/llmgw/control/SecretCipherTest.java
+  h_f2cf00af6c798e 18-55
+llmgw-control/pom.xml
+  h_f2cf00af6c798e 9
+llmgw-conversion/llmgw-conversion-api/pom.xml
+  h_f2cf00af6c798e 4
+llmgw-conversion/llmgw-conversion-api/src/main/java/io/github/leohou0430/llmgw/conversion/AppliedDegradation.java
+  h_f2cf00af6c798e 6-16
+llmgw-conversion/llmgw-conversion-api/src/main/java/io/github/leohou0430/llmgw/conversion/CapabilityContext.java
+  h_f2cf00af6c798e 6-8,11,13-24
+llmgw-conversion/llmgw-conversion-api/src/main/java/io/github/leohou0430/llmgw/conversion/CapabilityException.java
+  h_f2cf00af6c798e 7-9,13-69
+llmgw-conversion/llmgw-conversion-api/src/main/java/io/github/leohou0430/llmgw/conversion/CapabilityPolicy.java
+  h_f2cf00af6c798e 6-7,11-12,14-39
+llmgw-conversion/llmgw-conversion-api/src/main/java/io/github/leohou0430/llmgw/conversion/Classification.java
+  h_f2cf00af6c798e 5-7
+llmgw-conversion/llmgw-conversion-api/src/main/java/io/github/leohou0430/llmgw/conversion/ContentPart.java
+  h_f2cf00af6c798e 4
+llmgw-conversion/llmgw-conversion-api/src/main/java/io/github/leohou0430/llmgw/conversion/ContinuationEnvelope.java
+  h_f2cf00af6c798e 23-131
+llmgw-conversion/llmgw-conversion-api/src/main/java/io/github/leohou0430/llmgw/conversion/ConversionService.java
+  h_f2cf00af6c798e 7-10,12-13,19-24,26-51
+llmgw-conversion/llmgw-conversion-api/src/main/java/io/github/leohou0430/llmgw/conversion/Decision.java
+  h_f2cf00af6c798e 4-5,9-10,12-16
+llmgw-conversion/llmgw-conversion-api/src/main/java/io/github/leohou0430/llmgw/conversion/DegradationAudit.java
+  h_f2cf00af6c798e 9-10,14-40
+llmgw-conversion/llmgw-conversion-api/src/main/java/io/github/leohou0430/llmgw/conversion/DegradationGrant.java
+  h_f2cf00af6c798e 8-10,14,16-17,19-27,29-31,33-51,53-55,57-64
+llmgw-conversion/llmgw-conversion-api/src/main/java/io/github/leohou0430/llmgw/conversion/EntryCodec.java
+  h_f2cf00af6c798e 7-11,16,18-19,21-26,28-35,37-41
+llmgw-conversion/llmgw-conversion-api/src/main/java/io/github/leohou0430/llmgw/conversion/FieldRule.java
+  h_f2cf00af6c798e 6-8,12-30
+llmgw-conversion/llmgw-conversion-api/src/main/java/io/github/leohou0430/llmgw/conversion/ImagePart.java
+  h_f2cf00af6c798e 4-6,9-14
+llmgw-conversion/llmgw-conversion-api/src/main/java/io/github/leohou0430/llmgw/conversion/PreparedConversion.java
+  h_f2cf00af6c798e 4-6,8-11,15-16,18-22,24-25,27-31
+llmgw-conversion/llmgw-conversion-api/src/main/java/io/github/leohou0430/llmgw/conversion/Role.java
+  h_f2cf00af6c798e 4-6
+llmgw-conversion/llmgw-conversion-api/src/main/java/io/github/leohou0430/llmgw/conversion/SemanticEvent.java
+  h_f2cf00af6c798e 4
+llmgw-conversion/llmgw-conversion-api/src/main/java/io/github/leohou0430/llmgw/conversion/SemanticMessage.java
+  h_f2cf00af6c798e 7-11
+llmgw-conversion/llmgw-conversion-api/src/main/java/io/github/leohou0430/llmgw/conversion/SemanticRequest.java
+  h_f2cf00af6c798e 7-11,13-15,17-23
+llmgw-conversion/llmgw-conversion-api/src/main/java/io/github/leohou0430/llmgw/conversion/SemanticResponse.java
+  h_f2cf00af6c798e 7-10
+llmgw-conversion/llmgw-conversion-api/src/main/java/io/github/leohou0430/llmgw/conversion/StopReason.java
+  h_f2cf00af6c798e 4-6
+llmgw-conversion/llmgw-conversion-api/src/main/java/io/github/leohou0430/llmgw/conversion/StreamDecoder.java
+  h_f2cf00af6c798e 6-11,15-16,18-19,21-24
+llmgw-conversion/llmgw-conversion-api/src/main/java/io/github/leohou0430/llmgw/conversion/StreamEncoder.java
+  h_f2cf00af6c798e 6-7,9-12,16-17,19-23,25-29
+llmgw-conversion/llmgw-conversion-api/src/main/java/io/github/leohou0430/llmgw/conversion/StreamTranscoder.java
+  h_f2cf00af6c798e 6-9,11-14,16-17,22-26,28-32,34-38,40-44
+llmgw-conversion/llmgw-conversion-api/src/main/java/io/github/leohou0430/llmgw/conversion/TerminalEvent.java
+  h_f2cf00af6c798e 6-8
+llmgw-conversion/llmgw-conversion-api/src/main/java/io/github/leohou0430/llmgw/conversion/TextDelta.java
+  h_f2cf00af6c798e 7-9
+llmgw-conversion/llmgw-conversion-api/src/main/java/io/github/leohou0430/llmgw/conversion/TextPart.java
+  h_f2cf00af6c798e 6-8
+llmgw-conversion/llmgw-conversion-api/src/main/java/io/github/leohou0430/llmgw/conversion/ThinkingDelta.java
+  h_f2cf00af6c798e 7-9
+llmgw-conversion/llmgw-conversion-api/src/main/java/io/github/leohou0430/llmgw/conversion/ThinkingPart.java
+  h_f2cf00af6c798e 7-9
+llmgw-conversion/llmgw-conversion-api/src/main/java/io/github/leohou0430/llmgw/conversion/ToolCallDelta.java
+  h_f2cf00af6c798e 5-9
+llmgw-conversion/llmgw-conversion-api/src/main/java/io/github/leohou0430/llmgw/conversion/ToolCallPart.java
+  h_f2cf00af6c798e 6-9
+llmgw-conversion/llmgw-conversion-api/src/main/java/io/github/leohou0430/llmgw/conversion/ToolResultPart.java
+  h_f2cf00af6c798e 6-8
+llmgw-conversion/llmgw-conversion-api/src/main/java/io/github/leohou0430/llmgw/conversion/ToolSpec.java
+  h_f2cf00af6c798e 6-8
+llmgw-conversion/llmgw-conversion-api/src/main/java/io/github/leohou0430/llmgw/conversion/UpstreamCodec.java
+  h_f2cf00af6c798e 6-7,12-13,15-22
+llmgw-conversion/llmgw-conversion-api/src/main/java/io/github/leohou0430/llmgw/conversion/UpstreamException.java
+  h_f2cf00af6c798e 11,13,15-17,19-21,23-26,28-30,32-39
+llmgw-conversion/llmgw-conversion-api/src/main/java/io/github/leohou0430/llmgw/conversion/UpstreamPayload.java
+  h_f2cf00af6c798e 7-16
+llmgw-conversion/llmgw-conversion-api/src/main/java/io/github/leohou0430/llmgw/conversion/Usage.java
+  h_f2cf00af6c798e 4-5
+llmgw-conversion/llmgw-conversion-api/src/main/java/io/github/leohou0430/llmgw/conversion/UsageEvent.java
+  h_f2cf00af6c798e 6-8
+llmgw-conversion/llmgw-conversion-api/src/main/java/io/github/leohou0430/llmgw/conversion/Violation.java
+  h_f2cf00af6c798e 6-16
+llmgw-conversion/llmgw-conversion-api/src/test/java/io/github/leohou0430/llmgw/conversion/CapabilityPolicyTest.java
+  h_f2cf00af6c798e 21-524
+llmgw-conversion/llmgw-conversion-api/src/test/java/io/github/leohou0430/llmgw/conversion/ContinuationEnvelopeTest.java
+  h_f2cf00af6c798e 18,22-312
+llmgw-conversion/llmgw-conversion-api/src/test/java/io/github/leohou0430/llmgw/conversion/EntrySpiTest.java
+  h_f2cf00af6c798e 16-48
+llmgw-conversion/llmgw-conversion-api/src/test/java/io/github/leohou0430/llmgw/conversion/SemanticModelTest.java
+  h_f2cf00af6c798e 17-282
+llmgw-conversion/llmgw-conversion-api/src/test/java/io/github/leohou0430/llmgw/conversion/UpstreamSpiTest.java
+  h_f2cf00af6c798e 12-58
+llmgw-conversion/llmgw-conversion-chat/pom.xml
+  h_f2cf00af6c798e 3
+llmgw-conversion/llmgw-conversion-chat/src/main/java/io/github/leohou0430/llmgw/conversion/chat/ChatEntryCodec.java
+  h_f2cf00af6c798e 56-1338
+llmgw-conversion/llmgw-conversion-chat/src/test/java/io/github/leohou0430/llmgw/conversion/chat/ChatCodecDiscoveryTest.java
+  h_f2cf00af6c798e 24-50
+llmgw-conversion/llmgw-conversion-chat/src/test/java/io/github/leohou0430/llmgw/conversion/chat/ChatEntryCodecTest.java
+  h_f2cf00af6c798e 58-1330
+llmgw-conversion/llmgw-conversion-deepseek/pom.xml
+  h_f2cf00af6c798e 3
+llmgw-conversion/llmgw-conversion-deepseek/src/main/java/io/github/leohou0430/llmgw/conversion/deepseek/DeepSeekChatCodec.java
+  h_f2cf00af6c798e 41-635
+llmgw-conversion/llmgw-conversion-deepseek/src/test/java/io/github/leohou0430/llmgw/conversion/deepseek/DeepSeekChatCodecTest.java
+  h_f2cf00af6c798e 54-771
+llmgw-conversion/llmgw-conversion-deepseek/src/test/java/io/github/leohou0430/llmgw/conversion/deepseek/DeepSeekCodecDiscoveryTest.java
+  h_f2cf00af6c798e 14-30
+llmgw-conversion/llmgw-conversion-gemini/pom.xml
+  h_f2cf00af6c798e 1-26
+llmgw-conversion/llmgw-conversion-gemini/src/main/java/io/github/leohou0430/llmgw/conversion/gemini/GeminiEntryCodec.java
+  h_f2cf00af6c798e 1-350
+llmgw-conversion/llmgw-conversion-gemini/src/main/java/io/github/leohou0430/llmgw/conversion/gemini/GeminiPaths.java
+  h_f2cf00af6c798e 1-66
+llmgw-conversion/llmgw-conversion-gemini/src/main/java/io/github/leohou0430/llmgw/conversion/gemini/GeminiUpstreamCodec.java
+  h_f2cf00af6c798e 1-380
+llmgw-conversion/llmgw-conversion-gemini/src/main/resources/META-INF/llmgw/extensions/io.github.leohou0430.llmgw.conversion.EntryCodec
+  h_f2cf00af6c798e 1
+llmgw-conversion/llmgw-conversion-gemini/src/test/java/io/github/leohou0430/llmgw/conversion/gemini/GeminiCodecTest.java
+  h_f2cf00af6c798e 1-152
+llmgw-conversion/llmgw-conversion-gemini/src/test/java/io/github/leohou0430/llmgw/conversion/gemini/GeminiPathsTest.java
+  h_f2cf00af6c798e 1-57
+llmgw-conversion/llmgw-conversion-gemini/src/test/java/io/github/leohou0430/llmgw/conversion/gemini/GeminiUpstreamCodecTest.java
+  h_f2cf00af6c798e 1-203
+llmgw-conversion/llmgw-conversion-messages/pom.xml
+  h_f2cf00af6c798e 3
+llmgw-conversion/llmgw-conversion-messages/src/main/java/io/github/leohou0430/llmgw/conversion/messages/MessagesEntryCodec.java
+  h_f2cf00af6c798e 52-54,58-1650
+llmgw-conversion/llmgw-conversion-messages/src/test/java/io/github/leohou0430/llmgw/conversion/messages/MessagesCodecDiscoveryTest.java
+  h_f2cf00af6c798e 24-52
+llmgw-conversion/llmgw-conversion-messages/src/test/java/io/github/leohou0430/llmgw/conversion/messages/MessagesEntryCodecTest.java
+  h_f2cf00af6c798e 60-2090
+llmgw-conversion/llmgw-conversion-module/pom.xml
+  h_f2cf00af6c798e 4
+llmgw-conversion/llmgw-conversion-module/src/main/java/io/github/leohou0430/llmgw/conversion/module/ConversionModule.java
+  h_f2cf00af6c798e 20-23,25-27,31-35,37,39-103
+llmgw-conversion/llmgw-conversion-module/src/main/java/io/github/leohou0430/llmgw/conversion/module/DefaultConversionService.java
+  h_f2cf00af6c798e 22-24,28,30-43,45,47-100
+llmgw-conversion/llmgw-conversion-module/src/main/java/io/github/leohou0430/llmgw/conversion/module/DefaultPreparedConversion.java
+  h_f2cf00af6c798e 13-15,17-19,23-75
+llmgw-conversion/llmgw-conversion-module/src/main/java/io/github/leohou0430/llmgw/conversion/module/DefaultStreamTranscoder.java
+  h_f2cf00af6c798e 15-18,20-23,27-138
+llmgw-conversion/llmgw-conversion-openai-chat/pom.xml
+  h_f2cf00af6c798e 1-25
+llmgw-conversion/llmgw-conversion-openai-chat/src/main/java/io/github/leohou0430/llmgw/conversion/openaichat/ChatUpstreamCodec.java
+  h_f2cf00af6c798e 1-370
+llmgw-conversion/llmgw-conversion-openai-chat/src/main/resources/META-INF/llmgw/extensions/io.github.leohou0430.llmgw.conversion.UpstreamCodec
+  h_f2cf00af6c798e 1
+llmgw-conversion/llmgw-conversion-openai-chat/src/test/java/io/github/leohou0430/llmgw/conversion/openaichat/ChatUpstreamCodecTest.java
+  h_f2cf00af6c798e 1-155
+llmgw-conversion/llmgw-conversion-responses/pom.xml
+  h_f2cf00af6c798e 3
+llmgw-conversion/llmgw-conversion-responses/src/main/java/io/github/leohou0430/llmgw/conversion/responses/ResponsesEntryCodec.java
+  h_f2cf00af6c798e 59-1712
+llmgw-conversion/llmgw-conversion-responses/src/test/java/io/github/leohou0430/llmgw/conversion/responses/ResponsesCodecDiscoveryTest.java
+  h_f2cf00af6c798e 24-52
+llmgw-conversion/llmgw-conversion-responses/src/test/java/io/github/leohou0430/llmgw/conversion/responses/ResponsesEntryCodecTest.java
+  h_f2cf00af6c798e 60-1954
+llmgw-conversion/pom.xml
+  h_f2cf00af6c798e 4,13-14
+llmgw-core/pom.xml
+  h_f2cf00af6c798e 9
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/config/GatewayProperties.java
+  h_f2cf00af6c798e 11-1645
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/extension/ExtensionContext.java
+  h_f2cf00af6c798e 6-9,11-131
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/extension/ExtensionModule.java
+  h_f2cf00af6c798e 5-7,10-12
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/extension/ExtensionPoint.java
+  h_f2cf00af6c798e 12-14
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/extension/Extensions.java
+  h_f2cf00af6c798e 15-17,19-146
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/ApiKeyRegistry.java
+  h_f2cf00af6c798e 9-47
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/AuditSink.java
+  h_f2cf00af6c798e 8-9,11-13
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/BudgetLedger.java
+  h_f2cf00af6c798e 6-8,10-12,16-20,22-30
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/Embedder.java
+  h_f2cf00af6c798e 4-8,12-28
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/GatewayContext.java
+  h_f2cf00af6c798e 11-14,16-20,24-407
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/GatewayDecision.java
+  h_f2cf00af6c798e 7-12,14-16,18-23,25-28,30-33,35-39,41-45,47-52,54-65,67-69,71-73,75-88
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/GatewayPipeline.java
+  h_f2cf00af6c798e 11-12,14-17,19-29,31-39,41-44,46-49,51-71,73-96,98-117
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/GenAiSpanSink.java
+  h_f2cf00af6c798e 1-17
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/GovernanceChain.java
+  h_f2cf00af6c798e 12,14,16,18-28,30-32
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/GovernanceUnavailableException.java
+  h_f2cf00af6c798e 1-15
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/Guardrail.java
+  h_f2cf00af6c798e 6-8,10-15,20,22,24,26,28-30,32-34,36-48
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/KeyAdminService.java
+  h_f2cf00af6c798e 7-10,12-14,18-19,21-25,27-29,31-33,35-40,42-45
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/KeyStore.java
+  h_f2cf00af6c798e 6-10,14-19,21,23,25-26,28-29,31-33,35-38
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/RequestLogSink.java
+  h_f2cf00af6c798e 7-10,14-17,19,21-24
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/SemanticCache.java
+  h_f2cf00af6c798e 8,10,12,14-25
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/SnapshotStore.java
+  h_f2cf00af6c798e 6,8-12
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/TokenLimiter.java
+  h_f2cf00af6c798e 6,8-25
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/TokenValidator.java
+  h_f2cf00af6c798e 6-11,15-20
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/UsageLedger.java
+  h_f2cf00af6c798e 8-52
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/model/ModelCatalog.java
+  h_f2cf00af6c798e 7-9,11-14,18,20-24
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/multipart/MultipartLimitException.java
+  h_f2cf00af6c798e 6-8,12,14,16-27
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/multipart/MultipartScanner.java
+  h_f2cf00af6c798e 17-21,23-27,29-31,36-339
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/multipart/MultipartUpload.java
+  h_f2cf00af6c798e 9-13,15-20,24-97
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/multipart/Spool.java
+  h_f2cf00af6c798e 16-20,24-145
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/multipart/SpoolLimitException.java
+  h_f2cf00af6c798e 6-9,13,15,17-28
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/multipart/SpoolManager.java
+  h_f2cf00af6c798e 18-21,25-165
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/protocol/ChunkParser.java
+  h_f2cf00af6c798e 10-20,22-23,25-26,28-41,43-139,141-160,162-179,181-196,198-236,238-242,244-336
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/protocol/DefaultProtocols.java
+  h_f2cf00af6c798e 10-13,17-420
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/protocol/ImagesProtocol.java
+  h_f2cf00af6c798e 7-9,13,15-45
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/protocol/JsonProtocols.java
+  h_f2cf00af6c798e 7-11,15-16,18-60
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/protocol/MessagesProtocol.java
+  h_f2cf00af6c798e 8-9,14-15,17-57,59-79,81-94,96-109,111-124,126-149
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/protocol/MultipartProbe.java
+  h_f2cf00af6c798e 6-9,11-14,18,20,22-23,25-65
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/protocol/ParsedRequest.java
+  h_f2cf00af6c798e 4-6,8-16,18-19,21-24,26-29,31-34
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/protocol/Protocol.java
+  h_f2cf00af6c798e 6-10,12-17,22,24-28,30-37,39-43,45-46,48-49,51-65
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/protocol/ProtocolCodec.java
+  h_f2cf00af6c798e 18-359
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/protocol/ProtocolKind.java
+  h_f2cf00af6c798e 4-5,7-10,14-58
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/protocol/Protocols.java
+  h_f2cf00af6c798e 7-10,14-47
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/protocol/ResponsesProtocol.java
+  h_f2cf00af6c798e 8-10,14-15,17-49,51-72,74-90,92-105,107-133
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/protocol/VideosProtocol.java
+  h_f2cf00af6c798e 8-11,15-16,18-41,43-58
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/routing/ConfigRouter.java
+  h_f2cf00af6c798e 10-14,18,20-23,25-27,29-31,33-36,38-41,43-46,48-51,53-61
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/routing/InMemoryRouteConfigSource.java
+  h_f2cf00af6c798e 12-60
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/routing/InMemoryTaskRouteSticky.java
+  h_f2cf00af6c798e 8-11,15-16,18,20,22,24-73
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/routing/Route.java
+  h_f2cf00af6c798e 6-9,11-16,18-25,27-30,32-35,37-41,43-47,49-64,66-73
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/routing/RouteConfigSource.java
+  h_f2cf00af6c798e 7-10,12-15,19-28
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/routing/RouteTable.java
+  h_f2cf00af6c798e 14-17,21-239
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/routing/Router.java
+  h_f2cf00af6c798e 9-10,12-13,15-20
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/routing/TaskRouteSticky.java
+  h_f2cf00af6c798e 4-8,12,14-17,19-21,23-35
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/upstream/ByteChunk.java
+  h_f2cf00af6c798e 7-9,15,17-19,21-33
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/upstream/ByteStream.java
+  h_f2cf00af6c798e 13-15,17-21,25-305
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/upstream/ChunkSink.java
+  h_f2cf00af6c798e 11,13-19,21-25
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/upstream/CircuitBreaker.java
+  h_f2cf00af6c798e 8-9,11-17,20-23,27-28,30,32-50
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/upstream/CircuitOpenException.java
+  h_f2cf00af6c798e 6-9
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/upstream/HeaderListener.java
+  h_f2cf00af6c798e 7-13,18-23
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/upstream/HeaderPolicy.java
+  h_f2cf00af6c798e 9-13,17-30
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/upstream/UpstreamMethod.java
+  h_f2cf00af6c798e 4-5,8-10
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/upstream/UpstreamRequest.java
+  h_f2cf00af6c798e 10-23,25-27,29-32,34-38,40-43,45-48,50-73,75-88
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/upstream/UpstreamStatusException.java
+  h_f2cf00af6c798e 4-10,14-44
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/upstream/UpstreamTimeoutException.java
+  h_f2cf00af6c798e 4-7,11-14
+llmgw-core/src/main/resources/META-INF/llmgw/extensions/io.github.leohou0430.llmgw.core.protocol.Protocol
+  h_f2cf00af6c798e 6
+llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/config/GatewayPropertiesAdminTokenTest.java
+  h_f2cf00af6c798e 10-13,15-17,19,21-22,24-29
+llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/extension/ExtensionContextTest.java
+  h_f2cf00af6c798e 10-70
+llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/extension/ExtensionsTest.java
+  h_f2cf00af6c798e 13-131
+llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/multipart/MultipartScannerTest.java
+  h_f2cf00af6c798e 17-20,24-141
+llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/multipart/MultipartUploadTest.java
+  h_f2cf00af6c798e 22-26,30-282
+llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/multipart/SpoolManagerTest.java
+  h_f2cf00af6c798e 26-29,33-371
+llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/protocol/ProtocolCodecTest.java
+  h_f2cf00af6c798e 14-15,19-37,39-50,52-56,58-66,68-77,79-86,88-98,100-106,108-120
+llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/protocol/ProtocolDiscoveryTest.java
+  h_f2cf00af6c798e 8-17
+llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/protocol/ProtocolSpiTest.java
+  h_f2cf00af6c798e 13-15,19-118
+llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/protocol/SsePayloadBoundaryTest.java
+  h_f2cf00af6c798e 8-25,27-39,41-51,53-68,70-73,75-77,79-127
+llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/routing/RouteTableTest.java
+  h_f2cf00af6c798e 15-17,21-206
+llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/routing/TaskRouteIsolationTest.java
+  h_f2cf00af6c798e 7-25
+llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/upstream/ByteStreamTest.java
+  h_f2cf00af6c798e 18-20,24-210
+llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/upstream/InputStreamSourceTest.java
+  h_f2cf00af6c798e 24-29,33-187
+llmgw-core/src/test/java/io/github/leohou0430/llmgw/core/upstream/UpstreamRequestTest.java
+  h_f2cf00af6c798e 15-17,21-30,32-42,44-49,51-61,63-68,70-90
+llmgw-engine/llmgw-engine-api/pom.xml
+  h_f2cf00af6c798e 9,22-23
+llmgw-engine/llmgw-engine-api/src/main/java/io/github/leohou0430/llmgw/engine/AbstractEngineConfiguration.java
+  h_f2cf00af6c798e 6-8,10-13,17,19-26
+llmgw-engine/llmgw-engine-api/src/main/java/io/github/leohou0430/llmgw/engine/BillableAttempt.java
+  h_f2cf00af6c798e 1-72
+llmgw-engine/llmgw-engine-api/src/main/java/io/github/leohou0430/llmgw/engine/BillableCall.java
+  h_f2cf00af6c798e 1-222
+llmgw-engine/llmgw-engine-api/src/main/java/io/github/leohou0430/llmgw/engine/EngineHeaders.java
+  h_f2cf00af6c798e 6,8,10-56
+llmgw-engine/llmgw-engine-api/src/main/java/io/github/leohou0430/llmgw/engine/EngineKind.java
+  h_f2cf00af6c798e 8-12,16-50
+llmgw-engine/llmgw-engine-api/src/main/java/io/github/leohou0430/llmgw/engine/EngineProfiles.java
+  h_f2cf00af6c798e 5-6,10-15
+llmgw-engine/llmgw-engine-api/src/main/java/io/github/leohou0430/llmgw/engine/EngineReasons.java
+  h_f2cf00af6c798e 7-9,13,15,17,19,21-35
+llmgw-engine/llmgw-engine-api/src/main/java/io/github/leohou0430/llmgw/engine/EngineRoutes.java
+  h_f2cf00af6c798e 18-176
+llmgw-engine/llmgw-engine-api/src/main/java/io/github/leohou0430/llmgw/engine/EngineTimings.java
+  h_f2cf00af6c798e 8-13,17-18,20-23,25-34
+llmgw-engine/llmgw-engine-api/src/main/java/io/github/leohou0430/llmgw/engine/ForwardingPolicy.java
+  h_f2cf00af6c798e 13-17,19-23,25-28,32-334
+llmgw-engine/llmgw-engine-api/src/main/java/io/github/leohou0430/llmgw/engine/IdempotencyGate.java
+  h_f2cf00af6c798e 1-104
+llmgw-engine/llmgw-engine-api/src/main/java/io/github/leohou0430/llmgw/engine/SseChunkAccounting.java
+  h_f2cf00af6c798e 10-14,16-20,26-27,29-63
+llmgw-engine/llmgw-engine-api/src/test/java/io/github/leohou0430/llmgw/engine/AuthoritativeInputUsageTest.java
+  h_f2cf00af6c798e 9-42
+llmgw-engine/llmgw-engine-api/src/test/java/io/github/leohou0430/llmgw/engine/BillingLifecycleTest.java
+  h_f2cf00af6c798e 1-337
+llmgw-engine/llmgw-engine-api/src/test/java/io/github/leohou0430/llmgw/engine/EngineRoutesConversionTest.java
+  h_f2cf00af6c798e 18-21,25-81
+llmgw-engine/llmgw-engine-api/src/test/java/io/github/leohou0430/llmgw/engine/FileReferencePolicyTest.java
+  h_f2cf00af6c798e 10-37
+llmgw-engine/llmgw-engine-api/src/test/java/io/github/leohou0430/llmgw/engine/ForwardingPolicyTest.java
+  h_f2cf00af6c798e 18-21,25-167
+llmgw-engine/llmgw-engine-vt/pom.xml
+  h_f2cf00af6c798e 9,19-20
+llmgw-engine/llmgw-engine-vt/src/main/java/io/github/leohou0430/llmgw/engine/vt/VirtualThreadEngineConfiguration.java
+  h_f2cf00af6c798e 13-16
+llmgw-engine/llmgw-engine-vt/src/main/java/io/github/leohou0430/llmgw/engine/vt/VirtualThreadGatewayController.java
+  h_f2cf00af6c798e 8,10,32-38,44-45,51,63,80-82,84-88,90-97,100-105,107-113,119-1976
+llmgw-engine/llmgw-engine-vt/src/test/java/io/github/leohou0430/llmgw/engine/vt/FileReferenceOwnershipTest.java
+  h_f2cf00af6c798e 31-32,36-287
+llmgw-engine/llmgw-engine-vt/src/test/java/io/github/leohou0430/llmgw/engine/vt/FilesDownloadOverLimitTest.java
+  h_f2cf00af6c798e 30-34,38-263
+llmgw-engine/llmgw-engine-vt/src/test/java/io/github/leohou0430/llmgw/engine/vt/FilesStreamingDownloadTest.java
+  h_f2cf00af6c798e 30-34,38-314
+llmgw-engine/llmgw-engine-vt/src/test/java/io/github/leohou0430/llmgw/engine/vt/FilesStreamingUploadTest.java
+  h_f2cf00af6c798e 32-37,41-409
+llmgw-engine/llmgw-engine-vt/src/test/java/io/github/leohou0430/llmgw/engine/vt/FilesUploadLimitsTest.java
+  h_f2cf00af6c798e 33-36,40-403
+llmgw-engine/llmgw-engine-vt/src/test/java/io/github/leohou0430/llmgw/engine/vt/StreamDisconnectTest.java
+  h_f2cf00af6c798e 3-4,10-11,22-94
+llmgw-engine/llmgw-engine-vt/src/test/java/io/github/leohou0430/llmgw/engine/vt/VirtualThreadConversionTest.java
+  h_f2cf00af6c798e 51-55,59-692
+llmgw-engine/llmgw-engine-webflux/pom.xml
+  h_f2cf00af6c798e 9,19-20
+llmgw-engine/llmgw-engine-webflux/src/main/java/io/github/leohou0430/llmgw/engine/webflux/DataBufferBodySource.java
+  h_f2cf00af6c798e 18-23,27-116
+llmgw-engine/llmgw-engine-webflux/src/main/java/io/github/leohou0430/llmgw/engine/webflux/SseResponseBuffers.java
+  h_f2cf00af6c798e 12-15,18-42
+llmgw-engine/llmgw-engine-webflux/src/main/java/io/github/leohou0430/llmgw/engine/webflux/WebfluxCapacityAdmission.java
+  h_f2cf00af6c798e 21-24,26-75
+llmgw-engine/llmgw-engine-webflux/src/main/java/io/github/leohou0430/llmgw/engine/webflux/WebfluxEngineConfiguration.java
+  h_f2cf00af6c798e 16-24
+llmgw-engine/llmgw-engine-webflux/src/main/java/io/github/leohou0430/llmgw/engine/webflux/WebfluxGatewayController.java
+  h_f2cf00af6c798e 3-9,15,65,82-86,88-92,94-103,105-111,113-117,123-1856
+llmgw-engine/llmgw-engine-webflux/src/test/java/io/github/leohou0430/llmgw/engine/webflux/CapacityAdmissionTest.java
+  h_f2cf00af6c798e 29-339
+llmgw-engine/llmgw-engine-webflux/src/test/java/io/github/leohou0430/llmgw/engine/webflux/DataBufferBodySourceTest.java
+  h_f2cf00af6c798e 22-24,28,30-32,34-44,46-52,54-59,61-66,68-76,78-110
+llmgw-engine/llmgw-engine-webflux/src/test/java/io/github/leohou0430/llmgw/engine/webflux/FileReferenceOwnershipTest.java
+  h_f2cf00af6c798e 27-29,33-228
+llmgw-engine/llmgw-engine-webflux/src/test/java/io/github/leohou0430/llmgw/engine/webflux/FilesStreamingDownloadTest.java
+  h_f2cf00af6c798e 30-34,38-257
+llmgw-engine/llmgw-engine-webflux/src/test/java/io/github/leohou0430/llmgw/engine/webflux/FilesStreamingUploadTest.java
+  h_f2cf00af6c798e 39-44,48-361
+llmgw-engine/llmgw-engine-webflux/src/test/java/io/github/leohou0430/llmgw/engine/webflux/FilesUploadLimitsTest.java
+  h_f2cf00af6c798e 39-43,47-319
+llmgw-engine/llmgw-engine-webflux/src/test/java/io/github/leohou0430/llmgw/engine/webflux/HeartbeatBackpressureTest.java
+  h_f2cf00af6c798e 16-149
+llmgw-engine/llmgw-engine-webflux/src/test/java/io/github/leohou0430/llmgw/engine/webflux/SseResponseBuffersTest.java
+  h_f2cf00af6c798e 14-66
+llmgw-engine/llmgw-engine-webflux/src/test/java/io/github/leohou0430/llmgw/engine/webflux/WebfluxConversionTest.java
+  h_f2cf00af6c798e 54-56,60-784
+llmgw-engine/pom.xml
+  h_f2cf00af6c798e 9
+llmgw-governance/llmgw-governance-api/pom.xml
+  h_f2cf00af6c798e 9
+llmgw-governance/llmgw-governance-api/src/main/java/io/github/leohou0430/llmgw/governance/GovernanceLimits.java
+  h_f2cf00af6c798e 8-9,11-17,19-22,24-25,27-35,37-40,42-45
+llmgw-governance/llmgw-governance-api/src/main/java/io/github/leohou0430/llmgw/governance/GovernancePacks.java
+  h_f2cf00af6c798e 3-6,8-17
+llmgw-governance/llmgw-governance-api/src/main/java/io/github/leohou0430/llmgw/governance/QuotaMath.java
+  h_f2cf00af6c798e 6-8,10-14,18-19,21-24,26-30,32-35,37-40,42-44,46-76
+llmgw-governance/llmgw-governance-api/src/main/java/io/github/leohou0430/llmgw/governance/UsageSummaries.java
+  h_f2cf00af6c798e 8-54
+llmgw-governance/llmgw-governance-api/src/test/java/io/github/leohou0430/llmgw/governance/QuotaMathTest.java
+  h_f2cf00af6c798e 14-15,19-22,24-29,31-39,41-46,48-52,54-58,60-65,67-95
+llmgw-governance/llmgw-governance-default/pom.xml
+  h_f2cf00af6c798e 9
+llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/AllowListHeaderPolicy.java
+  h_f2cf00af6c798e 16-25,27-30,34-138
+llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/AtomicTokenLimiter.java
+  h_f2cf00af6c798e 10-11,13-17,19-22,26-136
+llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/CaffeineSemanticCache.java
+  h_f2cf00af6c798e 15-16,18-21,25,27,29,31-33,35-40,42-44,46-54,56-65,67-85
+llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/ConfigModelCatalog.java
+  h_f2cf00af6c798e 14-16,20-51
+llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/DefaultGovernanceChain.java
+  h_f2cf00af6c798e 27-29,33-764
+llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/DefaultGovernanceModule.java
+  h_f2cf00af6c798e 16-19,21-61
+llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/DynamicGovernanceSettings.java
+  h_f2cf00af6c798e 10-15,19-21,23,25,27-29,31-33,35-63
+llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/GovernanceMetrics.java
+  h_f2cf00af6c798e 13,15,17,19-78
+llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/GuardrailChain.java
+  h_f2cf00af6c798e 9-11,15-36
+llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/HttpEmbedder.java
+  h_f2cf00af6c798e 18-22,26-118
+llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/HttpGuardrail.java
+  h_f2cf00af6c798e 18-22,26,28,30,32,34-41,43-111
+llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/InMemoryApiKeyRegistry.java
+  h_f2cf00af6c798e 15-67
+llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/InMemoryAuditSink.java
+  h_f2cf00af6c798e 10-12,16-41
+llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/InMemoryBudgetLedger.java
+  h_f2cf00af6c798e 10-13,17,19,21,23,25-71
+llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/InMemoryRequestLog.java
+  h_f2cf00af6c798e 11-14,18-61
+llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/InMemoryUsageLedger.java
+  h_f2cf00af6c798e 13,15,17,19-129
+llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/InMemoryVectorStore.java
+  h_f2cf00af6c798e 9-12,16-17,19,21,23,25-27,29-31,33-49,51-57,59-101
+llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/JsonKeyStore.java
+  h_f2cf00af6c798e 22-23,25-29,33-226
+llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/JsonSnapshotStore.java
+  h_f2cf00af6c798e 20-24,28,30,32,34,36-39,41-53,55-77,79-121
+llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/JwtTokenValidator.java
+  h_f2cf00af6c798e 23-27,31-139
+llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/ManagedApiKeyRegistry.java
+  h_f2cf00af6c798e 16-19,21-26,28-29,33-182
+llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/PatternGuardrail.java
+  h_f2cf00af6c798e 12-16,20-52
+llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/WindowedCircuitBreaker.java
+  h_f2cf00af6c798e 17-24,27-30,34-141
+llmgw-governance/llmgw-governance-default/src/test/java/io/github/leohou0430/llmgw/governance/inmemory/CacheIsolationTest.java
+  h_f2cf00af6c798e 11-60
+llmgw-governance/llmgw-governance-default/src/test/java/io/github/leohou0430/llmgw/governance/inmemory/ConfigModelCatalogTest.java
+  h_f2cf00af6c798e 13-14,18-61
+llmgw-governance/llmgw-governance-default/src/test/java/io/github/leohou0430/llmgw/governance/inmemory/GovernanceSafetyTest.java
+  h_f2cf00af6c798e 9,15-99
+llmgw-governance/llmgw-governance-default/src/test/java/io/github/leohou0430/llmgw/governance/inmemory/HttpGuardrailTest.java
+  h_f2cf00af6c798e 14-96
+llmgw-governance/llmgw-governance-default/src/test/java/io/github/leohou0430/llmgw/governance/inmemory/InMemoryBudgetLedgerTest.java
+  h_f2cf00af6c798e 11-13,17,19-25,27-32,34-40,42-71,73-87
+llmgw-governance/llmgw-governance-default/src/test/java/io/github/leohou0430/llmgw/governance/inmemory/JwtTokenValidatorTest.java
+  h_f2cf00af6c798e 18-209
+llmgw-governance/llmgw-governance-default/src/test/java/io/github/leohou0430/llmgw/governance/inmemory/ManagedApiKeyRegistryTest.java
+  h_f2cf00af6c798e 17-19,23-204
+llmgw-governance/llmgw-governance-default/src/test/java/io/github/leohou0430/llmgw/governance/inmemory/ModelRateAccountingTest.java
+  h_f2cf00af6c798e 13-67
+llmgw-governance/llmgw-governance-default/src/test/java/io/github/leohou0430/llmgw/governance/inmemory/MultipartHeaderPolicyTest.java
+  h_f2cf00af6c798e 11-56
+llmgw-governance/llmgw-governance-default/src/test/java/io/github/leohou0430/llmgw/governance/inmemory/NativeGovernanceModuleTest.java
+  h_f2cf00af6c798e 17-75
+llmgw-governance/llmgw-governance-default/src/test/java/io/github/leohou0430/llmgw/governance/inmemory/SnapshotSafetyTest.java
+  h_f2cf00af6c798e 12-144
+llmgw-governance/llmgw-governance-redis/pom.xml
+  h_f2cf00af6c798e 9
+llmgw-governance/llmgw-governance-redis/src/main/java/io/github/leohou0430/llmgw/governance/redis/RedisApiKeyRegistry.java
+  h_f2cf00af6c798e 19-22,26-195
+llmgw-governance/llmgw-governance-redis/src/main/java/io/github/leohou0430/llmgw/governance/redis/RedisCircuitBreaker.java
+  h_f2cf00af6c798e 13-14,18-104
+llmgw-governance/llmgw-governance-redis/src/main/java/io/github/leohou0430/llmgw/governance/redis/RedisFailurePolicy.java
+  h_f2cf00af6c798e 1-84
+llmgw-governance/llmgw-governance-redis/src/main/java/io/github/leohou0430/llmgw/governance/redis/RedisGovernanceModule.java
+  h_f2cf00af6c798e 13-16,18-55
+llmgw-governance/llmgw-governance-redis/src/main/java/io/github/leohou0430/llmgw/governance/redis/RedisScripts.java
+  h_f2cf00af6c798e 12-15,19-42,44-51,53-70,72-81,83-100,102-120,122-135,137-146,148-149,151-171
+llmgw-governance/llmgw-governance-redis/src/main/java/io/github/leohou0430/llmgw/governance/redis/RedisSemanticCache.java
+  h_f2cf00af6c798e 11-14,18,20,22,24-26,28-30,32-36,38-75
+llmgw-governance/llmgw-governance-redis/src/main/java/io/github/leohou0430/llmgw/governance/redis/RedisTaskRouteSticky.java
+  h_f2cf00af6c798e 8-10,14-50
+llmgw-governance/llmgw-governance-redis/src/main/java/io/github/leohou0430/llmgw/governance/redis/RedisTokenLimiter.java
+  h_f2cf00af6c798e 14-102
+llmgw-governance/llmgw-governance-redis/src/main/java/io/github/leohou0430/llmgw/governance/redis/RedisUsageLedger.java
+  h_f2cf00af6c798e 15-17,21-126
+llmgw-governance/llmgw-governance-redis/src/test/java/io/github/leohou0430/llmgw/governance/redis/RedisConsistencyTest.java
+  h_f2cf00af6c798e 10,12-293
+llmgw-governance/llmgw-governance-redis/src/test/java/io/github/leohou0430/llmgw/governance/redis/RedisTokenLimiterTest.java
+  h_f2cf00af6c798e 12-140
+llmgw-governance/pom.xml
+  h_f2cf00af6c798e 9
+llmgw-idempotency/llmgw-idempotency-api/pom.xml
+  h_f2cf00af6c798e 1-22
+llmgw-idempotency/llmgw-idempotency-api/src/main/java/io/github/leohou0430/llmgw/idempotency/IdempotencyStore.java
+  h_f2cf00af6c798e 1-112
+llmgw-idempotency/llmgw-idempotency-sqlite/pom.xml
+  h_f2cf00af6c798e 1-31
+llmgw-idempotency/llmgw-idempotency-sqlite/src/main/java/io/github/leohou0430/llmgw/idempotency/sqlite/IdempotencyMigrations.java
+  h_f2cf00af6c798e 1-48
+llmgw-idempotency/llmgw-idempotency-sqlite/src/main/java/io/github/leohou0430/llmgw/idempotency/sqlite/SqliteIdempotencyModule.java
+  h_f2cf00af6c798e 1-26
+llmgw-idempotency/llmgw-idempotency-sqlite/src/main/java/io/github/leohou0430/llmgw/idempotency/sqlite/SqliteIdempotencyStore.java
+  h_f2cf00af6c798e 1-175
+llmgw-idempotency/llmgw-idempotency-sqlite/src/main/resources/META-INF/llmgw/extensions/io.github.leohou0430.llmgw.core.extension.ExtensionModule
+  h_f2cf00af6c798e 1
+llmgw-idempotency/llmgw-idempotency-sqlite/src/test/java/io/github/leohou0430/llmgw/idempotency/sqlite/SqliteIdempotencyStoreTest.java
+  h_f2cf00af6c798e 1-186
+llmgw-idempotency/pom.xml
+  h_f2cf00af6c798e 1-29
+llmgw-identity/llmgw-identity-api/pom.xml
+  h_f2cf00af6c798e 9
+llmgw-identity/llmgw-identity-api/src/main/java/io/github/leohou0430/llmgw/identity/Account.java
+  h_f2cf00af6c798e 10,12-18,20-22
+llmgw-identity/llmgw-identity-api/src/main/java/io/github/leohou0430/llmgw/identity/AccountStore.java
+  h_f2cf00af6c798e 5-8,11-12,14,16-17,19-22,24-29
+llmgw-identity/llmgw-identity-api/src/main/java/io/github/leohou0430/llmgw/identity/Action.java
+  h_f2cf00af6c798e 5-20
+llmgw-identity/llmgw-identity-api/src/main/java/io/github/leohou0430/llmgw/identity/AuthorizationService.java
+  h_f2cf00af6c798e 6-8,12-14
+llmgw-identity/llmgw-identity-api/src/main/java/io/github/leohou0430/llmgw/identity/CsrfTokenService.java
+  h_f2cf00af6c798e 6-8
+llmgw-identity/llmgw-identity-api/src/main/java/io/github/leohou0430/llmgw/identity/Decision.java
+  h_f2cf00af6c798e 6-11
+llmgw-identity/llmgw-identity-api/src/main/java/io/github/leohou0430/llmgw/identity/LoginRateLimiter.java
+  h_f2cf00af6c798e 6-11
+llmgw-identity/llmgw-identity-api/src/main/java/io/github/leohou0430/llmgw/identity/PasswordHasher.java
+  h_f2cf00af6c798e 6-10
+llmgw-identity/llmgw-identity-api/src/main/java/io/github/leohou0430/llmgw/identity/Role.java
+  h_f2cf00af6c798e 5-7
+llmgw-identity/llmgw-identity-api/src/main/java/io/github/leohou0430/llmgw/identity/Scope.java
+  h_f2cf00af6c798e 12-15,17-19,21-23,25-27,29-31
+llmgw-identity/llmgw-identity-api/src/main/java/io/github/leohou0430/llmgw/identity/Session.java
+  h_f2cf00af6c798e 12-15,17-19
+llmgw-identity/llmgw-identity-api/src/main/java/io/github/leohou0430/llmgw/identity/SessionStore.java
+  h_f2cf00af6c798e 5-8,11,13-14,16-22
+llmgw-identity/llmgw-identity-api/src/main/java/io/github/leohou0430/llmgw/identity/Subject.java
+  h_f2cf00af6c798e 8-11
+llmgw-identity/llmgw-identity-api/src/main/java/io/github/leohou0430/llmgw/identity/Target.java
+  h_f2cf00af6c798e 8-11
+llmgw-identity/llmgw-identity-default/pom.xml
+  h_f2cf00af6c798e 9
+llmgw-identity/llmgw-identity-default/src/main/java/io/github/leohou0430/llmgw/identity/AdministratorBootstrap.java
+  h_f2cf00af6c798e 18-42
+llmgw-identity/llmgw-identity-default/src/main/java/io/github/leohou0430/llmgw/identity/AuthOutcome.java
+  h_f2cf00af6c798e 5-7
+llmgw-identity/llmgw-identity-default/src/main/java/io/github/leohou0430/llmgw/identity/AuthenticatedRequest.java
+  h_f2cf00af6c798e 7
+llmgw-identity/llmgw-identity-default/src/main/java/io/github/leohou0430/llmgw/identity/CredentialIssuer.java
+  h_f2cf00af6c798e 9-11,14-39
+llmgw-identity/llmgw-identity-default/src/main/java/io/github/leohou0430/llmgw/identity/FixedWindowRateLimiter.java
+  h_f2cf00af6c798e 8-11,13-45
+llmgw-identity/llmgw-identity-default/src/main/java/io/github/leohou0430/llmgw/identity/HmacCsrfTokenService.java
+  h_f2cf00af6c798e 14-64
+llmgw-identity/llmgw-identity-default/src/main/java/io/github/leohou0430/llmgw/identity/InMemoryAccountStore.java
+  h_f2cf00af6c798e 17-52
+llmgw-identity/llmgw-identity-default/src/main/java/io/github/leohou0430/llmgw/identity/InMemorySessionStore.java
+  h_f2cf00af6c798e 15-49
+llmgw-identity/llmgw-identity-default/src/main/java/io/github/leohou0430/llmgw/identity/ManagedKeyService.java
+  h_f2cf00af6c798e 15-16,19-126
+llmgw-identity/llmgw-identity-default/src/main/java/io/github/leohou0430/llmgw/identity/Pbkdf2PasswordHasher.java
+  h_f2cf00af6c798e 19,21,23,25,27,29-82
+llmgw-identity/llmgw-identity-default/src/main/java/io/github/leohou0430/llmgw/identity/RbacAuthorizationService.java
+  h_f2cf00af6c798e 15-20,24-25,27-76
+llmgw-identity/llmgw-identity-default/src/main/java/io/github/leohou0430/llmgw/identity/RequestAuthorizer.java
+  h_f2cf00af6c798e 22,24,26,28,30-78
+llmgw-identity/llmgw-identity-default/src/main/java/io/github/leohou0430/llmgw/identity/SessionService.java
+  h_f2cf00af6c798e 14-15,18-47
+llmgw-identity/llmgw-identity-default/src/test/java/io/github/leohou0430/llmgw/identity/BoundedLoginRateLimiterTest.java
+  h_f2cf00af6c798e 7-20
+llmgw-identity/llmgw-identity-default/src/test/java/io/github/leohou0430/llmgw/identity/CredentialIssuerTest.java
+  h_f2cf00af6c798e 11-12,16-46
+llmgw-identity/llmgw-identity-default/src/test/java/io/github/leohou0430/llmgw/identity/IdentityTest.java
+  h_f2cf00af6c798e 22-24,26-34,36-39,41,43-48,50-56,58-64,66-80
+llmgw-identity/llmgw-identity-default/src/test/java/io/github/leohou0430/llmgw/identity/ManagedKeyServiceTest.java
+  h_f2cf00af6c798e 23-24,28-168
+llmgw-identity/llmgw-identity-default/src/test/java/io/github/leohou0430/llmgw/identity/RbacAuthorizationServiceTest.java
+  h_f2cf00af6c798e 12-13,24-169
+llmgw-identity/llmgw-identity-default/src/test/java/io/github/leohou0430/llmgw/identity/RequestAuthorizerTest.java
+  h_f2cf00af6c798e 22-24,26-29,31-39,41-49,51-57,59-66,68-70,72-83
+llmgw-identity/llmgw-identity-default/src/test/java/io/github/leohou0430/llmgw/identity/SessionTest.java
+  h_f2cf00af6c798e 16-17,21-94
+llmgw-identity/pom.xml
+  h_f2cf00af6c798e 9
+llmgw-mcp/llmgw-mcp-api/pom.xml
+  h_f2cf00af6c798e 1-21
+llmgw-mcp/llmgw-mcp-api/src/main/java/io/github/leohou0430/llmgw/mcp/McpAccessPolicy.java
+  h_f2cf00af6c798e 1-51
+llmgw-mcp/llmgw-mcp-api/src/main/java/io/github/leohou0430/llmgw/mcp/McpGatewayService.java
+  h_f2cf00af6c798e 1-14
+llmgw-mcp/llmgw-mcp-api/src/main/java/io/github/leohou0430/llmgw/mcp/McpHttpRequest.java
+  h_f2cf00af6c798e 1-38
+llmgw-mcp/llmgw-mcp-api/src/main/java/io/github/leohou0430/llmgw/mcp/McpHttpResponse.java
+  h_f2cf00af6c798e 1-20
+llmgw-mcp/llmgw-mcp-api/src/main/java/io/github/leohou0430/llmgw/mcp/McpProtocol.java
+  h_f2cf00af6c798e 1-55
+llmgw-mcp/llmgw-mcp-api/src/main/java/io/github/leohou0430/llmgw/mcp/McpRule.java
+  h_f2cf00af6c798e 1-23
+llmgw-mcp/llmgw-mcp-api/src/main/java/io/github/leohou0430/llmgw/mcp/McpServerDef.java
+  h_f2cf00af6c798e 1-25
+llmgw-mcp/llmgw-mcp-api/src/main/java/io/github/leohou0430/llmgw/mcp/McpSettings.java
+  h_f2cf00af6c798e 1-25
+llmgw-mcp/llmgw-mcp-default/pom.xml
+  h_f2cf00af6c798e 1-28
+llmgw-mcp/llmgw-mcp-default/src/main/java/io/github/leohou0430/llmgw/mcp/defaultgate/ConfiguredMcpAccessPolicy.java
+  h_f2cf00af6c798e 1-50
+llmgw-mcp/llmgw-mcp-default/src/main/java/io/github/leohou0430/llmgw/mcp/defaultgate/DefaultMcpGatewayService.java
+  h_f2cf00af6c798e 1-387
+llmgw-mcp/llmgw-mcp-default/src/main/java/io/github/leohou0430/llmgw/mcp/defaultgate/McpGatewayModule.java
+  h_f2cf00af6c798e 1-27
+llmgw-mcp/llmgw-mcp-default/src/main/resources/META-INF/llmgw/extensions/io.github.leohou0430.llmgw.core.extension.ExtensionModule
+  h_f2cf00af6c798e 1
+llmgw-mcp/llmgw-mcp-default/src/test/java/io/github/leohou0430/llmgw/mcp/defaultgate/DefaultMcpGatewayServiceTest.java
+  h_f2cf00af6c798e 1-515
+llmgw-mcp/pom.xml
+  h_f2cf00af6c798e 1-28
+llmgw-persistence/llmgw-persistence-api/pom.xml
+  h_f2cf00af6c798e 9
+llmgw-persistence/llmgw-persistence-api/src/main/java/io/github/leohou0430/llmgw/persistence/DatabaseContext.java
+  h_f2cf00af6c798e 7-10,12-15,19-69
+llmgw-persistence/llmgw-persistence-api/src/main/java/io/github/leohou0430/llmgw/persistence/PayloadRecordStore.java
+  h_f2cf00af6c798e 1-45
+llmgw-persistence/llmgw-persistence-api/src/main/java/io/github/leohou0430/llmgw/persistence/PayloadStoreUnavailableException.java
+  h_f2cf00af6c798e 1-12
+llmgw-persistence/llmgw-persistence-sqlite/pom.xml
+  h_f2cf00af6c798e 9
+llmgw-persistence/llmgw-persistence-sqlite/src/main/java/io/github/leohou0430/llmgw/persistence/sqlite/AuditedChange.java
+  h_f2cf00af6c798e 11-12,17-48
+llmgw-persistence/llmgw-persistence-sqlite/src/main/java/io/github/leohou0430/llmgw/persistence/sqlite/BoundedObservationQueue.java
+  h_f2cf00af6c798e 13-44
+llmgw-persistence/llmgw-persistence-sqlite/src/main/java/io/github/leohou0430/llmgw/persistence/sqlite/Migration.java
+  h_f2cf00af6c798e 8-9,13-20
+llmgw-persistence/llmgw-persistence-sqlite/src/main/java/io/github/leohou0430/llmgw/persistence/sqlite/Migrations.java
+  h_f2cf00af6c798e 6,13-14,17-177
+llmgw-persistence/llmgw-persistence-sqlite/src/main/java/io/github/leohou0430/llmgw/persistence/sqlite/OnlineBackup.java
+  h_f2cf00af6c798e 13-16,20-121
+llmgw-persistence/llmgw-persistence-sqlite/src/main/java/io/github/leohou0430/llmgw/persistence/sqlite/RetentionPolicy.java
+  h_f2cf00af6c798e 16,18-22,24-26,28-51
+llmgw-persistence/llmgw-persistence-sqlite/src/main/java/io/github/leohou0430/llmgw/persistence/sqlite/SchemaMigrator.java
+  h_f2cf00af6c798e 15-17,21,23-25,27-50,52-57,59-86
+llmgw-persistence/llmgw-persistence-sqlite/src/main/java/io/github/leohou0430/llmgw/persistence/sqlite/SqliteContext.java
+  h_f2cf00af6c798e 13-16,19-162
+llmgw-persistence/llmgw-persistence-sqlite/src/main/java/io/github/leohou0430/llmgw/persistence/sqlite/SqliteErrors.java
+  h_f2cf00af6c798e 9-30
+llmgw-persistence/llmgw-persistence-sqlite/src/main/java/io/github/leohou0430/llmgw/persistence/sqlite/SqliteKeyStore.java
+  h_f2cf00af6c798e 28-29,33,35,37-40,42-53,55-58,60-63,65-68,70-73,75-78,80-83,85-87,89-110,112-118,120-128,130-149,151-169,171-183,185-197,199-236,238-244,246-286
+llmgw-persistence/llmgw-persistence-sqlite/src/main/java/io/github/leohou0430/llmgw/persistence/sqlite/SqliteModule.java
+  h_f2cf00af6c798e 10-12,15-28
+llmgw-persistence/llmgw-persistence-sqlite/src/main/java/io/github/leohou0430/llmgw/persistence/sqlite/SqlitePayloadRecordStore.java
+  h_f2cf00af6c798e 1-133
+llmgw-persistence/llmgw-persistence-sqlite/src/main/java/io/github/leohou0430/llmgw/persistence/sqlite/SqliteUsageLedger.java
+  h_f2cf00af6c798e 8-11,13-295
+llmgw-persistence/llmgw-persistence-sqlite/src/main/java/io/github/leohou0430/llmgw/persistence/sqlite/StorageGuard.java
+  h_f2cf00af6c798e 15-60
+llmgw-persistence/llmgw-persistence-sqlite/src/main/java/io/github/leohou0430/llmgw/persistence/sqlite/StorageLimitException.java
+  h_f2cf00af6c798e 3-6,9-12
+llmgw-persistence/llmgw-persistence-sqlite/src/test/java/io/github/leohou0430/llmgw/persistence/sqlite/AuditAndObservationTest.java
+  h_f2cf00af6c798e 25-26,28-32,34-41,43-61,63-76,78-98
+llmgw-persistence/llmgw-persistence-sqlite/src/test/java/io/github/leohou0430/llmgw/persistence/sqlite/BackupRestoreTest.java
+  h_f2cf00af6c798e 22-23,25-32,34-52,54-57,59-71
+llmgw-persistence/llmgw-persistence-sqlite/src/test/java/io/github/leohou0430/llmgw/persistence/sqlite/OnlineBackupManifestTest.java
+  h_f2cf00af6c798e 1-57
+llmgw-persistence/llmgw-persistence-sqlite/src/test/java/io/github/leohou0430/llmgw/persistence/sqlite/RetentionAndStorageTest.java
+  h_f2cf00af6c798e 27-151
+llmgw-persistence/llmgw-persistence-sqlite/src/test/java/io/github/leohou0430/llmgw/persistence/sqlite/SchemaMigratorTest.java
+  h_f2cf00af6c798e 21-23,27-156
+llmgw-persistence/llmgw-persistence-sqlite/src/test/java/io/github/leohou0430/llmgw/persistence/sqlite/SqliteContextTest.java
+  h_f2cf00af6c798e 19-20,26-27,29-35,37-44,46-52,54-70,72-80,82-103
+llmgw-persistence/llmgw-persistence-sqlite/src/test/java/io/github/leohou0430/llmgw/persistence/sqlite/SqliteKeyStoreTest.java
+  h_f2cf00af6c798e 23-25,29-169
+llmgw-persistence/llmgw-persistence-sqlite/src/test/java/io/github/leohou0430/llmgw/persistence/sqlite/SqliteModuleTest.java
+  h_f2cf00af6c798e 16-17,22-41
+llmgw-persistence/llmgw-persistence-sqlite/src/test/java/io/github/leohou0430/llmgw/persistence/sqlite/SqliteUsageLedgerTest.java
+  h_f2cf00af6c798e 12-141
+llmgw-persistence/llmgw-persistence-sqlite/src/test/java/io/github/leohou0430/llmgw/persistence/sqlite/TransactionIsolationTest.java
+  h_f2cf00af6c798e 13-94
+llmgw-persistence/llmgw-persistence-sqlite/src/test/java/io/github/leohou0430/llmgw/persistence/sqlite/WalStorageGuardTest.java
+  h_f2cf00af6c798e 2,7,9-40
+llmgw-persistence/pom.xml
+  h_f2cf00af6c798e 9
+llmgw-provider/llmgw-provider-anthropic/pom.xml
+  h_f2cf00af6c798e 9
+llmgw-provider/llmgw-provider-anthropic/src/main/java/io/github/leohou0430/llmgw/provider/anthropic/AnthropicAuthenticator.java
+  h_f2cf00af6c798e 8-9,12-17,21-38
+llmgw-provider/llmgw-provider-anthropic/src/test/java/io/github/leohou0430/llmgw/provider/anthropic/AnthropicAuthenticatorTest.java
+  h_f2cf00af6c798e 14-40
+llmgw-provider/llmgw-provider-api/pom.xml
+  h_f2cf00af6c798e 4
+llmgw-provider/llmgw-provider-api/src/main/java/io/github/leohou0430/llmgw/provider/ProviderVerifier.java
+  h_f2cf00af6c798e 9-13
+llmgw-provider/llmgw-provider-api/src/main/java/io/github/leohou0430/llmgw/provider/UpstreamAuthenticator.java
+  h_f2cf00af6c798e 6-11,13-16,21-29
+llmgw-provider/llmgw-provider-api/src/main/java/io/github/leohou0430/llmgw/provider/UpstreamProvider.java
+  h_f2cf00af6c798e 11-80
+llmgw-provider/llmgw-provider-gemini/pom.xml
+  h_f2cf00af6c798e 1-23
+llmgw-provider/llmgw-provider-gemini/src/main/java/io/github/leohou0430/llmgw/provider/gemini/GeminiAuthenticator.java
+  h_f2cf00af6c798e 1-28
+llmgw-provider/llmgw-provider-gemini/src/main/resources/META-INF/llmgw/extensions/io.github.leohou0430.llmgw.provider.UpstreamAuthenticator
+  h_f2cf00af6c798e 1
+llmgw-provider/llmgw-provider-gemini/src/test/java/io/github/leohou0430/llmgw/provider/gemini/GeminiAuthenticatorTest.java
+  h_f2cf00af6c798e 1-36
+llmgw-provider/llmgw-provider-http-jdk/pom.xml
+  h_f2cf00af6c798e 3
+llmgw-provider/llmgw-provider-http-jdk/src/main/java/io/github/leohou0430/llmgw/provider/http/jdk/BlockingSseBodySubscriber.java
+  h_f2cf00af6c798e 19-21,23-126
+llmgw-provider/llmgw-provider-http-jdk/src/main/java/io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpModule.java
+  h_f2cf00af6c798e 9-14
+llmgw-provider/llmgw-provider-http-jdk/src/main/java/io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream.java
+  h_f2cf00af6c798e 43-47,51-939
+llmgw-provider/llmgw-provider-http-jdk/src/main/java/io/github/leohou0430/llmgw/provider/http/jdk/ReadActivitySubscriber.java
+  h_f2cf00af6c798e 12-52
+llmgw-provider/llmgw-provider-http-jdk/src/main/java/io/github/leohou0430/llmgw/provider/http/jdk/SseLineDecoder.java
+  h_f2cf00af6c798e 16-245
+llmgw-provider/llmgw-provider-http-jdk/src/main/java/io/github/leohou0430/llmgw/provider/http/jdk/SseLineLimitSubscriber.java
+  h_f2cf00af6c798e 12-108
+llmgw-provider/llmgw-provider-http-jdk/src/test/java/io/github/leohou0430/llmgw/provider/http/jdk/BlockingHeartbeatTest.java
+  h_f2cf00af6c798e 13-72,74-186
+llmgw-provider/llmgw-provider-http-jdk/src/test/java/io/github/leohou0430/llmgw/provider/http/jdk/BlockingSseBodySubscriberTest.java
+  h_f2cf00af6c798e 14,16,18-129
+llmgw-provider/llmgw-provider-http-jdk/src/test/java/io/github/leohou0430/llmgw/provider/http/jdk/FetchStreamIdleTimeoutTest.java
+  h_f2cf00af6c798e 18-22,26-29,31-116
+llmgw-provider/llmgw-provider-http-jdk/src/test/java/io/github/leohou0430/llmgw/provider/http/jdk/FetchStreamTest.java
+  h_f2cf00af6c798e 26-29,33-196
+llmgw-provider/llmgw-provider-http-jdk/src/test/java/io/github/leohou0430/llmgw/provider/http/jdk/JdkFlowTransportTest.java
+  h_f2cf00af6c798e 16-243
+llmgw-provider/llmgw-provider-http-jdk/src/test/java/io/github/leohou0430/llmgw/provider/http/jdk/NativeUpstreamApiTest.java
+  h_f2cf00af6c798e 10-23
+llmgw-provider/llmgw-provider-http-jdk/src/test/java/io/github/leohou0430/llmgw/provider/http/jdk/SseIdleProgressTest.java
+  h_f2cf00af6c798e 13-149
+llmgw-provider/llmgw-provider-http-jdk/src/test/java/io/github/leohou0430/llmgw/provider/http/jdk/SseLineDecoderTest.java
+  h_f2cf00af6c798e 13-232
+llmgw-provider/llmgw-provider-http-jdk/src/test/java/io/github/leohou0430/llmgw/provider/http/jdk/SseLineLimitSubscriberTest.java
+  h_f2cf00af6c798e 15-207
+llmgw-provider/llmgw-provider-http-jdk/src/test/java/io/github/leohou0430/llmgw/provider/http/jdk/SseLineLimitTest.java
+  h_f2cf00af6c798e 14-78
+llmgw-provider/llmgw-provider-http-jdk/src/test/java/io/github/leohou0430/llmgw/provider/http/jdk/TransportCapacityTest.java
+  h_f2cf00af6c798e 14-322
+llmgw-provider/llmgw-provider-http-jdk/src/test/java/io/github/leohou0430/llmgw/provider/http/jdk/TransportLifecycleTest.java
+  h_f2cf00af6c798e 12-378
+llmgw-provider/llmgw-provider-http-jdk/src/test/java/io/github/leohou0430/llmgw/provider/http/jdk/UploadStreamTest.java
+  h_f2cf00af6c798e 21-22,27-57
+llmgw-provider/llmgw-provider-http-jdk/src/test/java/io/github/leohou0430/llmgw/provider/http/jdk/UpstreamResponseLimitTest.java
+  h_f2cf00af6c798e 12-37
+llmgw-provider/llmgw-provider-openai-sdk/pom.xml
+  h_f2cf00af6c798e 3
+llmgw-provider/llmgw-provider-openai-sdk/src/main/java/io/github/leohou0430/llmgw/provider/openai/sdk/OpenAiSdkVerifier.java
+  h_f2cf00af6c798e 12-16,20-52
+llmgw-provider/llmgw-provider-openai-sdk/src/test/java/io/github/leohou0430/llmgw/provider/openai/sdk/OpenAiVerifierDiscoveryTest.java
+  h_f2cf00af6c798e 2,8,10-19
+llmgw-provider/llmgw-provider-openai/pom.xml
+  h_f2cf00af6c798e 9
+llmgw-provider/llmgw-provider-openai/src/main/java/io/github/leohou0430/llmgw/provider/openai/OpenAiAuthenticator.java
+  h_f2cf00af6c798e 6-9,11-25
+llmgw-provider/pom.xml
+  h_f2cf00af6c798e 4,14
+llmgw-recording/llmgw-recording-api/pom.xml
+  h_f2cf00af6c798e 1-21
+llmgw-recording/llmgw-recording-api/src/main/java/io/github/leohou0430/llmgw/recording/RecordedEvent.java
+  h_f2cf00af6c798e 1-36
+llmgw-recording/llmgw-recording-api/src/main/java/io/github/leohou0430/llmgw/recording/RecordingHandle.java
+  h_f2cf00af6c798e 1-21
+llmgw-recording/llmgw-recording-api/src/main/java/io/github/leohou0430/llmgw/recording/RecordingOutcome.java
+  h_f2cf00af6c798e 1-14
+llmgw-recording/llmgw-recording-api/src/main/java/io/github/leohou0430/llmgw/recording/RecordingStart.java
+  h_f2cf00af6c798e 1-20
+llmgw-recording/llmgw-recording-api/src/main/java/io/github/leohou0430/llmgw/recording/RecordingStore.java
+  h_f2cf00af6c798e 1-20
+llmgw-recording/llmgw-recording-local/pom.xml
+  h_f2cf00af6c798e 1-28
+llmgw-recording/llmgw-recording-local/src/main/java/io/github/leohou0430/llmgw/recording/local/LocalRecordingStore.java
+  h_f2cf00af6c798e 1-286
+llmgw-recording/llmgw-recording-local/src/main/java/io/github/leohou0430/llmgw/recording/local/RecordingModule.java
+  h_f2cf00af6c798e 1-27
+llmgw-recording/llmgw-recording-local/src/main/java/io/github/leohou0430/llmgw/recording/local/RecordingSanitizer.java
+  h_f2cf00af6c798e 1-77
+llmgw-recording/llmgw-recording-local/src/main/resources/META-INF/llmgw/extensions/io.github.leohou0430.llmgw.core.extension.ExtensionModule
+  h_f2cf00af6c798e 1
+llmgw-recording/llmgw-recording-local/src/test/java/io/github/leohou0430/llmgw/recording/local/LocalRecordingStoreTest.java
+  h_f2cf00af6c798e 1-161
+llmgw-recording/llmgw-recording-local/src/test/java/io/github/leohou0430/llmgw/recording/local/RecordingSanitizerTest.java
+  h_f2cf00af6c798e 1-69
+llmgw-recording/pom.xml
+  h_f2cf00af6c798e 1-26
+llmgw-tokenizer/llmgw-tokenizer-api/pom.xml
+  h_f2cf00af6c798e 3
+llmgw-tokenizer/llmgw-tokenizer-api/src/main/java/io/github/leohou0430/llmgw/tokenizer/TokenCounter.java
+  h_f2cf00af6c798e 6-9,12-23
+llmgw-tokenizer/llmgw-tokenizer-heuristic/pom.xml
+  h_f2cf00af6c798e 3
+llmgw-tokenizer/llmgw-tokenizer-heuristic/src/main/java/io/github/leohou0430/llmgw/tokenizer/heuristic/HeuristicTokenCounter.java
+  h_f2cf00af6c798e 9-22
+llmgw-tokenizer/llmgw-tokenizer-jtokkit/pom.xml
+  h_f2cf00af6c798e 9
+llmgw-tokenizer/llmgw-tokenizer-jtokkit/src/main/java/io/github/leohou0430/llmgw/tokenizer/jtokkit/JtokkitTokenCounter.java
+  h_f2cf00af6c798e 10-13,17,19-22,24-35
+llmgw-tokenizer/llmgw-tokenizer-jtokkit/src/test/java/io/github/leohou0430/llmgw/tokenizer/jtokkit/JtokkitTokenCounterTest.java
+  h_f2cf00af6c798e 11-35
+llmgw-tokenizer/pom.xml
+  h_f2cf00af6c798e 3
+pom.xml
+  h_f2cf00af6c798e 16,79-85,154-177,192-197,203-221
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "7cda8f822cf961e44b9eb2925cf4f5abc446aa5d",
+  "prompts": {},
+  "humans": {
+    "h_f2cf00af6c798e": {
+      "author": "leohou0430 <leohou0430@users.noreply.github.com>"
+    }
+  }
+}
