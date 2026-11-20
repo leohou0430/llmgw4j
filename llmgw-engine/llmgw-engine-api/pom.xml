@@ -6,7 +6,7 @@
   <parent>
     <groupId>io.github.leohou0430</groupId>
     <artifactId>llmgw-engine</artifactId>
-    <version>0.4.0</version>
+    <version>0.5.0</version>
   </parent>
 
   <artifactId>llmgw-engine-api</artifactId>
@@ -19,6 +19,8 @@
   <properties><llmgw.foundation.enforcer.skip>false</llmgw.foundation.enforcer.skip></properties>
   <dependencies>
     <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-core</artifactId></dependency>
+    <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-billing-api</artifactId></dependency>
+    <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-idempotency-api</artifactId></dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>

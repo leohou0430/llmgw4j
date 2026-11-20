@@ -13,13 +13,14 @@ import org.springframework.context.annotation.Profile;
 @Profile(EngineProfiles.WEBFLUX)
 public class WebfluxEngineConfiguration extends AbstractEngineConfiguration {
 
-    @Bean
-    public WebfluxCapacityAdmission webfluxCapacityAdmission(GatewayProperties properties,
-                                                             RequestMappingHandlerAdapter delegate) {
-        return new WebfluxCapacityAdmission(properties, delegate);
-    }
+	@Bean
+	public WebfluxCapacityAdmission webfluxCapacityAdmission(GatewayProperties properties,
+			RequestMappingHandlerAdapter delegate) {
+		return new WebfluxCapacityAdmission(properties, delegate);
+	}
 
-    public WebfluxEngineConfiguration() {
-        super(EngineKind.WEBFLUX);
-    }
+	public WebfluxEngineConfiguration() {
+		super(EngineKind.WEBFLUX);
+	}
+
 }

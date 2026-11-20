@@ -18,45 +18,59 @@ import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
 
-/** Reject after route selection, before argument resolution; release after the response, not HandlerResult. */
+/**
+ * Reject after route selection, before argument resolution; release after the response,
+ * not HandlerResult.
+ */
 public final class WebfluxCapacityAdmission implements HandlerAdapter, WebFilter, Ordered {
-    private static final String LEASE = WebfluxCapacityAdmission.class.getName() + ".lease";
-    private final Semaphore requests;
-    private final RequestMappingHandlerAdapter delegate;
 
-    public WebfluxCapacityAdmission(GatewayProperties properties, RequestMappingHandlerAdapter delegate) {
-        this.requests = new Semaphore(properties.getMaxConcurrentRequests());
-        this.delegate = delegate;
-    }
+	private static final String LEASE = WebfluxCapacityAdmission.class.getName() + ".lease";
 
-    /** Explicitly precedes the framework's default annotated-controller adapter. */
-    @Override public int getOrder() { return -1; }
+	private final Semaphore requests;
 
-    @Override public boolean supports(Object handler) {
-        return handler instanceof HandlerMethod method
-                && WebfluxGatewayController.class.isAssignableFrom(method.getBeanType());
-    }
+	private final RequestMappingHandlerAdapter delegate;
 
-    @Override public Mono<HandlerResult> handle(ServerWebExchange exchange, Object handler) {
-        return Mono.defer(() -> {
-            if (exchange.getAttribute(LEASE) != null) return delegate.handle(exchange, handler);
-            if (!requests.tryAcquire()) {
-                var response = exchange.getResponse();
-                response.setStatusCode(HttpStatus.SERVICE_UNAVAILABLE);
-                response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
-                response.getHeaders().set(EngineHeaders.RETRY_AFTER, "1");
-                byte[] body = ProtocolCodec.errorJson(EngineReasons.CAPACITY_EXCEEDED)
-                        .getBytes(StandardCharsets.UTF_8);
-                return response.writeWith(Mono.just(response.bufferFactory().wrap(body))).then(Mono.empty());
-            }
-            exchange.getAttributes().put(LEASE, requests);
-            return delegate.handle(exchange, handler);
-        });
-    }
+	public WebfluxCapacityAdmission(GatewayProperties properties, RequestMappingHandlerAdapter delegate) {
+		this.requests = new Semaphore(properties.getMaxConcurrentRequests());
+		this.delegate = delegate;
+	}
 
-    @Override public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
-        return chain.filter(exchange).doFinally(signal -> {
-            if (exchange.getAttributes().remove(LEASE, requests)) requests.release();
-        });
-    }
+	/** Explicitly precedes the framework's default annotated-controller adapter. */
+	@Override
+	public int getOrder() {
+		return -1;
+	}
+
+	@Override
+	public boolean supports(Object handler) {
+		return handler instanceof HandlerMethod method
+				&& WebfluxGatewayController.class.isAssignableFrom(method.getBeanType());
+	}
+
+	@Override
+	public Mono<HandlerResult> handle(ServerWebExchange exchange, Object handler) {
+		return Mono.defer(() -> {
+			if (exchange.getAttribute(LEASE) != null)
+				return delegate.handle(exchange, handler);
+			if (!requests.tryAcquire()) {
+				var response = exchange.getResponse();
+				response.setStatusCode(HttpStatus.SERVICE_UNAVAILABLE);
+				response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
+				response.getHeaders().set(EngineHeaders.RETRY_AFTER, "1");
+				byte[] body = ProtocolCodec.errorJson(EngineReasons.CAPACITY_EXCEEDED).getBytes(StandardCharsets.UTF_8);
+				return response.writeWith(Mono.just(response.bufferFactory().wrap(body))).then(Mono.empty());
+			}
+			exchange.getAttributes().put(LEASE, requests);
+			return delegate.handle(exchange, handler);
+		});
+	}
+
+	@Override
+	public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
+		return chain.filter(exchange).doFinally(signal -> {
+			if (exchange.getAttributes().remove(LEASE, requests))
+				requests.release();
+		});
+	}
+
 }

@@ -9,25 +9,24 @@ import java.util.Objects;
  */
 public record Scope(String tenantId, String projectId) {
 
-    public Scope {
-        tenantId = tenantId == null ? "" : tenantId;
-        projectId = projectId == null ? "" : projectId;
-    }
+	public Scope {
+		tenantId = tenantId == null ? "" : tenantId;
+		projectId = projectId == null ? "" : projectId;
+	}
 
-    public static Scope platform() {
-        return new Scope("", "");
-    }
+	public static Scope platform() {
+		return new Scope("", "");
+	}
 
-    public static Scope tenant(String tenantId) {
-        return new Scope(Objects.requireNonNull(tenantId, "tenantId"), "");
-    }
+	public static Scope tenant(String tenantId) {
+		return new Scope(Objects.requireNonNull(tenantId, "tenantId"), "");
+	}
 
-    public static Scope project(String tenantId, String projectId) {
-        return new Scope(Objects.requireNonNull(tenantId, "tenantId"),
-                Objects.requireNonNull(projectId, "projectId"));
-    }
+	public static Scope project(String tenantId, String projectId) {
+		return new Scope(Objects.requireNonNull(tenantId, "tenantId"), Objects.requireNonNull(projectId, "projectId"));
+	}
 
-    public boolean isPlatform() {
-        return tenantId.isEmpty() && projectId.isEmpty();
-    }
+	public boolean isPlatform() {
+		return tenantId.isEmpty() && projectId.isEmpty();
+	}
 }

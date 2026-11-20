@@ -8,8 +8,8 @@
 
 | 版本 | 支持 |
 |---|---|
-| `0.4.x` | 当前修复版本 |
-| `0.3.x`及更早 | 升级到`0.4.0`；先按[升级说明](docs/releases/v0.4.0.md)备份与迁移 |
+| `0.5.x` | 当前修复版本 |
+| `0.4.x`及更早 | 升级到`0.5.0`；先按[升级说明](docs/releases/v0.5.0.md)备份与迁移 |
 
 ## 当前部署边界
 
@@ -24,4 +24,4 @@
 9. **HTTP与重试**：TLS/mTLS/WAF由前置代理或标准服务器配置承担。认证/transport头始终受保护；multipart保留boundary。已可能提交上游的请求不因普通故障盲目重发，fallback不拼接已输出的流。
 10. **资源与流式完整性**：默认全生命周期并发64，请求/非流式响应上限4MiB；成功SSE按单行边界限制而非累计响应大小。超时、取消、完整性与心跳均有合同测试。暂存目录使用实例独占锁和启动回收；每实例必须独占数据库和暂存路径。
 
-JWT内建仅HS256，可配置issuer/audience及NumericDate时间声明；无OIDC/JWKS/企业SSO。账号角色不代表企业身份联邦。供应商支持与性能以对应固定产物证据为准，详见[控制面操作](docs/control-plane-operations.md)、[发布说明](docs/releases/v0.4.0.md)和[验证范围](docs/reviews/2026-11-16-remediation/README.md)。
+JWT内建仅HS256，可配置issuer/audience及NumericDate时间声明；无OIDC/JWKS/企业SSO。账号角色不代表企业身份联邦。供应商支持与性能以对应固定产物证据为准，详见[控制面操作](docs/control-plane-operations.md)、[发布说明](docs/releases/v0.5.0.md)和[验证范围](docs/reviews/2026-11-16-remediation/README.md)。

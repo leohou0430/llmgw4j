@@ -5,47 +5,49 @@ import java.util.Map;
 
 public interface UsageLedger {
 
-    /**
-     * @param reservedTokens tokens held at admission; released by this record
-     *                       so in-flight quota can never leak on abort
-     */
-    record UsageRecord(String keyId, String model, int promptTokens, int completionTokens,
-                       long latencyMs, boolean success, Instant at, int reservedTokens) {
-    }
+	/**
+	 * @param reservedTokens tokens held at admission; released by this record so
+	 * in-flight quota can never leak on abort
+	 */
+	record UsageRecord(String keyId, String model, int promptTokens, int completionTokens, long latencyMs,
+			boolean success, Instant at, int reservedTokens) {
+	}
 
-    record UsageSummary(long requests, long promptTokens, long completionTokens, long errors) {
-    }
+	record UsageSummary(long requests, long promptTokens, long completionTokens, long errors) {
+	}
 
-    void record(UsageRecord record);
+	void record(UsageRecord record);
 
-    Map<String, UsageSummary> snapshot();
+	Map<String, UsageSummary> snapshot();
 
-    default long used(String keyId) {
-        UsageSummary summary = snapshot().get(keyId);
-        return summary == null ? 0 : summary.promptTokens() + summary.completionTokens();
-    }
+	default long used(String keyId) {
+		UsageSummary summary = snapshot().get(keyId);
+		return summary == null ? 0 : summary.promptTokens() + summary.completionTokens();
+	}
 
-    /**
-     * Atomically reserve {@code tokens} against {@code quota}, INCLUDING all
-     * in-flight requests. A plain {@code used() + estimate > quota} check is a
-     * read-modify-write race: N concurrent requests all read used=0 and pass,
-     * so the quota is oversold by N times. The reservation is released by the
-     * matching {@link #record(UsageRecord)} call, whether the request succeeded
-     * or failed.
-     */
-    boolean tryReserve(String keyId, long tokens, long quota);
+	/**
+	 * Atomically reserve {@code tokens} against {@code quota}, INCLUDING all in-flight
+	 * requests. A plain {@code used() + estimate > quota} check is a read-modify-write
+	 * race: N concurrent requests all read used=0 and pass, so the quota is oversold by N
+	 * times. The reservation is released by the matching {@link #record(UsageRecord)}
+	 * call, whether the request succeeded or failed.
+	 */
+	boolean tryReserve(String keyId, long tokens, long quota);
 
-    record Reservation(String id, String keyId, String tenantId, String projectId,
-                       long tokens, long keyQuota) {}
+	record Reservation(String id, String keyId, String tenantId, String projectId, long tokens, long keyQuota) {
+	}
 
-    default boolean tryReserve(Reservation reservation) {
-        return tryReserve(reservation.keyId(), reservation.tokens(), reservation.keyQuota());
-    }
+	default boolean tryReserve(Reservation reservation) {
+		return tryReserve(reservation.keyId(), reservation.tokens(), reservation.keyQuota());
+	}
 
-    /** Unknown submitted outcomes retain their reservation until explicitly reconciled. */
-    default void settle(String reservationId, UsageRecord record, boolean outcomeKnown) {
-        record(record);
-    }
+	/**
+	 * Unknown submitted outcomes retain their reservation until explicitly reconciled.
+	 */
+	default void settle(String reservationId, UsageRecord record, boolean outcomeKnown) {
+		record(record);
+	}
 
-    void load(Map<String, UsageSummary> data);
+	void load(Map<String, UsageSummary> data);
+
 }

@@ -8,33 +8,34 @@ import java.util.Objects;
  */
 public class UpstreamException extends RuntimeException {
 
-    public static final String UPSTREAM_ERROR = "upstream_error";
+	public static final String UPSTREAM_ERROR = "upstream_error";
 
-    private final String fieldPath;
+	private final String fieldPath;
 
-    public UpstreamException(String reason) {
-        this(reason, null, null);
-    }
+	public UpstreamException(String reason) {
+		this(reason, null, null);
+	}
 
-    public UpstreamException(String reason, Throwable cause) {
-        this(reason, null, cause);
-    }
+	public UpstreamException(String reason, Throwable cause) {
+		this(reason, null, cause);
+	}
 
-    public UpstreamException(String reason, String fieldPath, Throwable cause) {
-        super(Objects.requireNonNull(reason, "reason"), cause);
-        this.fieldPath = fieldPath;
-    }
+	public UpstreamException(String reason, String fieldPath, Throwable cause) {
+		super(Objects.requireNonNull(reason, "reason"), cause);
+		this.fieldPath = fieldPath;
+	}
 
-    public String code() {
-        return UPSTREAM_ERROR;
-    }
+	public String code() {
+		return UPSTREAM_ERROR;
+	}
 
-    public int status() {
-        return 502;
-    }
+	public int status() {
+		return 502;
+	}
 
-    /** 违规上游字段路径；无法定位到具体字段时为 null。 */
-    public String fieldPath() {
-        return fieldPath;
-    }
+	/** 违规上游字段路径；无法定位到具体字段时为 null。 */
+	public String fieldPath() {
+		return fieldPath;
+	}
+
 }

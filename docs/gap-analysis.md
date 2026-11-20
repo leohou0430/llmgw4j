@@ -1,3 +1,5 @@
+> **[2026-11-20 状态标注]** 本文件为 2026-11-10 口径的历史差距分析，部分结论已被 v0.4.0 交付与 2026-11-20 第 9 章治理审查轮推翻或更新（持久账本、审批工作流、幂等键、MCP 网关语义、严格预算档位、截止预算已交付；见 `docs/reviews/2026-11-20-chapter9-governance-review/report.md` 与 ADR-0009/0010/0011）。请勿以本文件作为当前能力边界的依据；现行口径以 README、docs/CONFIGURATION.md、docs/openapi.yaml 与各 ADR 为准。
+
 # 当前实现与主流大模型网关的差距
 
 > v0.3.1 架构更新：基础能力参考 Dubbo 机制实现项目内命名 SPI（不依赖 Dubbo）、原生 Java 生命周期与 Flow 上游契约；provider/tokenizer 使用聚合模块。见 [迁移说明](EXTENSIONS.md)。下文竞品核查与性能数字保持原批次范围，未重新测量 v0.3.1。

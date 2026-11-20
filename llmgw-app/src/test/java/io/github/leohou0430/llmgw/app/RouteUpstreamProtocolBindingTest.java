@@ -26,38 +26,34 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 class RouteUpstreamProtocolBindingTest {
 
-    private GatewayProperties bind(Map<String, Object> overrides) {
-        var env = new StandardEnvironment();
-        var values = new HashMap<String, Object>();
-        values.put("gateway.upstream.base-url", "http://localhost:9090/v1");
-        values.putAll(overrides);
-        env.getPropertySources().addFirst(new MapPropertySource("test", values));
-        return Binder.get(env).bind("gateway", Bindable.of(GatewayProperties.class)).get();
-    }
+	private GatewayProperties bind(Map<String, Object> overrides) {
+		var env = new StandardEnvironment();
+		var values = new HashMap<String, Object>();
+		values.put("gateway.upstream.base-url", "http://localhost:9090/v1");
+		values.putAll(overrides);
+		env.getPropertySources().addFirst(new MapPropertySource("test", values));
+		return Binder.get(env).bind("gateway", Bindable.of(GatewayProperties.class)).get();
+	}
 
-    @Test
-    void kebabCaseUpstreamProtocolBindsThroughFromPropertiesAndRouteTable() {
-        GatewayProperties properties = bind(Map.of(
-                "gateway.routes[0].id", "convert",
-                "gateway.routes[0].model", "m",
-                "gateway.routes[0].upstream-protocol", "chat",
-                "gateway.routes[1].id", "plain",
-                "gateway.routes[1].model", "m"));
-        List<Route> routes = InMemoryRouteConfigSource.fromProperties(properties);
-        RouteTable table = RouteTable.of(routes, 1);
-        assertEquals("chat", table.byId("convert").upstreamProtocol());
-        assertEquals("", table.byId("plain").upstreamProtocol());
-    }
+	@Test
+	void kebabCaseUpstreamProtocolBindsThroughFromPropertiesAndRouteTable() {
+		GatewayProperties properties = bind(Map.of("gateway.routes[0].id", "convert", "gateway.routes[0].model", "m",
+				"gateway.routes[0].upstream-protocol", "chat", "gateway.routes[1].id", "plain",
+				"gateway.routes[1].model", "m"));
+		List<Route> routes = InMemoryRouteConfigSource.fromProperties(properties);
+		RouteTable table = RouteTable.of(routes, 1);
+		assertEquals("chat", table.byId("convert").upstreamProtocol());
+		assertEquals("", table.byId("plain").upstreamProtocol());
+	}
 
-    @Test
-    void boundChatUpstreamRouteResolvesForAllThreeEntryProtocols() {
-        GatewayProperties properties = bind(Map.of(
-                "gateway.routes[0].id", "convert",
-                "gateway.routes[0].model", "m",
-                "gateway.routes[0].upstream-protocol", "chat"));
-        RouteTable table = RouteTable.of(InMemoryRouteConfigSource.fromProperties(properties), 1);
-        for (ProtocolKind kind : List.of(ProtocolKind.CHAT, ProtocolKind.RESPONSES, ProtocolKind.MESSAGES)) {
-            assertEquals("chat", table.resolve(kind, "m").upstreamProtocol(), kind.wireName());
-        }
-    }
+	@Test
+	void boundChatUpstreamRouteResolvesForAllThreeEntryProtocols() {
+		GatewayProperties properties = bind(Map.of("gateway.routes[0].id", "convert", "gateway.routes[0].model", "m",
+				"gateway.routes[0].upstream-protocol", "chat"));
+		RouteTable table = RouteTable.of(InMemoryRouteConfigSource.fromProperties(properties), 1);
+		for (ProtocolKind kind : List.of(ProtocolKind.CHAT, ProtocolKind.RESPONSES, ProtocolKind.MESSAGES)) {
+			assertEquals("chat", table.resolve(kind, "m").upstreamProtocol(), kind.wireName());
+		}
+	}
+
 }

@@ -4,5 +4,6 @@ package io.github.leohou0430.llmgw.catalog;
 @FunctionalInterface
 public interface MigrationAuditSink {
 
-    void record(String action, String legacyId, String detail);
+	void record(String action, String legacyId, String detail);
+
 }

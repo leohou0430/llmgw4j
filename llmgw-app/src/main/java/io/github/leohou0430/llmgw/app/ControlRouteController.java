@@ -32,91 +32,102 @@ import java.util.Map;
 @RequestMapping("/control")
 public class ControlRouteController {
 
-    private final RequestAuthorizer authorizer;
-    private final RouteVersionService routeVersions;
-    private final RouteCandidateValidator candidateValidator;
-    private final PlatformPolicy platformPolicy;
-    private final AuditLog audit;
-    private final io.github.leohou0430.llmgw.persistence.sqlite.StorageGuard storage;
+	private final RequestAuthorizer authorizer;
 
-    public ControlRouteController(RequestAuthorizer authorizer, RouteVersionService routeVersions,
-                                  RouteCandidateValidator candidateValidator, PlatformPolicy platformPolicy,
-                                  AuditLog audit,
-                                  io.github.leohou0430.llmgw.persistence.sqlite.StorageGuard storage) {
-        this.authorizer = authorizer;
-        this.routeVersions = routeVersions;
-        this.candidateValidator = candidateValidator;
-        this.platformPolicy = platformPolicy;
-        this.audit = audit;
-        this.storage = storage;
-    }
+	private final RouteVersionService routeVersions;
 
-    @GetMapping("/routes")
-    public Map<String, Object> status() {
-        return Map.of("activeVersion", routeVersions.activeVersion());
-    }
+	private final RouteCandidateValidator candidateValidator;
 
-    @PostMapping("/routes/publish")
-    public ResponseEntity<Map<String, Object>> publish(
-            @CookieValue(name = "llmgw_sid", required = false) String sessionId,
-            @RequestHeader(name = "X-CSRF-Token", required = false) String csrfToken,
-            @RequestBody PublishBody body) {
-        ControlAccess.platform(authorizer, sessionId);
-        authorize(sessionId, csrfToken, Action.ROUTE_PUBLISH, body.tenantId(), body.projectId());
-        if (body.upstream() != null) {
-            var violations = candidateValidator.check(body.upstream(), platformPolicy);
-            if (!violations.isEmpty()) {
-                audit.record(ControlAccess.account(authorizer, sessionId).id(), "", "", "route.publish.rejected", String.join("; ", violations));
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "invalid upstream: " + violations);
-            }
-        }
-        WriteGate.check(storage);
-        RouteVersion published = audit.change(ControlAccess.account(authorizer, sessionId).id(), "", "", "route.publish", "expectedVersion=" + body.expectedVersion(),
-                () -> tryConflict(() -> routeVersions.publish(body.config(), body.expectedVersion())));
-        return ResponseEntity.ok(Map.of("version", published.version(), "activeVersion", routeVersions.activeVersion()));
-    }
+	private final PlatformPolicy platformPolicy;
 
-    @PostMapping("/routes/rollback")
-    public ResponseEntity<Map<String, Object>> rollback(
-            @CookieValue(name = "llmgw_sid", required = false) String sessionId,
-            @RequestHeader(name = "X-CSRF-Token", required = false) String csrfToken,
-            @RequestBody RollbackBody body) {
-        ControlAccess.platform(authorizer, sessionId);
-        authorize(sessionId, csrfToken, Action.ROUTE_ROLLBACK, body.tenantId(), body.projectId());
-        WriteGate.check(storage);
-        RouteVersion rolledBack = audit.change(ControlAccess.account(authorizer, sessionId).id(), "", "", "route.rollback", "base=" + body.targetVersion(),
-                () -> tryConflict(() -> routeVersions.rollback(body.targetVersion(), body.expectedVersion())));
-        return ResponseEntity.ok(Map.of("version", rolledBack.version(), "baseVersion", rolledBack.baseVersion()));
-    }
+	private final AuditLog audit;
 
-    private void authorize(String sessionId, String csrfToken, Action action, String tenantId, String projectId) {
-        AuthOutcome outcome = authorizer.authorize(
-                new AuthenticatedRequest(sessionId, csrfToken, true, action, new Target("", "")));
-        if (outcome != AuthOutcome.ALLOW) {
-            HttpStatus status = outcome == AuthOutcome.UNAUTHENTICATED ? HttpStatus.UNAUTHORIZED : HttpStatus.FORBIDDEN;
-            throw new ResponseStatusException(status, outcome.name());
-        }
-    }
+	private final io.github.leohou0430.llmgw.persistence.sqlite.StorageGuard storage;
 
-    private static RouteVersion tryConflict(java.util.concurrent.Callable<RouteVersion> action) {
-        try {
-            return action.call();
-        } catch (VersionConflictException conflict) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, conflict.getMessage());
-        } catch (io.github.leohou0430.llmgw.persistence.sqlite.StorageLimitException full) {
-            throw full;
-        } catch (IllegalArgumentException invalid) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, invalid.getMessage());
-        } catch (Exception failure) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    failure.getClass().getSimpleName() + ": " + failure.getMessage());
-        }
-    }
+	public ControlRouteController(RequestAuthorizer authorizer, RouteVersionService routeVersions,
+			RouteCandidateValidator candidateValidator, PlatformPolicy platformPolicy, AuditLog audit,
+			io.github.leohou0430.llmgw.persistence.sqlite.StorageGuard storage) {
+		this.authorizer = authorizer;
+		this.routeVersions = routeVersions;
+		this.candidateValidator = candidateValidator;
+		this.platformPolicy = platformPolicy;
+		this.audit = audit;
+		this.storage = storage;
+	}
 
-    public record PublishBody(String tenantId, String projectId, long expectedVersion, String config,
-                              Map<String, Object> upstream) {
-    }
+	@GetMapping("/routes")
+	public Map<String, Object> status() {
+		return Map.of("activeVersion", routeVersions.activeVersion());
+	}
 
-    public record RollbackBody(String tenantId, String projectId, long expectedVersion, long targetVersion) {
-    }
+	@PostMapping("/routes/publish")
+	public ResponseEntity<Map<String, Object>> publish(
+			@CookieValue(name = "llmgw_sid", required = false) String sessionId,
+			@RequestHeader(name = "X-CSRF-Token", required = false) String csrfToken, @RequestBody PublishBody body) {
+		ControlAccess.platform(authorizer, sessionId);
+		authorize(sessionId, csrfToken, Action.ROUTE_PUBLISH, body.tenantId(), body.projectId());
+		if (body.upstream() != null) {
+			var violations = candidateValidator.check(body.upstream(), platformPolicy);
+			if (!violations.isEmpty()) {
+				audit.record(ControlAccess.account(authorizer, sessionId).id(), "", "", "route.publish.rejected",
+						String.join("; ", violations));
+				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "invalid upstream: " + violations);
+			}
+		}
+		WriteGate.check(storage);
+		RouteVersion published = audit.change(ControlAccess.account(authorizer, sessionId).id(), "", "",
+				"route.publish", "expectedVersion=" + body.expectedVersion(),
+				() -> tryConflict(() -> routeVersions.publish(body.config(), body.expectedVersion())));
+		return ResponseEntity
+			.ok(Map.of("version", published.version(), "activeVersion", routeVersions.activeVersion()));
+	}
+
+	@PostMapping("/routes/rollback")
+	public ResponseEntity<Map<String, Object>> rollback(
+			@CookieValue(name = "llmgw_sid", required = false) String sessionId,
+			@RequestHeader(name = "X-CSRF-Token", required = false) String csrfToken, @RequestBody RollbackBody body) {
+		ControlAccess.platform(authorizer, sessionId);
+		authorize(sessionId, csrfToken, Action.ROUTE_ROLLBACK, body.tenantId(), body.projectId());
+		WriteGate.check(storage);
+		RouteVersion rolledBack = audit.change(ControlAccess.account(authorizer, sessionId).id(), "", "",
+				"route.rollback", "base=" + body.targetVersion(),
+				() -> tryConflict(() -> routeVersions.rollback(body.targetVersion(), body.expectedVersion())));
+		return ResponseEntity.ok(Map.of("version", rolledBack.version(), "baseVersion", rolledBack.baseVersion()));
+	}
+
+	private void authorize(String sessionId, String csrfToken, Action action, String tenantId, String projectId) {
+		AuthOutcome outcome = authorizer
+			.authorize(new AuthenticatedRequest(sessionId, csrfToken, true, action, new Target("", "")));
+		if (outcome != AuthOutcome.ALLOW) {
+			HttpStatus status = outcome == AuthOutcome.UNAUTHENTICATED ? HttpStatus.UNAUTHORIZED : HttpStatus.FORBIDDEN;
+			throw new ResponseStatusException(status, outcome.name());
+		}
+	}
+
+	private static RouteVersion tryConflict(java.util.concurrent.Callable<RouteVersion> action) {
+		try {
+			return action.call();
+		}
+		catch (VersionConflictException conflict) {
+			throw new ResponseStatusException(HttpStatus.CONFLICT, conflict.getMessage());
+		}
+		catch (io.github.leohou0430.llmgw.persistence.sqlite.StorageLimitException full) {
+			throw full;
+		}
+		catch (IllegalArgumentException invalid) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, invalid.getMessage());
+		}
+		catch (Exception failure) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+					failure.getClass().getSimpleName() + ": " + failure.getMessage());
+		}
+	}
+
+	public record PublishBody(String tenantId, String projectId, long expectedVersion, String config,
+			Map<String, Object> upstream) {
+	}
+
+	public record RollbackBody(String tenantId, String projectId, long expectedVersion, long targetVersion) {
+	}
+
 }

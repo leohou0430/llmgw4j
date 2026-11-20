@@ -4,31 +4,34 @@ import io.github.leohou0430.llmgw.core.governance.GatewayPipeline;
 import io.github.leohou0430.llmgw.core.protocol.ProtocolCodec;
 
 /**
- * Single source of truth for client-visible error reasons. Both data planes
- * must emit byte-identical reason strings, otherwise the A/B comparison and
- * the 67-assertion contract suite would be comparing different protocols.
+ * Single source of truth for client-visible error reasons. Both data planes must emit
+ * byte-identical reason strings, otherwise the A/B comparison and the 67-assertion
+ * contract suite would be comparing different protocols.
  */
 public final class EngineReasons {
 
-    public static final String CAPACITY_EXCEEDED = "gateway request capacity exceeded";
-    public static final String REQUEST_TOO_LARGE = "request body too large";
-    public static final String NO_UPSTREAM_ROUTE = "no upstream route";
+	public static final String CAPACITY_EXCEEDED = "gateway request capacity exceeded";
 
-    private static final String UPSTREAM_PREFIX = "upstream: ";
+	public static final String REQUEST_TOO_LARGE = "request body too large";
 
-    private EngineReasons() {
-    }
+	public static final String NO_UPSTREAM_ROUTE = "no upstream route";
 
-    public static String upstream(Throwable error) {
-        return UPSTREAM_PREFIX + GatewayPipeline.errorMessage(error);
-    }
+	private static final String UPSTREAM_PREFIX = "upstream: ";
 
-    /** Clean EOF without the protocol terminator is a truncation, never a success. */
-    public static String truncated() {
-        return truncated(io.github.leohou0430.llmgw.core.protocol.ProtocolKind.CHAT);
-    }
+	private EngineReasons() {
+	}
 
-    public static String truncated(io.github.leohou0430.llmgw.core.protocol.ProtocolKind kind) {
-        return UPSTREAM_PREFIX + ProtocolCodec.truncatedMessage(kind);
-    }
+	public static String upstream(Throwable error) {
+		return UPSTREAM_PREFIX + GatewayPipeline.errorMessage(error);
+	}
+
+	/** Clean EOF without the protocol terminator is a truncation, never a success. */
+	public static String truncated() {
+		return truncated(io.github.leohou0430.llmgw.core.protocol.ProtocolKind.CHAT);
+	}
+
+	public static String truncated(io.github.leohou0430.llmgw.core.protocol.ProtocolKind kind) {
+		return UPSTREAM_PREFIX + ProtocolCodec.truncatedMessage(kind);
+	}
+
 }

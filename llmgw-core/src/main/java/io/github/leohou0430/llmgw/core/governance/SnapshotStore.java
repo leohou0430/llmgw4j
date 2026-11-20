@@ -2,11 +2,13 @@ package io.github.leohou0430.llmgw.core.governance;
 
 /** Persistence SPI. The in-memory build ships a JSON snapshot implementation. */
 public interface SnapshotStore {
-    String exportJson();
 
-    void importJson(String json);
+	String exportJson();
 
-    void save();
+	void importJson(String json);
 
-    void load();
+	void save();
+
+	void load();
+
 }

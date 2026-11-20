@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: llmgw4j API
-  version: 0.4.0
+  version: 0.5.0
   description: |
     Java LLM API gateway (llmgw4j). Supported data-plane protocols use pass-through
     parity: each endpoint only routes to upstreams speaking the SAME protocol
@@ -23,6 +23,26 @@ info:
     Responses `response.completed`, Messages `message_stop`. A clean EOF without
     the terminator is reported as a failure (502 before the first chunk, in-band
     `event: error` after it). The gateway never fabricates a terminator.
+
+    Chapter-9 governance contracts (2026-11-20 review round):
+    Attempt budget — every attempt's timeout is capped to the remaining total
+    deadline (gateway.upstream.total-deadline-ms and/or the absolute epoch-ms
+    request header `X-LLMGW-Deadline`); an exhausted budget stops the plan with
+    504 `attempt budget exhausted` before any further upstream try.
+    Strict budget — with `gateway.billing.strict-budget=true`, a token request
+    without an explicit output bound is rejected 400
+    `strict_budget_requires_output_bound` (a provable reservation requires a
+    bounded max output; soft mode keeps estimate-based reservations).
+    Idempotency — an `Idempotency-Key` request header makes the gateway reject
+    duplicate submissions with 409 `idempotent_request_exists` (the response
+    reason carries the original call/request identifiers; streaming is never
+    replayed, unknown outcomes are never auto-resent).
+    Attribution — optional `X-LLMGW-Session-Id` / `X-LLMGW-Turn-Id` headers are
+    sanitized, bound to the authenticated subject, recorded in audit/ledger and
+    echoed back; missing attribution stays unattributed, never fabricated.
+    Governance dependency outages (Redis) fail closed with 503 + Retry-After: 1
+    per gateway.redis.failure-policy; only the explicitly chosen
+    fail-open-limits mode allows token-bucket reads to proceed.
   license:
     name: Apache-2.0
 servers:
@@ -1006,6 +1026,130 @@ paths:
                   type: integer
                 targetVersion:
                   type: integer
+  /mcp/{server}:
+    post:
+      summary: MCP 网关（Modern 2026-07-28；gateway.mcp.enabled=true 时可用）
+      tags:
+      - mcp
+      security: []
+      parameters:
+      - name: server
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 配置声明的 MCP 服务器逻辑名（出口白名单）
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: JSON-RPC 2.0；params._meta 必须携带 io.modelcontextprotocol/protocolVersion=2026-07-28 与 clientCapabilities（可为空对象）
+      responses:
+        '200':
+          description: JSON-RPC result（上游响应重构后返回；tools/list 已按授权谓词过滤）
+        '202':
+          description: 审批挂起（高风险工具 require-approval；审批未决不得执行）
+        '400':
+          description: 协议校验失败（_meta 缺失/版本不支持/镜像头不一致/报文超限）
+        '401':
+          description: 无效凭据或无归属主体
+        '403':
+          description: 默认拒绝（无匹配授权规则）或 Origin 不在白名单；订阅/Tasks 扩展默认关闭
+        '404':
+          description: 未知服务器路由或网关未启用
+        '502':
+          description: 上游不可达（Legacy 桥接握手失败）
+  /control/approvals:
+    get:
+      summary: 待决审批列表（APPROVAL_READ，按调用者 scope）
+      tags:
+      - control
+      parameters:
+      - name: tenantId
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: projectId
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: 成功
+        '401':
+          description: 无效会话
+        '403':
+          description: 角色、scope、CSRF拒绝
+        '501':
+          description: 控制数据库不可用
+  /control/approvals/{id}/decide:
+    post:
+      summary: 审批决策（批准/拒绝；批准 ≠ 放行，执行前仍需 revalidate）
+      tags:
+      - control
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [approve, reason]
+              properties:
+                approve:
+                  type: boolean
+                reason:
+                  type: string
+      responses:
+        '200':
+          description: 决策后的审批快照（状态机幂等吸收重复决策）
+        '400':
+          description: 原因缺失
+        '401':
+          description: 无效会话
+        '403':
+          description: 角色、scope、CSRF拒绝
+        '404':
+          description: 未知审批
+  /control/approvals/{id}/revoke:
+    post:
+      summary: 撤销已批准的审批（撤销后执行方 revalidate 一律 false）
+      tags:
+      - control
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [reason]
+              properties:
+                reason:
+                  type: string
+      responses:
+        '200':
+          description: 撤销后的审批快照
+        '400':
+          description: 原因缺失
+        '403':
+          description: 角色、scope、CSRF拒绝
+        '404':
+          description: 未知审批
   /v1/chat/completions:
     post:
       operationId: createChatCompletion
@@ -1889,6 +2033,148 @@ paths:
         '200': {description: Verified usage settled once and audited}
         '400': {description: Unknown, already settled, or invalid reservation}
         '403': {description: Tenant administration permission or CSRF denied}
+  /control/billing/accounts/{tenantId}:
+    get:
+      summary: 账户快照（BILLING_READ 按真实scope；观察者只读）
+      tags: [control]
+      security:
+      - controlSession: []
+      parameters:
+      - {name: tenantId, in: path, required: true, schema: {type: string}}
+      responses:
+        '200': {description: 账户余额/透支/尾数（nano-CNY 整数）}
+        '401': {description: 无效会话}
+        '403': {description: 角色、scope或CSRF拒绝}
+  /control/billing/recharge:
+    post:
+      summary: 幂等充值（BILLING_MANAGE 仅平台管理员，凭证号防重，写管理审计）
+      tags: [control]
+      security:
+      - controlSession: []
+      parameters:
+      - {name: X-CSRF-Token, in: header, required: true, schema: {type: string}}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [tenantId, amountNano, voucherNo]
+              properties:
+                tenantId: {type: string}
+                amountNano: {type: integer}
+                voucherNo: {type: string}
+      responses:
+        '200': {description: 入账（alreadyRecorded=true 表示凭证重放命中）}
+        '401': {description: 无效会话}
+        '403': {description: 非平台管理员或CSRF拒绝}
+        '501': {description: billing pack 未启用}
+  /control/billing/reverse:
+    post:
+      summary: 受控冲正（引用原充值流水整笔负入账，禁跨租户/重复冲正）
+      tags: [control]
+      security:
+      - controlSession: []
+      parameters:
+      - {name: X-CSRF-Token, in: header, required: true, schema: {type: string}}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [tenantId, originalEntryId, reason, operationId]
+              properties:
+                tenantId: {type: string}
+                originalEntryId: {type: string}
+                reason: {type: string, minLength: 1}
+                operationId: {type: string}
+      responses:
+        '200': {description: 冲正入账（幂等 operationId 重放命中）}
+        '400': {description: 冲正目标不存在或非本租户正充值}
+        '403': {description: 非平台管理员或CSRF拒绝}
+        '409': {description: 已被其他操作冲正}
+  /control/billing/reservations/{tenantId}/pending:
+    get:
+      summary: 待核验预留清单（结果未知跨重启保留，第七项确认）
+      tags: [control]
+      security:
+      - controlSession: []
+      parameters:
+      - {name: tenantId, in: path, required: true, schema: {type: string}}
+      responses:
+        '200': {description: 预留列表}
+        '403': {description: 角色、scope或CSRF拒绝}
+  /control/prices/{model}:
+    get:
+      summary: 该模型全部冻结售价版本（改价不追溯在途）
+      tags: [control]
+      security:
+      - controlSession: []
+      parameters:
+      - {name: model, in: path, required: true, schema: {type: string}}
+      responses:
+        '200': {description: 版本列表}
+        '403': {description: 角色、scope或CSRF拒绝}
+    post:
+      summary: 发布新售价版本（PRICE_PUBLISH 仅平台管理员；0=该单位未定价）
+      tags: [control]
+      security:
+      - controlSession: []
+      parameters:
+      - {name: model, in: path, required: true, schema: {type: string}}
+      - {name: X-CSRF-Token, in: header, required: true, schema: {type: string}}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                inputNanoPerMillion: {type: integer, minimum: 0}
+                outputNanoPerMillion: {type: integer, minimum: 0}
+                nanoPerImage: {type: integer, minimum: 0}
+                nanoPerTask: {type: integer, minimum: 0}
+                nanoPerSecond: {type: integer, minimum: 0}
+      responses:
+        '200': {description: 新版本号单调递增}
+        '403': {description: 非平台管理员或CSRF拒绝}
+  /control/recordings/{callId}:
+    get:
+      summary: 正文记录元数据（RECORDING_READ，观察者仅元数据）
+      tags: [control]
+      security:
+      - controlSession: []
+      parameters:
+      - {name: callId, in: path, required: true, schema: {type: string}}
+      responses:
+        '200': {description: 事件行数/终态/字节，不含正文}
+        '403': {description: 角色、scope或CSRF拒绝}
+        '404': {description: 记录不存在}
+  /control/recordings/{callId}/body:
+    get:
+      summary: 正文事件（BODY_READ 三级管理员可见且写审计；观察者不可见）
+      tags: [control]
+      security:
+      - controlSession: []
+      parameters:
+      - {name: callId, in: path, required: true, schema: {type: string}}
+      responses:
+        '200': {description: 已消毒事件行}
+        '403': {description: BODY_READ 拒绝}
+        '404': {description: 记录不存在}
+  /control/recordings/{callId}/export:
+    get:
+      summary: 记录导出（BODY_EXPORT 仅平台管理员，数据离开边界写审计）
+      tags: [control]
+      security:
+      - controlSession: []
+      parameters:
+      - {name: callId, in: path, required: true, schema: {type: string}}
+      responses:
+        '200': {description: 完整 JSONL 内容}
+        '403': {description: 非平台管理员}
+        '404': {description: 记录不存在}
 components:
   securitySchemes:
     controlSession:

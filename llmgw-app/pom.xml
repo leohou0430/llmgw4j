@@ -6,7 +6,7 @@
   <parent>
     <groupId>io.github.leohou0430</groupId>
     <artifactId>llmgw-parent</artifactId>
-    <version>0.4.0</version>
+    <version>0.5.0</version>
   </parent>
   <artifactId>llmgw-app</artifactId>
   <name>llmgw-app</name>
@@ -27,6 +27,11 @@
     <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-identity-default</artifactId></dependency>
     <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-control-default</artifactId></dependency>
     <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-persistence-sqlite</artifactId></dependency>
+    <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-billing-sqlite</artifactId></dependency>
+    <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-recording-local</artifactId></dependency>
+    <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-idempotency-sqlite</artifactId></dependency>
+    <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-approval-sqlite</artifactId></dependency>
+    <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-mcp-default</artifactId></dependency>
     <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-catalog-api</artifactId></dependency>
     <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-catalog-default</artifactId></dependency>
     <!-- T1.11 protocol conversion: the assembly module plus every codec it discovers by name at
@@ -40,6 +45,7 @@
     <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-engine-webflux</artifactId></dependency>
     <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-engine-vt</artifactId></dependency>
     <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-provider-openai</artifactId></dependency>
+    <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-provider-gemini</artifactId></dependency>
     <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-provider-anthropic</artifactId></dependency>
     <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-webflux</artifactId></dependency>
     <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-web</artifactId></dependency>

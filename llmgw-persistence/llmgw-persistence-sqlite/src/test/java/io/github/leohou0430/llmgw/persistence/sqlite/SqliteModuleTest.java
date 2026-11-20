@@ -13,30 +13,30 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * T3.1 seam: named discovery of the {@code sqlite} module through the descriptor,
- * default binding of {@link DatabaseContext}, and resource ownership — the
+ * T3.1 seam: named discovery of the {@code sqlite} module through the descriptor, default
+ * binding of {@link DatabaseContext}, and resource ownership — the
  * {@link ExtensionContext} must close the instance it resolved when it closes.
  */
 class SqliteModuleTest {
 
-    @TempDir
-    Path tempDir;
+	@TempDir
+	Path tempDir;
 
-    @Test
-    void namedModuleBindsDatabaseContextAndContextOwnsTheInstance() throws Exception {
-        Path file = tempDir.resolve("module.db");
-        Connection captured;
-        try (ExtensionContext context = new ExtensionContext()) {
-            context.bind(SqliteConfig.class, () -> new SqliteConfig(file, 2000L));
-            context.loadModule("sqlite");
-            context.seal();
+	@Test
+	void namedModuleBindsDatabaseContextAndContextOwnsTheInstance() throws Exception {
+		Path file = tempDir.resolve("module.db");
+		Connection captured;
+		try (ExtensionContext context = new ExtensionContext()) {
+			context.bind(SqliteConfig.class, () -> new SqliteConfig(file, 2000L));
+			context.loadModule("sqlite");
+			context.seal();
 
-            DatabaseContext database = context.get(DatabaseContext.class);
-            assertInstanceOf(SqliteContext.class, database);
-            captured = database.connection();
-            assertFalse(captured.isClosed());
-        }
-        assertTrue(captured.isClosed(),
-                "ExtensionContext must close the owned SqliteContext on close()");
-    }
+			DatabaseContext database = context.get(DatabaseContext.class);
+			assertInstanceOf(SqliteContext.class, database);
+			captured = database.connection();
+			assertFalse(captured.isClosed());
+		}
+		assertTrue(captured.isClosed(), "ExtensionContext must close the owned SqliteContext on close()");
+	}
+
 }

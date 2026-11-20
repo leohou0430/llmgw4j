@@ -24,3 +24,40 @@ LLMGW_TEST_JAR=/absolute/path/verified.jar python3 bin/smoke-jwt-auth.py
 ```
 
 生产迁移前先备份数据库并保留对应版本产物。验证需要覆盖两个引擎、跨租户/项目反例、创建→真实调用→用量→轮换→吊销→重启、路由实际转发目标切换及回滚，不以版本号或组件单测替代业务验收。
+
+## 账务归档与灾难恢复（ADR-0007 任务 9）
+
+### 归档
+
+`BillingArchiveService.archiveBefore(thresholdMs)` 把终态（settled/released）预留移入
+`billing_reservation_archive`，并持久高水位与 SHA-256 摘要（`billing_archive_watermark`）。
+账户锚点（`billing_account`）与充值幂等索引（`billing_recharge` 的
+UNIQUE(tenant_id, voucher_no)）永不归档：归档前后余额/累计/在途不变，凭证重放在归档后
+仍被幂等拒绝。活动（reserved）与未知（pendingVerify）预留不能归档。摘要损坏时
+`verifyDigest()` 抛出异常——恢复必须拒绝。
+
+### 备份与恢复
+
+```sh
+# 备份（目标必须为独立存储域；同盘副本会被拒绝）
+python3 bin/backup-control.py --db /data/llmgw/control.db --target /vol-backup/llmgw/
+
+# 恢复（核验清单摘要 + billing 表存在性；失败保持关闸）
+python3 bin/restore-control.py --backup /vol-backup/llmgw/control-<stamp>.db \
+  --target /data/llmgw-recovery/control.db
+```
+
+备份写入 `<backup>.manifest.json`（SHA-256）。恢复流程：核验通过后把备份放到恢复目标，
+网关以 maintenance 启动；缺口核对（归档高水位之后的活动记录对账）结果**显式记录**后调用
+`RecoveryGate.open(evidence)` 开闸——空证据不开闸。已吊销 Key 不因旧备份自动有效（密钥
+状态随控制库恢复，恢复后仍为吊销态）。
+
+### 演练
+
+```sh
+python3 bin/smoke-billing-recovery.py   # 全流程 ≤4 小时预算；恢复点 ≤1 小时
+```
+
+演练覆盖：实时结算 → 在线备份 → 同盘拒绝 → 篡改拒绝（摘要不匹配闸门保持关闭）→
+独立目标核验恢复 → 余额/高水位一致 → 计时预算。恢复闸门组件合同（关闸→证据→开闸）
+由 `RecoveryGateTest` 覆盖。

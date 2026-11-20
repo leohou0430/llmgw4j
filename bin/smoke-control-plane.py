@@ -84,7 +84,17 @@ class Client:
             return json.loads(raw) if raw else {}
 
     def login(self, username='platform'):
-        self.csrf = self.request('/control/login', 'POST', {'username': username, 'password': PASSWORD})['csrfToken']
+        # The first administrator is seeded by an ApplicationRunner, which runs
+        # AFTER the web server reports healthy; retry briefly on 401.
+        deadline = time.time() + 10
+        while True:
+            try:
+                self.csrf = self.request('/control/login', 'POST', {'username': username, 'password': PASSWORD})['csrfToken']
+                break
+            except AssertionError as failure:
+                if 'got 401' not in str(failure) or time.time() >= deadline:
+                    raise
+                time.sleep(0.25)
         return self.request('/control/session')['account']
 
     def change(self, path, body, expected=200):
@@ -270,7 +280,7 @@ def verify(jar, engine, binary=False):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--jar', type=Path, default=Path(os.environ.get('LLMGW_TEST_JAR', ROOT / 'llmgw-app/target/llmgw-app-0.4.0.jar')))
+    parser.add_argument('--jar', type=Path, default=Path(os.environ.get('LLMGW_TEST_JAR', ROOT / 'llmgw-app/target/llmgw-app-0.5.0.jar')))
     parser.add_argument('--binary', type=Path)
     parser.add_argument('--engine', choices=['webflux', 'vt'])
     arguments = parser.parse_args()

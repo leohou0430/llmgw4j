@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>io.github.leohou0430</groupId>
+    <artifactId>llmgw-idempotency</artifactId>
+    <version>0.5.0</version>
+  </parent>
+
+  <artifactId>llmgw-idempotency-api</artifactId>
+  <name>llmgw-idempotency-api</name>
+  <description>Customer idempotency-key contract (Chapter-9 9.4.5/CONTEXT.md):
+    scope-keyed begin/complete/purge with FRESH, EXISTING_INFLIGHT,
+    EXISTING_COMPLETED, EXISTING_UNKNOWN and MISMATCH verdicts. Pure strings
+    and epoch-ms stamps — no amounts, no units. No Spring/Reactor/HTTP.</description>
+
+  <dependencies>
+    <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-core</artifactId></dependency>
+  </dependencies>
+</project>

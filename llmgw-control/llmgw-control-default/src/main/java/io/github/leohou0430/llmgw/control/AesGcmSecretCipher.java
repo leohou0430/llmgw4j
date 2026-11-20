@@ -19,46 +19,52 @@ import java.util.Objects;
  * operation; a missing key fails closed via {@code RootKeyMissingException}.
  */
 public final class AesGcmSecretCipher implements SecretCipher {
-    private static final int IV_BYTES = 12;
-    private static final int TAG_BITS = 128;
 
-    private final RootKeyProvider rootKey;
-    private final SecureRandom random = new SecureRandom();
+	private static final int IV_BYTES = 12;
 
-    public AesGcmSecretCipher(RootKeyProvider rootKey) {
-        this.rootKey = Objects.requireNonNull(rootKey, "rootKey");
-    }
+	private static final int TAG_BITS = 128;
 
-    @Override
-    public String encrypt(String plaintext) {
-        byte[] key = rootKey.requireRootKey();
-        try {
-            byte[] iv = new byte[IV_BYTES];
-            random.nextBytes(iv);
-            Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
-            cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(key, "AES"), new GCMParameterSpec(TAG_BITS, iv));
-            byte[] ciphertext = cipher.doFinal(plaintext.getBytes(StandardCharsets.UTF_8));
-            byte[] combined = new byte[iv.length + ciphertext.length];
-            System.arraycopy(iv, 0, combined, 0, iv.length);
-            System.arraycopy(ciphertext, 0, combined, iv.length, ciphertext.length);
-            return Base64.getEncoder().encodeToString(combined);
-        } catch (Exception failure) {
-            throw new IllegalStateException("failed to encrypt secret", failure);
-        }
-    }
+	private final RootKeyProvider rootKey;
 
-    @Override
-    public String decrypt(String ciphertext) {
-        byte[] key = rootKey.requireRootKey();
-        try {
-            byte[] combined = Base64.getDecoder().decode(ciphertext);
-            byte[] iv = Arrays.copyOfRange(combined, 0, IV_BYTES);
-            byte[] body = Arrays.copyOfRange(combined, IV_BYTES, combined.length);
-            Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
-            cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(key, "AES"), new GCMParameterSpec(TAG_BITS, iv));
-            return new String(cipher.doFinal(body), StandardCharsets.UTF_8);
-        } catch (Exception failure) {
-            throw new IllegalStateException("failed to decrypt/authenticate secret", failure);
-        }
-    }
+	private final SecureRandom random = new SecureRandom();
+
+	public AesGcmSecretCipher(RootKeyProvider rootKey) {
+		this.rootKey = Objects.requireNonNull(rootKey, "rootKey");
+	}
+
+	@Override
+	public String encrypt(String plaintext) {
+		byte[] key = rootKey.requireRootKey();
+		try {
+			byte[] iv = new byte[IV_BYTES];
+			random.nextBytes(iv);
+			Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
+			cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(key, "AES"), new GCMParameterSpec(TAG_BITS, iv));
+			byte[] ciphertext = cipher.doFinal(plaintext.getBytes(StandardCharsets.UTF_8));
+			byte[] combined = new byte[iv.length + ciphertext.length];
+			System.arraycopy(iv, 0, combined, 0, iv.length);
+			System.arraycopy(ciphertext, 0, combined, iv.length, ciphertext.length);
+			return Base64.getEncoder().encodeToString(combined);
+		}
+		catch (Exception failure) {
+			throw new IllegalStateException("failed to encrypt secret", failure);
+		}
+	}
+
+	@Override
+	public String decrypt(String ciphertext) {
+		byte[] key = rootKey.requireRootKey();
+		try {
+			byte[] combined = Base64.getDecoder().decode(ciphertext);
+			byte[] iv = Arrays.copyOfRange(combined, 0, IV_BYTES);
+			byte[] body = Arrays.copyOfRange(combined, IV_BYTES, combined.length);
+			Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
+			cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(key, "AES"), new GCMParameterSpec(TAG_BITS, iv));
+			return new String(cipher.doFinal(body), StandardCharsets.UTF_8);
+		}
+		catch (Exception failure) {
+			throw new IllegalStateException("failed to decrypt/authenticate secret", failure);
+		}
+	}
+
 }

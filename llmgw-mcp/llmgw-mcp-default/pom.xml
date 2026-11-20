@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>io.github.leohou0430</groupId>
+    <artifactId>llmgw-mcp</artifactId>
+    <version>0.5.0</version>
+  </parent>
+
+  <artifactId>llmgw-mcp-default</artifactId>
+  <name>llmgw-mcp-default</name>
+  <description>Default MCP gateway: mirror-header protocol validation, default-deny
+    ACL with tools/list filtering and independent tools/call re-checks, header
+    reconstruction on egress (no downstream cookies or caller credentials),
+    and Modern-to-Legacy bridging with single-exchange isolation.</description>
+
+  <properties><llmgw.foundation.enforcer.skip>false</llmgw.foundation.enforcer.skip></properties>
+  <dependencies>
+    <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-mcp-api</artifactId></dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>

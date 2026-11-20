@@ -15,26 +15,29 @@ import java.util.UUID;
  * self-registration); a second bootstrap is rejected once any account exists.
  */
 public final class AdministratorBootstrap {
-    private final AccountStore store;
-    private final PasswordHasher hasher;
 
-    public AdministratorBootstrap(AccountStore store, PasswordHasher hasher) {
-        this.store = Objects.requireNonNull(store, "store");
-        this.hasher = Objects.requireNonNull(hasher, "hasher");
-    }
+	private final AccountStore store;
 
-    public Account bootstrap(String username, String rawPassword) {
-        if (username == null || username.isBlank()) {
-            throw new IllegalArgumentException("username is required");
-        }
-        if (rawPassword == null || rawPassword.isBlank()) {
-            throw new IllegalArgumentException("password is required");
-        }
-        if (store.existsAny()) {
-            throw new IllegalStateException("control plane is already bootstrapped");
-        }
-        Account admin = new Account(UUID.randomUUID().toString(), username,
-                hasher.hash(rawPassword), Role.PLATFORM_ADMIN, Scope.platform(), true);
-        return store.create(admin);
-    }
+	private final PasswordHasher hasher;
+
+	public AdministratorBootstrap(AccountStore store, PasswordHasher hasher) {
+		this.store = Objects.requireNonNull(store, "store");
+		this.hasher = Objects.requireNonNull(hasher, "hasher");
+	}
+
+	public Account bootstrap(String username, String rawPassword) {
+		if (username == null || username.isBlank()) {
+			throw new IllegalArgumentException("username is required");
+		}
+		if (rawPassword == null || rawPassword.isBlank()) {
+			throw new IllegalArgumentException("password is required");
+		}
+		if (store.existsAny()) {
+			throw new IllegalStateException("control plane is already bootstrapped");
+		}
+		Account admin = new Account(UUID.randomUUID().toString(), username, hasher.hash(rawPassword),
+				Role.PLATFORM_ADMIN, Scope.platform(), true);
+		return store.create(admin);
+	}
+
 }

@@ -17,7 +17,7 @@ violation detector) are importable WITHOUT the SDKs; the SDKs are imported lazil
 inside main(). No-network unit tests: test_smoke_conversion_sdk.py.
 
 Usage:
-    python3 bin/smoke-conversion-sdk.py --jar llmgw-app/target/llmgw-app-0.4.0.jar --out DIR
+    python3 bin/smoke-conversion-sdk.py --jar llmgw-app/target/llmgw-app-0.5.0.jar --out DIR
     LLMGW_TEST_JAR=/path/to.jar python3 bin/smoke-conversion-sdk.py --out DIR
 """
 import argparse
@@ -181,7 +181,7 @@ def main():
         executable = Path(jar_env).resolve()
         is_binary = False
     else:
-        executable = Path("llmgw-app/target/llmgw-app-0.4.0.jar").resolve()
+        executable = Path("llmgw-app/target/llmgw-app-0.5.0.jar").resolve()
         is_binary = False
     if not executable.exists():
         raise SystemExit(f"artifact not found: {executable}")

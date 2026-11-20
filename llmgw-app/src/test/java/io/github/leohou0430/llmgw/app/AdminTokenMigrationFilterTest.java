@@ -31,130 +31,129 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AdminTokenMigrationFilterTest {
 
-    @TempDir
-    Path tempDir;
+	@TempDir
+	Path tempDir;
 
-    private SqliteContext database;
-    private AuditLog audit;
-    private ObjectProvider<AuditLog> auditProvider;
+	private SqliteContext database;
 
-    @BeforeEach
-    void setUp() throws Exception {
-        database = new SqliteContext(tempDir.resolve("audit.db"), 1000L);
-        new SchemaMigrator(database).migrate(Migrations.all());
-        audit = new AuditLog(database);
-        StaticListableBeanFactory beans = new StaticListableBeanFactory();
-        beans.addBean("audit", audit);
-        auditProvider = beans.getBeanProvider(AuditLog.class);
-    }
+	private AuditLog audit;
 
-    @AfterEach
-    void tearDown() {
-        database.close();
-    }
+	private ObjectProvider<AuditLog> auditProvider;
 
-    private AdminTokenMigrationConfiguration.ServletAdminTokenFilter servlet(
-            AdminTokenMode mode, String networks, boolean configured) {
-        AdminTokenGuard guard = new AdminTokenGuard(new DefaultAdminTokenPolicy(), mode,
-                new RestrictedNetworks(networks), configured);
-        return new AdminTokenMigrationConfiguration.ServletAdminTokenFilter(guard, auditProvider);
-    }
+	@BeforeEach
+	void setUp() throws Exception {
+		database = new SqliteContext(tempDir.resolve("audit.db"), 1000L);
+		new SchemaMigrator(database).migrate(Migrations.all());
+		audit = new AuditLog(database);
+		StaticListableBeanFactory beans = new StaticListableBeanFactory();
+		beans.addBean("audit", audit);
+		auditProvider = beans.getBeanProvider(AuditLog.class);
+	}
 
-    private AdminTokenMigrationConfiguration.ReactiveAdminTokenFilter reactive(
-            AdminTokenMode mode, String networks, boolean configured) {
-        AdminTokenGuard guard = new AdminTokenGuard(new DefaultAdminTokenPolicy(), mode,
-                new RestrictedNetworks(networks), configured);
-        return new AdminTokenMigrationConfiguration.ReactiveAdminTokenFilter(guard, auditProvider);
-    }
+	@AfterEach
+	void tearDown() {
+		database.close();
+	}
 
-    @Test
-    void servletDisabledRejectsLegacyTokenEvenFromLoopback() throws Exception {
-        MockHttpServletRequest request = new MockHttpServletRequest("GET", "/admin/routes");
-        request.setRemoteAddr("127.0.0.1");
-        request.addHeader("X-Admin-Token", "legacy");
-        MockHttpServletResponse response = new MockHttpServletResponse();
-        MockFilterChain chain = new MockFilterChain();
+	private AdminTokenMigrationConfiguration.ServletAdminTokenFilter servlet(AdminTokenMode mode, String networks,
+			boolean configured) {
+		AdminTokenGuard guard = new AdminTokenGuard(new DefaultAdminTokenPolicy(), mode,
+				new RestrictedNetworks(networks), configured);
+		return new AdminTokenMigrationConfiguration.ServletAdminTokenFilter(guard, auditProvider);
+	}
 
-        servlet(AdminTokenMode.DISABLED, "", true).doFilter(request, response, chain);
+	private AdminTokenMigrationConfiguration.ReactiveAdminTokenFilter reactive(AdminTokenMode mode, String networks,
+			boolean configured) {
+		AdminTokenGuard guard = new AdminTokenGuard(new DefaultAdminTokenPolicy(), mode,
+				new RestrictedNetworks(networks), configured);
+		return new AdminTokenMigrationConfiguration.ReactiveAdminTokenFilter(guard, auditProvider);
+	}
 
-        assertEquals(HttpStatus.FORBIDDEN.value(), response.getStatus());
-        assertNull(chain.getRequest());
-    }
+	@Test
+	void servletDisabledRejectsLegacyTokenEvenFromLoopback() throws Exception {
+		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/admin/routes");
+		request.setRemoteAddr("127.0.0.1");
+		request.addHeader("X-Admin-Token", "legacy");
+		MockHttpServletResponse response = new MockHttpServletResponse();
+		MockFilterChain chain = new MockFilterChain();
 
-    @Test
-    void servletMigrationAllowsLoopbackAndAuditsEmergency() throws Exception {
-        MockHttpServletRequest request = new MockHttpServletRequest("GET", "/admin/routes");
-        request.setRemoteAddr("127.0.0.1");
-        request.addHeader("X-Admin-Token", "legacy");
-        MockHttpServletResponse response = new MockHttpServletResponse();
-        MockFilterChain chain = new MockFilterChain();
+		servlet(AdminTokenMode.DISABLED, "", true).doFilter(request, response, chain);
 
-        servlet(AdminTokenMode.MIGRATION, "", true).doFilter(request, response, chain);
+		assertEquals(HttpStatus.FORBIDDEN.value(), response.getStatus());
+		assertNull(chain.getRequest());
+	}
 
-        assertNotNull(chain.getRequest());
-        assertTrue(audit.recent("platform", 10).stream()
-                .anyMatch(entry -> entry.action().equals("admin.legacy-token")));
-    }
+	@Test
+	void servletMigrationAllowsLoopbackAndAuditsEmergency() throws Exception {
+		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/admin/routes");
+		request.setRemoteAddr("127.0.0.1");
+		request.addHeader("X-Admin-Token", "legacy");
+		MockHttpServletResponse response = new MockHttpServletResponse();
+		MockFilterChain chain = new MockFilterChain();
 
-    @Test
-    void servletMigrationRejectsPublicClient() throws Exception {
-        MockHttpServletRequest request = new MockHttpServletRequest("GET", "/admin/routes");
-        request.setRemoteAddr("203.0.113.5");
-        request.addHeader("X-Admin-Token", "legacy");
-        MockHttpServletResponse response = new MockHttpServletResponse();
-        MockFilterChain chain = new MockFilterChain();
+		servlet(AdminTokenMode.MIGRATION, "", true).doFilter(request, response, chain);
 
-        servlet(AdminTokenMode.MIGRATION, "", true).doFilter(request, response, chain);
+		assertNotNull(chain.getRequest());
+		assertTrue(
+				audit.recent("platform", 10).stream().anyMatch(entry -> entry.action().equals("admin.legacy-token")));
+	}
 
-        assertEquals(HttpStatus.FORBIDDEN.value(), response.getStatus());
-        assertNull(chain.getRequest());
-    }
+	@Test
+	void servletMigrationRejectsPublicClient() throws Exception {
+		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/admin/routes");
+		request.setRemoteAddr("203.0.113.5");
+		request.addHeader("X-Admin-Token", "legacy");
+		MockHttpServletResponse response = new MockHttpServletResponse();
+		MockFilterChain chain = new MockFilterChain();
 
-    @Test
-    void servletLeavesControlPlaneAndTokenlessCallsAlone() throws Exception {
-        MockHttpServletRequest control = new MockHttpServletRequest("GET", "/control/status");
-        control.setRemoteAddr("203.0.113.5");
-        control.addHeader("X-Admin-Token", "legacy");
-        MockFilterChain controlChain = new MockFilterChain();
-        servlet(AdminTokenMode.DISABLED, "", true).doFilter(control, new MockHttpServletResponse(), controlChain);
-        assertNotNull(controlChain.getRequest());
+		servlet(AdminTokenMode.MIGRATION, "", true).doFilter(request, response, chain);
 
-        MockHttpServletRequest tokenless = new MockHttpServletRequest("GET", "/admin/routes");
-        tokenless.setRemoteAddr("203.0.113.5");
-        MockFilterChain tokenlessChain = new MockFilterChain();
-        servlet(AdminTokenMode.DISABLED, "", true).doFilter(tokenless, new MockHttpServletResponse(), tokenlessChain);
-        assertNotNull(tokenlessChain.getRequest());
-    }
+		assertEquals(HttpStatus.FORBIDDEN.value(), response.getStatus());
+		assertNull(chain.getRequest());
+	}
 
-    @Test
-    void reactiveDisabledRejectsAndMigrationAuditsLoopback() {
-        MockServerWebExchange denied = MockServerWebExchange.from(MockServerHttpRequest
-                .get("/admin/routes")
-                .header("X-Admin-Token", "legacy")
-                .remoteAddress(new InetSocketAddress("127.0.0.1", 5555)));
-        AtomicBoolean deniedChain = new AtomicBoolean();
-        reactive(AdminTokenMode.DISABLED, "", true)
-                .filter(denied, exchange -> {
-                    deniedChain.set(true);
-                    return Mono.empty();
-                }).block();
+	@Test
+	void servletLeavesControlPlaneAndTokenlessCallsAlone() throws Exception {
+		MockHttpServletRequest control = new MockHttpServletRequest("GET", "/control/status");
+		control.setRemoteAddr("203.0.113.5");
+		control.addHeader("X-Admin-Token", "legacy");
+		MockFilterChain controlChain = new MockFilterChain();
+		servlet(AdminTokenMode.DISABLED, "", true).doFilter(control, new MockHttpServletResponse(), controlChain);
+		assertNotNull(controlChain.getRequest());
 
-        assertEquals(HttpStatus.FORBIDDEN, denied.getResponse().getStatusCode());
-        assertTrue(!deniedChain.get());
+		MockHttpServletRequest tokenless = new MockHttpServletRequest("GET", "/admin/routes");
+		tokenless.setRemoteAddr("203.0.113.5");
+		MockFilterChain tokenlessChain = new MockFilterChain();
+		servlet(AdminTokenMode.DISABLED, "", true).doFilter(tokenless, new MockHttpServletResponse(), tokenlessChain);
+		assertNotNull(tokenlessChain.getRequest());
+	}
 
-        MockServerWebExchange allowed = MockServerWebExchange.from(MockServerHttpRequest
-                .get("/admin/routes")
-                .header("X-Admin-Token", "legacy")
-                .remoteAddress(new InetSocketAddress("127.0.0.1", 5555)));
-        AtomicBoolean allowedChain = new AtomicBoolean();
-        reactive(AdminTokenMode.MIGRATION, "", true)
-                .filter(allowed, exchange -> {
-                    allowedChain.set(true);
-                    return Mono.empty();
-                }).block();
+	@Test
+	void reactiveDisabledRejectsAndMigrationAuditsLoopback() {
+		MockServerWebExchange denied = MockServerWebExchange.from(MockServerHttpRequest.get("/admin/routes")
+			.header("X-Admin-Token", "legacy")
+			.remoteAddress(new InetSocketAddress("127.0.0.1", 5555)));
+		AtomicBoolean deniedChain = new AtomicBoolean();
+		reactive(AdminTokenMode.DISABLED, "", true).filter(denied, exchange -> {
+			deniedChain.set(true);
+			return Mono.empty();
+		}).block();
 
-        assertTrue(allowedChain.get());
-        assertTrue(audit.recent("platform", 10).stream()
-                .anyMatch(entry -> entry.action().equals("admin.legacy-token")));
-    }
+		assertEquals(HttpStatus.FORBIDDEN, denied.getResponse().getStatusCode());
+		assertTrue(!deniedChain.get());
+
+		MockServerWebExchange allowed = MockServerWebExchange.from(MockServerHttpRequest.get("/admin/routes")
+			.header("X-Admin-Token", "legacy")
+			.remoteAddress(new InetSocketAddress("127.0.0.1", 5555)));
+		AtomicBoolean allowedChain = new AtomicBoolean();
+		reactive(AdminTokenMode.MIGRATION, "", true).filter(allowed, exchange -> {
+			allowedChain.set(true);
+			return Mono.empty();
+		}).block();
+
+		assertTrue(allowedChain.get());
+		assertTrue(
+				audit.recent("platform", 10).stream().anyMatch(entry -> entry.action().equals("admin.legacy-token")));
+	}
+
 }

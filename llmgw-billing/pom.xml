@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>io.github.leohou0430</groupId>
+    <artifactId>llmgw-parent</artifactId>
+    <version>0.5.0</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <artifactId>llmgw-billing</artifactId>
+  <packaging>pom</packaging>
+  <name>llmgw-billing</name>
+  <description>Billing subsystem (ADR-0007): tenant prepaid accounts with estimated
+    reservations, price versions frozen at admission, pending-verification for
+    unknown outcomes, voucher-idempotent recharges with reversals, and project
+    sub-limits. All amounts are integer nano-CNY (1e-9 CNY); ledger entries post
+    in whole micro-CNY (1000 nano) with a per-tenant carry remainder.</description>
+
+  <properties><llmgw.foundation.enforcer.skip>false</llmgw.foundation.enforcer.skip></properties>
+  <modules>
+    <module>llmgw-billing-api</module>
+    <module>llmgw-billing-sqlite</module>
+  </modules>
+</project>

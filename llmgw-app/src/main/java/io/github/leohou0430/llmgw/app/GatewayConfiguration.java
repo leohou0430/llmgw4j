@@ -8,7 +8,11 @@ import org.springframework.context.annotation.Configuration;
 /** Boot configuration binding belongs to the application, never the core model. */
 @Configuration(proxyBeanMethods = false)
 public class GatewayConfiguration {
-    @Bean(initMethod = "validate")
-    @ConfigurationProperties(prefix = "gateway")
-    public GatewayProperties gatewayProperties() { return new GatewayProperties(); }
+
+	@Bean(initMethod = "validate")
+	@ConfigurationProperties(prefix = "gateway")
+	public GatewayProperties gatewayProperties() {
+		return new GatewayProperties();
+	}
+
 }

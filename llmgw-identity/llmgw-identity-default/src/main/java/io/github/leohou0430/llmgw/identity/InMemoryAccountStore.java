@@ -14,41 +14,40 @@ import java.util.concurrent.ConcurrentHashMap;
  * contract testable without a database.
  */
 public final class InMemoryAccountStore implements AccountStore {
-    private final Map<String, Account> byUsername = new ConcurrentHashMap<>();
 
-    @Override
-    public Account create(Account account) {
-        Objects.requireNonNull(account, "account");
-        if (byUsername.putIfAbsent(account.username(), account) != null) {
-            throw new IllegalArgumentException("duplicate username: " + account.username());
-        }
-        return account;
-    }
+	private final Map<String, Account> byUsername = new ConcurrentHashMap<>();
 
-    @Override
-    public Optional<Account> findByUsername(String username) {
-        return Optional.ofNullable(username == null ? null : byUsername.get(username));
-    }
+	@Override
+	public Account create(Account account) {
+		Objects.requireNonNull(account, "account");
+		if (byUsername.putIfAbsent(account.username(), account) != null) {
+			throw new IllegalArgumentException("duplicate username: " + account.username());
+		}
+		return account;
+	}
 
-    @Override
-    public Optional<Account> findById(String accountId) {
-        if (accountId == null) {
-            return Optional.empty();
-        }
-        return byUsername.values().stream()
-                .filter(account -> account.id().equals(accountId))
-                .findFirst();
-    }
+	@Override
+	public Optional<Account> findByUsername(String username) {
+		return Optional.ofNullable(username == null ? null : byUsername.get(username));
+	}
 
-    @Override
-    public void updatePassword(String username, String newPasswordHash) {
-        byUsername.compute(username, (ignored, existing) -> existing == null ? null
-                : new Account(existing.id(), existing.username(), newPasswordHash,
-                        existing.role(), existing.scope(), existing.enabled()));
-    }
+	@Override
+	public Optional<Account> findById(String accountId) {
+		if (accountId == null) {
+			return Optional.empty();
+		}
+		return byUsername.values().stream().filter(account -> account.id().equals(accountId)).findFirst();
+	}
 
-    @Override
-    public boolean existsAny() {
-        return !byUsername.isEmpty();
-    }
+	@Override
+	public void updatePassword(String username, String newPasswordHash) {
+		byUsername.compute(username, (ignored, existing) -> existing == null ? null : new Account(existing.id(),
+				existing.username(), newPasswordHash, existing.role(), existing.scope(), existing.enabled()));
+	}
+
+	@Override
+	public boolean existsAny() {
+		return !byUsername.isEmpty();
+	}
+
 }

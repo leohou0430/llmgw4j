@@ -7,7 +7,7 @@
 set -uo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-JAR="${LLMGW_TEST_JAR:-$ROOT/llmgw-app/target/llmgw-app-0.4.0.jar}"
+JAR="${LLMGW_TEST_JAR:-$ROOT/llmgw-app/target/llmgw-app-0.5.0.jar}"
 PORT="${PORT:-8080}"
 MOCK_PORT="${MOCK_PORT:-9090}"
 ENGINES="${1:-webflux vt}"
@@ -53,8 +53,14 @@ start() {
   else
     cmd=(java -jar "$JAR")
   fi
-  "${cmd[@]}" --spring.profiles.active="$engine" \
+  # Isolate the control plane DB like the other suites: the project-root
+  # data/llmgw-control.db may hold a runtime route version whose env: secret
+  # reference does not exist in this suite's initial properties.
+  LLMGW_CONTROL_DB="$TMP/control-$engine.db" "${cmd[@]}" --spring.profiles.active="$engine" \
     --gateway.governance-enabled=true --server.port="$PORT" \
+    --gateway.mock.port="$MOCK_PORT" \
+    --gateway.upstream.base-url="http://127.0.0.1:$MOCK_PORT/mock/v1" \
+    '--gateway.routes[0].target-url='"http://127.0.0.1:$MOCK_PORT/mock/v1" \
     --gateway.governance.default-quota-tokens=2000000000 \
     --gateway.governance.rate-limit-tokens-per-second=2000000000 \
     --gateway.governance.rate-limit-burst=2000000000 \

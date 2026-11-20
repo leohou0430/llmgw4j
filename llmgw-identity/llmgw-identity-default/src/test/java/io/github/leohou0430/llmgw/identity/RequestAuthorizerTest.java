@@ -19,65 +19,67 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 class RequestAuthorizerTest {
 
-    private static Account account(String id, Role role, Scope scope, boolean enabled) {
-        return new Account(id, "user-" + id, "hash", role, scope, enabled);
-    }
+	private static Account account(String id, Role role, Scope scope, boolean enabled) {
+		return new Account(id, "user-" + id, "hash", role, scope, enabled);
+	}
 
-    private static AuthOutcome authorize(AccountStore accounts, SessionStore sessions, RequestAuthorizer authorizer,
-                                         String sessionId, String csrf, boolean mutating, Action action, Target target) {
-        return authorizer.authorize(new AuthenticatedRequest(sessionId, csrf, mutating, action, target));
-    }
+	private static AuthOutcome authorize(AccountStore accounts, SessionStore sessions, RequestAuthorizer authorizer,
+			String sessionId, String csrf, boolean mutating, Action action, Target target) {
+		return authorizer.authorize(new AuthenticatedRequest(sessionId, csrf, mutating, action, target));
+	}
 
-    @Test
-    void unauthenticatedWhenSessionMissing() {
-        AccountStore accounts = new InMemoryAccountStore();
-        SessionStore sessions = new InMemorySessionStore();
-        RequestAuthorizer authorizer = new RequestAuthorizer(sessions, HmacCsrfTokenService.randomKey(), accounts,
-                new RbacAuthorizationService(), () -> 0L);
-        assertEquals(AuthOutcome.UNAUTHENTICATED,
-                authorize(accounts, sessions, authorizer, "nope", null, false, Action.KEY_MANAGE, new Target("t", "p")));
-    }
+	@Test
+	void unauthenticatedWhenSessionMissing() {
+		AccountStore accounts = new InMemoryAccountStore();
+		SessionStore sessions = new InMemorySessionStore();
+		RequestAuthorizer authorizer = new RequestAuthorizer(sessions, HmacCsrfTokenService.randomKey(), accounts,
+				new RbacAuthorizationService(), () -> 0L);
+		assertEquals(AuthOutcome.UNAUTHENTICATED, authorize(accounts, sessions, authorizer, "nope", null, false,
+				Action.KEY_MANAGE, new Target("t", "p")));
+	}
 
-    @Test
-    void csrfRequiredForMutatingButNotForRead() {
-        AccountStore accounts = new InMemoryAccountStore();
-        accounts.create(account("a1", Role.PLATFORM_ADMIN, Scope.platform(), true));
-        SessionStore sessions = new InMemorySessionStore();
-        HmacCsrfTokenService csrf = HmacCsrfTokenService.randomKey();
-        RequestAuthorizer authorizer = new RequestAuthorizer(sessions, csrf, accounts, new RbacAuthorizationService(), () -> 0L);
-        Session session = sessions.create("a1", 60_000L, 0L);
+	@Test
+	void csrfRequiredForMutatingButNotForRead() {
+		AccountStore accounts = new InMemoryAccountStore();
+		accounts.create(account("a1", Role.PLATFORM_ADMIN, Scope.platform(), true));
+		SessionStore sessions = new InMemorySessionStore();
+		HmacCsrfTokenService csrf = HmacCsrfTokenService.randomKey();
+		RequestAuthorizer authorizer = new RequestAuthorizer(sessions, csrf, accounts, new RbacAuthorizationService(),
+				() -> 0L);
+		Session session = sessions.create("a1", 60_000L, 0L);
 
-        assertEquals(AuthOutcome.CSRF_FAILED, authorize(accounts, sessions, authorizer,
-                session.id(), "bad", true, Action.KEY_MANAGE, new Target("t", "p")));
-        assertEquals(AuthOutcome.ALLOW, authorize(accounts, sessions, authorizer,
-                session.id(), csrf.issue(session.id()), true, Action.KEY_MANAGE, new Target("t", "p")));
-        assertEquals(AuthOutcome.ALLOW, authorize(accounts, sessions, authorizer,
-                session.id(), null, false, Action.KEY_MANAGE, new Target("t", "p")));
-    }
+		assertEquals(AuthOutcome.CSRF_FAILED, authorize(accounts, sessions, authorizer, session.id(), "bad", true,
+				Action.KEY_MANAGE, new Target("t", "p")));
+		assertEquals(AuthOutcome.ALLOW, authorize(accounts, sessions, authorizer, session.id(),
+				csrf.issue(session.id()), true, Action.KEY_MANAGE, new Target("t", "p")));
+		assertEquals(AuthOutcome.ALLOW, authorize(accounts, sessions, authorizer, session.id(), null, false,
+				Action.KEY_MANAGE, new Target("t", "p")));
+	}
 
-    @Test
-    void forbiddenByRbac() {
-        AccountStore accounts = new InMemoryAccountStore();
-        accounts.create(account("v1", Role.PROJECT_VIEWER, Scope.project("t", "p"), true));
-        SessionStore sessions = new InMemorySessionStore();
-        RequestAuthorizer authorizer = new RequestAuthorizer(sessions, HmacCsrfTokenService.randomKey(), accounts,
-                new RbacAuthorizationService(), () -> 0L);
-        Session session = sessions.create("v1", 60_000L, 0L);
+	@Test
+	void forbiddenByRbac() {
+		AccountStore accounts = new InMemoryAccountStore();
+		accounts.create(account("v1", Role.PROJECT_VIEWER, Scope.project("t", "p"), true));
+		SessionStore sessions = new InMemorySessionStore();
+		RequestAuthorizer authorizer = new RequestAuthorizer(sessions, HmacCsrfTokenService.randomKey(), accounts,
+				new RbacAuthorizationService(), () -> 0L);
+		Session session = sessions.create("v1", 60_000L, 0L);
 
-        assertEquals(AuthOutcome.FORBIDDEN, authorize(accounts, sessions, authorizer,
-                session.id(), null, false, Action.KEY_MANAGE, new Target("t", "p")));
-    }
+		assertEquals(AuthOutcome.FORBIDDEN, authorize(accounts, sessions, authorizer, session.id(), null, false,
+				Action.KEY_MANAGE, new Target("t", "p")));
+	}
 
-    @Test
-    void disabledAccountIsUnauthenticated() {
-        AccountStore accounts = new InMemoryAccountStore();
-        accounts.create(account("d1", Role.PLATFORM_ADMIN, Scope.platform(), false));
-        SessionStore sessions = new InMemorySessionStore();
-        RequestAuthorizer authorizer = new RequestAuthorizer(sessions, HmacCsrfTokenService.randomKey(), accounts,
-                new RbacAuthorizationService(), () -> 0L);
-        Session session = sessions.create("d1", 60_000L, 0L);
+	@Test
+	void disabledAccountIsUnauthenticated() {
+		AccountStore accounts = new InMemoryAccountStore();
+		accounts.create(account("d1", Role.PLATFORM_ADMIN, Scope.platform(), false));
+		SessionStore sessions = new InMemorySessionStore();
+		RequestAuthorizer authorizer = new RequestAuthorizer(sessions, HmacCsrfTokenService.randomKey(), accounts,
+				new RbacAuthorizationService(), () -> 0L);
+		Session session = sessions.create("d1", 60_000L, 0L);
 
-        assertEquals(AuthOutcome.UNAUTHENTICATED, authorize(accounts, sessions, authorizer,
-                session.id(), null, false, Action.KEY_MANAGE, new Target("t", "p")));
-    }
+		assertEquals(AuthOutcome.UNAUTHENTICATED, authorize(accounts, sessions, authorizer, session.id(), null, false,
+				Action.KEY_MANAGE, new Target("t", "p")));
+	}
+
 }

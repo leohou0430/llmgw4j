@@ -10,26 +10,28 @@ import java.util.concurrent.ConcurrentNavigableMap;
 
 /** In-memory, append-only route-version store (durable SQLite backing is a follow-up). */
 public final class InMemoryRouteVersionStore implements RouteVersionStore {
-    private final ConcurrentNavigableMap<Long, RouteVersion> versions = new ConcurrentSkipListMap<>();
 
-    @Override
-    public Optional<RouteVersion> latest() {
-        return versions.isEmpty() ? Optional.empty() : Optional.of(versions.lastEntry().getValue());
-    }
+	private final ConcurrentNavigableMap<Long, RouteVersion> versions = new ConcurrentSkipListMap<>();
 
-    @Override
-    public Optional<RouteVersion> find(long version) {
-        return Optional.ofNullable(versions.get(version));
-    }
+	@Override
+	public Optional<RouteVersion> latest() {
+		return versions.isEmpty() ? Optional.empty() : Optional.of(versions.lastEntry().getValue());
+	}
 
-    @Override
-    public List<RouteVersion> all() {
-        return List.copyOf(versions.values());
-    }
+	@Override
+	public Optional<RouteVersion> find(long version) {
+		return Optional.ofNullable(versions.get(version));
+	}
 
-    @Override
-    public void append(RouteVersion version) {
-        if (versions.putIfAbsent(version.version(), version) != null)
-            throw new io.github.leohou0430.llmgw.control.VersionConflictException("route version already exists");
-    }
+	@Override
+	public List<RouteVersion> all() {
+		return List.copyOf(versions.values());
+	}
+
+	@Override
+	public void append(RouteVersion version) {
+		if (versions.putIfAbsent(version.version(), version) != null)
+			throw new io.github.leohou0430.llmgw.control.VersionConflictException("route version already exists");
+	}
+
 }

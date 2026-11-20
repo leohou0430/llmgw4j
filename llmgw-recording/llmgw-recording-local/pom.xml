@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2000/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>io.github.leohou0430</groupId>
+    <artifactId>llmgw-recording</artifactId>
+    <version>0.5.0</version>
+  </parent>
+
+  <artifactId>llmgw-recording-local</artifactId>
+  <name>llmgw-recording-local</name>
+  <description>Local (single-node) recording store: bounded async writer with an
+    explicit health gate, sanitizer for credentials/URLs/binary fragments,
+    idempotent terminal outcomes and 7-day body retention via an injectable
+    Clock.</description>
+
+  <properties><llmgw.foundation.enforcer.skip>false</llmgw.foundation.enforcer.skip></properties>
+  <dependencies>
+    <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-recording-api</artifactId></dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>

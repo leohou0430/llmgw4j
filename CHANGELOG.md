@@ -4,7 +4,30 @@
 **性能数字的解释口径以 `bench/README.md` 的数据质量红线为准**：宿主过载期间的数据只作方向参考，
 不得据此声称性能提升或退化。
 
-## [Unreleased]
+## [0.5.0] - 2026-11-20
+
+以下包含自 v0.4.0 以来已合入的计费、治理、协议与模块改进（ADR-0006～0011）：
+
+- 租户预付费计费（ADR-0007）：租户账户统一充值/余额/透支，项目可设子限额；客户售价与上游成本分离并按调用冻结售价版本；估算预留、权威用量结算、未知结果跨重启待对账；人民币 0.000001 元尾数按租户持久累计；缓存命中零价、重试仅按最终尝试计费；缺售价或计费规则拒绝调用。
+- 严格预算模式（ADR-0009）：预留覆盖输入与显式输出上界，无上界的调用被拒绝；软预算保持默认。客户幂等键（同项目同键防重、内容不一致拒绝、不带键视为新调用）与审批挂起-重新准入（ADR-0011）接入数据面。
+- MCP 网关首版（ADR-0010）：Modern 下游与单向 Legacy 桥接、默认关闭、工具过滤与调用再鉴权；Gemini HTTP 双向接入，新增转换限于 OpenAI Chat（ADR-0008）。单机交付边界见 ADR-0006。
+- 治理加固：认证主体财务归属强制（§9.5.2）、策略版本戳与结构化判定审计、`gen_ai.*` 观测桥；Redis 故障策略 fail-closed 与治理不可用 503+Retry-After；业务与审计同事务提交。
+- 控制面与 OpenAPI 同步扩充：计费账户/价格/充值/待对账、幂等键、审批、录制与载荷存储端点；SQLite 迁移至 V13（计费 V10、幂等 V12、审批 V13，缺失实现包时按顺序跳过）。
+- 引入 [spring-javaformat](https://github.com/spring-io/spring-javaformat)（`0.0.48`）：
+  Maven 模块内全部 539 个 Java 源文件中的 444 个被重排为 Spring 官方风格
+  （Tab 缩进、120 列）；`bench/` 下 34 个微基准源文件不在 Maven 构建内，不受其约束。
+  `validate` 目标绑定构建 `validate` 阶段，格式违规即构建失败，
+  `mvn spring-javaformat:apply` 供提交前一次性格式化。
+- 修复 `POST /admin/keys` 在请求体省略 `group` 时返回 500：`SqliteApiKeyRegistry.create`
+  把 `null` 写入 `key_store.group_name`（NOT NULL 约束）导致未捕获异常；现归一化为
+  `""`（ungrouped），显式 group 行为不变。
+- 修复 `HeartbeatBackpressureTest` 在全量负载下的时序 flaky：取消沿心跳 merge 链异步传播，
+  取消计数改为有界等待而非同步断言。
+- 回归脚本校准：7 个冒烟脚本补齐 mock 端口与独立控制面 DB 隔离、计费主体归属与项目额度授权、
+  双副本共享根密钥；并按现行合同更新文件/批列表（501→200）与账本归属（SQLite 权威）断言。
+  Redis 双副本共享配额与跨副本恢复回归本轮收口。
+- 验证记录见 `docs/reviews/2026-11-20-chapter9-governance-review/README.md` 与
+  `docs/verification/spring-javaformat-introduction/2026-11-20/README.md`。
 
 ## [0.4.0] - 2026-11-17
 

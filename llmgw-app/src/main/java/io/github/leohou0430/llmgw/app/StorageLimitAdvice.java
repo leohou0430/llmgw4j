@@ -12,9 +12,9 @@ import java.util.Map;
 @RestControllerAdvice
 public class StorageLimitAdvice {
 
-    @ExceptionHandler(StorageLimitException.class)
-    public ResponseEntity<Map<String, Object>> storageLimit(StorageLimitException limit) {
-        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
-                .body(Map.of("error", limit.getMessage()));
-    }
+	@ExceptionHandler(StorageLimitException.class)
+	public ResponseEntity<Map<String, Object>> storageLimit(StorageLimitException limit) {
+		return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(Map.of("error", limit.getMessage()));
+	}
+
 }

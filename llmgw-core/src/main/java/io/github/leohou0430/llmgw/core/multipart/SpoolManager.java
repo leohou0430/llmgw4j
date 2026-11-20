@@ -15,127 +15,152 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Stream;
 
 /**
- * T2.6 per-process spool factory and quota owner. Each manager owns one
- * restricted directory and an independent byte quota; two managers never share
- * state (instance isolation). The constructor clears prior-run leftovers so a
- * crashed process cannot leak disk. Pure JDK, no engine.
+ * T2.6 per-process spool factory and quota owner. Each manager owns one restricted
+ * directory and an independent byte quota; two managers never share state (instance
+ * isolation). The constructor clears prior-run leftovers so a crashed process cannot leak
+ * disk. Pure JDK, no engine.
  */
 public final class SpoolManager implements AutoCloseable {
 
-    /**
-     * @param directory             restricted spool directory owned by this manager
-     * @param maxTransferBytes      cap for a single transfer (plan: 66 MiB)
-     * @param maxTotalBytes         per-process spool quota (plan: 264 MiB)
-     * @param diskSafetyMarginBytes refuse new transfers below this usable space (plan: 64 MiB)
-     */
-    public record Config(Path directory, long maxTransferBytes, long maxTotalBytes,
-                         long diskSafetyMarginBytes) {
-        public static Config defaults(Path directory) {
-            return new Config(directory, 66L << 20, 264L << 20, 64L << 20);
-        }
-    }
+	/**
+	 * @param directory restricted spool directory owned by this manager
+	 * @param maxTransferBytes cap for a single transfer (plan: 66 MiB)
+	 * @param maxTotalBytes per-process spool quota (plan: 264 MiB)
+	 * @param diskSafetyMarginBytes refuse new transfers below this usable space (plan: 64
+	 * MiB)
+	 */
+	public record Config(Path directory, long maxTransferBytes, long maxTotalBytes, long diskSafetyMarginBytes) {
+		public static Config defaults(Path directory) {
+			return new Config(directory, 66L << 20, 264L << 20, 64L << 20);
+		}
+	}
 
-    private final Config config;
-    private final FileChannel ownershipChannel;
-    private final FileLock ownership;
-    private final AtomicLong total = new AtomicLong();
-    private final AtomicBoolean closed = new AtomicBoolean();
+	private final Config config;
 
-    public SpoolManager(Config config) throws IOException {
-        this.config = config;
-        Files.createDirectories(config.directory());
-        restrictToOwner(config.directory());
-        ownershipChannel = FileChannel.open(config.directory().resolve(".owner.lock"),
-                StandardOpenOption.CREATE, StandardOpenOption.WRITE);
-        FileLock acquired;
-        try {
-            acquired = ownershipChannel.tryLock();
-        } catch (OverlappingFileLockException failure) {
-            ownershipChannel.close();
-            throw new IOException("spool directory is owned by another running instance", failure);
-        }
-        if (acquired == null) {
-            ownershipChannel.close();
-            throw new IOException("spool directory is owned by another running instance");
-        }
-        ownership = acquired;
-        try {
-            cleanLeftovers(config.directory());
-        } catch (IOException failure) {
-            ownership.release(); ownershipChannel.close(); throw failure;
-        }
-    }
+	private final FileChannel ownershipChannel;
 
-    private static void restrictToOwner(Path dir) throws IOException {
-        try {
-            Set<PosixFilePermission> ownerOnly = PosixFilePermissions.fromString("rwx------");
-            Files.setPosixFilePermissions(dir, ownerOnly);
-        } catch (UnsupportedOperationException ignored) {
-            // Non-POSIX filesystem: directory privacy is best-effort.
-        }
-    }
+	private final FileLock ownership;
 
-    private static void cleanLeftovers(Path dir) throws IOException {
-        try (Stream<Path> entries = Files.list(dir)) {
-            for (Path p : entries.toList()) {
-                if (!p.getFileName().toString().equals(".owner.lock")) Files.deleteIfExists(p);
-            }
-        }
-    }
+	private final AtomicLong total = new AtomicLong();
 
-    public Config config() {
-        return config;
-    }
+	private final AtomicBoolean closed = new AtomicBoolean();
 
-    public Path directory() {
-        return config.directory();
-    }
+	public SpoolManager(Config config) throws IOException {
+		this.config = config;
+		Files.createDirectories(config.directory());
+		restrictToOwner(config.directory());
+		ownershipChannel = FileChannel.open(config.directory().resolve(".owner.lock"), StandardOpenOption.CREATE,
+				StandardOpenOption.WRITE);
+		FileLock acquired;
+		try {
+			acquired = ownershipChannel.tryLock();
+		}
+		catch (OverlappingFileLockException failure) {
+			ownershipChannel.close();
+			throw new IOException("spool directory is owned by another running instance", failure);
+		}
+		if (acquired == null) {
+			ownershipChannel.close();
+			throw new IOException("spool directory is owned by another running instance");
+		}
+		ownership = acquired;
+		try {
+			cleanLeftovers(config.directory());
+		}
+		catch (IOException failure) {
+			ownership.release();
+			ownershipChannel.close();
+			throw failure;
+		}
+	}
 
-    public long totalBytes() {
-        return total.get();
-    }
+	private static void restrictToOwner(Path dir) throws IOException {
+		try {
+			Set<PosixFilePermission> ownerOnly = PosixFilePermissions.fromString("rwx------");
+			Files.setPosixFilePermissions(dir, ownerOnly);
+		}
+		catch (UnsupportedOperationException ignored) {
+			// Non-POSIX filesystem: directory privacy is best-effort.
+		}
+	}
 
-    /** Create a new empty spool, refusing up front if the disk margin is not met. */
-    public Spool create() throws IOException {
-        if (closed.get()) {
-            throw new IOException("spool manager closed");
-        }
-        long usable = Files.getFileStore(config.directory()).getUsableSpace();
-        if (usable < config.diskSafetyMarginBytes()) {
-            throw new SpoolLimitException(SpoolLimitException.Reason.DISK,
-                    "usable disk " + usable + " below safety margin " + config.diskSafetyMarginBytes());
-        }
-        Path file = Files.createTempFile(config.directory(), "spool-", ".tmp");
-        return new Spool(this, file);
-    }
+	private static void cleanLeftovers(Path dir) throws IOException {
+		try (Stream<Path> entries = Files.list(dir)) {
+			for (Path p : entries.toList()) {
+				if (!p.getFileName().toString().equals(".owner.lock"))
+					Files.deleteIfExists(p);
+			}
+		}
+	}
 
-    /** Reserve quota; rolls back and throws TOTAL if the per-process cap would be exceeded. */
-    void reserve(long n) throws SpoolLimitException {
-        long now = total.addAndGet(n);
-        if (now > config.maxTotalBytes()) {
-            total.addAndGet(-n);
-            throw new SpoolLimitException(SpoolLimitException.Reason.TOTAL,
-                    "spool quota " + config.maxTotalBytes() + " exceeded by " + n + " bytes");
-        }
-    }
+	public Config config() {
+		return config;
+	}
 
-    void release(long n) {
-        total.addAndGet(-n);
-    }
+	public Path directory() {
+		return config.directory();
+	}
 
-    @Override
-    public void close() {
-        if (closed.compareAndSet(false, true)) {
-            try (Stream<Path> entries = Files.list(config.directory())) {
-                for (Path p : entries.toList()) {
-                    if (!p.getFileName().toString().equals(".owner.lock")) Files.deleteIfExists(p);
-                }
-            } catch (IOException ignored) {
-                // Best-effort directory cleanup on shutdown.
-            } finally {
-                try { ownership.release(); } catch (IOException ignored) { }
-                try { ownershipChannel.close(); } catch (IOException ignored) { }
-            }
-        }
-    }
+	public long totalBytes() {
+		return total.get();
+	}
+
+	/** Create a new empty spool, refusing up front if the disk margin is not met. */
+	public Spool create() throws IOException {
+		if (closed.get()) {
+			throw new IOException("spool manager closed");
+		}
+		long usable = Files.getFileStore(config.directory()).getUsableSpace();
+		if (usable < config.diskSafetyMarginBytes()) {
+			throw new SpoolLimitException(SpoolLimitException.Reason.DISK,
+					"usable disk " + usable + " below safety margin " + config.diskSafetyMarginBytes());
+		}
+		Path file = Files.createTempFile(config.directory(), "spool-", ".tmp");
+		return new Spool(this, file);
+	}
+
+	/**
+	 * Reserve quota; rolls back and throws TOTAL if the per-process cap would be
+	 * exceeded.
+	 */
+	void reserve(long n) throws SpoolLimitException {
+		long now = total.addAndGet(n);
+		if (now > config.maxTotalBytes()) {
+			total.addAndGet(-n);
+			throw new SpoolLimitException(SpoolLimitException.Reason.TOTAL,
+					"spool quota " + config.maxTotalBytes() + " exceeded by " + n + " bytes");
+		}
+	}
+
+	void release(long n) {
+		total.addAndGet(-n);
+	}
+
+	@Override
+	public void close() {
+		if (closed.compareAndSet(false, true)) {
+			try (Stream<Path> entries = Files.list(config.directory())) {
+				for (Path p : entries.toList()) {
+					if (!p.getFileName().toString().equals(".owner.lock"))
+						Files.deleteIfExists(p);
+				}
+			}
+			catch (IOException ignored) {
+				// Best-effort directory cleanup on shutdown.
+			}
+			finally {
+				try {
+					ownership.release();
+				}
+				catch (IOException ignored) {
+				}
+				try {
+					ownershipChannel.close();
+				}
+				catch (IOException ignored) {
+				}
+			}
+		}
+	}
+
 }

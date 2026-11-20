@@ -21,89 +21,101 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * T3.5 seam: creation consistency. The upstream object is created exactly once; a
- * confirmed result requires the catalog commit to succeed; a catalog-commit failure
- * after an upstream success yields an UNKNOWN result plus a sanitized reconciliation
- * event — never a false success and never an automatic resend.
+ * confirmed result requires the catalog commit to succeed; a catalog-commit failure after
+ * an upstream success yields an UNKNOWN result plus a sanitized reconciliation event —
+ * never a false success and never an automatic resend.
  */
 class CreationServiceTest {
 
-    private static CreationRequest request() {
-        return new CreationRequest("p1", "gw-1", "batch", "route-a", "deepseek", "cfg-1",
-                Map.of("secret", "TOPSECRET-VALUE"));
-    }
+	private static CreationRequest request() {
+		return new CreationRequest("p1", "gw-1", "batch", "route-a", "deepseek", "cfg-1",
+				Map.of("secret", "TOPSECRET-VALUE"));
+	}
 
-    private static ResourceCatalog catalogThatFailsOnCreate() {
-        return new ResourceCatalog() {
-            @Override public ResourceEntry create(ResourceEntry entry) {
-                throw new IllegalStateException("catalog db down");
-            }
-            @Override public Optional<ResourceEntry> get(String projectId, String gatewayId) {
-                return Optional.empty();
-            }
-            @Override public boolean delete(String projectId, String gatewayId) {
-                return false;
-            }
-            @Override public List<ResourceEntry> list(String projectId) {
-                return List.of();
-            }
-        };
-    }
+	private static ResourceCatalog catalogThatFailsOnCreate() {
+		return new ResourceCatalog() {
+			@Override
+			public ResourceEntry create(ResourceEntry entry) {
+				throw new IllegalStateException("catalog db down");
+			}
 
-    @Test
-    void confirmedWhenUpstreamAndCatalogSucceed() {
-        LocalResourceCatalog catalog = new LocalResourceCatalog(project -> true);
-        List<ReconciliationEvent> events = new ArrayList<>();
-        AtomicInteger calls = new AtomicInteger();
+			@Override
+			public Optional<ResourceEntry> get(String projectId, String gatewayId) {
+				return Optional.empty();
+			}
 
-        CreationService service = new CreationService(catalog,
-                request -> { calls.incrementAndGet(); return "up-123"; }, events::add, () -> 999L);
+			@Override
+			public boolean delete(String projectId, String gatewayId) {
+				return false;
+			}
 
-        CreationOutcome outcome = service.create(request());
+			@Override
+			public List<ResourceEntry> list(String projectId) {
+				return List.of();
+			}
+		};
+	}
 
-        CreationOutcome.Confirmed confirmed = assertInstanceOf(CreationOutcome.Confirmed.class, outcome);
-        assertEquals("up-123", confirmed.entry().upstreamId());
-        assertEquals(1, calls.get());
-        assertTrue(events.isEmpty(), "confirmed creation emits no reconciliation event");
-        assertTrue(catalog.get("p1", "gw-1").isPresent());
-    }
+	@Test
+	void confirmedWhenUpstreamAndCatalogSucceed() {
+		LocalResourceCatalog catalog = new LocalResourceCatalog(project -> true);
+		List<ReconciliationEvent> events = new ArrayList<>();
+		AtomicInteger calls = new AtomicInteger();
 
-    @Test
-    void unknownAndSanitizedEventWhenCatalogCommitFails() {
-        List<ReconciliationEvent> events = new ArrayList<>();
-        AtomicInteger calls = new AtomicInteger();
-        CreationService service = new CreationService(catalogThatFailsOnCreate(),
-                request -> { calls.incrementAndGet(); return "up-123"; }, events::add, () -> 999L);
+		CreationService service = new CreationService(catalog, request -> {
+			calls.incrementAndGet();
+			return "up-123";
+		}, events::add, () -> 999L);
 
-        CreationOutcome outcome = service.create(request());
+		CreationOutcome outcome = service.create(request());
 
-        CreationOutcome.Unknown unknown = assertInstanceOf(CreationOutcome.Unknown.class, outcome);
-        assertEquals("up-123", unknown.upstreamId());
-        assertEquals(1, events.size());
-        ReconciliationEvent event = events.get(0);
-        assertEquals("p1", event.projectId());
-        assertEquals("gw-1", event.gatewayId());
-        assertEquals("up-123", event.upstreamId());
-        assertEquals(999L, event.observedAt());
-        assertFalse(event.toString().contains("TOPSECRET-VALUE"),
-                "reconciliation event must not leak metadata values / secrets");
-        assertEquals(1, calls.get(), "a create without an idempotency contract must not auto-retry");
-    }
+		CreationOutcome.Confirmed confirmed = assertInstanceOf(CreationOutcome.Confirmed.class, outcome);
+		assertEquals("up-123", confirmed.entry().upstreamId());
+		assertEquals(1, calls.get());
+		assertTrue(events.isEmpty(), "confirmed creation emits no reconciliation event");
+		assertTrue(catalog.get("p1", "gw-1").isPresent());
+	}
 
-    @Test
-    void failedWhenUpstreamFails() {
-        LocalResourceCatalog catalog = new LocalResourceCatalog(project -> true);
-        List<ReconciliationEvent> events = new ArrayList<>();
-        AtomicInteger calls = new AtomicInteger();
-        CreationService service = new CreationService(catalog, request -> {
-            calls.incrementAndGet();
-            throw new UpstreamCreator.UpstreamCreationException("upstream down");
-        }, events::add, () -> 999L);
+	@Test
+	void unknownAndSanitizedEventWhenCatalogCommitFails() {
+		List<ReconciliationEvent> events = new ArrayList<>();
+		AtomicInteger calls = new AtomicInteger();
+		CreationService service = new CreationService(catalogThatFailsOnCreate(), request -> {
+			calls.incrementAndGet();
+			return "up-123";
+		}, events::add, () -> 999L);
 
-        CreationOutcome outcome = service.create(request());
+		CreationOutcome outcome = service.create(request());
 
-        assertInstanceOf(CreationOutcome.Failed.class, outcome);
-        assertEquals(1, calls.get());
-        assertTrue(events.isEmpty());
-        assertTrue(catalog.get("p1", "gw-1").isEmpty(), "nothing committed when the upstream fails");
-    }
+		CreationOutcome.Unknown unknown = assertInstanceOf(CreationOutcome.Unknown.class, outcome);
+		assertEquals("up-123", unknown.upstreamId());
+		assertEquals(1, events.size());
+		ReconciliationEvent event = events.get(0);
+		assertEquals("p1", event.projectId());
+		assertEquals("gw-1", event.gatewayId());
+		assertEquals("up-123", event.upstreamId());
+		assertEquals(999L, event.observedAt());
+		assertFalse(event.toString().contains("TOPSECRET-VALUE"),
+				"reconciliation event must not leak metadata values / secrets");
+		assertEquals(1, calls.get(), "a create without an idempotency contract must not auto-retry");
+	}
+
+	@Test
+	void failedWhenUpstreamFails() {
+		LocalResourceCatalog catalog = new LocalResourceCatalog(project -> true);
+		List<ReconciliationEvent> events = new ArrayList<>();
+		AtomicInteger calls = new AtomicInteger();
+		CreationService service = new CreationService(catalog, request -> {
+			calls.incrementAndGet();
+			throw new UpstreamCreator.UpstreamCreationException("upstream down");
+		}, events::add, () -> 999L);
+
+		CreationOutcome outcome = service.create(request());
+
+		assertInstanceOf(CreationOutcome.Failed.class, outcome);
+		assertEquals(1, calls.get());
+		assertTrue(events.isEmpty());
+		assertTrue(catalog.get("p1", "gw-1").isEmpty(), "nothing committed when the upstream fails");
+	}
+
 }

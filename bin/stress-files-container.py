@@ -159,7 +159,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--engine", default="webflux", choices=["webflux", "vt"])
     ap.add_argument("--keep", action="store_true")
-    ap.add_argument("--jar", default=os.environ.get("LLMGW_TEST_JAR", os.path.join(ROOT,"llmgw-app","target","llmgw-app-0.4.0.jar")))
+    ap.add_argument("--jar", default=os.environ.get("LLMGW_TEST_JAR", os.path.join(ROOT,"llmgw-app","target","llmgw-app-0.5.0.jar")))
     ap.add_argument("--out")
     args = ap.parse_args()
     global NAME, HOST_PORT

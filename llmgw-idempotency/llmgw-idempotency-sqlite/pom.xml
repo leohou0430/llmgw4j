@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>io.github.leohou0430</groupId>
+    <artifactId>llmgw-idempotency</artifactId>
+    <version>0.5.0</version>
+  </parent>
+
+  <artifactId>llmgw-idempotency-sqlite</artifactId>
+  <name>llmgw-idempotency-sqlite</name>
+  <description>SQLite idempotency-key store: single-transaction INSERT-or-判读
+    begin with scope-lazy expiry sweep, digest-guarded terminal transitions
+    (stale callbacks can never settle a replaced call), and completed-only TTL
+    purge. In-flight and unknown-outcome rows never expire into a new
+    submission.</description>
+
+  <properties><llmgw.foundation.enforcer.skip>false</llmgw.foundation.enforcer.skip></properties>
+  <dependencies>
+    <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-idempotency-api</artifactId></dependency>
+    <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-persistence-api</artifactId></dependency>
+    <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-persistence-sqlite</artifactId></dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>

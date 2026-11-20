@@ -6,14 +6,20 @@ import java.util.Optional;
 /** Persists published route versions (append-only; history is never rewritten). */
 public interface RouteVersionStore {
 
-    Optional<RouteVersion> latest();
+	Optional<RouteVersion> latest();
 
-    Optional<RouteVersion> find(long version);
+	Optional<RouteVersion> find(long version);
 
-    List<RouteVersion> all();
+	List<RouteVersion> all();
 
-    void append(RouteVersion version);
+	void append(RouteVersion version);
 
-    /** Persistent implementations defer activation until the surrounding transaction commits. */
-    default void afterCommit(Runnable action) { action.run(); }
+	/**
+	 * Persistent implementations defer activation until the surrounding transaction
+	 * commits.
+	 */
+	default void afterCommit(Runnable action) {
+		action.run();
+	}
+
 }

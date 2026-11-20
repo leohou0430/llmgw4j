@@ -8,5 +8,6 @@ package io.github.leohou0430.llmgw.control;
 @FunctionalInterface
 public interface RootKeyProvider {
 
-    byte[] requireRootKey() throws RootKeyMissingException;
+	byte[] requireRootKey() throws RootKeyMissingException;
+
 }

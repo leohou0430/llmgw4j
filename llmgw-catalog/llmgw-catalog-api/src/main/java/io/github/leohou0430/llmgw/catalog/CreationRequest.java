@@ -8,16 +8,10 @@ import java.util.Map;
  * captured at creation so the committed entry keeps this source even if the gateway
  * default route later changes.
  */
-public record CreationRequest(
-        String projectId,
-        String gatewayId,
-        String type,
-        String sourceRoute,
-        String provider,
-        String configVersion,
-        Map<String, String> metadata) {
+public record CreationRequest(String projectId, String gatewayId, String type, String sourceRoute, String provider,
+		String configVersion, Map<String, String> metadata) {
 
-    public CreationRequest {
-        metadata = metadata == null ? Map.of() : Map.copyOf(metadata);
-    }
+	public CreationRequest {
+		metadata = metadata == null ? Map.of() : Map.copyOf(metadata);
+	}
 }

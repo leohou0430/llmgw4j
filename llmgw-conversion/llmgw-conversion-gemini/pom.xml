@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2000/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>io.github.leohou0430</groupId>
+    <artifactId>llmgw-conversion</artifactId>
+    <version>0.5.0</version>
+  </parent>
+
+  <artifactId>llmgw-conversion-gemini</artifactId>
+  <name>llmgw-conversion-gemini</name>
+  <description>Task-7 Gemini entry codec: /v1beta/models/{model}:generateContent |
+    streamGenerateContent | countTokens only (no arbitrary path forwarding),
+    model extracted from the URL path with injection rejected, and the Gemini
+    response shape (candidates/parts/usageMetadata) mapped onto the semantic
+    contract. No Spring/Reactor/HTTP dependency.</description>
+
+  <properties><llmgw.foundation.enforcer.skip>false</llmgw.foundation.enforcer.skip></properties>
+  <dependencies>
+    <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-conversion-api</artifactId></dependency>
+    <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-core</artifactId></dependency>
+    <dependency><groupId>org.junit.jupiter</groupId><artifactId>junit-jupiter</artifactId><scope>test</scope></dependency>
+  </dependencies>
+</project>

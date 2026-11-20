@@ -24,128 +24,206 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * T1.9 需求 c：跨项目 file 引用 → 统一 404 的引擎级端到端回归（WebFlux 数据面）。
- * 驱动真实控制器分发路径（{@code WebfluxGatewayController.dispatch} 的归属分支），
- * 而非仅 {@code EngineRoutes.ownsReferencedFiles} 静态方法；使用真实
- * {@link InMemoryTaskRouteSticky} 作为归属存储。
+ * 驱动真实控制器分发路径（{@code WebfluxGatewayController.dispatch} 的归属分支）， 而非仅
+ * {@code EngineRoutes.ownsReferencedFiles} 静态方法；使用真实 {@link InMemoryTaskRouteSticky}
+ * 作为归属存储。
  */
 class FileReferenceOwnershipTest {
 
-    /** 携带 file_id 的 chat 请求；归属校验先于入口 codec 解码，故 file 部件不会先被 codec 拒绝。 */
-    static final String FILE_BODY =
-            "{\"model\":\"m\",\"messages\":[{\"role\":\"user\",\"content\":[{\"type\":\"file\",\"file\":{\"file_id\":\"f\"}}]}]}";
-    static final String OK = "{\"choices\":[{\"message\":{\"content\":\"ok\"}}],\"usage\":{\"completion_tokens\":1}}";
+	/** 携带 file_id 的 chat 请求；归属校验先于入口 codec 解码，故 file 部件不会先被 codec 拒绝。 */
+	static final String FILE_BODY = "{\"model\":\"m\",\"messages\":[{\"role\":\"user\",\"content\":[{\"type\":\"file\",\"file\":{\"file_id\":\"f\"}}]}]}";
+	static final String OK = "{\"choices\":[{\"message\":{\"content\":\"ok\"}}],\"usage\":{\"completion_tokens\":1}}";
 
-    static io.github.leohou0430.llmgw.catalog.ResourceCatalog snapshotCatalog() {
-        var source = new Route("test", "*", "*", "*", "http://original", "old-secret", "openai", 1, List.of());
-        var file = new io.github.leohou0430.llmgw.catalog.ResourceEntry("f", "project", "files", "f", "test", "openai", "v1", 1,
-                "ready", Map.of("llmgw.tenantId", "organization", "llmgw.sourceRoute", ProtocolCodec.toJson(source)), 1, false);
-        return new io.github.leohou0430.llmgw.catalog.ResourceCatalog() {
-            public io.github.leohou0430.llmgw.catalog.ResourceEntry create(io.github.leohou0430.llmgw.catalog.ResourceEntry entry) { return entry; }
-            public Optional<io.github.leohou0430.llmgw.catalog.ResourceEntry> get(String project, String id) {
-                return project.equals("project") && id.equals("f") ? Optional.of(file) : Optional.empty();
-            }
-            public boolean delete(String project, String id) { return false; }
-            public List<io.github.leohou0430.llmgw.catalog.ResourceEntry> list(String project) { return List.of(file); }
-        };
-    }
-    static ApiKeyRegistry projectRegistry() {
-        var key = new ApiKeyRegistry.ApiKey("tenant", "second project key", 0, Set.of(), 0, "", 0,
-                Map.of("llmgw.tenantId", "organization", "llmgw.projectId", "project"));
-        return new ApiKeyRegistry() {
-            public Optional<ApiKey> find(String token) { return Optional.of(key); }
-            public Collection<ApiKey> all() { return List.of(key); }
-        };
-    }
-    @Test void sharedProjectReferenceUsesPersistedSourceInsteadOfCurrentRoute() {
-        try (var fixture = new Fixture()) {
-            fixture.context.getBean(WebfluxGatewayController.class).resourceCatalog(snapshotCatalog(), projectRegistry());
-            var response = fixture.request("/v1/chat/completions", FILE_BODY);
-            assertEquals(HttpStatus.OK, response.getStatusCode());
-            assertEquals("http://original", fixture.provider.last.targetUrl());
-            assertEquals("old-secret", fixture.provider.last.apiKey());
-        }
-    }
-    @Test
-    void crossTenantFileReferenceIsUnified404BeforeUpstream() {
-        try (var fixture = new Fixture()) {
-            // file "f" 归属另一租户 "other"；本请求 chain keyId 为 "tenant" → 归属不通过。
-            fixture.tasks.bind("other", "files", "f", "test");
-            var response = fixture.request("/v1/chat/completions", FILE_BODY);
-            assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-            assertEquals(ProtocolCodec.errorJson("referenced file not found on this route"),
-                    response.getBodyAsString().block());
-            assertEquals(0, fixture.provider.calls.get(), "ownership rejection must precede any upstream call");
-        }
-    }
+	static io.github.leohou0430.llmgw.catalog.ResourceCatalog snapshotCatalog() {
+		var source = new Route("test", "*", "*", "*", "http://original", "old-secret", "openai", 1, List.of());
+		var file = new io.github.leohou0430.llmgw.catalog.ResourceEntry("f", "project", "files", "f", "test", "openai",
+				"v1", 1, "ready",
+				Map.of("llmgw.tenantId", "organization", "llmgw.sourceRoute", ProtocolCodec.toJson(source)), 1, false);
+		return new io.github.leohou0430.llmgw.catalog.ResourceCatalog() {
+			public io.github.leohou0430.llmgw.catalog.ResourceEntry create(
+					io.github.leohou0430.llmgw.catalog.ResourceEntry entry) {
+				return entry;
+			}
 
-    @Test
-    void sameTenantFileReferenceProceedsToUpstream() {
-        try (var fixture = new Fixture()) {
-            // file "f" 归属本租户 "tenant" 且路由 id 匹配 → 归属通过 → 正常 200。
-            fixture.tasks.bind("tenant", "files", "f", "test");
-            var response = fixture.request("/v1/chat/completions", FILE_BODY);
-            assertEquals(HttpStatus.OK, response.getStatusCode());
-            assertEquals(1, fixture.provider.calls.get());
-        }
-    }
+			public Optional<io.github.leohou0430.llmgw.catalog.ResourceEntry> get(String project, String id) {
+				return project.equals("project") && id.equals("f") ? Optional.of(file) : Optional.empty();
+			}
 
-    static class OkProvider implements UpstreamProvider {
-        final AtomicInteger calls = new AtomicInteger();
-        volatile UpstreamRequest last;
-        public String id() { return "ok"; }
-        public Flow.Publisher<String> streamRaw(UpstreamRequest request, HeaderListener listener) { throw new UnsupportedOperationException(); }
-        public void streamRawBlocking(UpstreamRequest request, ChunkSink sink) { throw new UnsupportedOperationException(); }
-        public String completeRaw(UpstreamRequest request, HeaderListener listener) { last = request; calls.incrementAndGet(); return OK; }
-    }
+			public boolean delete(String project, String id) {
+				return false;
+			}
 
-    @Configuration(proxyBeanMethods = false)
-    static class WebConfig extends WebFluxConfigurationSupport {
-    }
+			public List<io.github.leohou0430.llmgw.catalog.ResourceEntry> list(String project) {
+				return List.of(file);
+			}
+		};
+	}
 
-    static class Fixture implements AutoCloseable {
-        final OkProvider provider = new OkProvider();
-        final InMemoryTaskRouteSticky tasks = new InMemoryTaskRouteSticky(10, 60);
-        final AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-        final HttpHandler handler;
+	static ApiKeyRegistry projectRegistry() {
+		var key = new ApiKeyRegistry.ApiKey("tenant", "second project key", 0, Set.of(), 0, "", 0,
+				Map.of("llmgw.tenantId", "organization", "llmgw.projectId", "project"));
+		return new ApiKeyRegistry() {
+			public Optional<ApiKey> find(String token) {
+				return Optional.of(key);
+			}
 
-        Fixture() {
-            var properties = new GatewayProperties();
-            properties.setMaxConcurrentRequests(10);
-            var route = new Route("test", "*", "", "http://unused", "", 1, List.of());
-            var router = new Router() {
-                public Route resolve(String model) { return route; }
-                public Route resolve(ProtocolKind kind, String model) { return route; }
-                public Route byId(String id) { return route; }
-                public List<Route> fallbacks(Route primary) { return List.of(); }
-                public List<Route> all() { return List.of(route); }
-            };
-            var chain = new GovernanceChain() {
-                public GatewayDecision enter(String token, ParsedRequest request, Route target) { return GatewayDecision.allow("tenant", request, target); }
-                public Optional<String> lookupCache(String key, ParsedRequest request) { return Optional.empty(); }
-                public void cache(String key, ParsedRequest request, String body) {}
-                public void finish(GatewayContext context, boolean success) {}
-                public Map<String, Object> snapshot() { return Map.of(); }
-            };
-            var headers = new HeaderPolicy() {
-                public Map<String, String> toUpstream(ProtocolKind kind, Map<String, String> values) { return Map.of(); }
-                public List<String> toClient(Map<String, List<String>> values) { return List.of(); }
-            };
-            context.getEnvironment().setActiveProfiles("webflux");
-            context.registerBean(GatewayProperties.class, () -> properties);
-            context.register(WebConfig.class, WebfluxEngineConfiguration.class);
-            context.registerBean(WebfluxGatewayController.class,
-                    () -> new WebfluxGatewayController(chain, router, provider, CircuitBreaker.noop(), properties, headers, tasks));
-            context.refresh();
-            handler = WebHttpHandlerBuilder.applicationContext(context).build();
-        }
+			public Collection<ApiKey> all() {
+				return List.of(key);
+			}
+		};
+	}
 
-        MockServerHttpResponse request(String path, String body) {
-            var response = new MockServerHttpResponse();
-            handler.handle(MockServerHttpRequest.post(path).contentType(MediaType.APPLICATION_JSON).body(body), response)
-                    .block(Duration.ofSeconds(2));
-            return response;
-        }
+	@Test
+	void sharedProjectReferenceUsesPersistedSourceInsteadOfCurrentRoute() {
+		try (var fixture = new Fixture()) {
+			fixture.context.getBean(WebfluxGatewayController.class)
+				.resourceCatalog(snapshotCatalog(), projectRegistry());
+			var response = fixture.request("/v1/chat/completions", FILE_BODY);
+			assertEquals(HttpStatus.OK, response.getStatusCode());
+			assertEquals("http://original", fixture.provider.last.targetUrl());
+			assertEquals("old-secret", fixture.provider.last.apiKey());
+		}
+	}
 
-        public void close() { context.close(); }
-    }
+	@Test
+	void crossTenantFileReferenceIsUnified404BeforeUpstream() {
+		try (var fixture = new Fixture()) {
+			// file "f" 归属另一租户 "other"；本请求 chain keyId 为 "tenant" → 归属不通过。
+			fixture.tasks.bind("other", "files", "f", "test");
+			var response = fixture.request("/v1/chat/completions", FILE_BODY);
+			assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+			assertEquals(ProtocolCodec.errorJson("referenced file not found on this route"),
+					response.getBodyAsString().block());
+			assertEquals(0, fixture.provider.calls.get(), "ownership rejection must precede any upstream call");
+		}
+	}
+
+	@Test
+	void sameTenantFileReferenceProceedsToUpstream() {
+		try (var fixture = new Fixture()) {
+			// file "f" 归属本租户 "tenant" 且路由 id 匹配 → 归属通过 → 正常 200。
+			fixture.tasks.bind("tenant", "files", "f", "test");
+			var response = fixture.request("/v1/chat/completions", FILE_BODY);
+			assertEquals(HttpStatus.OK, response.getStatusCode());
+			assertEquals(1, fixture.provider.calls.get());
+		}
+	}
+
+	static class OkProvider implements UpstreamProvider {
+
+		final AtomicInteger calls = new AtomicInteger();
+
+		volatile UpstreamRequest last;
+
+		public String id() {
+			return "ok";
+		}
+
+		public Flow.Publisher<String> streamRaw(UpstreamRequest request, HeaderListener listener) {
+			throw new UnsupportedOperationException();
+		}
+
+		public void streamRawBlocking(UpstreamRequest request, ChunkSink sink) {
+			throw new UnsupportedOperationException();
+		}
+
+		public String completeRaw(UpstreamRequest request, HeaderListener listener) {
+			last = request;
+			calls.incrementAndGet();
+			return OK;
+		}
+
+	}
+
+	@Configuration(proxyBeanMethods = false)
+	static class WebConfig extends WebFluxConfigurationSupport {
+
+	}
+
+	static class Fixture implements AutoCloseable {
+
+		final OkProvider provider = new OkProvider();
+
+		final InMemoryTaskRouteSticky tasks = new InMemoryTaskRouteSticky(10, 60);
+
+		final AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+
+		final HttpHandler handler;
+
+		Fixture() {
+			var properties = new GatewayProperties();
+			properties.setMaxConcurrentRequests(10);
+			var route = new Route("test", "*", "", "http://unused", "", 1, List.of());
+			var router = new Router() {
+				public Route resolve(String model) {
+					return route;
+				}
+
+				public Route resolve(ProtocolKind kind, String model) {
+					return route;
+				}
+
+				public Route byId(String id) {
+					return route;
+				}
+
+				public List<Route> fallbacks(Route primary) {
+					return List.of();
+				}
+
+				public List<Route> all() {
+					return List.of(route);
+				}
+			};
+			var chain = new GovernanceChain() {
+				public GatewayDecision enter(String token, ParsedRequest request, Route target) {
+					return GatewayDecision.allow("tenant", request, target);
+				}
+
+				public Optional<String> lookupCache(String key, ParsedRequest request) {
+					return Optional.empty();
+				}
+
+				public void cache(String key, ParsedRequest request, String body) {
+				}
+
+				public void finish(GatewayContext context, boolean success) {
+				}
+
+				public Map<String, Object> snapshot() {
+					return Map.of();
+				}
+			};
+			var headers = new HeaderPolicy() {
+				public Map<String, String> toUpstream(ProtocolKind kind, Map<String, String> values) {
+					return Map.of();
+				}
+
+				public List<String> toClient(Map<String, List<String>> values) {
+					return List.of();
+				}
+			};
+			context.getEnvironment().setActiveProfiles("webflux");
+			context.registerBean(GatewayProperties.class, () -> properties);
+			context.register(WebConfig.class, WebfluxEngineConfiguration.class);
+			context.registerBean(WebfluxGatewayController.class, () -> new WebfluxGatewayController(chain, router,
+					provider, CircuitBreaker.noop(), properties, headers, tasks));
+			context.refresh();
+			handler = WebHttpHandlerBuilder.applicationContext(context).build();
+		}
+
+		MockServerHttpResponse request(String path, String body) {
+			var response = new MockServerHttpResponse();
+			handler
+				.handle(MockServerHttpRequest.post(path).contentType(MediaType.APPLICATION_JSON).body(body), response)
+				.block(Duration.ofSeconds(2));
+			return response;
+		}
+
+		public void close() {
+			context.close();
+		}
+
+	}
+
 }

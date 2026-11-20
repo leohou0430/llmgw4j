@@ -6,7 +6,7 @@
 set -uo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-JAR="${LLMGW_TEST_JAR:-$ROOT/llmgw-app/target/llmgw-app-0.4.0.jar}"
+JAR="${LLMGW_TEST_JAR:-$ROOT/llmgw-app/target/llmgw-app-0.5.0.jar}"
 PORT="${PORT:-8080}"
 MOCK_PORT="${MOCK_PORT:-9090}"
 ENGINE="${1:-webflux}"
@@ -45,10 +45,16 @@ stop() {
 
 start() {
   stop
-  java -jar "$JAR" --spring.profiles.active="$ENGINE" \
+  # Isolate the control plane DB like the other suites: the project-root
+  # data/llmgw-control.db may hold a runtime route version whose env: secret
+  # reference does not exist in this suite's initial properties.
+  LLMGW_CONTROL_DB="$TMP/control-$ENGINE.db" java -jar "$JAR" --spring.profiles.active="$ENGINE" \
     --gateway.governance-enabled=true --server.port="$PORT" \
     --gateway.admin-token="$ADMIN_TOKEN" \
     --gateway.admin-token-mode=migration \
+    --gateway.mock.port="$MOCK_PORT" \
+    --gateway.upstream.base-url="http://127.0.0.1:$MOCK_PORT/mock/v1" \
+    '--gateway.routes[0].target-url='"http://127.0.0.1:$MOCK_PORT/mock/v1" \
     --gateway.mock.delay-ms=30 --gateway.mock.chunks=12 \
     --gateway.mock.chunk-interval-ms=60 \
     --gateway.governance.default-quota-tokens=2000000000 \
@@ -141,13 +147,13 @@ start || { echo "PASS=0 FAIL=1"; exit 1; }
 
 admin_get
 V0="$(version_header)"
-[[ "$V0" == "0" ]]
+[[ "$V0" == "1" ]]
 ok=$?
-check "initial config version is 0" "$ok" "version=$V0"
+check "initial config version is 1 (bootstrap published)" "$ok" "version=$V0"
 
 STATUS="$(admin_post "$CFG_A" "$ADMIN_TOKEN")"
 VER1="$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1])).get("version"))' "$TMP/post" 2>/dev/null || echo err)"
-[[ "$STATUS" == "200" && "$VER1" == "1" ]]
+[[ "$STATUS" == "200" && "$VER1" == "2" ]]
 ok=$?
 check "first reload applied atomically" "$ok" "status=$STATUS version=$VER1"
 if grep -q '"apiKey"' "$TMP/post"; then
@@ -194,13 +200,13 @@ done
 [[ "$BAD" -eq 0 && "$DONE" -eq "$STREAMS" ]]
 ok=$?
 check "in-flight SSE streams survive reload" "$ok" "complete=$DONE bad=$BAD streams=$STREAMS"
-[[ "$STATUS" == "200" && "$VER2" == "2" ]]
+[[ "$STATUS" == "200" && "$VER2" == "3" ]]
 ok=$?
 check "reload landed while streams were active" "$ok" "status=$STATUS version=$VER2"
 
 admin_get
 VNOW="$(version_header)"
-[[ "$VNOW" == "2" ]]
+[[ "$VNOW" == "3" ]]
 ok=$?
 check "config version header advances" "$ok" "version=$VNOW"
 
@@ -222,7 +228,7 @@ for body in '[]' \
 done
 admin_get
 VAFTER="$(version_header)"
-[[ "$INVALID_OK" -eq 1 && "$VAFTER" == "2" ]]
+[[ "$INVALID_OK" -eq 1 && "$VAFTER" == "3" ]]
 ok=$?
 check "invalid configs rejected without changing table" "$ok" "version=$VAFTER all400=$INVALID_OK"
 

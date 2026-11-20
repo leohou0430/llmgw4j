@@ -4,7 +4,7 @@
 set -uo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-JAR="${LLMGW_TEST_JAR:-$ROOT/llmgw-app/target/llmgw-app-0.4.0.jar}"
+JAR="${LLMGW_TEST_JAR:-$ROOT/llmgw-app/target/llmgw-app-0.5.0.jar}"
 PORT="${PORT:-8080}"
 MOCK_PORT="${MOCK_PORT:-9090}"
 GOOD_URL="http://127.0.0.1:$MOCK_PORT/mock/v1"
@@ -67,10 +67,26 @@ start() {
   else
     cmd=(java -jar "$JAR")
   fi
+  # Keep the embedded mock and default route on $MOCK_PORT (the host may
+  # already have something bound to the application.yml default 9090), while
+  # still letting a call site override both mock port and route target.
+  # Repeated --key args would be comma-merged by Spring, so each default is
+  # dropped when the call site passes its own.
+  local -a defaults=("--gateway.upstream.base-url=http://127.0.0.1:$MOCK_PORT/mock/v1")
+  local target="http://127.0.0.1:$MOCK_PORT/mock/v1"
+  local mock_port="--gateway.mock.port=$MOCK_PORT"
+  local arg
+  for arg in "$@"; do
+    [[ "$arg" == '--gateway.routes[0].target-url='* ]] && target=""
+    [[ "$arg" == '--gateway.mock.port='* ]] && mock_port=""
+  done
+  [[ -z "$target" ]] || defaults+=("--gateway.routes[0].target-url=$target")
+  [[ -z "$mock_port" ]] || defaults+=("$mock_port")
   local state_dir
   state_dir="$(mktemp -d "$TMP/state.XXXXXX")"
   LLMGW_CONTROL_DB="$state_dir/control.db" "${cmd[@]}" --spring.profiles.active="$engine" \
     --gateway.governance-enabled=true --server.port="$PORT" \
+    "${defaults[@]}" \
     --gateway.admin-token-mode=migration \
     --gateway.governance.default-quota-tokens=2000000000 \
     --gateway.governance.rate-limit-tokens-per-second=2000000000 \

@@ -3,6 +3,7 @@ responses=io.github.leohou0430.llmgw.core.protocol.DefaultProtocols$Responses
 messages=io.github.leohou0430.llmgw.core.protocol.DefaultProtocols$Messages
 images=io.github.leohou0430.llmgw.core.protocol.DefaultProtocols$Images
 videos=io.github.leohou0430.llmgw.core.protocol.DefaultProtocols$Videos
+gemini=io.github.leohou0430.llmgw.core.protocol.DefaultProtocols$Gemini
 embeddings=io.github.leohou0430.llmgw.core.protocol.DefaultProtocols$Embeddings
 rerank=io.github.leohou0430.llmgw.core.protocol.DefaultProtocols$Rerank
 speech=io.github.leohou0430.llmgw.core.protocol.DefaultProtocols$Speech

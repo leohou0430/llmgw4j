@@ -1,6 +1,6 @@
 # llmgw4j 配置说明
 
-> v0.4.0 使用项目内原生 SPI。内部 API、模块及 Redis 配置升级方式见 [扩展与迁移说明](EXTENSIONS.md)。
+> v0.5.0 使用项目内原生 SPI。内部 API、模块及 Redis 配置升级方式见 [扩展与迁移说明](EXTENSIONS.md)。
 
 审查修复补充：`gateway.production=true`（或 `LLMGW_PRODUCTION=true`）启用生产启动校验。
 `gateway.max-response-bytes` 默认 `4194304`，独立限制上游非流式响应；当前工作区还统一限制流式调用的非成功状态错误体，VT 不再无界等待 EOF。成功 SSE 不按累计大小套用此上限。v0.4.0另以 `gateway.upstream.max-sse-line-bytes` 限制上游 SSE 单行，默认 `1048576` 字节，CR/LF 不计入；超长行在 UTF-8 解码缓冲前中止。该值必须为正整数；使用较大单帧的供应商需按实际帧大小配置。
@@ -184,6 +184,8 @@ api-keys:
 
 ### 3.8 Redis 分布式状态（可选，仅 `-Predis` 产物）
 
+**故障分支（Chapter-9 §9.2.7）**：`gateway.redis.failure-policy` 显式定义 Redis 不可用时的逐类分支，默认 `fail-closed`——配额预留/结算、认证键读取等账本与授权路径任何读/写/超时都以 503 + Retry-After: 1 拒绝（GovernanceUnavailableException，与容量同一退避提示合同）；`fail-open-limits` 仅额外放行**令牌桶准入读**（本次请求不计入桶，文档声明）。退款回补、熔断计数、粘性路由、语义缓存在两种策略下都降级为「未发生/未命中」并留痕——它们不是授权或账本，降级不构成绕过。恢复后的对账：Redis 计数是派生视图，SQLite 权威账本不因 Redis 故障失真；不存在未声明的全局放行。
+
 | 配置项 | 类型 | 默认 | 说明与约束 |
 | --- | --- | --- | --- |
 | `gateway.redis.enabled` | boolean | `false` | 显式启用，并需链接 `-Predis` 实现包 |
@@ -211,6 +213,51 @@ API key ID 不得使用 `model:` / `group:` 前缀，以免与模型限流、群
 
 ### 3.9 协议转换（`gateway.conversion.*`，T1.11）
 
+### 3.10 金额预算模式（`gateway.billing.*`，ADR-0007/0009）
+
+| 键 | 类型 | 默认 | 说明 |
+| --- | --- | --- | --- |
+| `gateway.billing.enabled` | bool | `false` | ADR-0007 租户预付费账本开关（billing-sqlite pack） |
+| `gateway.billing.strict-budget` | bool | `false` | Chapter-9 §9.2.6（ADR-0009）严格预算模式：token 调用按「输入估算 + 请求显式输出上界」做可证明预留；无显式上界（max_tokens / max_output_tokens / max_completion_tokens）的调用被 400 `strict_budget_requires_output_bound` 拒绝，不静默回软。软预算（默认）沿用估算预留语义，并发下最终消费可能略超额度（预留+结算语义，非超卖竞态） |
+
+### 3.11 客户幂等键（数据面，Chapter-9 §9.4.5）
+
+- 请求头 `Idempotency-Key`（可选）：chat / messages / responses 端点在**认证之后、金额预留之前**判读——重复请求不占配额不预留，也不能借幂等键绕过授权。
+- 请求摘要 = 协议 + 模型 + 上游路径 + 请求体（不只正文）。同键同摘要的重入返回 409 `idempotent_request_exists`（错误 reason 携带原 callId/requestId 与状态）；同键异摘要同样 409。
+- 重复提交**不重放 SSE**：只返回原调用标识；结果未知（挂账）附 `state=EXISTING_UNKNOWN`，不自动重发。
+- 防重窗口默认 24h（冻结于首见）；在途与结果未知的调用不因 TTL 失去保护。终态推进由一次性推进令牌守卫：TTL 后被替换的新调用持有新令牌，迟到的旧终态回调一律忽略。
+
+### 3.12 MCP 网关（`gateway.mcp.*`，Chapter-9 §9.3，ADR-0010）
+
+| 键 | 类型 | 默认 | 说明 |
+| --- | --- | --- | --- |
+| `gateway.mcp.enabled` | bool | `false` | MCP 网关开关（/mcp/{server} 端点） |
+| `gateway.mcp.servers[].name/url/legacy/credential` | list | — | 出口白名单：服务器逻辑名、上游 URL、是否 Legacy（单次交换隔离桥接）、上游凭证引用（受控注入，绝不透传调用方 Authorization） |
+| `gateway.mcp.rules[].subject/server/tool/action` | list | — | 授权规则（首条命中生效）：`subject` 主体模式（`prefix*`/`*`）、`server`/`tool` 通配、`action` ∈ allow/deny/require-approval。**默认拒绝**：无匹配规则即 403 |
+| `gateway.mcp.allowed-origins` | list | `[]` | Origin 白名单（空 = 不校验） |
+| `gateway.mcp.max-body-bytes` | long | `1048576` | 入站报文上限（实现额外设定值，配置来源声明） |
+| `gateway.mcp.upstream-timeout-ms` | long | `30000` | 上游单次交换超时 |
+
+合同要点：四步准入（认证 → 协议校验 → 授权 → 转发）；镜像头按 §9.8.1 校验（Mcp-Method 必需且一致；Mcp-Name 仅 tools/call、resources/read、prompts/get 必需并镜像自身参数，其余方法不强制）；`subscriptions/*`、`tasks/*` 默认关闭（403 显式说明）；每次调用写审计（mcp.request / mcp.denied）。
+
+### 3.13 审批工作流（Chapter-9 §9.5.4，ADR-0011）
+
+- 控制面端点：`GET /control/approvals?tenantId=&projectId=`（APPROVAL_READ，观察者可读）、`POST /control/approvals/{id}/decide`、`POST /control/approvals/{id}/revoke`（APPROVAL_DECIDE，按审批自身范围 RBAC；原因必填，写管理审计）。
+- 状态机：`PENDING → APPROVED | REJECTED | EXPIRED`，`APPROVED → REVOKED`；全部持久 CAS，并发/重复回调只成功一次。
+- 批准 ≠ 放行：执行方在真正执行前必须经 `ApprovalService.revalidate(id, subjectRef, paramsDigest, now)` 重校验；审批超时不降级为只读，拒绝不隐式替换工具/参数，结果未知交由业务对账。
+
+### 3.14 归因关联头（Chapter-9 §9.4.5）
+
+- `X-LLMGW-Session-Id` / `X-LLMGW-Turn-Id`（可选）：净化（可打印 ASCII ≤128，非法剥空）后绑定已认证主体写入审计与账本，并在响应头回写（缺失不回写）。
+- 不参与准入与配额；伪造只能污染调用者自己主体的关联记录。缺失记 `unattributed`，网关不编造。
+
+### 3.15 可观测性补充（Chapter-9 §9.6.3）
+
+- 指标 `llmgw.usage{source=reported|estimated|unknown}`：用量证据来源（上游 usage 帧 / 估算 / 挂账）；基数受控，无用户输入入 tag。
+- `llmgw.requests` / `llmgw.denied` 维持既有口径；审计事件新增结构化字段：`policyVersion`、`tenantId/projectId`、`callId/attemptId/attempts`、`sessionId/turnId/taskId`、`decision/executionStatus/usageStatus`；拒绝判定新增 `admission.denied` 审计事件（deny 不再只进请求日志）。
+- OTel（`-Potel`）span 增加生成式 AI 语义约定属性（Development 状态，属性集固定见 GenAiSpanSink javadoc）：`gen_ai.request.model`、`gen_ai.usage.input_tokens/output_tokens`、`gen_ai.usage.source`（网关扩展）。VT 请求线程内 finish 完整覆盖；WebFlux 异步 finish 侧车无当前 observation 时降级为指标维度（声明未覆盖范围）。
+
+
 | 配置项 | 类型 | 代码默认 | 说明与约束 |
 | --- | --- | --- | --- |
 | `gateway.conversion.continuation-key` | String | `""` | 思考续轮信封（`llmgw1:`）的 HMAC-SHA256 密钥，归运行时（ExtensionContext）所有，codec 不持有。空＝每进程随机 32 字节密钥，续轮 token 仅进程内有效（单实例/开发可用）；生产必须经 env `LLMGW_CONTINUATION_KEY` 注入稳定密钥，使 token 跨重启/多副本可校验。密钥永不写日志、不入仓库 |
@@ -221,7 +268,7 @@ API key ID 不得使用 `model:` / `group:` 前缀，以免与模型限流、群
 ---
 
 
-## 3.1 转发配置项（含v0.4.0安全边界）
+## 3.1 转发配置项（含v0.5.0安全边界）
 
 ### 转发治理（gateway.upstream.*）
 
@@ -231,6 +278,8 @@ API key ID 不得使用 `model:` / `group:` 前缀，以免与模型限流、群
 | `first-byte-timeout-ms` | int | `0`（关） | 流式调用响应头到达超时：悬挂上游在 200 提交前失败，保住 fallback 窗口 |
 | `idle-read-timeout-ms` | int | `0`（关） | 从收到响应头开始，以正文读取进展刷新（含未完成 SSE 行和错误体）；不必等待完整行。超过空闲阈值中止流；整体超时仍提供总时长上限 |
 | `max-sse-line-bytes` | int | `1048576` | v0.4.0：上游 SSE 单行原始字节上限，CR/LF 不计，必须大于 0；不限制合法长流累计大小 |
+| `max-stream-bytes` | long | `268435456`（256MiB） | Chapter-9 §9.2.5：上游 SSE 整条流的累计原始字节上限（所有行合计）；超限 cancel 上游并以带内错误终止。0 = 关闭（不推荐——无累计上界的流会无界消耗内存） |
+| `total-deadline-ms` | long | `0`（关） | Chapter-9 §9.2.4：跨 attempt 总截止预算（同路由重试 + fallback 全部计入）。每次真实上游尝试的超时被截断到剩余预算，预算不足以发起有意义的新尝试时停止计划并返回 504 可解释错误。客户端可用绝对 epoch-ms 头 `X-LLMGW-Deadline` 进一步收紧（解析失败或已过期被忽略，绝不作为立即击杀开关） |
 | `heartbeat-interval-ms` | int | `0`（关） | SSE comment 心跳帧；仅成功响应头到达后启用。v0.4.0：VT 在请求线程空闲等行时发送，WebFlux 在背压下丢弃多余心跳 tick，真实数据不丢弃 |
 | `retry.attempts` | int | `1` | 同路由重试次数；1=关闭（v12 语义） |
 | `retry.backoff-base-ms` / `backoff-max-ms` | int | `200` / `2000` | 指数退避 + 全抖动 |
@@ -486,7 +535,7 @@ gateway:
 
 ```bash
 export DASHSCOPE_API_KEY='<密钥>'
-java -jar llmgw-app/target/llmgw-app-0.4.0.jar \
+java -jar llmgw-app/target/llmgw-app-0.5.0.jar \
   --spring.profiles.active=webflux,real \
   --gateway.upstream.base-url=http://127.0.0.1:8000/v1 \
   --gateway.routes[0].target-url=http://127.0.0.1:8000/v1 \

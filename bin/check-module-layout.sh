@@ -64,6 +64,10 @@ for domain in "${DOMAINS[@]}"; do
     while IFS= read -r dep; do
       [ -z "$dep" ] && continue
       [ "$dep" = 'llmgw-core' ] && continue
+      # AGENTS.md: an api may also depend on "necessary external contracts" --
+      # another domain's api module (e.g. engine-api -> billing-api). Plain
+      # implementation modules stay forbidden.
+      case "$dep" in llmgw-*-api) continue ;; esac
       bad "$api_module must not depend on $dep"
     done < <(printf '%s\n' "$deps_block" \
       | sed -n 's/.*<artifactId>\(llmgw-[^<]*\)<\/artifactId>.*/\1/p' | sort -u)

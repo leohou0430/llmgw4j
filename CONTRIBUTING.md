@@ -26,7 +26,7 @@ mvn -B -Predis clean verify                # Redis profile 同样执行 JUnit
 mvn -B -Predis,jtokkit,otel clean verify   # 组合 profile（CI 同样执行）
 ```
 
-默认产物：`llmgw-app/target/llmgw-app-0.4.0.jar`。
+默认产物：`llmgw-app/target/llmgw-app-0.5.0.jar`。
 `-Predis` 只在显式启用时才把 `llmgw-governance/llmgw-governance-redis` 链入 fat jar；
 默认 jar 不含任何 Redis 依赖，这是刻意保持的边界。
 
@@ -89,8 +89,8 @@ HTTP 回归可用 `LLMGW_TEST_JAR=/absolute/path/verified.jar` 固定被测产�
 ## 3. 两个数据面
 
 ```bash
-java -jar llmgw-app/target/llmgw-app-0.4.0.jar --spring.profiles.active=webflux
-java -jar llmgw-app/target/llmgw-app-0.4.0.jar --spring.profiles.active=vt
+java -jar llmgw-app/target/llmgw-app-0.5.0.jar --spring.profiles.active=webflux
+java -jar llmgw-app/target/llmgw-app-0.5.0.jar --spring.profiles.active=vt
 ```
 
 同一套 `llmgw-governance/llmgw-governance-default` 治理层驱动两条数据面。
@@ -130,6 +130,12 @@ java -jar llmgw-app/target/llmgw-app-0.4.0.jar --spring.profiles.active=vt
   `GatewayRuntimeHints`，否则 native 下 `/admin/*` 会 500。
 - 不使用 Lombok；Jackson 3 的注解包名是 `com.fasterxml.jackson.annotation`，
   databind 是 `tools.jackson.*`。
+- Java 源码统一由 [spring-javaformat](https://github.com/spring-io/spring-javaformat)
+  强制：构建在 `validate` 阶段自动校验，违规直接失败。提交前跑一次
+  `mvn spring-javaformat:apply` 即可格式化；`-Dspring-javaformat.skip=true`
+  仅限一次性只读构建（如产物复验），不要作为常规跳过手段。风格固定为
+  Tab 缩进、120 列，格式化器不接受项目级配置调整——代码适配格式化器，
+  而不是反过来。
 
 ## 6. 性能数字规矩（重要）
 

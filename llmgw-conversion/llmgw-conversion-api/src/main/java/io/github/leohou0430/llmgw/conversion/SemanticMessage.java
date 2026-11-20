@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Objects;
 
 public record SemanticMessage(Role role, List<ContentPart> parts) {
-    public SemanticMessage {
-        Objects.requireNonNull(role, "role");
-        Objects.requireNonNull(parts, "parts");
-        parts = List.copyOf(parts);
-    }
+	public SemanticMessage {
+		Objects.requireNonNull(role, "role");
+		Objects.requireNonNull(parts, "parts");
+		parts = List.copyOf(parts);
+	}
 }

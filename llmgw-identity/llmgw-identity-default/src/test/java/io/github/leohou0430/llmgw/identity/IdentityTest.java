@@ -19,63 +19,64 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 class IdentityTest {
 
-    private static Pbkdf2PasswordHasher hasher() {
-        return Pbkdf2PasswordHasher.withIterations(1000);
-    }
+	private static Pbkdf2PasswordHasher hasher() {
+		return Pbkdf2PasswordHasher.withIterations(1000);
+	}
 
-    @Test
-    void pbkdf2HashesAndVerifiesWithoutStoringPlaintext() {
-        Pbkdf2PasswordHasher hasher = hasher();
-        String encoded = hasher.hash("s3cret");
-        assertNotEquals("s3cret", encoded);
-        assertTrue(hasher.verify("s3cret", encoded));
-        assertFalse(hasher.verify("wrong", encoded));
-        assertNotEquals(encoded, hasher.hash("s3cret"), "each hash must use a fresh salt");
-    }
+	@Test
+	void pbkdf2HashesAndVerifiesWithoutStoringPlaintext() {
+		Pbkdf2PasswordHasher hasher = hasher();
+		String encoded = hasher.hash("s3cret");
+		assertNotEquals("s3cret", encoded);
+		assertTrue(hasher.verify("s3cret", encoded));
+		assertFalse(hasher.verify("wrong", encoded));
+		assertNotEquals(encoded, hasher.hash("s3cret"), "each hash must use a fresh salt");
+	}
 
-    @Test
-    void bootstrapCreatesExactlyOnePlatformAdmin() {
-        AccountStore store = new InMemoryAccountStore();
-        AdministratorBootstrap bootstrap = new AdministratorBootstrap(store, hasher());
+	@Test
+	void bootstrapCreatesExactlyOnePlatformAdmin() {
+		AccountStore store = new InMemoryAccountStore();
+		AdministratorBootstrap bootstrap = new AdministratorBootstrap(store, hasher());
 
-        Account admin = bootstrap.bootstrap("root", "change-me-now");
+		Account admin = bootstrap.bootstrap("root", "change-me-now");
 
-        assertEquals(Role.PLATFORM_ADMIN, admin.role());
-        assertTrue(admin.scope().isPlatform());
-        assertTrue(admin.enabled());
-        assertNotEquals("change-me-now", admin.passwordHash());
-        assertTrue(store.findByUsername("root").isPresent());
-    }
+		assertEquals(Role.PLATFORM_ADMIN, admin.role());
+		assertTrue(admin.scope().isPlatform());
+		assertTrue(admin.enabled());
+		assertNotEquals("change-me-now", admin.passwordHash());
+		assertTrue(store.findByUsername("root").isPresent());
+	}
 
-    @Test
-    void secondBootstrapIsRejected() {
-        AccountStore store = new InMemoryAccountStore();
-        AdministratorBootstrap bootstrap = new AdministratorBootstrap(store, hasher());
-        bootstrap.bootstrap("root", "pw-one");
-        assertThrows(IllegalStateException.class, () -> bootstrap.bootstrap("root2", "pw-two"));
-    }
+	@Test
+	void secondBootstrapIsRejected() {
+		AccountStore store = new InMemoryAccountStore();
+		AdministratorBootstrap bootstrap = new AdministratorBootstrap(store, hasher());
+		bootstrap.bootstrap("root", "pw-one");
+		assertThrows(IllegalStateException.class, () -> bootstrap.bootstrap("root2", "pw-two"));
+	}
 
-    @Test
-    void bootstrapRequiresExplicitNonBlankCredentials() {
-        AccountStore store = new InMemoryAccountStore();
-        AdministratorBootstrap bootstrap = new AdministratorBootstrap(store, hasher());
-        assertThrows(IllegalArgumentException.class, () -> bootstrap.bootstrap(" ", "x"));
-        assertThrows(IllegalArgumentException.class, () -> bootstrap.bootstrap("root", ""));
-    }
+	@Test
+	void bootstrapRequiresExplicitNonBlankCredentials() {
+		AccountStore store = new InMemoryAccountStore();
+		AdministratorBootstrap bootstrap = new AdministratorBootstrap(store, hasher());
+		assertThrows(IllegalArgumentException.class, () -> bootstrap.bootstrap(" ", "x"));
+		assertThrows(IllegalArgumentException.class, () -> bootstrap.bootstrap("root", ""));
+	}
 
-    @Test
-    void duplicateUsernameIsRejected() {
-        AccountStore store = new InMemoryAccountStore();
-        store.create(new Account("1", "alice", "h", Role.PROJECT_VIEWER, Scope.project("t", "p"), true));
-        assertThrows(IllegalArgumentException.class,
-                () -> store.create(new Account("2", "alice", "h2", Role.PROJECT_VIEWER, Scope.project("t", "p"), true)));
-    }
+	@Test
+	void duplicateUsernameIsRejected() {
+		AccountStore store = new InMemoryAccountStore();
+		store.create(new Account("1", "alice", "h", Role.PROJECT_VIEWER, Scope.project("t", "p"), true));
+		assertThrows(IllegalArgumentException.class, () -> store
+			.create(new Account("2", "alice", "h2", Role.PROJECT_VIEWER, Scope.project("t", "p"), true)));
+	}
 
-    @Test
-    void scopeFactories() {
-        assertTrue(Scope.platform().isPlatform());
-        assertFalse(Scope.tenant("t1").isPlatform());
-        assertEquals("t1", Scope.project("t1", "p1").tenantId());
-        assertEquals("p1", Scope.project("t1", "p1").projectId());
-    }
+	@Test
+	void scopeFactories() {
+		assertTrue(Scope.platform().isPlatform());
+		assertFalse(Scope.tenant("t1").isPlatform());
+		assertEquals("t1", Scope.project("t1", "p1").tenantId());
+		assertEquals("p1", Scope.project("t1", "p1").projectId());
+	}
+
 }

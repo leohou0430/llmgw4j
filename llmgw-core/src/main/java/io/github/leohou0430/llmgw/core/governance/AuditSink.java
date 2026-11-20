@@ -5,10 +5,11 @@ import java.util.Map;
 
 public interface AuditSink {
 
-    record AuditEvent(Instant at, String keyId, String event, Map<String, Object> detail) {
-    }
+	record AuditEvent(Instant at, String keyId, String event, Map<String, Object> detail) {
+	}
 
-    void emit(AuditEvent event);
+	void emit(AuditEvent event);
 
-    java.util.List<AuditEvent> recent(int limit);
+	java.util.List<AuditEvent> recent(int limit);
+
 }

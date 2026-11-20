@@ -29,6 +29,10 @@ data/
 application-local.yml
 application-local.yaml
 llmgw-snapshot.json
+# Runtime SQLite files created when a process cwd is llmgw-app/ (tests/smokes).
+llmgw-app/*.db
+llmgw-app/*.db-shm
+llmgw-app/*.db-wal
 
 # ---- Benchmark artifacts (raw CSV, jars, logs, manifests, local classpaths) ----
 bench/results/

@@ -7,24 +7,25 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class GatewayPropertiesAdminTokenTest {
 
-    @Test
-    void legacyTokenModeDefaultsToDisabled() {
-        assertEquals("disabled", new GatewayProperties().getAdminTokenMode());
-    }
+	@Test
+	void legacyTokenModeDefaultsToDisabled() {
+		assertEquals("disabled", new GatewayProperties().getAdminTokenMode());
+	}
 
-    @Test
-    void migrationModeIsExplicitAndNormalized() {
-        GatewayProperties properties = new GatewayProperties();
+	@Test
+	void migrationModeIsExplicitAndNormalized() {
+		GatewayProperties properties = new GatewayProperties();
 
-        properties.setAdminTokenMode(" MIGRATION ");
+		properties.setAdminTokenMode(" MIGRATION ");
 
-        assertEquals("migration", properties.getAdminTokenMode());
-    }
+		assertEquals("migration", properties.getAdminTokenMode());
+	}
 
-    @Test
-    void unknownModeIsRejected() {
-        GatewayProperties properties = new GatewayProperties();
+	@Test
+	void unknownModeIsRejected() {
+		GatewayProperties properties = new GatewayProperties();
 
-        assertThrows(IllegalArgumentException.class, () -> properties.setAdminTokenMode("enabled"));
-    }
+		assertThrows(IllegalArgumentException.class, () -> properties.setAdminTokenMode("enabled"));
+	}
+
 }

@@ -7,17 +7,10 @@ import java.util.Map;
  * that space until an explicit, reviewed mapping shares it into a tenant/project. It is
  * never imported by scanning a provider account.
  */
-public record LegacyResource(
-        String legacyOwner,
-        String legacyId,
-        String type,
-        String sourceRoute,
-        String upstreamId,
-        String provider,
-        String configVersion,
-        Map<String, String> metadata) {
+public record LegacyResource(String legacyOwner, String legacyId, String type, String sourceRoute, String upstreamId,
+		String provider, String configVersion, Map<String, String> metadata) {
 
-    public LegacyResource {
-        metadata = metadata == null ? Map.of() : Map.copyOf(metadata);
-    }
+	public LegacyResource {
+		metadata = metadata == null ? Map.of() : Map.copyOf(metadata);
+	}
 }

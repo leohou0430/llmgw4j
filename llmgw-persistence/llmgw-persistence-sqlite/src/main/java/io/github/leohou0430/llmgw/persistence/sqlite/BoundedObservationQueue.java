@@ -10,32 +10,36 @@ import java.util.concurrent.atomic.AtomicInteger;
  * operators can see loss. It is a diagnostic buffer, not a durable financial ledger.
  */
 public final class BoundedObservationQueue {
-    private final int capacity;
-    private final Deque<String> buffer;
-    private final AtomicInteger dropped = new AtomicInteger();
 
-    public BoundedObservationQueue(int capacity) {
-        if (capacity < 1) {
-            throw new IllegalArgumentException("capacity must be positive");
-        }
-        this.capacity = capacity;
-        this.buffer = new ArrayDeque<>(capacity);
-    }
+	private final int capacity;
 
-    public synchronized boolean offer(String event) {
-        if (buffer.size() >= capacity) {
-            dropped.incrementAndGet();
-            return false;
-        }
-        buffer.addLast(event);
-        return true;
-    }
+	private final Deque<String> buffer;
 
-    public synchronized int size() {
-        return buffer.size();
-    }
+	private final AtomicInteger dropped = new AtomicInteger();
 
-    public int dropped() {
-        return dropped.get();
-    }
+	public BoundedObservationQueue(int capacity) {
+		if (capacity < 1) {
+			throw new IllegalArgumentException("capacity must be positive");
+		}
+		this.capacity = capacity;
+		this.buffer = new ArrayDeque<>(capacity);
+	}
+
+	public synchronized boolean offer(String event) {
+		if (buffer.size() >= capacity) {
+			dropped.incrementAndGet();
+			return false;
+		}
+		buffer.addLast(event);
+		return true;
+	}
+
+	public synchronized int size() {
+		return buffer.size();
+	}
+
+	public int dropped() {
+		return dropped.get();
+	}
+
 }

@@ -1,14 +1,14 @@
 # llmgw4j 生产环境最佳实践
 
-> v0.4.0 使用项目内原生 SPI。内部 API、模块及 Redis 配置升级方式见 [扩展与迁移说明](EXTENSIONS.md)。
+> v0.5.0 使用项目内原生 SPI。内部 API、模块及 Redis 配置升级方式见 [扩展与迁移说明](EXTENSIONS.md)。
 
-适用版本：**0.4.0**。更新：2026-11-16。配置字段以 [配置说明](CONFIGURATION.md)和源码为准，完整端点见 [OpenAPI](openapi.yaml)。
+适用版本：**0.5.0**。更新：2026-11-20。配置字段以 [配置说明](CONFIGURATION.md)和源码为准，完整端点见 [OpenAPI](openapi.yaml)。
 
 ## 部署边界
 
 llmgw4j 提供 Java 模型数据面、协议透传和可替换治理 SPI。默认配置是本地 mock 演示。账号/项目RBAC与文件/批任务目录已内建；企业OIDC/JWKS、财务硬预算及多网关副本配置发布不在当前范围，不能把参考实现直接当作完整多租户计费平台。
 
-推荐由 Nginx/Envoy/LB 终止 TLS、隔离管理入口。JVM 默认包支持 WebFlux 和 VT；native 必须按引擎构建。v0.4.0 Release 提供 Linux amd64 WebFlux native，其他平台自行编译。目标 OS、CPU、GC 和启动参数均需单独验证，历史 macOS 冷启动/RSS 数字不能推广到生产。
+推荐由 Nginx/Envoy/LB 终止 TLS、隔离管理入口。JVM 默认包支持 WebFlux 和 VT；native 必须按引擎构建。v0.5.0 Release 提供 Linux amd64 WebFlux native，其他平台自行编译。目标 OS、CPU、GC 和启动参数均需单独验证，历史 macOS 冷启动/RSS 数字不能推广到生产。
 
 首次设置`LLMGW_ADMIN_USERNAME`、`LLMGW_ADMIN_PASSWORD`和`LLMGW_ROOT_KEY`，为本实例独占数据库与暂存目录，按[控制面部署操作](control-plane-operations.md)备份、建立项目和额度。生产仍需`LLMGW_ADMIN_TOKEN`满足启动校验，保持旧token模式disabled；不要以迁移模式代替新控制面授权。
 
@@ -51,7 +51,7 @@ gateway:
 
 ```sh
 java -XX:MaxGCPauseMillis=10 -Xms256m -Xmx1024m \
-  -jar llmgw-app/target/llmgw-app-0.4.0.jar \
+  -jar llmgw-app/target/llmgw-app-0.5.0.jar \
   --spring.profiles.active=webflux \
   --spring.config.additional-location=file:./application-prod.yml
 ```

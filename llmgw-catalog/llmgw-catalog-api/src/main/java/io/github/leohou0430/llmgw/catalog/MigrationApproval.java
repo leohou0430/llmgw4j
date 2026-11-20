@@ -5,10 +5,6 @@ package io.github.leohou0430.llmgw.catalog;
  * Without an approved record the legacy resources are not shared (ownership is never
  * guessed).
  */
-public record MigrationApproval(
-        String legacyOwner,
-        String tenantId,
-        String projectId,
-        String reviewerId,
-        boolean approved) {
+public record MigrationApproval(String legacyOwner, String tenantId, String projectId, String reviewerId,
+		boolean approved) {
 }

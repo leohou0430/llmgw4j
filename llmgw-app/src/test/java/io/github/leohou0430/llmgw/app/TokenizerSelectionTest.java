@@ -14,23 +14,35 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class TokenizerSelectionTest {
-    @TempDir Path directory;
-    @Test void selectedTokenizerFeedsTheAdmissionEstimateWithoutRewritingBytes() {
-        var loader = Extensions.load(TokenCounter.class);
-        var parsed = ProtocolCodec.parse("{\"model\":\"m\",\"messages\":[{\"role\":\"user\",\"content\":\""+"a".repeat(1000)+"\"}]}");
-        assertEquals(parsed.estimatedTokens(),loader.getExtension("heuristic").estimate(parsed));
-        var p = new GatewayProperties();p.setKeysStorePath(directory.resolve("keys.json").toString());
-        p.setTokenizer("jtokkit");
-        try (var c = new ExtensionContext()) {
-            c.external(GatewayProperties.class,p);c.loadModule("in-memory");c.seal();
-            if (!loader.hasExtension("jtokkit")) {
-                assertThrows(IllegalStateException.class, () -> c.get(GovernanceChain.class));
-            } else {
-                var decision = c.get(GovernanceChain.class).enter("Bearer sk-demo",parsed,new Route("r","*","","http://localhost","",1,List.of()));
-                assertTrue(decision.allowed());assertEquals(parsed.rawJson(),decision.parsed().rawJson());
-                assertEquals(loader.getExtension("jtokkit").estimate(parsed),decision.parsed().estimatedTokens());
-                assertNotEquals(parsed.estimatedTokens(),decision.parsed().estimatedTokens());
-            }
-        }
-    }
+
+	@TempDir
+	Path directory;
+
+	@Test
+	void selectedTokenizerFeedsTheAdmissionEstimateWithoutRewritingBytes() {
+		var loader = Extensions.load(TokenCounter.class);
+		var parsed = ProtocolCodec
+			.parse("{\"model\":\"m\",\"messages\":[{\"role\":\"user\",\"content\":\"" + "a".repeat(1000) + "\"}]}");
+		assertEquals(parsed.estimatedTokens(), loader.getExtension("heuristic").estimate(parsed));
+		var p = new GatewayProperties();
+		p.setKeysStorePath(directory.resolve("keys.json").toString());
+		p.setTokenizer("jtokkit");
+		try (var c = new ExtensionContext()) {
+			c.external(GatewayProperties.class, p);
+			c.loadModule("in-memory");
+			c.seal();
+			if (!loader.hasExtension("jtokkit")) {
+				assertThrows(IllegalStateException.class, () -> c.get(GovernanceChain.class));
+			}
+			else {
+				var decision = c.get(GovernanceChain.class)
+					.enter("Bearer sk-demo", parsed, new Route("r", "*", "", "http://localhost", "", 1, List.of()));
+				assertTrue(decision.allowed());
+				assertEquals(parsed.rawJson(), decision.parsed().rawJson());
+				assertEquals(loader.getExtension("jtokkit").estimate(parsed), decision.parsed().estimatedTokens());
+				assertNotEquals(parsed.estimatedTokens(), decision.parsed().estimatedTokens());
+			}
+		}
+	}
+
 }

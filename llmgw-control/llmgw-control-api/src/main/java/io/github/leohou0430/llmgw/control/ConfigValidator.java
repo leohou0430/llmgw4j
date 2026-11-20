@@ -9,5 +9,6 @@ import java.util.List;
  */
 public interface ConfigValidator {
 
-    List<String> validate(UpstreamCandidate candidate, PlatformPolicy policy);
+	List<String> validate(UpstreamCandidate candidate, PlatformPolicy policy);
+
 }

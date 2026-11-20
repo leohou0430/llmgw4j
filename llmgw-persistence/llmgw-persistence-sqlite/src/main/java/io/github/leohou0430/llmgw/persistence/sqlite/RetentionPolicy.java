@@ -13,39 +13,40 @@ import java.sql.SQLException;
  * silently drops recent audit.
  */
 public record RetentionPolicy(long tombstoneDays, long auditDays) {
-    private static final long DAY_MS = 86_400_000L;
+	private static final long DAY_MS = 86_400_000L;
 
-    public RetentionPolicy {
-        if (tombstoneDays < 0 || auditDays < 0) {
-            throw new IllegalArgumentException("retention days must be non-negative");
-        }
-    }
+	public RetentionPolicy {
+		if (tombstoneDays < 0 || auditDays < 0) {
+			throw new IllegalArgumentException("retention days must be non-negative");
+		}
+	}
 
-    public static RetentionPolicy defaults() {
-        return new RetentionPolicy(30, 30);
-    }
+	public static RetentionPolicy defaults() {
+		return new RetentionPolicy(30, 30);
+	}
 
-    /** Purges expired tombstones and audit rows; returns the number of removed rows. */
-    public int purge(DatabaseContext database, long nowEpochMs) {
-        long auditCutoff = nowEpochMs - auditDays * DAY_MS;
-        long tombstoneCutoff = nowEpochMs - tombstoneDays * DAY_MS;
-        try {
-            return database.transaction(connection -> {
-                int removed = 0;
-                try (PreparedStatement statement =
-                             connection.prepareStatement("DELETE FROM audit_event WHERE created_at < ?")) {
-                    statement.setLong(1, auditCutoff);
-                    removed += statement.executeUpdate();
-                }
-                try (PreparedStatement statement = connection.prepareStatement(
-                        "DELETE FROM resource_catalog WHERE deleted = 1 AND created_at < ?")) {
-                    statement.setLong(1, tombstoneCutoff);
-                    removed += statement.executeUpdate();
-                }
-                return removed;
-            });
-        } catch (SQLException failure) {
-            throw new IllegalStateException("retention purge failed", failure);
-        }
-    }
+	/** Purges expired tombstones and audit rows; returns the number of removed rows. */
+	public int purge(DatabaseContext database, long nowEpochMs) {
+		long auditCutoff = nowEpochMs - auditDays * DAY_MS;
+		long tombstoneCutoff = nowEpochMs - tombstoneDays * DAY_MS;
+		try {
+			return database.transaction(connection -> {
+				int removed = 0;
+				try (PreparedStatement statement = connection
+					.prepareStatement("DELETE FROM audit_event WHERE created_at < ?")) {
+					statement.setLong(1, auditCutoff);
+					removed += statement.executeUpdate();
+				}
+				try (PreparedStatement statement = connection
+					.prepareStatement("DELETE FROM resource_catalog WHERE deleted = 1 AND created_at < ?")) {
+					statement.setLong(1, tombstoneCutoff);
+					removed += statement.executeUpdate();
+				}
+				return removed;
+			});
+		}
+		catch (SQLException failure) {
+			throw new IllegalStateException("retention purge failed", failure);
+		}
+	}
 }

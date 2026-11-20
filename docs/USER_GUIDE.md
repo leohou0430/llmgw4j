@@ -1,4 +1,4 @@
-# llmgw4j 使用指南（v0.4.0）
+# llmgw4j 使用指南（v0.5.0）
 
 JDK 25 的 LLM HTTP 网关。一个 JVM JAR 可选择 WebFlux/Netty 或 Servlet/虚拟线程两种引擎；原生基础模块通过 项目内命名 SPI 组装，共用 JDK HttpClient 转发与治理逻辑。它提供协议透传和可替换治理能力，完整端点以 [OpenAPI](openapi.yaml) 为准。
 
@@ -10,7 +10,7 @@ JDK 25 的 LLM HTTP 网关。一个 JVM JAR 可选择 WebFlux/Netty 或 Servlet/
 
 ```bash
 mvn -B clean verify
-java -jar llmgw-app/target/llmgw-app-0.4.0.jar \
+java -jar llmgw-app/target/llmgw-app-0.5.0.jar \
   --spring.profiles.active=webflux --server.port=8080
 ```
 
@@ -33,7 +33,7 @@ curl -N http://127.0.0.1:8080/v1/chat/completions \
 关闭 mock，替换上游及路由基址，并通过环境或密钥系统注入凭据：
 
 ```bash
-java -jar llmgw-app/target/llmgw-app-0.4.0.jar \
+java -jar llmgw-app/target/llmgw-app-0.5.0.jar \
   --spring.profiles.active=webflux \
   --gateway.mock.enabled=false \
   --gateway.upstream.type=openai-compatible \
@@ -102,7 +102,7 @@ JSON 模型别名、工具调用及扩展字段可保留；multipart 内的模�
 
 ```bash
 mvn -B -Predis clean verify
-java -jar llmgw-app/target/llmgw-app-0.4.0.jar \
+java -jar llmgw-app/target/llmgw-app-0.5.0.jar \
   --spring.profiles.active=webflux \
   --gateway.redis.enabled=true \
   --gateway.redis.host=127.0.0.1 --gateway.redis.port=6379

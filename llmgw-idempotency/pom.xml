@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>io.github.leohou0430</groupId>
+    <artifactId>llmgw-parent</artifactId>
+    <version>0.5.0</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <artifactId>llmgw-idempotency</artifactId>
+  <packaging>pom</packaging>
+  <name>llmgw-idempotency</name>
+  <description>Customer idempotency-key subsystem (Chapter-9 9.2.4/9.5.4, CONTEXT.md
+    and ADR-0007): explicit per-project call de-duplication. Same key + same
+    request digest within the TTL window replays the original identifiers
+    without resubmitting upstream; same key with a different digest is
+    rejected; in-flight and unknown-outcome calls never expire into a new
+    submission. This store provides防重 only — no SSE replay, no exactly-once
+    promise; amounts are out of scope (pure strings plus epoch-ms stamps).</description>
+
+  <properties><llmgw.foundation.enforcer.skip>false</llmgw.foundation.enforcer.skip></properties>
+  <modules>
+    <module>llmgw-idempotency-api</module>
+    <module>llmgw-idempotency-sqlite</module>
+  </modules>
+</project>

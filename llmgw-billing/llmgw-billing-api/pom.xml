@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>io.github.leohou0430</groupId>
+    <artifactId>llmgw-billing</artifactId>
+    <version>0.5.0</version>
+  </parent>
+
+  <artifactId>llmgw-billing-api</artifactId>
+  <name>llmgw-billing-api</name>
+  <description>Billing contracts per ADR-0007: prepaid tenant accounts with limited
+    overdraft, estimated nano-CNY reservations, settlement with carry remainders,
+    pending-verification across restarts, price versions frozen at admission,
+    voucher-idempotent recharges and reversals. No Spring/Reactor/HTTP.</description>
+
+  <dependencies>
+    <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-core</artifactId></dependency>
+  </dependencies>
+</project>

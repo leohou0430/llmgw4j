@@ -72,7 +72,7 @@ jobs:
           python3 -m venv "$RUNNER_TEMP/sdk-venv"
           "$RUNNER_TEMP/sdk-venv/bin/pip" install -r bin/requirements-sdk.txt
           "$RUNNER_TEMP/sdk-venv/bin/python" bin/smoke-sdk-compatibility.py \
-            --jar llmgw-app/target/llmgw-app-0.4.0.jar \
+            --jar llmgw-app/target/llmgw-app-0.5.0.jar \
             --out "$RUNNER_TEMP/sdk-contracts"
       - name: Verify optional Redis profile (including JUnit)
         run: mvn -B -Predis clean verify

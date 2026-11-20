@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>io.github.leohou0430</groupId>
+    <artifactId>llmgw-mcp</artifactId>
+    <version>0.5.0</version>
+  </parent>
+
+  <artifactId>llmgw-mcp-api</artifactId>
+  <name>llmgw-mcp-api</name>
+  <description>MCP Gateway contracts: protocol facts, request/response shapes,
+    access policy SPI and settings. Foundation module — no HTTP framework.</description>
+
+  <properties><llmgw.foundation.enforcer.skip>false</llmgw.foundation.enforcer.skip></properties>
+  <dependencies>
+    <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-core</artifactId></dependency>
+  </dependencies>
+</project>

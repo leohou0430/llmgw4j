@@ -8,10 +8,10 @@ import java.util.Objects;
  */
 public record RouteVersion(long version, String config, long baseVersion) {
 
-    public RouteVersion {
-        Objects.requireNonNull(config, "config");
-        if (version < 1) {
-            throw new IllegalArgumentException("version must be >= 1");
-        }
-    }
+	public RouteVersion {
+		Objects.requireNonNull(config, "config");
+		if (version < 1) {
+			throw new IllegalArgumentException("version must be >= 1");
+		}
+	}
 }

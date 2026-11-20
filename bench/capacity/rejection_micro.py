@@ -18,7 +18,7 @@ def main():
     jars={};manifest={'source_sha256':hashlib.sha256(source.read_bytes()).hexdigest(),'fixture_sha256':hashlib.sha256((module/'src/test/java/io/github/leohou0430/llmgw/engine/webflux/CapacityAdmissionTest.java').read_bytes()).hexdigest(),'classpath':cp,'jars':{}}
     for label,jar in [('before',a.before),('after',a.after)]:
         with zipfile.ZipFile(jar) as z:
-            name=next(x for x in z.namelist() if x.endswith('/llmgw-engine-webflux-0.4.0.jar'))
+            name=next(x for x in z.namelist() if x.endswith('/llmgw-engine-webflux-0.5.0.jar'))
             target=out/(label+'-engine.jar');target.write_bytes(z.read(name));jars[label]=target
         manifest['jars'][label]={'app_sha256':hashlib.sha256(jar.read_bytes()).hexdigest(),'engine_sha256':hashlib.sha256(target.read_bytes()).hexdigest()}
     rows=[]

@@ -4,5 +4,6 @@ package io.github.leohou0430.llmgw.catalog;
 @FunctionalInterface
 public interface ReconciliationEventSink {
 
-    void pending(ReconciliationEvent event);
+	void pending(ReconciliationEvent event);
+
 }

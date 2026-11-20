@@ -8,19 +8,20 @@ import java.util.Map;
  */
 public interface ChunkSink {
 
-    void onChunk(String rawSseLine);
+	void onChunk(String rawSseLine);
 
-    /**
-     * Fired once when the upstream response headers arrive, before any chunk.
-     * Implementations copy the policy-approved names onto the client response
-     * while it is still uncommitted. Called on the requesting thread.
-     */
-    default void onHeaders(int status, Map<String, List<String>> headers) {
-    }
+	/**
+	 * Fired once when the upstream response headers arrive, before any chunk.
+	 * Implementations copy the policy-approved names onto the client response while it is
+	 * still uncommitted. Called on the requesting thread.
+	 */
+	default void onHeaders(int status, Map<String, List<String>> headers) {
+	}
 
-    default void onDone() {
-    }
+	default void onDone() {
+	}
 
-    default void onError(Throwable error) {
-    }
+	default void onError(Throwable error) {
+	}
+
 }

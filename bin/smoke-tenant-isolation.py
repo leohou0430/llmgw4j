@@ -15,7 +15,7 @@ import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-JAR = Path(os.environ.get('LLMGW_TEST_JAR', str(ROOT / 'llmgw-app/target/llmgw-app-0.4.0.jar'))).resolve()
+JAR = Path(os.environ.get('LLMGW_TEST_JAR', str(ROOT / 'llmgw-app/target/llmgw-app-0.5.0.jar'))).resolve()
 BINARY = os.environ.get('BINARY')
 
 

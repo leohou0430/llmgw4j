@@ -16,9 +16,9 @@ Java 包名 `io.github.leohou0430.llmgw`，采用 [Apache-2.0](LICENSE) 许可�
 > 这是给 Java 团队看的网关：不引入 Python/Go 组件，不改现有微服务治理习惯。
 > 它是**可复现的参考实现与测量台**，不是 Kong / Higress / Envoy 的即插即用替代品；
 > 部署前的安全边界见 [SECURITY.md](SECURITY.md)。
-> 生产必须启用 `gateway.production=true`；默认配置仅用于本地演示。金额硬预算尚无内建持久共享账本，不能作为生产财务保证。
+> 生产必须启用 `gateway.production=true`；默认配置仅用于本地演示。金额硬预算尚无内建持久共享账本，不能作为生产财务保证；需要可证明上限的租户可启用严格预算档位（`gateway.billing.strict-budget`，ADR-0009）——无显式输出上界的调用会被拒绝，这是承诺可证明性的代价。
 
-> 当前发布：**v0.4.0**。详见[发布与升级说明](docs/releases/v0.4.0.md)。应用面向单进程 Java + SQLite：密钥、项目/key累计token账本、资源目录和已发布路由统一持久化；Redis为可选治理后端，不代表支持多网关副本共享此数据库。
+> 当前发布：**v0.5.0**。详见[发布与升级说明](docs/releases/v0.5.0.md)。应用面向单进程 Java + SQLite：密钥、项目/key累计token账本、资源目录和已发布路由统一持久化；Redis为可选治理后端，不代表支持多网关副本共享此数据库。
 >
 > `/control/` 提供基于账号、会话、CSRF和角色范围的管理闭环。首次设置 `LLMGW_ADMIN_USERNAME`、`LLMGW_ADMIN_PASSWORD`，凭据加密另需 `LLMGW_ROOT_KEY`，详见[控制面操作](docs/control-plane-operations.md)。旧`/admin`无凭据本地演示例外不可暴露；生产配置legacy凭据后默认禁用token访问，迁移需显式受限模式。
 >
@@ -32,7 +32,7 @@ Java 包名 `io.github.leohou0430.llmgw`，采用 [Apache-2.0](LICENSE) 许可�
   embeddings / rerank / audio-speech；默认字节透传，可显式启用chat/responses/messages到DeepSeek Chat的受控转换
 - **密钥与预算**：API key 运行时管理（创建/吊销/TTL/metadata，**SHA-256 哈希存储**，
   重启恢复）、**key 轮换**（overlap 窗口）、**HS256 JWT 入口认证**（issuer/audience 与时间声明校验；
-  其他算法可用 `TokenValidator` SPI 自行扩展）、项目/key两级持久累计token配额（原子在途预留、已知结果结算、未知结果保守占额）、**金额预算实验**（模型价目 → 内存微美元记账，生产硬预算暂不支持）、**per-model 限流**与 **per-group 金额预算实验**、按组花费聚合
+  其他算法可用 `TokenValidator` SPI 自行扩展）、项目/key两级持久累计token配额（原子在途预留、已知结果结算、未知结果保守占额）、**金额预算实验**（模型价目 → 内存微美元记账，生产硬预算暂不支持）、**严格预算档位**（`gateway.billing.strict-budget`：可证明的最大可计费消耗预留，无显式输出上界的调用拒绝，ADR-0009）、**审批工作流**（挂起-重新准入状态机，ADR-0011）、**客户幂等键**（`Idempotency-Key` 409 防重、不重放 SSE）、**MCP 网关**（`/mcp/{server}` 四步准入，ADR-0010）、**跨 attempt 截止预算**（`total-deadline-ms`/`X-LLMGW-Deadline`）、**归因关联头**（Session/Turn 绑定主体入审计）、**per-model 限流**与 **per-group 金额预算实验**、按组花费聚合
 - **provider 适配**：`UpstreamAuthenticator` SPI——OpenAI 兼容 Bearer 与 Anthropic
   原生（x-api-key + anthropic-version）方言随路由选择
 - **可观测**：Micrometer/Prometheus 指标、TTFT/上游耗时/网关开销、审计环、
@@ -56,8 +56,8 @@ llmgw4j 是**模型数据面网关**：字节保真透传 + LLM 语义治理。�
 
 - WebSocket / gRPC 入口、HTTP/2 上游（南北向流量治理交给前置代理）
 - Prompt 模板管理、SSE 流内容改写（与字节透传契约冲突）
-- MCP / A2A Agent 协议、内置 PII 改写（PII 走外接 Guardrail 引擎）
-- 多网关副本共享SQLite、分布式配置发布、财务级硬预算
+- A2A Agent 协议、MCP 订阅/Tasks 扩展与服务端主动流式（MCP Gateway 治理语义首版已交付：四步准入、默认拒绝工具授权、Modern→Legacy 单向桥接，见 ADR-0010）；内置 PII 改写（PII 走外接 Guardrail 引擎）
+- 多网关副本共享SQLite、分布式配置发布；财务级硬预算仍不内建——但 Chapter-9 §9.2.6 的**严格预算档位**（ADR-0009：可证明的最大可计费消耗预留）已可作为显式开关使用，软预算（默认）沿用 ADR-0007 估算预留语义
 
 ## 一、架构
 
@@ -245,7 +245,7 @@ curl -X POST http://127.0.0.1:8080/admin/snapshot/save
 接真实上游（阿里百炼 OpenAI 兼容端点，读环境变量 `DASHSCOPE_API_KEY`）：
 
 ```bash
-java -jar llmgw-app/target/llmgw-app-0.4.0.jar \
+java -jar llmgw-app/target/llmgw-app-0.5.0.jar \
   --spring.profiles.active=webflux,real
 curl -sS http://127.0.0.1:8080/admin/verify   # SDK 连通性验证
 ```

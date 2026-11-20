@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Two isolated replicas + owned Redis: restart, outage fail-closed and reconnect."""
-import argparse, json, socket, subprocess, tempfile, threading, time, urllib.error, urllib.request, uuid
+import argparse, base64, json, os, socket, subprocess, tempfile, threading, time, urllib.error, urllib.request, uuid
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
@@ -8,8 +8,13 @@ def free_port():
     with socket.socket() as s:s.bind(('127.0.0.1',0));return s.getsockname()[1]
 
 def main():
-    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--jar',type=Path,required=True);args=parser.parse_args()
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--jar',type=Path,default=Path(os.environ.get('LLMGW_TEST_JAR', 'llmgw-app/target/llmgw-app-0.5.0.jar')))
+    args=parser.parse_args()
     jar=args.jar.resolve();redis_port=free_port();ports=[free_port(),free_port()];requests=[];processes=[];redis=None
+    # Both replicas must share one root key: uploaded file payloads are encrypted
+    # at rest with it, so replica B has to decrypt what replica A wrote.
+    root_key=base64.b64encode(uuid.uuid4().bytes+uuid.uuid4().bytes).decode()
     class Mock(BaseHTTPRequestHandler):
         def do_POST(self):
             self.rfile.read(int(self.headers.get('Content-Length','0')));requests.append(1)
@@ -46,7 +51,7 @@ def main():
         def start_replica(index):
             log=(folder/f'gateway-{index}.log').open('a');engine=['webflux','vt'][index]
             cmd=['java','-jar',str(jar),'--spring.profiles.active='+engine,'--server.address=127.0.0.1',f'--server.port={ports[index]}','--gateway.mock.enabled=false','--gateway.upstream.api-key=audit-upstream','--gateway.routes[0].api-key=audit-upstream','--gateway.redis.enabled=true','--gateway.redis.host=127.0.0.1',f'--gateway.redis.port={redis_port}','--gateway.redis.timeout-ms=300','--gateway.api-keys[0].id=audit','--gateway.api-keys[0].token=audit-recovery','--gateway.api-keys[0].quota-tokens=1000000','--gateway.api-keys[1].id=foreign','--gateway.api-keys[1].token=foreign-recovery','--gateway.api-keys[1].quota-tokens=1000000',f'--gateway.routes[0].target-url=http://127.0.0.1:{mock.server_port}/v1','--gateway.keys-store-path=','--gateway.governance.snapshot-path=']
-            p=subprocess.Popen(cmd,cwd=folder,stdout=log,stderr=subprocess.STDOUT);log.close();processes.append(p)
+            p=subprocess.Popen(cmd,cwd=folder,stdout=log,stderr=subprocess.STDOUT,env={**os.environ,'LLMGW_ROOT_KEY':root_key});log.close();processes.append(p)
             for _ in range(160):
                 if p.poll() is not None:raise RuntimeError((folder/f'gateway-{index}.log').read_text()[-4000:])
                 try:
@@ -93,10 +98,14 @@ def main():
             before=len(requests)
             assert request(ports[1],'/v1/files/file-audit/content',token='foreign-recovery')[0]==404
             assert len(requests)==before,'foreign tenant must not reach the upstream'
-            assert request(ports[1],'/v1/files')[0]==501
-            assert request(ports[1],'/v1/batches')[0]==501
-            assert request(ports[1],'/admin/keys',{'id':'new','name':'new'})[0]==501
-            print('PASS shared file ownership: upload A / download B, foreign tenant 404; lists and Redis key CRUD explicitly 501',flush=True)
+            # v0.4.0 contract: file/batch listings live in the persistent local
+            # dir, so replicas on one host share them (200, not the old 501);
+            # the legacy /admin plane is disabled by default and denies key
+            # CRUD with a non-success response.
+            assert request(ports[1],'/v1/files')[0]==200
+            assert request(ports[1],'/v1/batches')[0]==200
+            assert request(ports[1],'/admin/keys',{'id':'new','name':'new'})[0]!=200
+            print('PASS shared file ownership: upload A / download B, foreign tenant 404; listings shared across replicas and legacy /admin disabled by default',flush=True)
         except Exception:
             for log in folder.glob('gateway-*.log'):print(log.name,log.read_text()[-3000:],flush=True)
             raise

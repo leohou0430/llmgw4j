@@ -10,19 +10,19 @@ import java.util.Set;
  */
 public record PlatformPolicy(Set<String> allowedSchemes, boolean allowPrivateNetwork) {
 
-    public PlatformPolicy {
-        allowedSchemes = allowedSchemes == null ? Set.of() : Set.copyOf(allowedSchemes);
-    }
+	public PlatformPolicy {
+		allowedSchemes = allowedSchemes == null ? Set.of() : Set.copyOf(allowedSchemes);
+	}
 
-    public static PlatformPolicy strict() {
-        return new PlatformPolicy(Set.of("https"), false);
-    }
+	public static PlatformPolicy strict() {
+		return new PlatformPolicy(Set.of("https"), false);
+	}
 
-    public boolean schemeAllowed(String scheme) {
-        return scheme != null && allowedSchemes.contains(scheme.toLowerCase());
-    }
+	public boolean schemeAllowed(String scheme) {
+		return scheme != null && allowedSchemes.contains(scheme.toLowerCase());
+	}
 
-    public static PlatformPolicy of(Set<String> allowedSchemes, boolean allowPrivateNetwork) {
-        return new PlatformPolicy(Objects.requireNonNull(allowedSchemes, "allowedSchemes"), allowPrivateNetwork);
-    }
+	public static PlatformPolicy of(Set<String> allowedSchemes, boolean allowPrivateNetwork) {
+		return new PlatformPolicy(Objects.requireNonNull(allowedSchemes, "allowedSchemes"), allowPrivateNetwork);
+	}
 }

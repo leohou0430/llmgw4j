@@ -13,7 +13,7 @@
 
   <groupId>io.github.leohou0430</groupId>
   <artifactId>llmgw-parent</artifactId>
-  <version>0.4.0</version>
+  <version>0.5.0</version>
   <packaging>pom</packaging>
 
   <name>llmgw4j</name>
@@ -76,6 +76,13 @@
     <module>llmgw-identity</module>
     <!-- Control-plane helpers: llmgw-control-api + default (at-rest secret cipher). -->
     <module>llmgw-control</module>
+    <!-- Billing subsystem (ADR-0007): llmgw-billing-api + SQLite ledger pack.
+         llmgw-billing is both the aggregator and the parent POM of its children. -->
+    <module>llmgw-billing</module>
+    <module>llmgw-recording</module>
+    <module>llmgw-idempotency</module>
+    <module>llmgw-approval</module>
+    <module>llmgw-mcp</module>
     <module>llmgw-app</module>
   </modules>
 
@@ -145,6 +152,30 @@
         <groupId>io.github.leohou0430</groupId><artifactId>llmgw-tokenizer-jtokkit</artifactId><version>${project.version}</version>
       </dependency>
       <dependency>
+        <groupId>io.github.leohou0430</groupId><artifactId>llmgw-billing-api</artifactId><version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.leohou0430</groupId><artifactId>llmgw-billing-sqlite</artifactId><version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.leohou0430</groupId><artifactId>llmgw-recording-api</artifactId><version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.leohou0430</groupId><artifactId>llmgw-conversion-gemini</artifactId><version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.leohou0430</groupId><artifactId>llmgw-conversion-openai-chat</artifactId><version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.leohou0430</groupId><artifactId>llmgw-provider-gemini</artifactId><version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.leohou0430</groupId><artifactId>llmgw-recording-local</artifactId><version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.leohou0430</groupId><artifactId>llmgw-persistence-api</artifactId><version>${project.version}</version>
+      </dependency>
+      <dependency>
         <groupId>com.knuddels</groupId><artifactId>jtokkit</artifactId><version>${jtokkit.version}</version>
       </dependency>
       <dependency>
@@ -158,11 +189,36 @@
       <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-identity-default</artifactId><version>${project.version}</version></dependency>
       <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-control-api</artifactId><version>${project.version}</version></dependency>
       <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-control-default</artifactId><version>${project.version}</version></dependency>
+      <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-idempotency-api</artifactId><version>${project.version}</version></dependency>
+      <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-idempotency-sqlite</artifactId><version>${project.version}</version></dependency>
+      <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-approval-api</artifactId><version>${project.version}</version></dependency>
+      <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-approval-sqlite</artifactId><version>${project.version}</version></dependency>
+      <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-mcp-api</artifactId><version>${project.version}</version></dependency>
+      <dependency><groupId>io.github.leohou0430</groupId><artifactId>llmgw-mcp-default</artifactId><version>${project.version}</version></dependency>
     </dependencies>
   </dependencyManagement>
 
   <build>
     <plugins>
+      <!-- spring-javaformat (https://github.com/spring-io/spring-javaformat):
+           enforces the canonical Spring source style on every module. `apply`
+           reformats sources on demand; the `validate` goal is bound to the
+           validate phase so any style violation fails the build. Skip with
+           -Dspring-javaformat.skip=true (e.g. for read-only CI checks). -->
+      <plugin>
+        <groupId>io.spring.javaformat</groupId>
+        <artifactId>spring-javaformat-maven-plugin</artifactId>
+        <version>0.0.48</version>
+        <executions>
+          <execution>
+            <id>spring-javaformat-validate</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>validate</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>

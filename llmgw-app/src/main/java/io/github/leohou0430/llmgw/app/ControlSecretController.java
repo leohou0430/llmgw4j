@@ -29,84 +29,95 @@ import java.util.Map;
 @RestController
 @RequestMapping("/control")
 public class ControlSecretController {
-    private final RequestAuthorizer authorizer;
-    private final OrgStore orgs;
-    private final SecretStore secrets;
-    private final AuditLog audit;
 
-    public ControlSecretController(RequestAuthorizer authorizer, OrgStore orgs, SecretStore secrets, AuditLog audit) {
-        this.authorizer = authorizer;
-        this.orgs = orgs;
-        this.secrets = secrets;
-        this.audit = audit;
-    }
+	private final RequestAuthorizer authorizer;
 
-    @GetMapping("/secrets")
-    public ResponseEntity<Map<String, Object>> list(
-            @CookieValue(name = "llmgw_sid", required = false) String sessionId,
-            @org.springframework.web.bind.annotation.RequestParam(required = false) String tenantId,
-            @org.springframework.web.bind.annotation.RequestParam(required = false) String projectId) {
-        var target = ControlAccess.resolve(authorizer, orgs, sessionId, tenantId, projectId);
-        authorize(sessionId, null, false, target.tenantId(), target.projectId());
-        try {
-            return ResponseEntity.ok(Map.of("secrets", secrets.list(target.tenantId(), target.projectId())));
-        } catch (RootKeyMissingException missing) {
-            throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, missing.getMessage());
-        }
-    }
+	private final OrgStore orgs;
 
-    @PostMapping("/secrets")
-    public ResponseEntity<Map<String, Object>> create(
-            @CookieValue(name = "llmgw_sid", required = false) String sessionId,
-            @RequestHeader(name = "X-CSRF-Token", required = false) String csrfToken,
-            @RequestBody SecretBody body) {
-        if (body.name() == null || body.name().isBlank() || body.secret() == null || body.secret().isBlank()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "name and secret required");
-        }
-        var target = ControlAccess.resolve(authorizer, orgs, sessionId, body.tenantId(), body.projectId());
-        authorize(sessionId, csrfToken, true, target.tenantId(), target.projectId());
-        try {
-            String id = audit.change(ControlAccess.account(authorizer, sessionId).id(), target.tenantId(), target.projectId(),
-                    "secret.create", "name=" + body.name(), () -> secrets.create(target.tenantId(), target.projectId(), body.name(), body.secret()));
-            return ResponseEntity.ok(Map.of("id", id));
-        } catch (RootKeyMissingException missing) {
-            throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, missing.getMessage());
-        } catch (io.github.leohou0430.llmgw.persistence.sqlite.StorageLimitException limit) {
-            throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, limit.getMessage());
-        }
-    }
+	private final SecretStore secrets;
 
-    @PostMapping("/secrets/{id}/rotate")
-    public ResponseEntity<Map<String, Object>> rotate(
-            @CookieValue(name = "llmgw_sid", required = false) String sessionId,
-            @RequestHeader(name = "X-CSRF-Token", required = false) String csrfToken,
-            @PathVariable("id") String id,
-            @RequestBody SecretBody body) {
-        if (body.secret() == null || body.secret().isBlank()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "secret required");
-        }
-        var target = ControlAccess.resolve(authorizer, orgs, sessionId, body.tenantId(), body.projectId());
-        authorize(sessionId, csrfToken, true, target.tenantId(), target.projectId());
-        try {
-            audit.change(ControlAccess.account(authorizer, sessionId).id(), target.tenantId(), target.projectId(),
-                    "secret.rotate", "id=" + id, () -> { secrets.rotate(target.tenantId(), target.projectId(), id, body.secret()); return null; });
-            return ResponseEntity.ok(Map.of("rotated", id));
-        } catch (RootKeyMissingException missing) {
-            throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, missing.getMessage());
-        } catch (io.github.leohou0430.llmgw.persistence.sqlite.StorageLimitException limit) {
-            throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, limit.getMessage());
-        }
-    }
+	private final AuditLog audit;
 
-    private void authorize(String sessionId, String csrfToken, boolean mutating, String tenantId, String projectId) {
-        AuthOutcome outcome = authorizer.authorize(new AuthenticatedRequest(
-                sessionId, csrfToken, mutating, Action.SOURCE_MANAGE, new Target(tenantId, projectId)));
-        if (outcome != AuthOutcome.ALLOW) {
-            HttpStatus status = outcome == AuthOutcome.UNAUTHENTICATED ? HttpStatus.UNAUTHORIZED : HttpStatus.FORBIDDEN;
-            throw new ResponseStatusException(status, outcome.name());
-        }
-    }
+	public ControlSecretController(RequestAuthorizer authorizer, OrgStore orgs, SecretStore secrets, AuditLog audit) {
+		this.authorizer = authorizer;
+		this.orgs = orgs;
+		this.secrets = secrets;
+		this.audit = audit;
+	}
 
-    public record SecretBody(String name, String secret, String tenantId, String projectId) {
-    }
+	@GetMapping("/secrets")
+	public ResponseEntity<Map<String, Object>> list(@CookieValue(name = "llmgw_sid", required = false) String sessionId,
+			@org.springframework.web.bind.annotation.RequestParam(required = false) String tenantId,
+			@org.springframework.web.bind.annotation.RequestParam(required = false) String projectId) {
+		var target = ControlAccess.resolve(authorizer, orgs, sessionId, tenantId, projectId);
+		authorize(sessionId, null, false, target.tenantId(), target.projectId());
+		try {
+			return ResponseEntity.ok(Map.of("secrets", secrets.list(target.tenantId(), target.projectId())));
+		}
+		catch (RootKeyMissingException missing) {
+			throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, missing.getMessage());
+		}
+	}
+
+	@PostMapping("/secrets")
+	public ResponseEntity<Map<String, Object>> create(
+			@CookieValue(name = "llmgw_sid", required = false) String sessionId,
+			@RequestHeader(name = "X-CSRF-Token", required = false) String csrfToken, @RequestBody SecretBody body) {
+		if (body.name() == null || body.name().isBlank() || body.secret() == null || body.secret().isBlank()) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "name and secret required");
+		}
+		var target = ControlAccess.resolve(authorizer, orgs, sessionId, body.tenantId(), body.projectId());
+		authorize(sessionId, csrfToken, true, target.tenantId(), target.projectId());
+		try {
+			String id = audit.change(ControlAccess.account(authorizer, sessionId).id(), target.tenantId(),
+					target.projectId(), "secret.create", "name=" + body.name(),
+					() -> secrets.create(target.tenantId(), target.projectId(), body.name(), body.secret()));
+			return ResponseEntity.ok(Map.of("id", id));
+		}
+		catch (RootKeyMissingException missing) {
+			throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, missing.getMessage());
+		}
+		catch (io.github.leohou0430.llmgw.persistence.sqlite.StorageLimitException limit) {
+			throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, limit.getMessage());
+		}
+	}
+
+	@PostMapping("/secrets/{id}/rotate")
+	public ResponseEntity<Map<String, Object>> rotate(
+			@CookieValue(name = "llmgw_sid", required = false) String sessionId,
+			@RequestHeader(name = "X-CSRF-Token", required = false) String csrfToken, @PathVariable("id") String id,
+			@RequestBody SecretBody body) {
+		if (body.secret() == null || body.secret().isBlank()) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "secret required");
+		}
+		var target = ControlAccess.resolve(authorizer, orgs, sessionId, body.tenantId(), body.projectId());
+		authorize(sessionId, csrfToken, true, target.tenantId(), target.projectId());
+		try {
+			audit.change(ControlAccess.account(authorizer, sessionId).id(), target.tenantId(), target.projectId(),
+					"secret.rotate", "id=" + id, () -> {
+						secrets.rotate(target.tenantId(), target.projectId(), id, body.secret());
+						return null;
+					});
+			return ResponseEntity.ok(Map.of("rotated", id));
+		}
+		catch (RootKeyMissingException missing) {
+			throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, missing.getMessage());
+		}
+		catch (io.github.leohou0430.llmgw.persistence.sqlite.StorageLimitException limit) {
+			throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, limit.getMessage());
+		}
+	}
+
+	private void authorize(String sessionId, String csrfToken, boolean mutating, String tenantId, String projectId) {
+		AuthOutcome outcome = authorizer.authorize(new AuthenticatedRequest(sessionId, csrfToken, mutating,
+				Action.SOURCE_MANAGE, new Target(tenantId, projectId)));
+		if (outcome != AuthOutcome.ALLOW) {
+			HttpStatus status = outcome == AuthOutcome.UNAUTHENTICATED ? HttpStatus.UNAUTHORIZED : HttpStatus.FORBIDDEN;
+			throw new ResponseStatusException(status, outcome.name());
+		}
+	}
+
+	public record SecretBody(String name, String secret, String tenantId, String projectId) {
+	}
+
 }

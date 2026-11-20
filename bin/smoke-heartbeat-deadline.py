@@ -113,7 +113,7 @@ def verify(jar, engine):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--jar', type=Path, default=Path(os.environ.get(
-        'LLMGW_TEST_JAR', ROOT / 'llmgw-app/target/llmgw-app-0.4.0.jar')))
+        'LLMGW_TEST_JAR', ROOT / 'llmgw-app/target/llmgw-app-0.5.0.jar')))
     parser.add_argument('--engine', choices=['webflux', 'vt'])
     args = parser.parse_args()
     for engine in ([args.engine] if args.engine else ['webflux', 'vt']):

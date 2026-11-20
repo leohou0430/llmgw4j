@@ -18,7 +18,7 @@
 
 llmgw4j is a **Java LLM API gateway** built on Spring Boot 4.1.2 / JDK 25.
 
-Current release: **v0.4.0**. See [release and upgrade notes](docs/releases/v0.4.0.md).
+Current release: **v0.5.0**. See [release and upgrade notes](docs/releases/v0.5.0.md).
 
 The application targets **one Java process with SQLite**. Client keys, cumulative project/key token quotas, published routes and the file/batch catalog share one durable authority. Redis remains an optional governance backend; this release does not support multiple gateway replicas sharing the SQLite database.
 

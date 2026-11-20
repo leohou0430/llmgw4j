@@ -1,4 +1,4 @@
-# 原生扩展与模块开发（v0.4.0）
+# 原生扩展与模块开发（v0.5.0）
 
 本项目参考 Dubbo SPI 的命名映射、默认实现、惰性实例化和别名机制，使用项目内的 JDK 实现；**不直接使用 Dubbo，也不声称兼容其 SPI 协议**。基础模块不依赖 Spring、Boot、Reactor，HTTP 框架保留在 app、engine-webflux、engine-vt。
 

@@ -9,12 +9,12 @@ import java.util.Objects;
  */
 public record Session(String id, String accountId, long expiresAtEpochMs, long tokenVersion) {
 
-    public Session {
-        Objects.requireNonNull(id, "id");
-        Objects.requireNonNull(accountId, "accountId");
-    }
+	public Session {
+		Objects.requireNonNull(id, "id");
+		Objects.requireNonNull(accountId, "accountId");
+	}
 
-    public boolean expired(long nowEpochMs) {
-        return nowEpochMs >= expiresAtEpochMs;
-    }
+	public boolean expired(long nowEpochMs) {
+		return nowEpochMs >= expiresAtEpochMs;
+	}
 }

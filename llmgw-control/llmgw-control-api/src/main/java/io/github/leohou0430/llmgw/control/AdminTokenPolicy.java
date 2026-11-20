@@ -8,10 +8,11 @@ package io.github.leohou0430.llmgw.control;
 @FunctionalInterface
 public interface AdminTokenPolicy {
 
-    /**
-     * @param mode              current mode (disabled unless explicitly set to migration)
-     * @param clientAddress     caller address (used for the loopback check)
-     * @param restrictedNetwork whether the caller is inside the configured admin network
-     */
-    AdminTokenDecision evaluate(AdminTokenMode mode, String clientAddress, boolean restrictedNetwork);
+	/**
+	 * @param mode current mode (disabled unless explicitly set to migration)
+	 * @param clientAddress caller address (used for the loopback check)
+	 * @param restrictedNetwork whether the caller is inside the configured admin network
+	 */
+	AdminTokenDecision evaluate(AdminTokenMode mode, String clientAddress, boolean restrictedNetwork);
+
 }

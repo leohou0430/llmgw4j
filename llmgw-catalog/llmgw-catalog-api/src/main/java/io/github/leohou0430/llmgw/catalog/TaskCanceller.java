@@ -8,5 +8,6 @@ package io.github.leohou0430.llmgw.catalog;
 @FunctionalInterface
 public interface TaskCanceller {
 
-    void cancel(String sourceRoute, String upstreamId);
+	void cancel(String sourceRoute, String upstreamId);
+
 }

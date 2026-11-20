@@ -10,7 +10,8 @@ import org.springframework.context.annotation.Profile;
 @Profile(EngineProfiles.VT)
 public class VirtualThreadEngineConfiguration extends AbstractEngineConfiguration {
 
-    public VirtualThreadEngineConfiguration() {
-        super(EngineKind.VT);
-    }
+	public VirtualThreadEngineConfiguration() {
+		super(EngineKind.VT);
+	}
+
 }
