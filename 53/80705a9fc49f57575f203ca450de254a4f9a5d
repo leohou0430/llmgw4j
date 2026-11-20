@@ -1,0 +1,18 @@
+CHANGELOG.md
+  h_f2cf00af6c798e 26-27
+docs/verification/spring-javaformat-introduction/2026-11-20/README.md
+  h_f2cf00af6c798e 86-92
+llmgw-recording/llmgw-recording-local/src/test/java/io/github/leohou0430/llmgw/recording/local/LocalRecordingStoreTest.java
+  h_f2cf00af6c798e 84-87,90
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "5380705a9fc49f57575f203ca450de254a4f9a5d",
+  "prompts": {},
+  "humans": {
+    "h_f2cf00af6c798e": {
+      "author": "leohou0430 <leohou0430@users.noreply.github.com>"
+    }
+  }
+}
