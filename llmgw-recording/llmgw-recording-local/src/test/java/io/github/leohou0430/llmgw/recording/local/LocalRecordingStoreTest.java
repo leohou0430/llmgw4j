@@ -81,10 +81,13 @@ class LocalRecordingStoreTest {
 
 	@Test
 	void fullQueueDropsEventsAndDegradesTheOutcome() throws Exception {
-		// 容量 4：一次灌 50 条 → 大部分丢弃 → COMPLETE 降级 INCOMPLETE。
+		// The queue never shrinks below 16 slots (Math.max(16, capacity)), so a
+		// 50-event burst can be fully drained by a fast buffered writer on a
+		// different OS. Flood enough events that drops are unavoidable while the
+		// producer loop runs.
 		LocalRecordingStore store = new LocalRecordingStore(directory, 4, Clock.systemUTC(), 7L * 24 * 3600 * 1000);
 		RecordingHandle handle = store.open(start("call-3"));
-		for (int i = 0; i < 50; i++) {
+		for (int i = 0; i < 100_000; i++) {
 			handle.append(RecordedEvent.now(RecordedEvent.Direction.EVENT, "evt-" + i));
 		}
 		handle.finish(RecordingOutcome.COMPLETE);

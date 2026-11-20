@@ -83,6 +83,13 @@
 - **修复**：`smoke-billing.py` 与 `smoke-control-plane.py` 的登录改为 10 秒有界重试（仅对 401 重试），超时仍失败。
 - **复验**：`smoke-billing.py` 24/24、`smoke-control-plane.py` 双引擎 PASS（artifact sha256 `76b1d9ef…`）。
 
+### `LocalRecordingStoreTest` 满队列断言的跨平台 flaky（发布验证中发现）
+
+- **现象**：本地 macOS 通过；Linux CI 首次发布构建失败于 `fullQueueDropsEventsAndDegradesTheOutcome`（`droppedEvents() > 0` 实得 0）。
+- **根因**：队列实际容量为 `Math.max(16, capacity)`，测试仅灌 50 条；写入线程使用缓冲写，在 Linux 上可能在生产者循环期间全部排空，导致无丢弃（负载相关）。
+- **修复**：突发量提高到 100,000 条，使生产者必然跑赢磁盘写入；终态行本身不会丢失（队列满时同步落盘并降级 INCOMPLETE），断言意图不变。
+- **复验**：该测试 6/6 通过；模块格式校验通过。
+
 ## 未覆盖范围
 
 - vt native 的 extensions 套件与 python 冒烟未以 AOT 二进制重跑（webflux native 已覆盖 extensions/stream-errors/hardening 三套件；本轮无 AOT 相关源码变更）。
