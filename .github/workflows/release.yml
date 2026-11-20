@@ -59,7 +59,7 @@ jobs:
       - name: Verify and package Redis variant
         run: |
           mvn -B -Predis clean verify
-          cp llmgw-app/target/llmgw-app-0.5.0.jar dist/llmgw-app-0.4.0-redis.jar
+          cp llmgw-app/target/llmgw-app-0.5.0.jar dist/llmgw-app-0.5.0-redis.jar
           tar -czf dist/llmgw-docs-0.5.0.tar.gz README.md README.en.md CHANGELOG.md CONTRIBUTING.md SECURITY.md LICENSE NOTICE docs bench/cross-gateway bench/jfr bench/micro
       - uses: actions/upload-artifact@v4
         with:

@@ -90,6 +90,14 @@
 - **修复**：突发量提高到 100,000 条，使生产者必然跑赢磁盘写入；终态行本身不会丢失（队列满时同步落盘并降级 INCOMPLETE），断言意图不变。
 - **复验**：该测试 6/6 通过；模块格式校验通过。
 
+## 发布执行记录（v0.5.0）
+
+- 提交：`7cda8f8`（发布内容）+ `5380705`（录制满队列 flaky 修复）；tag `v0.5.0` 指向 `5380705`。
+- 工作流：`release` run 44653863472 —— build 13m20s、native 15m50s、publish 45s，全部成功。
+- 首次 run 44653377289 在 build 阶段失败于 `LocalRecordingStoreTest` 的跨平台 flaky（见上），修复后重打 tag 通过。
+- 发布资产：`llmgw-app-0.5.0.jar`、`llmgw-app-0.5.0-redis.jar`、`llmgw-docs-0.5.0.tar.gz`、`llmgw-webflux-0.5.0-linux-amd64`、`SHA256SUMS`。
+- 修正：工作流原先只替换了 Redis 变体的源路径，目标名仍为 `llmgw-app-0.4.0-redis.jar`；已修正 `release.yml`，并重命名该资产、重建 `SHA256SUMS`（哈希值不变，仅文件名更正）。
+
 ## 未覆盖范围
 
 - vt native 的 extensions 套件与 python 冒烟未以 AOT 二进制重跑（webflux native 已覆盖 extensions/stream-errors/hardening 三套件；本轮无 AOT 相关源码变更）。
