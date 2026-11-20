@@ -1,0 +1,16 @@
+.github/workflows/release.yml
+  h_f2cf00af6c798e 62
+docs/verification/spring-javaformat-introduction/2026-11-20/README.md
+  h_f2cf00af6c798e 93-100
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "336ae5d3cde3963bdf2371a636e5928158e49a7f",
+  "prompts": {},
+  "humans": {
+    "h_f2cf00af6c798e": {
+      "author": "leohou0430 <leohou0430@users.noreply.github.com>"
+    }
+  }
+}
