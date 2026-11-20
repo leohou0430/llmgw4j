@@ -247,6 +247,17 @@ JEOF
   body=$(chat '{"model":"m","messages":[{"content":"perfectly innocent question"}]}')
   assert_contains "$body" '"object":"chat.completion"' "$engine clean request passes both guardrails"
   stop
+
+  # 8. MCP gateway is disabled by default; the endpoint must answer a JSON-RPC
+  #    404 on BOTH engines. It used to take a servlet-only parameter and
+  #    returned 500 on WebFlux.
+  start "$engine" '--gateway.mcp.enabled=false'
+  code=$(curl -s --noproxy '*' -o "$TMP/mcp-body" -w '%{http_code}' -X POST \
+    "http://127.0.0.1:$PORT/mcp/demo" -H 'Content-Type: application/json' \
+    -H 'Authorization: Bearer sk-demo' -d '{"jsonrpc":"2.0","id":1,"method":"tools/list"}')
+  if [[ "$code" == "404" ]]; then ok "$engine MCP disabled -> JSON-RPC 404"; else bad "$engine MCP disabled -> JSON-RPC 404 (got $code)"; fi
+  assert_contains "$(cat "$TMP/mcp-body")" 'mcp gateway disabled' "$engine MCP disabled body names the reason"
+  stop
 done
 
 echo "================================================="

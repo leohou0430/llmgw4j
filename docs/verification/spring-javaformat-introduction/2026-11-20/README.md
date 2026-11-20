@@ -98,6 +98,13 @@
 - 发布资产：`llmgw-app-0.5.0.jar`、`llmgw-app-0.5.0-redis.jar`、`llmgw-docs-0.5.0.tar.gz`、`llmgw-webflux-0.5.0-linux-amd64`、`SHA256SUMS`。
 - 修正：工作流原先只替换了 Redis 变体的源路径，目标名仍为 `llmgw-app-0.4.0-redis.jar`；已修正 `release.yml`，并重命名该资产、重建 `SHA256SUMS`（哈希值不变，仅文件名更正）。
 
+### MCP 网关在 WebFlux 下返回 500（README 更新验证中发现）
+
+- **现象**：按 README 示例请求未启用的 `/mcp/demo`，WebFlux 返回 500。
+- **根因**：`McpGatewayController.handle` 绑定 Servlet 类型 `jakarta.servlet.http.HttpServletRequest`；WebFlux 参数解析失败（`No primary or single unique constructor ...`），未到达控制器。vt 引擎不暴露该问题，既有测试也只覆盖服务层，属跨引擎盲区。
+- **修复**：改为两引擎通用的 `@RequestBody(required=false) byte[]` + `@RequestHeader HttpHeaders`；关闭时返回 JSON-RPC 404，超过 `mcp.max-body-bytes` 返回 413。
+- **复验**：webflux/vt 均返回 `404 {"jsonrpc":"2.0","error":{"message":"mcp gateway disabled"}}`；`smoke-v13-platform.sh` 新增双引擎断言后 **PASS=54 FAIL=0**。
+
 ## 未覆盖范围
 
 - vt native 的 extensions 套件与 python 冒烟未以 AOT 二进制重跑（webflux native 已覆盖 extensions/stream-errors/hardening 三套件；本轮无 AOT 相关源码变更）。

@@ -4,6 +4,14 @@
 **性能数字的解释口径以 `bench/README.md` 的数据质量红线为准**：宿主过载期间的数据只作方向参考，
 不得据此声称性能提升或退化。
 
+## [Unreleased]
+
+- 修复 MCP 网关在 WebFlux 引擎下返回 500：控制器曾绑定 Servlet 类型 `HttpServletRequest`，
+  WebFlux 无法解析该参数；改为两引擎通用的 `@RequestBody`/`@RequestHeader` 绑定，关闭时两引擎
+  均返回 JSON-RPC 404，超过 `mcp.max-body-bytes` 返回 413。`smoke-v13-platform.sh` 新增双引擎守卫。
+- 文档：`README.md` / `README.en.md` 更新至 v0.5.0 实际状态（计费、幂等、审批、MCP、Gemini、
+  14 个能力域与回归矩阵）。
+
 ## [0.5.0] - 2026-11-20
 
 以下包含自 v0.4.0 以来已合入的计费、治理、协议与模块改进（ADR-0006～0011）：

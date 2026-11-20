@@ -6,11 +6,13 @@ import io.github.leohou0430.llmgw.core.governance.AuditSink;
 import io.github.leohou0430.llmgw.mcp.McpGatewayService;
 import io.github.leohou0430.llmgw.mcp.McpHttpRequest;
 import io.github.leohou0430.llmgw.mcp.McpHttpResponse;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.nio.charset.StandardCharsets;
@@ -48,13 +50,15 @@ public class McpGatewayController {
 	}
 
 	@PostMapping("/mcp/{server}")
-	public ResponseEntity<byte[]> handle(@PathVariable("server") String server, HttpServletRequest request) {
+	public ResponseEntity<byte[]> handle(@PathVariable("server") String server,
+			@RequestHeader(required = false) HttpHeaders requestHeaders,
+			@RequestBody(required = false) byte[] rawBody) {
 		McpGatewayService service = gateway.getIfAvailable();
 		if (service == null) {
 			return jsonRpc(404, "mcp gateway disabled");
 		}
 		// 第一步：认证（稳定主体映射；协议元数据不参与身份判断）。
-		String authorization = request.getHeader("Authorization");
+		String authorization = requestHeaders.getFirst("Authorization");
 		String token = bearer(authorization);
 		ApiKeyRegistry.ApiKey key = token.isEmpty() ? null : apiKeys.find(token).orElse(null);
 		if (key == null) {
@@ -71,24 +75,16 @@ public class McpGatewayController {
 			return jsonRpc(401, "unattributed subject: key metadata must carry tenant and project");
 		}
 
-		// 报文按 MCP 上限有界读取（超限由服务层以 JSON-RPC error 拒绝）。
+		// 报文按 MCP 上限校验（控制器不再依赖 Servlet 流；两引擎注解绑定一致）。
 		long cap = properties.getMcp().isEnabled() ? properties.getMcp().getMaxBodyBytes() : 1024 * 1024;
-		byte[] body;
-		try {
-			body = request.getInputStream().readNBytes((int) Math.min(cap + 1, Integer.MAX_VALUE - 1L));
-		}
-		catch (java.io.IOException e) {
-			return jsonRpc(400, "unreadable body: " + e.getMessage());
+		byte[] body = rawBody == null ? new byte[0] : rawBody;
+		if (body.length > cap) {
+			return jsonRpc(413, "request body exceeds mcp.max-body-bytes");
 		}
 		Map<String, List<String>> headers = new LinkedHashMap<>();
-		var names = request.getHeaderNames();
-		if (names != null) {
-			for (String name : java.util.Collections.list(names)) {
-				headers.put(name, List.of(request.getHeader(name)));
-			}
-		}
-		McpHttpResponse response = service.handle(
-				new McpHttpRequest(request.getMethod(), "/mcp/" + server, headers, body, key.id(), tenant, project));
+		requestHeaders.forEach((name, values) -> headers.put(name, List.copyOf(values)));
+		McpHttpResponse response = service
+			.handle(new McpHttpRequest("POST", "/mcp/" + server, headers, body, key.id(), tenant, project));
 		audit.emit(new AuditSink.AuditEvent(Instant.now(), key.id(), "mcp.request",
 				Map.of("server", server, "status", response.status(), "tenantId", tenant, "projectId", project)));
 		return ResponseEntity.status(response.status()).headers(httpHeaders(response)).body(response.body());
