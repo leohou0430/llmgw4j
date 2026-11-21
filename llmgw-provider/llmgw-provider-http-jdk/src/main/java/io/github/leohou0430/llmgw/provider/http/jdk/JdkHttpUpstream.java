@@ -155,6 +155,14 @@ public class JdkHttpUpstream implements UpstreamProvider, AutoCloseable {
 
 		private final AtomicBoolean httpCompleted = new AtomicBoolean();
 
+		/**
+		 * Chapter-9 §9.2.5: idle-read governs the SUCCESS stream only. An error-body
+		 * drain is bounded by the overall deadline (first-byte/connect/timeout), so a
+		 * stalled drain surfaces the upstream's own 4xx/5xx instead of a synthetic idle
+		 * timeout that would erase the status semantics.
+		 */
+		private final AtomicBoolean successStream = new AtomicBoolean();
+
 		private final AtomicLong lastActivity = new AtomicLong(System.nanoTime());
 
 		private final AtomicReference<CompletableFuture<?>> future = new AtomicReference<>();
@@ -239,7 +247,15 @@ public class JdkHttpUpstream implements UpstreamProvider, AutoCloseable {
 			synchronized (signals) {
 				if (terminated.get())
 					return;
-				lastActivity.set(System.nanoTime());
+				// Chapter-9 §9.2.5: transport liveness (SSE comment/heartbeat frames
+				// and their blank event separators) and output progress are
+				// DIFFERENT measurements. A heartbeat proves the upstream is alive;
+				// only a DATA line proves generation is moving. None of them may
+				// refresh the idle-read budget, or a pure-heartbeat stream can
+				// stall forever without tripping the idle timeout.
+				String trimmed = line.strip();
+				if (!trimmed.isEmpty() && !trimmed.startsWith(":"))
+					lastActivity.set(System.nanoTime());
 				try {
 					downstream.onNext(line + "\n");
 				}
@@ -296,16 +312,22 @@ public class JdkHttpUpstream implements UpstreamProvider, AutoCloseable {
 				HttpResponse.BodyHandler<String> handler = info -> {
 					lastActivity.set(System.nanoTime());
 					headersArrived.set(true);
+					if (info.statusCode() < 300) {
+						// Chapter-9 §9.2.5: idle-read governs the success stream only.
+						successStream.set(true);
+					}
 					listener.onHeaders(info.statusCode(), info.headers().map());
 					HttpResponse.BodySubscriber<String> body = info.statusCode() >= 300
 							? HttpResponse.BodySubscribers.limiting(
 									HttpResponse.BodySubscribers.ofString(StandardCharsets.UTF_8),
 									properties.getMaxResponseBytes())
+							// SSE: line-level refresh only (see next() -- heartbeats do
+							// not count as output progress).
 							: new SseLineLimitSubscriber<>(
 									HttpResponse.BodySubscribers.mapping(new SseLineDecoder(lines), ignored -> ""),
 									properties.getUpstream().getMaxSseLineBytes(),
 									properties.getUpstream().getMaxStreamBytes());
-					return idleMs > 0 ? new ReadActivitySubscriber<>(body, lastActivity) : body;
+					return body;
 				};
 				var active = client.sendAsync(http, handler);
 				future.set(active);
@@ -332,7 +354,7 @@ public class JdkHttpUpstream implements UpstreamProvider, AutoCloseable {
 				}
 				if (idleMs > 0 && watchdog != null) {
 					watch(watchdog.scheduleAtFixedRate(() -> {
-						if (headersArrived.get()
+						if (headersArrived.get() && successStream.get()
 								&& System.nanoTime() - lastActivity.get() > TimeUnit.MILLISECONDS.toNanos(idleMs)) {
 							timeout(new UpstreamTimeoutException("upstream idle read timeout"));
 						}
@@ -353,6 +375,7 @@ public class JdkHttpUpstream implements UpstreamProvider, AutoCloseable {
 		int firstByteMs = properties.getUpstream().getFirstByteTimeoutMs();
 		int idleMs = properties.getUpstream().getIdleReadTimeoutMs();
 		AtomicBoolean headersArrived = new AtomicBoolean(false);
+		AtomicBoolean successStream = new AtomicBoolean(false);
 		AtomicLong lastActivity = new AtomicLong(System.nanoTime());
 		var deadline = new BlockingDeadline(request.timeoutMs());
 		try (deadline) {
@@ -366,7 +389,12 @@ public class JdkHttpUpstream implements UpstreamProvider, AutoCloseable {
 			if (watchdog != null && idleMs > 0) {
 				deadline.watch(watchdog.scheduleAtFixedRate(() -> {
 					long idleNanos = TimeUnit.MILLISECONDS.toNanos(idleMs);
-					if (headersArrived.get() && System.nanoTime() - lastActivity.get() > idleNanos) {
+					// idle-read governs the SUCCESS stream only: an error-body drain
+					// is bounded by the overall deadline, and its stall must surface
+					// the upstream's own status, not a synthetic timeout that erases
+					// the 4xx/5xx semantics.
+					if (headersArrived.get() && successStream.get()
+							&& System.nanoTime() - lastActivity.get() > idleNanos) {
 						deadline.expire("upstream idle read timeout");
 					}
 				}, idleMs, Math.max(50, idleMs / 2), TimeUnit.MILLISECONDS));
@@ -374,14 +402,19 @@ public class JdkHttpUpstream implements UpstreamProvider, AutoCloseable {
 			HttpResponse<Stream<String>> response = client.send(http, info -> {
 				lastActivity.set(System.nanoTime());
 				headersArrived.set(true);
+				if (info.statusCode() < 300) {
+					successStream.set(true);
+				}
 				HttpResponse.BodySubscriber<Stream<String>> body = info.statusCode() >= 300
 						? HttpResponse.BodySubscribers.mapping(HttpResponse.BodySubscribers.limiting(
 								HttpResponse.BodySubscribers.ofString(StandardCharsets.UTF_8),
 								properties.getMaxResponseBytes()), Stream::of)
+						// SSE: line-level refresh only (see lines.forEach below --
+						// heartbeats do not count as output progress).
 						: new SseLineLimitSubscriber<>(new BlockingSseBodySubscriber(heartbeatMs, sink),
 								properties.getUpstream().getMaxSseLineBytes(),
 								properties.getUpstream().getMaxStreamBytes());
-				return idleMs > 0 ? new ReadActivitySubscriber<>(body, lastActivity) : body;
+				return body;
 			});
 			sink.onHeaders(response.statusCode(), response.headers().map());
 			// try-with-resources ALWAYS closes the body stream -- including the
@@ -394,7 +427,13 @@ public class JdkHttpUpstream implements UpstreamProvider, AutoCloseable {
 					throw new UpstreamStatusException(response.statusCode(), detail, retryAfterMs(response));
 				}
 				lines.forEach(line -> {
-					lastActivity.set(System.nanoTime());
+					// Chapter-9 §9.2.5: heartbeat/comment lines AND the blank SSE
+					// event separators that ride with them prove transport liveness,
+					// NOT output progress -- none of them refresh the idle-read
+					// budget (same rule as the async path above).
+					String trimmed = line.strip();
+					if (!trimmed.isEmpty() && !trimmed.startsWith(":"))
+						lastActivity.set(System.nanoTime());
 					sink.onChunk(line + "\n");
 				});
 			}

@@ -37,6 +37,15 @@ def verify(jar, engine):
                 else:
                     if case == 'idle':
                         time.sleep(.3)
+                    if case == 'heartbeat-stall':
+                        # Chapter-9 §9.2.5: a pure-heartbeat stream proves transport
+                        # liveness, NOT output progress. The gateway's idle-read
+                        # budget must trip (before the overall deadline, before the
+                        # stream finishes) instead of crediting heartbeats as work.
+                        for _ in range(12):
+                            time.sleep(.1)
+                            self.wfile.write(b': ping\n\n'); self.wfile.flush()
+                        return
                     self.wfile.write(frame)
                 self.wfile.flush()
             except (BrokenPipeError, ConnectionResetError):
@@ -53,7 +62,7 @@ def verify(jar, engine):
                    f'--server.port={port}', '--server.address=127.0.0.1', '--gateway.production=false',
                    '--gateway.mock.enabled=false', f'--gateway.routes[0].target-url=http://127.0.0.1:{upstream.server_port}/v1',
                    '--gateway.routes[0].fallbacks=', '--gateway.upstream.heartbeat-interval-ms=40',
-                   '--gateway.upstream.first-byte-timeout-ms=500', '--gateway.upstream.timeout-ms=2000',
+                   '--gateway.upstream.first-byte-timeout-ms=500', '--gateway.upstream.idle-read-timeout-ms=300', '--gateway.upstream.timeout-ms=2000',
                    '--gateway.max-concurrent-requests=1']
         process = None
         try:
@@ -92,10 +101,15 @@ def verify(jar, engine):
             assert status == 200 and 'text/event-stream' in content_type, (status, content_type, body)
             assert body.count(b': keep-alive') >= 2 and body.count(b'data: [DONE]') == 1, body
             assert b'event: error' not in body
+            started = time.monotonic()
+            status, content_type, body = request('heartbeat-stall')
+            elapsed = time.monotonic() - started
+            assert b'idle read timeout' in body, (status, elapsed, body)
+            assert elapsed < 1.0, f'heartbeat stall must trip the idle budget, not the deadline: {elapsed:.2f}s'
             assert request('good')[0] == 200
             with opener.open(f'http://127.0.0.1:{port}/admin/snapshot', timeout=2) as response:
                 usage = json.load(response)['usage']['demo']
-                assert usage['errors'] == 2 and usage['requests'] == 4, usage
+                assert usage['errors'] == 3 and usage['requests'] == 5, usage
             print(f'PASS {engine}: heartbeat preserves first-byte/status 502, idle SSE, recovery and failure billing', flush=True)
         except Exception:
             print(log_path.read_text()[-4000:], flush=True)
