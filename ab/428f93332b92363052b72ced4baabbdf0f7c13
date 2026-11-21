@@ -1,0 +1,16 @@
+bin/smoke-heartbeat-deadline.py
+  h_f2cf00af6c798e 40-48,65,104-108,112
+llmgw-provider/llmgw-provider-http-jdk/src/main/java/io/github/leohou0430/llmgw/provider/http/jdk/JdkHttpUpstream.java
+  h_f2cf00af6c798e 158-165,250-258,315-318,324-325,330,357,378,392-397,405-407,412-413,417,430-436
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "ab428f93332b92363052b72ced4baabbdf0f7c13",
+  "prompts": {},
+  "humans": {
+    "h_f2cf00af6c798e": {
+      "author": "leohou0430 <leohou0430@users.noreply.github.com>"
+    }
+  }
+}
