@@ -1,0 +1,16 @@
+docs/reviews/2026-11-20-chapter9-governance-review/README.md
+  h_f2cf00af6c798e 45,47-50,66,68-70,74-80
+docs/reviews/2026-11-20-chapter9-governance-review/report.md
+  h_f2cf00af6c798e 182-194
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "a6d7265814fb7c7469e06bdfe3afcbec631e3405",
+  "prompts": {},
+  "humans": {
+    "h_f2cf00af6c798e": {
+      "author": "leohou0430 <leohou0430@users.noreply.github.com>"
+    }
+  }
+}
