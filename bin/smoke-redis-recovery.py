@@ -27,9 +27,11 @@ def main():
         def log_message(self,*args):pass
     mock=ThreadingHTTPServer(('127.0.0.1',0),Mock);thread=threading.Thread(target=mock.serve_forever,daemon=True);thread.start()
     opener=urllib.request.build_opener(urllib.request.ProxyHandler({}))
-    def request(port,path,body=None,token="audit-recovery",content_type="application/json"):
+    def request(port,path,body=None,token="audit-recovery",content_type="application/json",admin=False):
         data=body if isinstance(body,bytes) else None if body is None else json.dumps(body).encode()
-        req=urllib.request.Request(f'http://127.0.0.1:{port}{path}',data=data,headers={'Content-Type':content_type,'Authorization':'Bearer '+token})
+        headers={'Content-Type':content_type}
+        headers['X-Admin-Token' if admin else 'Authorization']=('audit-admin' if admin else 'Bearer '+token)
+        req=urllib.request.Request(f'http://127.0.0.1:{port}{path}',data=data,headers=headers)
         try:
             with opener.open(req,timeout=8) as r:return r.status,r.read()
         except urllib.error.HTTPError as e:return e.code,e.read()
@@ -104,8 +106,16 @@ def main():
             # CRUD with a non-success response.
             assert request(ports[1],'/v1/files')[0]==200
             assert request(ports[1],'/v1/batches')[0]==200
-            assert request(ports[1],'/admin/keys',{'id':'new','name':'new'})[0]!=200
-            print('PASS shared file ownership: upload A / download B, foreign tenant 404; listings shared across replicas and legacy /admin disabled by default',flush=True)
+            # v0.5.0 contract: listings are shared via the persistent local dir,
+            # and key authority is the SHARED SQLite control DB (never Redis) --
+            # a runtime key created through the legacy /admin CRUD on one replica
+            # authenticates on both replicas of the same host topology.
+            status,body=request(ports[1],'/admin/keys',{'id':'shared-runtime','name':'shared-runtime'})
+            assert status==200,(status,body)
+            runtime_key=json.loads(body)['token']
+            assert request(ports[1],'/v1/chat/completions',{'model':'qwen-plus','messages':[{'role':'user','content':uuid.uuid4().hex}],'stream':False},token=runtime_key)[0] in (200,402,429)
+            assert request(ports[0],'/v1/chat/completions',{'model':'qwen-plus','messages':[{'role':'user','content':uuid.uuid4().hex}],'stream':False},token=runtime_key)[0] in (200,402,429),'key authority must be the shared SQLite control DB, not replica-local'
+            print('PASS shared file ownership: upload A / download B, foreign tenant 404; listings shared and runtime keys live in the shared SQLite control DB (never Redis)',flush=True)
         except Exception:
             for log in folder.glob('gateway-*.log'):print(log.name,log.read_text()[-3000:],flush=True)
             raise

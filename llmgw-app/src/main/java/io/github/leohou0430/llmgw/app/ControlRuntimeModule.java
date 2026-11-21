@@ -82,7 +82,8 @@ public final class ControlRuntimeModule implements ExtensionModule {
 				return initial.stream()
 					.filter(r -> r.id().equals(id.substring(4)))
 					.findFirst()
-					.orElseThrow(() -> new IllegalArgumentException("unknown environment credential reference"))
+					.orElseThrow(() -> new IllegalArgumentException("unknown environment credential reference: " + id
+							+ " known=" + initial.stream().map(r -> r.id()).toList()))
 					.apiKey();
 			return c.get(SecretStore.class).resolve(tenant, project, id);
 		}, !p.isProduction(), route -> {
