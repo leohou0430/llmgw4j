@@ -1,0 +1,24 @@
+llmgw-core/src/main/java/io/github/leohou0430/llmgw/core/governance/GatewayContext.java
+  h_f2cf00af6c798e 94-99,301-309
+llmgw-engine/llmgw-engine-api/src/main/java/io/github/leohou0430/llmgw/engine/EngineRoutes.java
+  h_f2cf00af6c798e 140-151
+llmgw-engine/llmgw-engine-vt/src/main/java/io/github/leohou0430/llmgw/engine/vt/VirtualThreadGatewayController.java
+  h_f2cf00af6c798e 1396-1398,1478-1480
+llmgw-engine/llmgw-engine-webflux/src/main/java/io/github/leohou0430/llmgw/engine/webflux/WebfluxGatewayController.java
+  h_f2cf00af6c798e 1326-1328,1388-1390
+llmgw-governance/llmgw-governance-default/src/main/java/io/github/leohou0430/llmgw/governance/inmemory/DefaultGovernanceChain.java
+  h_f2cf00af6c798e 570-574
+llmgw-governance/llmgw-governance-default/src/test/java/io/github/leohou0430/llmgw/governance/inmemory/ServedModelAuditTest.java
+  h_f2cf00af6c798e 1-66
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "cfbd3009b79f6473028cafc76ab25d4a643d355a",
+  "prompts": {},
+  "humans": {
+    "h_f2cf00af6c798e": {
+      "author": "leohou0430 <leohou0430@users.noreply.github.com>"
+    }
+  }
+}
