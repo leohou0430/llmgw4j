@@ -42,13 +42,12 @@
 1. `smoke-billing.py` / `smoke-gemini.py`：静态 key 补 `llmgw.tenantId/llmgw.projectId` 元数据 + 种子项目额度授权（`token_quota`）。依据 Chapter-9 §9.5.2：billing.enabled 下认证主体必须携带财务归属；SqliteUsageLedger 的既有规则「加 key 不能凭空铸项目额度」要求显式授权。
 2. `smoke-v13-platform.sh` 无改动——产品修正：演示级 `budgetMicroUsd`（生产本就禁用）不触发归属强制，`gateway.billing.enabled` 与 production 才强制。
 
-## 三、Redis profile
+## 三、Redis profile（2026-11-21 补跑收口，基于 v0.5.0 jar）
 
-- Redis 双副本共享配额契约（`smoke-redis-cluster.sh`）与跨副本故障恢复（`smoke-redis-recovery.py`）：**本轮未能收口——既有 WIP 回归，非本轮引入**。
-  - 证据 A：`git stash`（含未跟踪）后以 HEAD 构建的 jar 复现同一启动失败 `unknown environment credential reference`（ControlRuntimeModule 路由环境凭据引导，与本轮改动无关；本轮 stash 前后均失败）。
-  - 证据 B：`smoke-redis-recovery.py` 断言 `GET /v1/files → 501`（v0.4.0 的显式不可用合同），而 WIP 已实现租户列表 → 断言过期；冻结 v10 jar 与现行 schema 不兼容无法对照。
-  - 本轮新增的 Redis 故障分支（`gateway.redis.failure-policy` fail-closed/fail-open-limits、`GovernanceUnavailableException → 503+Retry-After`）已由单元级接线验证；**双副本端到端故障注入回归未覆盖**（待 WIP 启动回归修复后补跑）。
-- Redis 模式 jar 可启动且健康（手工验证）；`bin/check-module-layout.sh` 含 mcp/idempotency/approval 后仍 PASS。
+- 根因结论（昨日记录的启动失败）：`smoke-redis-cluster.sh` mem pair 失败 = **仓库 `./data/llmgw-control.db` 的陈旧路由版本跨运行激活**（副本控制库落在 CWD 相对路径）+ Spring binder 的命令行 indexed 路由**整体替换** yml 列表（文档行为）→ 持久版本里的 `env:mock-primary` 引用在当前绑定下无对应路由。v0.5.0 已在冒烟中引入独立 `LLMGW_CONTROL_DB`，启动回归随之消除；`ControlRuntimeModule` 的错误消息已增强为携带待解析 id 与已知路由清单（可操作诊断）。
+- `smoke-redis-cluster.sh`：**PASS=7 FAIL=0**（mem/redis 双 pair 对比：共享配额 200=56、429=144、双副本快照一致、无副本超额度）。
+- `smoke-redis-recovery.py`（带 LLMGW_ROOT_KEY）：**5 项 PASS**，含「**Redis outage: both replicas fail closed with no upstream calls**」——本轮新增的 fail-closed 合同（`gateway.redis.failure-policy` 默认 + `GovernanceUnavailableException → 503+Retry-After`）首次获得双副本端到端故障注入验证。
+- recovery 断言按 v0.5.0 装配语义对齐（`bin/smoke-redis-recovery.py` 本轮修改）：文件/批次列表 200 共享（v0.4.0 的 501 不可用合同已被实现取代）；key 权威断言升级为「共享 SQLite 控制库——经 legacy /admin CRUD 创建的运行时 key 在双副本均可认证，key 状态永不落 Redis」。
 
 ## 四、jtokkit / otel profile
 
@@ -64,13 +63,20 @@
   - vt：health 200；SSE 流式 200；`smoke-sdk-compatibility.py --binary --engine vt` PASS（双客户端 JSON+SSE、401 合同）。
   - 启动耗时：native ~1.2s（对比 JVM ~13s，仅现场观察，不作 SLO 声明）。
 
-## 六、未覆盖范围（如实声明）
+## 六、未覆盖范围（2026-11-21 更新）
 
-1. Redis 双副本端到端（见三，既有 WIP 回归）。
-2. `smoke-billing-recovery.py`（RPO≤1h 恢复演练）本轮未重跑（属 v0.5 计费任务 9 范围，本轮未触碰归档/恢复代码路径）。
-3. WebFlux 异步路径的 gen_ai span 属性（sidecar 线程无当前 observation，降级为指标）。
+1. ~~Redis 双副本端到端~~ → **已收口**（见三：cluster 7/0、recovery 5 PASS，含 fail-closed 端到端故障注入）。
+2. ~~`smoke-billing-recovery.py` 恢复演练~~ → **已收口**（2026-11-21：8/8 PASS——RTO 7.6s（预算 4h）、备份跨存储域、篡改拒绝（digest mismatch 闸门关）、恢复余额一致）。
+3. WebFlux 异步路径的 gen_ai span 属性（sidecar 线程无当前 observation，降级为指标维度）——边界声明，非缺陷。
 4. MCP 订阅/Tasks 扩展、服务端主动流式（ADR-0010 显式声明默认关闭/首版不含）。
 5. 性能基准（bench-*）未重跑——本轮热路径新增仅 fail-closed 包装与一次性令牌校验，未做测量，不做性能声明。
+
+## 八、v0.5.0 终态抽查（2026-11-21，发布提交后的复核）
+
+- `smoke-billing.py`：24/24；`smoke-stream-errors.sh`：67/0（javaformat 强制重排 + WebFlux MCP 绑定修复提交后无回归）。
+- `llmgw-mcp` 单测：全绿（提交 8347ed6 修订 `McpGatewayController` 装配后复核）。
+- **F24 子页面审读修复**（heartbeat/空行刷新 idle-read + 错误体语义保留）：`smoke-heartbeat-deadline.py` 双引擎 PASS（新增 heartbeat-stall 场景：纯心跳流 ~300ms 触发 idle，早于整体期限与 EOF）；回归 `smoke-stream-errors.sh` 67/0、`smoke-sse-line-limit.py` 双引擎 PASS、`smoke-multi-protocol.sh` 56/0。
+- **F25 servedModel 对账契约**（2026-11-21）：`GatewayContext.servedModel` + `EngineRoutes.servedModel(route, requested)`，四引擎成功提交点无条件记录（与计费句柄无关）；finish 审计 `servedModel` 与客户别名 `model` 分别可读；单测 `ServedModelAuditTest`（重写记录 + 缓存命中不产字段）；端到端 target-model 重写场景 model=claude-alias / servedModel=deepseek-chat-rewritten；回归 billing 24/24、gemini 18/18、stream-errors 67/0。
 
 ## 七、产物清单
 

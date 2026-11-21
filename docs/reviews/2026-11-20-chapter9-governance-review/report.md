@@ -179,3 +179,16 @@
 
 - 新增术语（CONTEXT.md）：会话标识（Session Id）、轮次标识（Turn Id）、审批记录、严格预算、预算模式（预算模式 soft/strict）、MCP 工具授权、关联头绑定、用量来源（usage_source）
 - 新增 ADR：0009 严格预算模式（有界预留）、0010 MCP 网关语义首版（Modern 下游 + Legacy 上游桥接单向）、0011 审批工作流（挂起-重新准入）
+
+## 六、子页面审读补充（2026-11-21，F24–F27）
+
+三个子页面（chapter-09/overview、intelligent-routing、hiroute-coding-practice）逐字审读结论。overview 与主章 9.1–9.3 高度重叠，已实现的语义（能力子集声明、桥接单向、缓存键隔离、默认拒绝、四步准入）逐项吻合；另外三个页面带来以下新发现：
+
+| ID | 来源 | 发现 | 级别 | 状态 |
+| --- | --- | --- | --- | --- |
+| F24 | overview §9.2.5「持续心跳的流可一直不触发空闲超时，却始终没有输出有效内容」 | **心跳/空行刷新 idle-read**：阻塞路径 `lines.forEach` 与异步 `next()` 对每一行（含 `:` 心跳注释行及其空行分隔符）刷新 idle-read 计时器——纯心跳流永不触发空闲超时。同时发现错误体 drain 也被 idle 误伤（503 语义被合成超时抹掉） | P1 | ✅已修复：刷新规则收紧为「非空且非注释的数据行」；`successStream` 门控使 idle 只治理成功流，错误体 drain 由整体期限兜底；新增冒烟场景 `heartbeat-stall`（纯心跳流 ~300ms 触发 idle，<1s，早于整体期限与 EOF）双引擎 PASS |
+| F25 | overview §9.2.2「契约需记录适配器版本、实际 provider/模型、请求别名、原始用量来源」 | 审计 details 记录了准入模型与 usage_status，但**未记录实际服务的 targetModel**（fallback/targetModel 重写后）与客户请求的模型别名 | P2 | ✅已修复：`GatewayContext.servedModel` + `EngineRoutes.servedModel(route, requested)`，四引擎成功提交点无条件记录（与计费句柄无关）；finish 审计 `servedModel` 与 `model`（客户别名）分别可读；单测 `ServedModelAuditTest`；端到端验证 target-model 重写场景 model=claude-alias / servedModel=deepseek-chat-rewritten |
+| F26 | overview §9.2.4「剩余尝试额度可以由调用方给出，并由网关按 call_id 原子扣减」 | 尝试预算跨层传递已实现时间维（`X-LLMGW-Deadline` 绝对预算），**次数维**（调用方给定的尝试上限）未实现——手册表述为「可以由」，非强制 | P2 | 边界确认：时间维已覆盖「总截止时间」承诺；次数维待有真实调用方需求时再加 `X-LLMGW-Max-Attempts` |
+| F27 | intelligent-routing「一轮任务内多次调用共享上下文缓存……只在轮边界重新选择」 | 会话级路由亲和（按 Session 一致性哈希提升上游 KV cache 命中）不存在——现有 TaskRouteSticky 仅任务级粘性。手册红线「亲和失败后的行为必须由执行系统给出契约」；HiRoute 的胜任度评分/低分保护/信任度/回放属 Harness 决策层，**网关不承担**（§9.1.4 权威边界） | P2 | 边界确认：会话亲和记为可选增强路线（按 `X-LLMGW-Session-Id` 一致性哈希 + 失配重选），决策评分层明确不属于网关 |
+
+**修复产物**：`JdkHttpUpstream`（行级刷新规则 + successStream 门控，双引擎共享）、`bin/smoke-heartbeat-deadline.py`（新增 heartbeat-stall 场景，usage 计数 5/3）、文档 idle-read 语义更新（CONFIGURATION.md）。
