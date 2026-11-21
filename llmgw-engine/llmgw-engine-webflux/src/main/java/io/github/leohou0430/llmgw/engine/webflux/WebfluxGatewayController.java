@@ -1323,6 +1323,9 @@ public class WebfluxGatewayController implements AutoCloseable {
 					if (chunked.get()) {
 						breaker.recordSuccess(route);
 					}
+					// §9.2.2 对账契约：记录实际服务的上游模型（targetModel 重写后）——
+					// 与计费句柄无关（billing 关闭时同样记录）。
+					context.setServedModel(EngineRoutes.servedModel(route, parsed.model()));
 					if (attemptHandle != null) {
 						// §9.2.4：上游已提交——本 attempt 成为 call 的最终结算
 						// attempt（未提交句柄不推进终态，直接被取代）。
@@ -1382,6 +1385,9 @@ public class WebfluxGatewayController implements AutoCloseable {
 							attempt.route(), budget.boundedTimeoutMs(timeout), pass);
 			return Mono.fromFuture(() -> provider.completeRawAsync(request, egress)).map(body -> {
 				winner.set(attempt.route());
+				// §9.2.2 对账契约：记录实际服务的上游模型（targetModel 重写后）——
+				// 与计费句柄无关（billing 关闭时同样记录）。
+				context.setServedModel(EngineRoutes.servedModel(attempt.route(), parsed.model()));
 				if (attemptHandle != null) {
 					attemptHandle.markSubmitted(null);
 					billable.selectFinalAttempt(attemptHandle.attemptId());

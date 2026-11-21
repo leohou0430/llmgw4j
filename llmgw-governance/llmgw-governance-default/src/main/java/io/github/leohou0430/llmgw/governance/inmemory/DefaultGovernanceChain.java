@@ -567,6 +567,11 @@ public class DefaultGovernanceChain implements GovernanceChain {
 			if (!context.taskId().isBlank()) {
 				details.put("taskId", context.taskId());
 			}
+			// Chapter-9 §9.2.2：实际服务的上游模型（targetModel/fallback 后）——
+			// 客户端看到同一模型名，不代表平台未经记录地替换了实际能力。
+			if (!context.servedModel().isBlank()) {
+				details.put("servedModel", context.servedModel());
+			}
 			if (!context.billingCallId().isBlank()) {
 				details.put("callId", context.billingCallId());
 			}

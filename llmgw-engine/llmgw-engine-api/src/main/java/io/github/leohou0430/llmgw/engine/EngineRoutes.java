@@ -137,6 +137,18 @@ public final class EngineRoutes {
 				parsed.stream(), timeoutMs, upstreamPath, UpstreamMethod.POST, passHeaders);
 	}
 
+	/**
+	 * Chapter-9 §9.2.2 对账契约：本路由实际服务给上游的模型名——targetModel 重写生效时是重写值，否则是客户请求别名原样透传。审计与用量记录据此
+	 * 区分「客户端看到的模型名」与「实际提供能力的模型」。
+	 */
+	public static String servedModel(Route route, String requestedModel) {
+		if (route == null) {
+			return "";
+		}
+		String rewritten = route.targetModel();
+		return rewritten == null || rewritten.isBlank() ? (requestedModel == null ? "" : requestedModel) : rewritten;
+	}
+
 	/** Bodyless GET (video poll/content) pinned to one route; no fallback. */
 	public static UpstreamRequest fetch(Route route, String path, int timeoutMs) {
 		return new UpstreamRequest("", route.targetUrl(), route.apiKey(), "", false, timeoutMs, path,

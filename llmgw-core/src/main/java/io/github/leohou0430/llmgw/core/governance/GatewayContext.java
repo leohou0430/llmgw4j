@@ -91,6 +91,12 @@ public final class GatewayContext {
 
 	private volatile String projectId = "";
 
+	/**
+	 * Chapter-9 §9.2.2 对账契约：实际服务本次输出的上游模型（fallback/ targetModel 重写后）。与
+	 * {@code model()}（客户请求别名）分别记录； 缓存命中或未发上游时留空（无上游模型服务本次输出）。
+	 */
+	private volatile String servedModel = "";
+
 	/** Chapter-9 §9.5.3：判定时命中的策略版本（0 = 未盖章，finish 回退当前值）。 */
 	private volatile long policyVersion;
 
@@ -290,6 +296,15 @@ public final class GatewayContext {
 
 	public String projectId() {
 		return projectId;
+	}
+
+	/** 实际服务的上游模型（targetModel 重写后；留空 = 无上游服务本次输出）。 */
+	public void setServedModel(String model) {
+		this.servedModel = model == null ? "" : model;
+	}
+
+	public String servedModel() {
+		return servedModel;
 	}
 
 	/** 最终服务的真实上游尝试标识。 */
